@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<plugin about="http://golem.ph.utexas.edu/~distler/blog/files/itexToMML.txt">
+<name>itex2MML</name>
+<version>0.7</version>
+<author about="">Jacques Distler</author>
+<description>TextFilter form mathematical equations. Converts inline itex to inline MathML.</description>
+<archive>
+<location>http://golem.ph.utexas.edu/~distler/blog/files</location>
+<format>Tar.gz</format>
+<name>itexToMML.tar.gz</name>
+</archive>
+<required>
+<mt-version>2.6</mt-version>
+<module>IPC::Open2</module>
+</required>
+<documentation>
+<plugindir>http://mt-plugins.org/archives/entry/itex2mml.php</plugindir>
+</documentation>
+</plugin>

@@ -1,0 +1,95 @@
+INTRODUCTION:
+
+This package contains the distribution for itex2MML. Binaries for MacOSX and
+Linux are provided in the itex-binaries directory. The source code is in the
+itex-src directory. It should compile on most platforms by simply typing "make".
+
+Also included is a MovableType (2.6 or greater) plugin which provides two
+Text Filtering options:
+1) itex to MathML
+2) itex to MathML with parbreaks
+
+The plugin relies on the itex2MML commandline utility to do the actual
+conversion. The first filter is a straight itex2MML translation. The latter
+uses the "TeX" (and blogger's) convention that two linebreaks in succession
+signify a new paragraph. (The bloggers also like to convert single linebreaks
+to <br />, but that would mess with TeX formula entry, so we don't support it.)
+
+Another plugin, which adds itex support to the Textile and Markdown text
+filters is available separately from 
+
+    http://golem.ph.utexas.edu/~distler/blog/archives/000374.html
+
+To use it, you need both this plugin and the Textile and/or Markdown plugins
+installed.
+
+See
+      http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
+and the itex2MML homepage 
+      http://pear.math.pitt.edu/mathzilla/itex2mml.html
+for more details on composing in itex and using the itex2MML program.
+The version of itex2MML included here is a greatly-enhanced version, with
+many bugfixes and support for a larger subset of LaTeX/AMSLaTeX syntax.
+
+Below I've put some simple notes specific to the use of this plugin.
+
+USAGE NOTES:
+
+1) Tex equations are delimited by $...$ (inline) or \[...\] (display).
+Alternatively, $$...$$ can also be used to delimit display equations. So,
+just as in a TeX document, be sure you don't have any free-floating $'s
+in your text. If you want to enter something that renders as a $, use
+the unicode entity &#36;.
+
+2) If you are using the "itex to MathML with parbreaks" filter, paragraph
+breaks are inserted automatically. So
+
+              Some text is here.
+
+              Some more text
+              \[    display equation    \]
+              Yet more text.
+
+              And still more.
+
+gets turned into three paragraphs.  If you are using the plain
+"itex to MathML" filter, you need to put in the paragraph breaks
+yourself, so the above would look like
+
+              <p>Some text is here. </p>
+              <p>Some more text
+              \[    display equation    \]
+              Yet more text.</p>         
+              <p>And still more.</p>
+
+3) Mozilla only renders MathML when you serve the document as XML (ie
+using the MIME type application/xhtml+xml rather than text/html). You had better
+be producing 100% valid XHTML if you want to see *anything* when Mozilla
+is operating in that mode.
+
+4)The best way to serve up XML to Mozilla, while still catering to
+other browsers is to use mod_rewrite rules in the .htaccess file of your
+blog. See
+    http://golem.ph.utexas.edu/~distler/blog/archives/000167.html
+for how to do that.
+
+INSTALLATION INSTRUCTIONS:
+
+1) Put itex2MML.pl in your MovableType plugins directory.
+
+2) If you are running MacOSX or Linux, I've provided a precompiled binary,
+so you can skip to step 3).
+If these don't do the trick for you, or if you prefer to compile your own,
+cd into the itex-src directory and type "make". The result should be an itex2MML
+binary for your architecture.
+
+3) Copy itex2MML into /usr/local/bin/, and make sure it's executable
+(mode 755). If you decide to put it in another location, you merely have
+to edit itex2MML.pl to reflect its new location.
+
+As with Paul Gartside's original version,
+
+  http://pear.math.pitt.edu/mathzilla/itex2mmlBugs.html
+
+itex2MML is Open Source software, released under a dual license: GPL and MPL.
+
