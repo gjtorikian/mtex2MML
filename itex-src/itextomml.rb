@@ -18,7 +18,7 @@
 #  Usage
 #  -----
 #
-#      There are two public methods
+#      There are four public methods
 #
 #       itex.html_filter(a_string)
 #               converts all itex equations in a_string to MathML, passing the
@@ -28,7 +28,19 @@
 #               converts all itex equations in a_string to MathML. Returns just
 #               the MathML equation(s), as a string.
 #
-#  Author: Justin Bonnar <jbonnar@berkeley.edu>
+#       itex.inline_filter(a_string)
+#               treats a_string as an inline equation (automatically supplies
+#               the surrounding $...$, so you don't have to) and converts it
+#               MathML. Returns the MathML inline equation, as a string.
+#
+#       itex.block_filter(a_string)
+#               treats a_string as a block equation (automatically supplies
+#               the surrounding $$...$$, so you don't have to) and converts it
+#               MathML. Returns the MathML block equation, as a string.
+#
+#  Authors: Justin Bonnar <jbonnar@berkeley.edu>
+#           Jacques Distler <distler@golem.ph.utexas.edu>
+#
 #  Placed in the Public Domain
 
 require 'itex2MML'
@@ -48,6 +60,14 @@ module Itex2MML
    
     def filter(string)
       parse(string, :itex2MML_filter)
+    end
+ 
+    def inline_filter(string)
+      parse("\$#{string}\$", :itex2MML_filter)
+    end
+ 
+    def block_filter(string)
+      parse("\$\$#{string}\$\$", :itex2MML_filter)
     end
  
   private
@@ -78,6 +98,11 @@ if __FILE__ == $0
       assert_equal("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.filter('Inline: $\sin(x)$'))
     end
 
+    def test_inline_inline
+      itex = Itex2MML::Parser.new
+      assert_equal("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.inline_filter('\sin(x)'))
+    end
+
     def test_block_html
       itex = Itex2MML::Parser.new
       assert_equal("Block: <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.html_filter('Block: $$\sin(x)$$'))
@@ -86,6 +111,11 @@ if __FILE__ == $0
     def test_block
       itex = Itex2MML::Parser.new
       assert_equal("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.filter('Block: $$\sin(x)$$'))
+    end
+
+    def test_block_block
+      itex = Itex2MML::Parser.new
+      assert_equal("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.block_filter('\sin(x)'))
     end
 
   end
