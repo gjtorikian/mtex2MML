@@ -28,7 +28,6 @@ use strict;
 
 use MT;
 use MT::Template::Context;
-use MT::Plugin::itex2MML;
 
 eval{ require MT::Plugin;};
 unless ($@) {
@@ -43,13 +42,13 @@ unless ($@) {
 
 my $filters = MT->all_text_filters();
 
-if (exists($filters->{'textile_1'})) {
+if (exists($filters->{'textile_1'}) && exists($filters->{'itexToMML'})) {
 	MT->add_text_filter('textile_1MML' => {
 				     label => 'Textile with itex to MathML',
 				     on_format => sub { &textileMML; },
 				    });
 }
-if (exists($filters->{'markdown'})) {
+if (exists($filters->{'markdown'}) && exists($filters->{'itexToMML'})) {
 	MT->add_text_filter('markdownMML' => {
 				     label => 'Markdown with itex to MathML',
 				     on_format => sub { &markdownMML; },
