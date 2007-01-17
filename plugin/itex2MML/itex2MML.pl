@@ -101,7 +101,7 @@ sub number_equations {
 
   # add equation numbers to \[...\]
   #  - introduce a wrapper-<div> and a <span> with the equation number
-  while (s/\\\[(.*?)\\\]/\n<div class=\"$cls\"><span>\($eqno\)<\/span>\$\$$1\$\$<\/div>\n/s) {
+  while (s/\\\[(.*?)\\\]/\n\n<div class=\"$cls\"><span>\($eqno\)<\/span>\$\$$1\$\$<\/div>\n\n/s) {
     $eqno++;
   }
 
