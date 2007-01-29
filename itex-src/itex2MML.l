@@ -1,5 +1,5 @@
-/*             itex2MML 1.1.8
- *   itex2MML.l last modified 6/15/2006
+/*             itex2MML 1.1.9
+ *   itex2MML.l last modified 1/28/2007
  */
 
 %{
@@ -798,6 +798,8 @@ int itex2MML_displaymode = 0;
 "\{smallmatrix\}" {BEGIN(MATH); return SMALLMATRIX;}
 "\{cases\}" {BEGIN(MATH); return CASES;}
 "\{aligned\}" {BEGIN(MATH); return ALIGNED;}
+"\{gathered\}" {BEGIN(MATH); return GATHERED;}
+"\{split\}" {BEGIN(MATH); return ALIGNED;}
 }
 
 <ROMAN>{
