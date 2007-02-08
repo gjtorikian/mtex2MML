@@ -17,13 +17,16 @@ lex.yy.c:	itex2MML.l
 		$(LEX) itex2MML.l
 
 y.tab.o:	y.tab.c itex2MML.h
-		$(CC) -c -o y.tab.o y.tab.c
+		$(CC) $(CFLAGS) -c -o y.tab.o y.tab.c
 
 lex.yy.o:	lex.yy.c y.tab.c itex2MML.h
-		$(CC) -c -o lex.yy.o lex.yy.c
+		$(CC) $(CFLAGS) -c -o lex.yy.o lex.yy.c
 
 itex2MML:	lex.yy.o y.tab.o itex2MML.cc itex2MML.h
-		$(CXX) -o itex2MML lex.yy.o y.tab.o itex2MML.cc
+		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o itex2MML.cc
+
+universal:		
+		CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i686 -arch ppc' make all
 
 clean:		
 		$(RM) y.tab.* lex.yy.c itex2MML *.o *.output *.so *.dll *.sl *.bundle itex2MML_ruby.c
@@ -48,7 +51,7 @@ itex2MML_ruby.o:	itex2MML_ruby.c
 			$(CC) $(RUBY_CFLAGS) -c itex2MML_ruby.c -I$(RUBYDIR) -o itex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c
-			$(CC)  -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
+			$(CC) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
 
 ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy.o
 	$(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy.o -L$(RUBYLIBDIR) -lruby -o itex2MML.$(DYLIB_EXT)
