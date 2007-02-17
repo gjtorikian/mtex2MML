@@ -1,5 +1,5 @@
-/*             itex2MML 1.1.9
- *   itex2MML.l last modified 1/28/2007
+/*             itex2MML 1.1.10
+ *   itex2MML.l last modified 2/15/2007
  */
 
 %{
@@ -702,6 +702,7 @@ int itex2MML_displaymode = 0;
 
 "\\mathit"       {return ITALICS;}
 
+"\\boldsymbol" |
 "\\mathbf"       {return BOLD;}
 
 "\\mathrm"       {BEGIN(ROMAN); return RM;}
