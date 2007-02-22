@@ -42,6 +42,7 @@ RUBY_ARCH = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["arch"]')
 RUBYDIR = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["archdir"]')
 RUBY_SITEDIR = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["sitelibdir"]')
 RUBY_SITEARCHDIR = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["sitearchdir"]')
+LIBRUBYARG = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["LIBRUBYARG"]')
 DYLIB_EXT = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["DLEXT"]')
 
 itex2MML_ruby.c:	itex2MML.i
@@ -51,10 +52,13 @@ itex2MML_ruby.o:	itex2MML_ruby.c
 			$(CC) $(RUBY_CFLAGS) -c itex2MML_ruby.c -I$(RUBYDIR) -o itex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c
-			$(CC) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
+			$(CC) $(RUBY_CFLAGS) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
 
-ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy.o
-	$(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy.o -L$(RUBYLIBDIR) -lruby -o itex2MML.$(DYLIB_EXT)
+lex.yy_ruby.o:	lex.yy.c y.tab.c itex2MML.h
+		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o lex.yy.c
+
+ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
+	$(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
 
 test_ruby:
 	ruby ./itextomml.rb
