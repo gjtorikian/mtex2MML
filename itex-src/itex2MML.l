@@ -1,5 +1,5 @@
-/*             itex2MML 1.1.10
- *   itex2MML.l last modified 2/15/2007
+/*             itex2MML 1.1.11
+ *   itex2MML.l last modified 2/24/2007
  */
 
 %{
@@ -140,11 +140,14 @@ int itex2MML_displaymode = 0;
 "="   |
 "~"   |
 ";"   |
-"'"   |
 "?"   |
 "#"   |
 "`"   |
 "*"        {yylval=itex2MML_copy_string(yytext); return MOL;}
+
+"'"        {yylval=itex2MML_copy_string("&prime;"); return MOL;}
+"''"     {yylval=itex2MML_copy_string("&Prime;"); return MOL;}
+"'''"  {yylval=itex2MML_copy_string("&#8244;"); return MOL;}
 
 "\\alpha"   |
 "\\beta" |
