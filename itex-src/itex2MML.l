@@ -315,6 +315,7 @@ int itex2MML_displaymode = 0;
 
 "\\Updownarrow"  {yylval=itex2MML_copy_string("&Updownarrow;"); return MOL;}
 
+"\\leftsquigarrow"       {yylval=itex2MML_copy_string("&#x21DC;"); return MOL;}
 "\\rightsquigarrow"      {yylval=itex2MML_copy_string("&zigrarr;"); return MOL;}
 "\\leftrightsquigarrow"  {yylval=itex2MML_copy_string("&leftrightsquigarrow;"); return MOL;}
 "\\upuparrows"           {yylval=itex2MML_copy_string("&upuparrows;"); return MOL;}
