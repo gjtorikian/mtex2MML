@@ -1,5 +1,5 @@
-/*             itex2MML 1.1.11
- *   itex2MML.l last modified 2/24/2007
+/*             itex2MML 1.2
+ *   itex2MML.l last modified 4/4/2007
  */
 
 %{
@@ -314,6 +314,23 @@ int itex2MML_displaymode = 0;
 "\\updarr"  {yylval=itex2MML_copy_string("&updownarrow;"); return MOL;}
 
 "\\Updownarrow"  {yylval=itex2MML_copy_string("&Updownarrow;"); return MOL;}
+
+"\\rightsquigarrow"      {yylval=itex2MML_copy_string("&zigrarr;"); return MOL;}
+"\\leftrightsquigarrow"  {yylval=itex2MML_copy_string("&leftrightsquigarrow;"); return MOL;}
+"\\upuparrows"           {yylval=itex2MML_copy_string("&upuparrows;"); return MOL;}
+"\\rightleftarrows"      {yylval=itex2MML_copy_string("&rightleftarrows;"); return MOL;}
+"\\rightrightarrows"     {yylval=itex2MML_copy_string("&rightrightarrows;"); return MOL;}
+"\\dashleftarrow"        {yylval=itex2MML_copy_string("&#x290E;"); return MOL;}
+"\\dashrightarrow"       {yylval=itex2MML_copy_string("&#x290F;"); return MOL;}
+"\\curvearrowleft"       {yylval=itex2MML_copy_string("&#x293A;"); return MOL;}
+"\\curvearrowbotright"   {yylval=itex2MML_copy_string("&#x293B;"); return MOL;}
+"\\downdownarrows"       {yylval=itex2MML_copy_string("&downdownarrows;"); return MOL;}
+"\\leftleftarrows"       {yylval=itex2MML_copy_string("&leftleftarrow;"); return MOL;}
+"\\leftrightarrows"      {yylval=itex2MML_copy_string("&leftrightarrows;"); return MOL;}
+"\\righttoleftarrow"     {yylval=itex2MML_copy_string("&#x27F2;"); return MOL;}
+"\\lefttorightarrow"     {yylval=itex2MML_copy_string("&#x27F3;"); return MOL;}
+"\\circlearrowleft"      {yylval=itex2MML_copy_string("&circlearrowleft;"); return MOL;}
+"\\circlearrowright"     {yylval=itex2MML_copy_string("&circlearrowright;"); return MOL;}
 
 "\\dots" |
 "\\ldots"  {yylval=itex2MML_copy_string("&hellip;"); return MO;}
