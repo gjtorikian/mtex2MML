@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.1
- *   itex2MML.l last modified 4/30/2007
+/*             itex2MML 1.2.2
+ *   itex2MML.l last modified 5/6/2007
  */
 
 %{
@@ -733,6 +733,8 @@ int itex2MML_displaymode = 0;
 
 "\\mathfrak" |
 "\\mathfr"       {BEGIN(FRAKTUR); return FRAK;}
+
+"\\slash"       {return SLASHED;}
 
 "\\mathcal"       {BEGIN(CALLIGRAPHIC); return CAL;}
 
