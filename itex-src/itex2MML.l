@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.2
- *   itex2MML.l last modified 5/6/2007
+/*             itex2MML 1.2.3
+ *   itex2MML.l last modified 6/15/2007
  */
 
 %{
@@ -133,6 +133,8 @@ int itex2MML_displaymode = 0;
 "-"    {if (itex2MML_rowposn==1) return UNARYMINUS; else {yylval=itex2MML_copy_string("&minus;"); return MO;}}
 
 "+"    {if (itex2MML_rowposn==1) return UNARYPLUS; else {yylval=itex2MML_copy_string("+"); return MO;}}
+
+"\\#" {yylval=itex2MML_copy_string("#"); return MOL;}
 
 ","   |
 ":"   |
