@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.3
- *   itex2MML.l last modified 6/15/2007
+/*             itex2MML 1.2.4
+ *   itex2MML.l last modified 6/20/2007
  */
 
 %{
@@ -46,6 +46,7 @@ int itex2MML_displaymode = 0;
 
 "$"{1,2} |
 "\\]"           {BEGIN(INITIAL); return ENDMATH;}
+
 
 "^"            return SUP;
 "_"            return SUB; 
@@ -147,6 +148,7 @@ int itex2MML_displaymode = 0;
 "`"   |
 "*"        {yylval=itex2MML_copy_string(yytext); return MOL;}
 
+"\\prime"  {yylval=itex2MML_copy_string("&prime;"); return MOLL;}
 "'"        {yylval=itex2MML_copy_string("&prime;"); return MOL;}
 "''"     {yylval=itex2MML_copy_string("&Prime;"); return MOL;}
 "'''"  {yylval=itex2MML_copy_string("&#8244;"); return MOL;}
@@ -497,7 +499,6 @@ int itex2MML_displaymode = 0;
 "\\div" |
 "\\rtimes" |
 "\\bot" |
-"\\prime" |
 "\\therefore" |
 "\\thickapprox" |
 "\\thicksim" |
