@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.4
- *   itex2MML.l last modified 6/20/2007
+/*             itex2MML 1.2.5
+ *   itex2MML.l last modified 9/20/2007
  */
 
 %{
@@ -331,7 +331,7 @@ int itex2MML_displaymode = 0;
 "\\curvearrowleft"       {yylval=itex2MML_copy_string("&#x293A;"); return MOL;}
 "\\curvearrowbotright"   {yylval=itex2MML_copy_string("&#x293B;"); return MOL;}
 "\\downdownarrows"       {yylval=itex2MML_copy_string("&downdownarrows;"); return MOL;}
-"\\leftleftarrows"       {yylval=itex2MML_copy_string("&leftleftarrow;"); return MOL;}
+"\\leftleftarrows"       {yylval=itex2MML_copy_string("&leftleftarrows;"); return MOL;}
 "\\leftrightarrows"      {yylval=itex2MML_copy_string("&leftrightarrows;"); return MOL;}
 "\\righttoleftarrow"     {yylval=itex2MML_copy_string("&#x27F2;"); return MOL;}
 "\\lefttorightarrow"     {yylval=itex2MML_copy_string("&#x27F3;"); return MOL;}
