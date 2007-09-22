@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.5
- *   itex2MML.l last modified 9/20/2007
+/*             itex2MML 1.2.5a
+ *   itex2MML.l last modified 9/21/2007
  */
 
 %{
@@ -640,7 +640,7 @@ int itex2MML_displaymode = 0;
 
 "\\bigodot"    {yylval=itex2MML_copy_string("&bigodot;"); return MOB;}
 "\\bigsqcup"    {yylval=itex2MML_copy_string("&bigsqcup;"); return MOB;}
-"\\bigsuplus"    {yylval=itex2MML_copy_string("&biguplus;"); return MOB;}
+"\\biguplus"    {yylval=itex2MML_copy_string("&biguplus;"); return MOB;}
 
 "\\wedge"       {yylval=itex2MML_copy_string("&wedge;"); return MOL;}
 "\\Wedge"  |
