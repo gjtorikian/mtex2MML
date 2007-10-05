@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.4
- *   itex2MML.y last modified 8/6/2007
+/*             itex2MML 1.2.6
+ *   itex2MML.y last modified 10/5/2007
  */
 
 %{
@@ -266,7 +266,7 @@
 
 %}
 
-%left TEXOVER
+%left TEXOVER TEXATOP
 %token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC MATHOP MOP MOL MOLL MOF PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM UNDER OVER OVERBRACE UNDERBRACE UNDEROVER TENSOR MULTI ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR CALCHAR FRAKCHAR CAL FRAK ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR
 
 %%
@@ -561,6 +561,7 @@ closedTerm: array
 | bghighlight
 | color
 | texover
+| texatop
 | MROWOPEN closedTerm MROWCLOSE {
   $$ = itex2MML_copy_string($2);
   itex2MML_free_string($2);
@@ -1120,9 +1121,30 @@ texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   itex2MML_free_string($5);
 };
 
+texatop: MROWOPEN compoundTermList TEXATOP compoundTermList MROWCLOSE {
+  char * s1 = itex2MML_copy3("<mfrac linethickness=\"0\"><mrow>", $2, "</mrow><mrow>");
+  $$ = itex2MML_copy3(s1, $4, "</mrow></mfrac>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($2);
+  itex2MML_free_string($4);
+}
+| left compoundTermList TEXATOP compoundTermList right {
+  char * s1 = itex2MML_copy3("<mrow>", $1, "<mfrac linethickness=\"0\"><mrow>");
+  char * s2 = itex2MML_copy3($2, "</mrow><mrow>", $4);
+  char * s3 = itex2MML_copy3("</mrow></mfrac>", $5, "</mrow>");
+  $$ = itex2MML_copy3(s1, s2, s3);
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($1);
+  itex2MML_free_string($2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($5);
+};
+
 binom: BINOM closedTerm closedTerm {
-  char * s1 = itex2MML_copy3("<mfrac linethickness=\"0\">", $2, $3);
-  $$ = itex2MML_copy2(s1, "</mfrac>");
+  char * s1 = itex2MML_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $3);
+  $$ = itex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow>");
   itex2MML_free_string(s1);
   itex2MML_free_string($2);
   itex2MML_free_string($3);

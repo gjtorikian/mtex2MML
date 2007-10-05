@@ -1,5 +1,5 @@
-/*             itex2MML 1.2.5a
- *   itex2MML.l last modified 9/21/2007
+/*             itex2MML 1.2.6
+ *   itex2MML.l last modified 10/5/2007
  */
 
 %{
@@ -691,6 +691,7 @@ int itex2MML_displaymode = 0;
 "\\overset"      {return OVER;}
 
 "\\over"         {return TEXOVER;}
+"\\atop"         {return TEXATOP;}
 
 "\\underoverset"  {return UNDEROVER;}
 
@@ -798,7 +799,7 @@ int itex2MML_displaymode = 0;
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
 
-
+"\\operatorname" |
 "\\mathop"       {BEGIN(PLAINTEXT); return MATHOP;}
 
 "\\"[a-zA-Z]+    {yylval=itex2MML_copy_string(yytext+1); return MOP;}
