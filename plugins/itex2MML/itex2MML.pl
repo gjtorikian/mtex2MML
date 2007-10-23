@@ -1,5 +1,5 @@
 # itex2MML
-# version 1.0
+# version 1.1
 # copyright 2003-2007, Jacques Distler
 #
 
@@ -9,7 +9,7 @@ use MT;
 use File::Temp qw(tempfile);
 
 use vars qw( $VERSION );
-$VERSION = '1.0';
+$VERSION = '1.1';
 
 eval{ require MT::Plugin;};
 unless ($@) {
@@ -32,7 +32,7 @@ MT->add_text_filter(itexToMMLpara => {
 });
 
 my $itex2mml_number_equations = 1;
-my $itex2mml_binary = "/usr/local/bin/itex2MML";
+my $itex2mml_binary = "/usr/local/bin/itex2MML --raw-filter";
 
 sub itexToMML {
     $_=shift;
