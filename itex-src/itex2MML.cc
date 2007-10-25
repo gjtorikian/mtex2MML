@@ -1,5 +1,5 @@
-/*             itex2MML 1.1.8
- *   itex2MML.cc last modified 9/15/2005
+/*             itex2MML 1.3.1
+ *   itex2MML.cc last modified 10/24/2007
  */
 
 #include <cstdio>
@@ -16,6 +16,7 @@ int main (int argc, char ** argv)
 	bool bDisplay   = false;
 
 	bool bStop = false;
+	bool bForbidMarkup = false;
 
 	for (int arg = 1; arg < argc; arg++)
 		{
@@ -39,10 +40,11 @@ int main (int argc, char ** argv)
 						   "\n"
 						   "itex2MML Options:\n"
 						   "\n"
-						   "  --raw-filter  filter input stream, converting equations as found to MathML [stops on error]\n"
-						   "  --inline      converts a single itex equation, without any $ symbols, to inline MathML\n"
-						   "  --display     converts a single itex equation, without any $ symbols, to display-mode MathML\n"
-						   "  --print-itex  used in conjuction with --inline or --display: prints the itex string\n"
+						   "  --raw-filter    filter input stream, converting equations as found to MathML [stops on error]\n"
+						   "  --inline        converts a single itex equation, without any $ symbols, to inline MathML\n"
+						   "  --display       converts a single itex equation, without any $ symbols, to display-mode MathML\n"
+						   "  --forbid-markup forbid markup (more precisely, the '<' and '>' characters) in itex equations\n"
+						   "  --print-itex    used in conjuction with --inline or --display: prints the itex string\n"
 						   "\n"
 						   "For further information, see http://golem.ph.utexas.edu/~distler/blog/itex2MML.html\n", stdout);
 
@@ -53,6 +55,12 @@ int main (int argc, char ** argv)
 				{
 					bPrintItex = true;
 					bRawFilter = false;
+					continue;
+				}
+			if (args == "--forbid-markup")
+				{
+					bRawFilter = false;
+					bForbidMarkup = true;
 					continue;
 				}
 			if (args == "--inline")
@@ -104,7 +112,10 @@ int main (int argc, char ** argv)
 			if (bRawFilter)
 				itex2MML_filter (itex.c_str(), itex.size());
 			else
-				itex2MML_html_filter (itex.c_str(), itex.size());
+				if (bForbidMarkup)
+					itex2MML_strict_html_filter (itex.c_str(), itex.size());
+				else
+					itex2MML_html_filter (itex.c_str(), itex.size());
 			return 0;
 		}
 

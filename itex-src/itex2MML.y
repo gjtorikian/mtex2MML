@@ -1,5 +1,5 @@
-/*             itex2MML 1.3
- *   itex2MML.y last modified 10/22/2007
+/*             itex2MML 1.3.1
+ *   itex2MML.y last modified 10/24/2007
  */
 
 %{
@@ -1576,6 +1576,16 @@ static void itex2MML_keep_error (const char * msg)
 
 int itex2MML_html_filter (const char * buffer, unsigned long length)
 {
+  itex2MML_do_html_filter (buffer, length, 0);
+}
+
+int itex2MML_strict_html_filter (const char * buffer, unsigned long length)
+{
+  itex2MML_do_html_filter (buffer, length, 1);
+}
+
+int itex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup)
+{
   int result = 0;
 
   int type = 0;
@@ -1642,7 +1652,7 @@ int itex2MML_html_filter (const char * buffer, unsigned long length)
 	{
 	case '<':
 	case '>':
-	  skip = 1;
+	  if (forbid_markup == 1) skip = 1;
 	  break;
 
 	case '\\':

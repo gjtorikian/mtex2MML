@@ -1,5 +1,5 @@
-/*             itex2MML 1.1.8
- *   itex2MML.h last modified 9/14/2005
+/*             itex2MML 1.3.1
+ *   itex2MML.h last modified 10/24/2007
  */
 
 #ifndef ITEX2MML_H
@@ -23,6 +23,7 @@ extern "C" {
   extern int    itex2MML_filter (const char * buffer, unsigned long length);
 
   extern int    itex2MML_html_filter (const char * buffer, unsigned long length);
+  extern int    itex2MML_strict_html_filter (const char * buffer, unsigned long length);
 
 
   /* To change output methods:
