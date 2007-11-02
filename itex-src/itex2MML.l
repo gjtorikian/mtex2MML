@@ -1,5 +1,5 @@
-/*             itex2MML 1.3
- *   itex2MML.l last modified 10/22/2007
+/*             itex2MML 1.3.1
+ *   itex2MML.l last modified 11/1/2007
  */
 
 %{
@@ -463,6 +463,7 @@ int itex2MML_displaymode = 0;
 "\\nsupseteq" |
 "\\propto" |
 "\\equiv" |
+"\\nequiv" |
 "\\frown" |
 "\\triangleright" |
 "\\ncong" |
