@@ -34,7 +34,7 @@ clean:
 install:	itex2MML
 		$(INSTALL) itex2MML $(BINDIR)
 
-RUBY_CFLAGS = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["CCDLFLAGS"]')
+RUBY_CFLAGS = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["CFLAGS"]')
 RUBY_LD = MACOSX_DEPLOYMENT_TARGET=10.4 $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["LDSHARED"]')
 RUBYLIBDIR =$(shell ruby -e 'require "rbconfig"; print Config::CONFIG["libdir"]') 
 RUBY_PREFIX = $(RUBYLIBDIR)/ruby

@@ -118,5 +118,15 @@ if __FILE__ == $0
       assert_equal("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.block_filter('\sin(x)'))
     end
 
+    def test_inline_utf8
+      itex = Itex2MML::Parser.new
+      assert_equal("ecuasi\303\263n <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.html_filter("ecuasi\303\263n $\\sin(x)$"))
+    end
+
+    def test_inline_utf8_inline
+      itex = Itex2MML::Parser.new
+      assert_equal("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>sin</mi><mo stretchy=\"false\">(</mo><mi>x</mi><mo stretchy=\"false\">)</mo></math>", itex.filter("ecuasi\303\263n $\\sin(x)$"))
+    end
+
   end
 end
