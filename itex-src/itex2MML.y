@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.1
- *   itex2MML.y last modified 10/24/2007
+/*             itex2MML 1.3.2
+ *   itex2MML.y last modified 11/10/2007
  */
 
 %{
@@ -925,7 +925,7 @@ bbletters: bbletter {
 };
 
 bbletter: BBLOWERCHAR {
-  $$ = itex2MML_copy_string($1);
+  $$ = itex2MML_copy3("&", $1, "opf;");
   itex2MML_free_string($1);
 }
 | BBUPPERCHAR {
