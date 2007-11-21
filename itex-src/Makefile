@@ -26,7 +26,7 @@ itex2MML:	lex.yy.o y.tab.o itex2MML.cc itex2MML.h
 		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o itex2MML.cc
 
 universal:		
-		CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i686 -arch ppc' make all
+		CFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch i686 -arch ppc' make all
 
 clean:		
 		$(RM) y.tab.* lex.yy.c itex2MML *.o *.output *.so *.dll *.sl *.bundle itex2MML_ruby.c

@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.1
- *   itex2MML.cc last modified 10/24/2007
+/*             itex2MML 1.3.3
+ *   itex2MML.cc last modified 11/21/2007
  */
 
 #include <cstdio>
@@ -22,7 +22,15 @@ int main (int argc, char ** argv)
 		{
 			std::string args = argv[arg];
 
-			if (args == "--help")
+			if (args == "--version" || args == "-v")
+				{
+					fputs("itex2MML version " ITEX2MML_VERSION "\n"
+					      "See http://golem.ph.utexas.edu/~distler/blog/itex2MML.html for more information.\n", stdout);
+					bStop = true;
+					break;
+				}
+
+			if (args == "--help" || args == "-h")
 				{
 					fputs ("usage: itex2MML [OPTIONS]\n"
 						   "\n"
