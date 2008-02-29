@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.1
- *   itex2MML.l last modified 11/1/2007
+/*             itex2MML 1.3.4
+ *   itex2MML.l last modified 2/28/2008
  */
 
 %{
@@ -379,6 +379,7 @@ int itex2MML_displaymode = 0;
 "\\shortparallel" |
 "\\nshortparallel" |
 "\\perp"  |
+"\\Perp"  |
 "\\eqslantgtr" |
 "\\eqslantless" |
 "\\gg" |
