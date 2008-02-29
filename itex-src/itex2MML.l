@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.4
- *   itex2MML.l last modified 2/28/2008
+/*             itex2MML 1.3.5
+ *   itex2MML.l last modified 2/29/2008
  */
 
 %{
@@ -379,7 +379,6 @@ int itex2MML_displaymode = 0;
 "\\shortparallel" |
 "\\nshortparallel" |
 "\\perp"  |
-"\\Perp"  |
 "\\eqslantgtr" |
 "\\eqslantless" |
 "\\gg" |
@@ -560,6 +559,8 @@ int itex2MML_displaymode = 0;
 "\\wp" |
 "\\Re" {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return MI;}
 
+"\\Perp" |
+"\\Vbar" {yylval=itex2MML_copy_string("&Vbar;"); return MOL;}
 "\\Box" |
 "\\square" {yylval=itex2MML_copy_string("&square;"); return MOL;}
 "\\emptyset" |
