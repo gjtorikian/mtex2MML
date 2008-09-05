@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.5
- *   itex2MML.l last modified 2/29/2008
+/*             itex2MML 1.3.6
+ *   itex2MML.l last modified 9/5/2008
  */
 
 %{
@@ -112,6 +112,8 @@ int itex2MML_displaymode = 0;
 "\\setminus"   {yylval=itex2MML_copy_string("&setminus;"); return MO;}
 "\\backslash"   {yylval=itex2MML_copy_string("&bsol;"); return MO;}
 "\\smallsetminus"   {yylval=itex2MML_copy_string("&#xFE68;"); return MOF;}
+
+"\\sslash" {yylval=itex2MML_copy_string("&#x20EB;"); return MO;}
 
 "\\lfloor" |
 "\\lceil"  |
