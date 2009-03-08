@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.6
- *   itex2MML.l last modified 9/5/2008
+/*             itex2MML 1.37.
+ *   itex2MML.l last modified 3/7/2009
  */
 
 %{
@@ -653,6 +653,9 @@ int itex2MML_displaymode = 0;
 
 "\\Vee"  |
 "\\bigvee"       {yylval=itex2MML_copy_string("&bigvee;"); return MOB;}
+
+"\\invamp"  |
+"\\parr"       {yylval=itex2MML_copy_string("&#8523;"); return MOL;}
 
 "\\frac"         {return FRAC;}
 "\\tfrac"         {return TFRAC;}
