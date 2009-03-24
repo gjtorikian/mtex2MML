@@ -1,5 +1,5 @@
-/*             itex2MML 1.37.
- *   itex2MML.l last modified 3/7/2009
+/*             itex2MML 1.38.
+ *   itex2MML.l last modified 3/23/2009
  */
 
 %{
@@ -860,6 +860,7 @@ int itex2MML_displaymode = 0;
 "\}"  {BEGIN(MATH); return END;}
 [a-z] {yylval=itex2MML_copy_string(yytext); return BBLOWERCHAR;}
 [A-Z]   {yylval=itex2MML_copy_string(yytext); return BBUPPERCHAR;}
+[0-9]   {yylval=itex2MML_copy_string(yytext); return BBDIGIT;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
 }
