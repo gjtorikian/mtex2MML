@@ -1,5 +1,5 @@
-/*             itex2MML 1.38.
- *   itex2MML.l last modified 3/23/2009
+/*             itex2MML 1.3.9
+ *   itex2MML.l last modified 7/9/2009
  */
 
 %{
@@ -71,7 +71,7 @@ int itex2MML_displaymode = 0;
 "\\biggl" {return BIGGL;}
 "\\Biggl" {return BBIGGL;}
 
-"\\rlap" |
+"\\rlap"  {return RLAP;}
 "\\llap" |
 "\\ulap" |
 "\\dlap"               {/* Ignore */ ;}
