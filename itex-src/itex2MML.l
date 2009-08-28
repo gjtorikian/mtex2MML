@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.9
- *   itex2MML.l last modified 7/9/2009
+/*             itex2MML 1.3.10
+ *   itex2MML.l last modified 8/28/2009
  */
 
 %{
@@ -89,7 +89,7 @@ int itex2MML_displaymode = 0;
 
 [a-zA-Z]+       {yylval=itex2MML_copy_string(yytext); return MI;}
 
-[0-9,.]*[0-9]+          {yylval=itex2MML_copy2(yytext, " "); return MN;}
+[0-9,.]*[0-9]+          {yylval=itex2MML_copy_string(yytext); return MN;}
 "\\infty"   |
 "\\infinity"     {yylval=itex2MML_copy_string("&infin;"); return MN;}
 
@@ -669,6 +669,8 @@ int itex2MML_displaymode = 0;
 "\\overbrace"     {return OVERBRACE;}
 
 "\\underbrace"   {return UNDERBRACE;}
+
+"\\underline"   {return UNDERLINE;}
 
 "\\bar"          {return BAR;}
 "\\overline" |
