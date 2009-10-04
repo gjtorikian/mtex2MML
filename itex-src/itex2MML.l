@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.11
- *   itex2MML.l last modified 9/13/2009
+/*             itex2MML 1.3.12
+ *   itex2MML.l last modified 10/4/2009
  */
 
 %{
@@ -386,6 +386,23 @@ int itex2MML_displaymode = 0;
 "\\Intersection"       {yylval=itex2MML_copy_string("&Intersection;"); return MOB;}
 
 "\\in"           {yylval=itex2MML_copy_string("&Element;"); return MOL;}
+
+ /* For some reason, Firefox does not put in the right spacing around some of these operators
+  * unless we ask for it, explicitly.
+  */
+"\\coloneqq"     {yylval=itex2MML_copy_string("&colone;"); return MOL;}
+"\\Coloneqq"     {yylval=itex2MML_copy_string("&Colone;"); return MOS;}
+"\\coloneq"      {yylval=itex2MML_copy_string("&#x2236;&#x2212;"); return MOS;}
+"\\Coloneq"      {yylval=itex2MML_copy_string("&#x2237;&#x2212;"); return MOS;}
+"\\eqqcolon"     {yylval=itex2MML_copy_string("&ecolon;"); return MOS;}
+"\\Eqqcolon"     {yylval=itex2MML_copy_string("&#x003d;&#x2237;"); return MOS;}
+"\\eqcolon"      {yylval=itex2MML_copy_string("&#x2239;"); return MOS;}
+"\\Eqcolon"      {yylval=itex2MML_copy_string("&#x2212;&#x2237;"); return MOS;}
+"\\colonapprox"  {yylval=itex2MML_copy_string("&#x2236;&#x2248;"); return MOS;}
+"\\Colonapprox"  {yylval=itex2MML_copy_string("&#x2237;&#x2248;"); return MOS;}
+"\\colonsim"     {yylval=itex2MML_copy_string("&#x2236;&#x223C;"); return MOS;}
+"\\Colonsim"     {yylval=itex2MML_copy_string("&#x2237;&#x223C;"); return MOS;}
+"\\dblcolon"     {yylval=itex2MML_copy_string("&Colon;"); return MOL;}
 
 "\\gt"   |
 "\\lt"   |
