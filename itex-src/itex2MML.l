@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.12
- *   itex2MML.l last modified 10/4/2009
+/*             itex2MML 1.3.13
+ *   itex2MML.l last modified 10/5/2009
  */
 
 %{
@@ -71,7 +71,10 @@ int itex2MML_displaymode = 0;
 "\\biggl" {return BIGGL;}
 "\\Biggl" {return BBIGGL;}
 
-"\\rlap"  {return RLAP;}
+"\\mathrlap"  {return RLAP;}
+"\\mathllap"  {return LLAP;}
+"\\mathclap"  {return CLAP;}
+"\\rlap" |
 "\\llap" |
 "\\ulap" |
 "\\dlap"               {/* Ignore */ ;}
@@ -370,6 +373,7 @@ int itex2MML_displaymode = 0;
 "\\ddots"   {yylval=itex2MML_copy_string("&dtdot;"); return MO;}
 "\\udots"   {yylval=itex2MML_copy_string("&utdot;"); return MO;}
 "\\vdots"   {yylval=itex2MML_copy_string("&vellip;"); return MO;}
+"\\colon"   {yylval=itex2MML_copy_string("&colon;"); return MOR;}
 
 "\\cup"  |
 "\&union;" |
