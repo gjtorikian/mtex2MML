@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.13
- *   itex2MML.l last modified 10/5/2009
+/*             itex2MML 1.3.14
+ *   itex2MML.l last modified 10/11/2009
  */
 
 %{
@@ -726,8 +726,9 @@ int itex2MML_displaymode = 0;
 "\\widevec"   {return WIDEVEC;}
 
 "\\dot"       {return DOT;}
-
 "\\ddot"      {return DDOT;}
+"\\dddot"      {return DDDOT;}
+"\\ddddot"      {return DDDDOT;}
 
 "\\tilde"       {return TILDE;} 
 "\\widetilde"   {return WIDETILDE;}
