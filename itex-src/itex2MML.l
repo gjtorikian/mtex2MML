@@ -855,8 +855,10 @@ int itex2MML_displaymode = 0;
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
 
-"\\operatorname" |
-"\\mathop"       {BEGIN(PLAINTEXT); return MATHOP;}
+"\\operatorname"  {BEGIN(PLAINTEXT); return OPERATORNAME;}
+"\\mathop"        {BEGIN(PLAINTEXT); return MATHOP;}
+"\\mathbin"       {BEGIN(PLAINTEXT); return MATHBIN;}
+"\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
 
 "\\includegraphics"(\[[^\]]*\])?\{[^}]*\}	;
 
@@ -930,7 +932,7 @@ int itex2MML_displaymode = 0;
 }
 
 <PLAINTEXT>{
-\{[^\}]*\}  {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
+\{[^\}]*?\}  {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
 }
 
 <INT1>{ 
