@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.14
- *   itex2MML.l last modified 10/11/2009
+/*             itex2MML 1.3.16
+ *   itex2MML.l last modified 11/6/2009
  */
 
 %{
@@ -760,6 +760,7 @@ int itex2MML_displaymode = 0;
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
 
 "\\statusline"    {BEGIN(PLAINTEXT); return STATLINE;}
+"\\tooltip"       {BEGIN(PLAINTEXT); return TOOLTIP;}
 
 "\\toggle"        {return TOGGLE;}
 
@@ -869,7 +870,7 @@ int itex2MML_displaymode = 0;
 "\&#x"[a-fA-F0-9]+";"  {yylval=itex2MML_copy_string(yytext); return MI;}
 
 "\n"             itex2MML_lineno++;
-[\t ]+           ;
+[\r\t ]+           ;
 
 
 .              {return UNKNOWNCHAR;}
