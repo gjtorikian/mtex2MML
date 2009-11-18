@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.16
- *   itex2MML.y last modified 11/6/2009
+/*             itex2MML 1.3.18
+ *   itex2MML.y last modified 11/18/2009
  */
 
 %{
@@ -1223,7 +1223,7 @@ munderbrace: UNDERBRACE closedTerm {
 };
 
 munderline: UNDERLINE closedTerm {
-  $$ = itex2MML_copy3("<munder>", $2, "<mo>&UnderBar;</mo></munder>");
+  $$ = itex2MML_copy3("<munder>", $2, "<mo>&#x00332;</mo></munder>");
   itex2MML_free_string($2);
 };
 
@@ -1233,11 +1233,11 @@ moverbrace: OVERBRACE closedTerm {
 };
 
 bar: BAR closedTerm {
-  $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&OverBar;</mo></mover>");
+  $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x000AF;</mo></mover>");
   itex2MML_free_string($2);
 }
 | WIDEBAR closedTerm {
-  $$ = itex2MML_copy3("<mover>", $2, "<mo>&OverBar;</mo></mover>");
+  $$ = itex2MML_copy3("<mover>", $2, "<mo>&#x000AF;</mo></mover>");
   itex2MML_free_string($2);
 };
 
