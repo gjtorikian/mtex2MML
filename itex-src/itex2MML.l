@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.16
- *   itex2MML.l last modified 11/6/2009
+/*             itex2MML 1.3.17
+ *   itex2MML.l last modified 11/18/2009
  */
 
 %{
@@ -181,13 +181,13 @@ int itex2MML_displaymode = 0;
 "\\psi"  |
 "\\omega" |
 "\\backepsilon"   |
-"\\varepsilon" |
 "\\varkappa" |
 "\\varpi" |
 "\\varrho" |
 "\\varsigma" |
 "\\vartheta"      {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return MI;}
 
+"\\varepsilon" {yylval=itex2MML_copy_string("&#x03B5;"); return MI;}
 "\\phi"  {yylval=itex2MML_copy_string("&#x03D5;"); return MI;}
 "\\varphi"  {yylval=itex2MML_copy_string("&#x03C6;"); return MI;}
 
