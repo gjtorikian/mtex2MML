@@ -1,6 +1,9 @@
 #YACC=yacc
 YACC=bison -y  -v
 LEX=flex -P$(YYPREFIX) -olex.yy.c
+SWIG=swig
+RUBY=ruby
+#RUBY=ruby19
 
 RM=rm -f
 INSTALL=install -c
@@ -34,22 +37,23 @@ clean:
 install:	itex2MML
 		$(INSTALL) itex2MML $(BINDIR)
 
-RUBY_CFLAGS = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["CFLAGS"]')
-RUBY_LD = MACOSX_DEPLOYMENT_TARGET=10.4 $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["LDSHARED"]')
-RUBYLIBDIR =$(shell ruby -e 'require "rbconfig"; print Config::CONFIG["libdir"]') 
-RUBY_PREFIX = $(RUBYLIBDIR)/ruby
-RUBY_ARCH = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["arch"]')
-RUBYDIR = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["archdir"]')
-RUBY_SITEDIR = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["sitelibdir"]')
-RUBY_SITEARCHDIR = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["sitearchdir"]')
-LIBRUBYARG = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["LIBRUBYARG"]')
-DYLIB_EXT = $(shell ruby -e 'require "rbconfig"; print Config::CONFIG["DLEXT"]')
+RUBY_CFLAGS = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["CFLAGS"]')
+RUBY_LD = MACOSX_DEPLOYMENT_TARGET=10.4 $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["LDSHARED"]')
+RUBYLIBDIR =$(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["libdir"]') 
+RUBY_PREFIX =  $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["rubylibdir"]')
+RUBY_ARCH = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["arch"]')
+RUBYDIR = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["archdir"]')
+RUBYHDRDIR = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["rubyhdrdir"]')
+RUBY_SITEDIR = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["sitelibdir"]')
+RUBY_SITEARCHDIR = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["sitearchdir"]')
+LIBRUBYARG = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["LIBRUBYARG"]')
+DYLIB_EXT = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["DLEXT"]')
 
 itex2MML_ruby.c:	itex2MML.i
-			swig -ruby -o itex2MML_ruby.c  itex2MML.i
+			$(SWIG) -ruby -o itex2MML_ruby.c  itex2MML.i
 
 itex2MML_ruby.o:	itex2MML_ruby.c
-			$(CC) $(RUBY_CFLAGS) -c itex2MML_ruby.c -I$(RUBYDIR) -o itex2MML_ruby.o
+			$(CC) $(RUBY_CFLAGS) -DHAVE_STRUCT_TIMESPEC -c itex2MML_ruby.c -I$(RUBYDIR) -I$(RUBYHDRDIR) -o itex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c
 			$(CC) $(RUBY_CFLAGS) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
@@ -61,7 +65,7 @@ ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
 	$(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
 
 test_ruby:
-	ruby ./itextomml.rb
+	$(RUBY) ./itextomml.rb
 
 install_ruby:	itex2MML.$(DYLIB_EXT)
 	$(INSTALL) itex2MML.$(DYLIB_EXT) $(RUBY_SITEARCHDIR)
