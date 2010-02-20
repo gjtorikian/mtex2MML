@@ -38,7 +38,7 @@ install:	itex2MML
 		$(INSTALL) itex2MML $(BINDIR)
 
 RUBY_CFLAGS = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["CFLAGS"]')
-RUBY_LD = MACOSX_DEPLOYMENT_TARGET=10.4 $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["LDSHARED"]')
+RUBY_LD = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["LDSHARED"]')
 RUBYLIBDIR =$(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["libdir"]') 
 RUBY_PREFIX =  $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["rubylibdir"]')
 RUBY_ARCH = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["arch"]')
@@ -48,12 +48,21 @@ RUBY_SITEDIR = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["sit
 RUBY_SITEARCHDIR = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["sitearchdir"]')
 LIBRUBYARG = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["LIBRUBYARG"]')
 DYLIB_EXT = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["DLEXT"]')
+RUBY_target_os = $(shell $(RUBY) -e 'require "rbconfig"; print Config::CONFIG["target_os"]')
+
+ifneq (, $(findstring darwin, $(RUBY_target_os)) )
+EXTRA_CFLAGS = -DHAVE_SNPRINTF -DHAVE_STRUCT_TIMESPEC -DHAVE_STRUCT_TIMEZONE
+LD_TARGET = MACOSX_DEPLOYMENT_TARGET=10.4
+else
+EXTRA_CFLAGS = ''
+LD_TARGET = ''
+endif
 
 itex2MML_ruby.c:	itex2MML.i
 			$(SWIG) -ruby -o itex2MML_ruby.c  itex2MML.i
 
 itex2MML_ruby.o:	itex2MML_ruby.c
-			$(CC) $(RUBY_CFLAGS) -DHAVE_STRUCT_TIMESPEC -c itex2MML_ruby.c -I$(RUBYDIR) -I$(RUBYHDRDIR) -o itex2MML_ruby.o
+			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c itex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -o itex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c
 			$(CC) $(RUBY_CFLAGS) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
@@ -62,7 +71,7 @@ lex.yy_ruby.o:	lex.yy.c y.tab.c itex2MML.h
 		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o lex.yy.c
 
 ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
-	$(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
+	$(LD_TARGET) $(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
 
 test_ruby:
 	$(RUBY) ./itextomml.rb
