@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.18
- *   itex2MML.y last modified 11/18/2009
+/*             itex2MML 1.3.21
+ *   itex2MML.y last modified 4/4/2010
  */
 
 %{
@@ -1697,7 +1697,7 @@ int itex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 	}
       ++ptr2;
     }
-  if (itex2MML_write)
+  if (itex2MML_write && ptr2 > ptr1)
     (*itex2MML_write) (ptr1, ptr2 - ptr1);
 
   if (ptr2 == end) goto _finish;
