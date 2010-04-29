@@ -84,17 +84,13 @@ module Itex2MML
       def as_bytes(string)
         string.force_encoding("ASCII-8BIT")
       end
-    else
-      def as_bytes(string)
-        string
-      end
-    end
-
-    if "".respond_to?(:force_encoding)
       def as_utf8(string)
         string.force_encoding("UTF-8")
       end
     else
+      def as_bytes(string)
+        string
+      end
       def as_utf8(string)
         string
       end

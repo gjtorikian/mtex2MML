@@ -1,11 +1,11 @@
-/*             itex2MML 1.3.22
- *   itex2MML.l last modified 4/18/2010
+/*             itex2MML 1.3.23
+ *   itex2MML.l last modified 4/28/2010
  */
 
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV
+%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND
 %{
 #include <string.h>
 
@@ -926,8 +926,12 @@ int itex2MML_displaymode = 0;
 }
 
 <SVGENV>{
-"\\end\{svg\}" {BEGIN(MATH); return ENDSVG;}
-[^\\]* {yylval=itex2MML_copy_string(yytext); BEGIN(SVGENV); return XMLSTRING;}
+"\\end\{svg" {yylval=itex2MML_copy_string(yytext); yylval[yyleng-8]=0; BEGIN(SVGEND); return XMLSTRING;}
+(.|\n) {yymore();}
+}
+
+<SVGEND>{
+"\}" {BEGIN(MATH); return ENDSVG;}
 }
 
 <ROMAN>{
