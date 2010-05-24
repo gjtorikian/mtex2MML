@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.21
- *   itex2MML.y last modified 4/4/2010
+/*             itex2MML 1.3.24
+ *   itex2MML.y last modified 5/24/2010
  */
 
 %{
@@ -1289,11 +1289,11 @@ check: CHECK closedTerm {
 };
 
 hat: HAT closedTerm {
-  $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x302;</mo></mover>");
+  $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x5E;</mo></mover>");
   itex2MML_free_string($2);
 }
 | WIDEHAT closedTerm {
-  $$ = itex2MML_copy3("<mover>", $2, "<mo>&#x302;</mo></mover>");
+  $$ = itex2MML_copy3("<mover>", $2, "<mo>&#x5E;</mo></mover>");
   itex2MML_free_string($2);
 };
 
