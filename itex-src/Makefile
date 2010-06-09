@@ -29,7 +29,7 @@ itex2MML:	lex.yy.o y.tab.o itex2MML.cc itex2MML.h
 		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o itex2MML.cc
 
 universal:		
-		CFLAGS='-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch i686 -arch ppc' make all
+		CFLAGS='-arch i686 -arch ppc' make all
 
 clean:		
 		$(RM) y.tab.* lex.yy.c itex2MML *.o *.output *.so *.dll *.sl *.bundle itex2MML_ruby.c
@@ -78,4 +78,4 @@ test_ruby:
 
 install_ruby:	itex2MML.$(DYLIB_EXT)
 	$(INSTALL) itex2MML.$(DYLIB_EXT) $(RUBY_SITEARCHDIR)
-	$(INSTALL) itextomml.rb $(RUBY_SITEDIR)
+	$(INSTALL) itextomml.rb itex_stringsupport.rb $(RUBY_SITEDIR)

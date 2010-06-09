@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.23
- *   itex2MML.l last modified 4/28/2010
+/*             itex2MML 1.3.25
+ *   itex2MML.l last modified 6/9/2010
  */
 
 %{
@@ -828,6 +828,8 @@ int itex2MML_displaymode = 0;
 "\\mathfr"       {BEGIN(FRAKTUR); return FRAK;}
 
 "\\slash"       {return SLASHED;}
+
+"\\boxed"       {return BOXED;}
 
 "\\mathcal"       {BEGIN(CALLIGRAPHIC); return CAL;}
 
