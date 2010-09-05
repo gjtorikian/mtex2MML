@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.26
- *   itex2MML.l last modified 7/20/2010
+/*             itex2MML 1.3.27
+ *   itex2MML.l last modified 9/3/2010
  */
 
 %{
@@ -368,11 +368,11 @@ int itex2MML_displaymode = 0;
 
 
 "\\dots" |
-"\\ldots"  {yylval=itex2MML_copy_string("&hellip;"); return MO;}
-"\\cdots"   {yylval=itex2MML_copy_string("&ctdot;"); return MO;}
-"\\ddots"   {yylval=itex2MML_copy_string("&dtdot;"); return MO;}
-"\\udots"   {yylval=itex2MML_copy_string("&utdot;"); return MO;}
-"\\vdots"   {yylval=itex2MML_copy_string("&vellip;"); return MO;}
+"\\ldots"  {yylval=itex2MML_copy_string("&hellip;"); return MI;}
+"\\cdots"   {yylval=itex2MML_copy_string("&ctdot;"); return MI;}
+"\\ddots"   {yylval=itex2MML_copy_string("&dtdot;"); return MI;}
+"\\udots"   {yylval=itex2MML_copy_string("&utdot;"); return MI;}
+"\\vdots"   {yylval=itex2MML_copy_string("&vellip;"); return MI;}
 "\\colon"   {yylval=itex2MML_copy_string("&colon;"); return MOR;}
 
 "\\cup"  |
