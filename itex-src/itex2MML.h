@@ -1,11 +1,11 @@
-/*             itex2MML 1.3.27
- *   itex2MML.h last modified 9/3/2010
+/*             itex2MML 1.4.0
+ *   itex2MML.h last modified 9/7/2010
  */
 
 #ifndef ITEX2MML_H
 #define ITEX2MML_H
 
-#define ITEX2MML_VERSION "1.3.27"
+#define ITEX2MML_VERSION "1.4.0"
 
 #ifdef __cplusplus
 extern "C" {

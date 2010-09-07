@@ -1,11 +1,11 @@
-/*             itex2MML 1.3.27
- *   itex2MML.l last modified 9/3/2010
+/*             itex2MML 1.4.0
+ *   itex2MML.l last modified 9/7/2010
  */
 
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND
+%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG
 %{
 #include <string.h>
 
@@ -24,6 +24,7 @@ static int s_itex2MML_read (char * buffer, int max_size);
 extern char * yylval;
 
 int itex2MML_lineno = 1;
+int itex2MML_inoptarg = 0;
 
 int itex2MML_rowposn = 0;
 int itex2MML_displaymode = 0;
@@ -99,8 +100,8 @@ int itex2MML_displaymode = 0;
 "("   |
 "["             {yylval=itex2MML_copy_string(yytext); return LEFTDELIM;}
 
-")"   |
-"]"             {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}
+")"   {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}
+"]"             {if(itex2MML_inoptarg==1) {itex2MML_inoptarg=0; return OPTARGCLOSE;} else {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}}
 
 "\\lbrace" |
 "\\{"           {yylval=itex2MML_copy_string("{"); return LEFTDELIM;}
@@ -366,6 +367,17 @@ int itex2MML_displaymode = 0;
 "\\upharpoonleft"       |
 "\\upharpoonright"   {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return MOL;}
 
+"\\xrightarrow"        |
+"\\xleftarrow"         |
+"\\xleftrightarrow"    |
+"\\xLeftarrow"         |
+"\\xRightarrow"        |
+"\\xLeftrightarrow"    |
+"\\xleftrightharpoons" |
+"\\xrightleftharpoons" |
+"\\xhookleftarrow"     |
+"\\xhookrightarrow"    |
+"\\xmapsto" {BEGIN(OPTARG); yylval=itex2MML_copy_string(yytext+1); if (yylval != itex2MML_empty_string) {yylval[0]='&'; yylval[yyleng-1]=';'; yylval[yyleng]='\0';} return XARROW;}
 
 "\\dots" |
 "\\ldots"  {yylval=itex2MML_copy_string("&hellip;"); return MI;}
@@ -911,6 +923,11 @@ int itex2MML_displaymode = 0;
 }
 
 <ATTRIBUTELIST>"{"[ \t\n\r #a-zA-Z0-9.\-]*"}"  {BEGIN(MATH); yylval=itex2MML_copy_string(yytext); if (yylval != itex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return ATTRLIST;}
+
+<OPTARG>{
+"[" {itex2MML_inoptarg=1; BEGIN(MATH); return OPTARGOPEN;}
+.   {BEGIN(MATH); unput(yytext[0]);}
+}
 
 <MATHENV>{
 "\{matrix\}" {BEGIN(MATH); return MATRIX;}
