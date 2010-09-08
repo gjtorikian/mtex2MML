@@ -1,4 +1,4 @@
-/*             itex2MML 1.4.0
+/*             itex2MML 1.4.1
  *   itex2MML.l last modified 9/7/2010
  */
 
@@ -101,7 +101,7 @@ int itex2MML_displaymode = 0;
 "["             {yylval=itex2MML_copy_string(yytext); return LEFTDELIM;}
 
 ")"   {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}
-"]"             {if(itex2MML_inoptarg==1) {itex2MML_inoptarg=0; return OPTARGCLOSE;} else {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}}
+"]"   {if(itex2MML_inoptarg==1) {itex2MML_inoptarg=0; return OPTARGCLOSE;} else {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}}
 
 "\\lbrace" |
 "\\{"           {yylval=itex2MML_copy_string("{"); return LEFTDELIM;}
@@ -377,7 +377,7 @@ int itex2MML_displaymode = 0;
 "\\xrightleftharpoons" |
 "\\xhookleftarrow"     |
 "\\xhookrightarrow"    |
-"\\xmapsto" {BEGIN(OPTARG); yylval=itex2MML_copy_string(yytext+1); if (yylval != itex2MML_empty_string) {yylval[0]='&'; yylval[yyleng-1]=';'; yylval[yyleng]='\0';} return XARROW;}
+"\\xmapsto" {BEGIN(OPTARG); char * s1 = itex2MML_copy_string(yytext+2); yylval = itex2MML_copy3("&", s1, ";"); itex2MML_free_string(s1); return XARROW;}
 
 "\\dots" |
 "\\ldots"  {yylval=itex2MML_copy_string("&hellip;"); return MI;}
