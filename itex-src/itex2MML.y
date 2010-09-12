@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.0
- *   itex2MML.y last modified 9/7/2010
+/*             itex2MML 1.4.2
+ *   itex2MML.y last modified 9/12/2010
  */
 
 %{
@@ -825,10 +825,6 @@ mo: mob
   itex2MML_free_string($2);
 };
 
-emptymrow: EMPTYMROW {
-  $$ = itex2MML_copy_string("<mrow></mrow>");
-};
-
 space: SPACE ST INTONE END ST INTTWO END ST INTTHREE END {
   char * s1 = itex2MML_copy3("<mspace height=\"", $3, "ex\" depth=\"");
   char * s2 = itex2MML_copy3($6, "ex\" width=\"", $9);
@@ -1316,7 +1312,14 @@ mroot: ROOT closedTerm closedTerm {
   itex2MML_free_string($3);
 };
 
-munder: UNDER closedTerm closedTerm {
+munder: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE EMPTYMROW {
+  char * s1 = itex2MML_copy3("<munder><mrow>", $3, "</mrow>");
+  $$ = itex2MML_copy3(s1, $1, "</munder>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($1);
+  itex2MML_free_string($3);
+}
+| UNDER closedTerm closedTerm {
   char * s1 = itex2MML_copy3("<munder>", $3, $2);
   $$ = itex2MML_copy2(s1, "</munder>");
   itex2MML_free_string(s1);
@@ -1339,10 +1342,10 @@ mover: XARROW closedTerm {
   itex2MML_free_string($3);
 };
 
-munderover: XARROW OPTARGOPEN closedTerm OPTARGCLOSE closedTerm {
-  char * s1 = itex2MML_copy3("<munderover><mo>", $1, "</mo>");
-  char * s2 = itex2MML_copy3(s1, $3, $5);
-  $$ = itex2MML_copy2(s2, "</munderover>");
+munderover: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE closedTerm {
+  char * s1 = itex2MML_copy3("<munderover><mo>", $1, "</mo><mrow>");
+  char * s2 = itex2MML_copy3(s1, $3, "</mrow>");
+  $$ = itex2MML_copy3(s2, $5, "</munderover>");
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
   itex2MML_free_string($1);
@@ -1356,6 +1359,10 @@ munderover: XARROW OPTARGOPEN closedTerm OPTARGCLOSE closedTerm {
   itex2MML_free_string($2);
   itex2MML_free_string($3);
   itex2MML_free_string($4);
+};
+
+emptymrow: EMPTYMROW {
+  $$ = itex2MML_copy_string("<mrow></mrow>");
 };
 
 mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
