@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.1
- *   itex2MML.l last modified 9/7/2010
+/*             itex2MML 1.4.3
+ *   itex2MML.l last modified 9/29/2010
  */
 
 %{
@@ -52,8 +52,8 @@ int itex2MML_displaymode = 0;
 "^"            return SUP;
 "_"            return SUB; 
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
-"{"            {itex2MML_rowposn = 2; return MROWOPEN;}
-"}"            return MROWCLOSE;
+"{"            {itex2MML_rowposn = 2; itex2MML_inoptarg = itex2MML_inoptarg*2; return MROWOPEN;}
+"}"            {itex2MML_inoptarg = itex2MML_inoptarg/2; return MROWCLOSE;}
 
 "\\left"       itex2MML_rowposn=2; return LEFT;
 "\\right"      return RIGHT;

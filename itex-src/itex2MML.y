@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.2
- *   itex2MML.y last modified 9/12/2010
+/*             itex2MML 1.4.3
+ *   itex2MML.y last modified 9/29/2010
  */
 
 %{
@@ -1313,8 +1313,8 @@ mroot: ROOT closedTerm closedTerm {
 };
 
 munder: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE EMPTYMROW {
-  char * s1 = itex2MML_copy3("<munder><mrow>", $3, "</mrow>");
-  $$ = itex2MML_copy3(s1, $1, "</munder>");
+  char * s1 = itex2MML_copy3("<munder><mo>", $1, "</mo><mrow>");
+  $$ = itex2MML_copy3(s1, $3, "</mrow></munder>");
   itex2MML_free_string(s1);
   itex2MML_free_string($1);
   itex2MML_free_string($3);

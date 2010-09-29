@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.2
- *   itex2MML.h last modified 9/12/2010
+/*             itex2MML 1.4.3
+ *   itex2MML.h last modified 9/29/2010
  */
 
 #ifndef ITEX2MML_H
