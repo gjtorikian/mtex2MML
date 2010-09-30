@@ -44,6 +44,16 @@ The Ruby module provides four public methods
                treats a_string as a block equation (automatically supplies
                the surrounding $$...$$, so you don't have to) and converts it
                MathML. Returns the MathML block equation, as a string.
+               
+Note that the commandline tool and the Ruby library return MathML named entities in the output.
+On the public web, it is safest to convert these either to utf-8 characters or to NCRs. For that,
+you can use the Perl library, MathML::Entities (available from CPAN) or the String methods
+  String#to_ncr
+  String to_utf8
+  String#to_ncr!
+and
+  String#to_utf8!
+provided for that purpose in the itex_stringsupport.rb library included with the Rubygem.
 
 Finally, there is a MovableType (2.6 or greater) plugin which provides two
 Text Filtering options:

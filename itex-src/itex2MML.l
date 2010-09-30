@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.3
- *   itex2MML.l last modified 9/29/2010
+/*             itex2MML 1.4.4
+ *   itex2MML.l last modified 9/30/2010
  */
 
 %{
@@ -20,22 +20,25 @@
 static int s_itex2MML_read (char * buffer, int max_size);
 
 #define yylval itex2MML_yylval
+#define itex2MML_optarg_depth 100
 
 extern char * yylval;
 
 int itex2MML_lineno = 1;
-int itex2MML_inoptarg = 0;
+int itex2MML_inoptarg[itex2MML_optarg_depth];
+int itex2MML_optarg_ind = 0;
 
 int itex2MML_rowposn = 0;
 int itex2MML_displaymode = 0;
+
 %} 
 %%
 %{ if (itex2MML_rowposn==1) itex2MML_rowposn=0;
    if (itex2MML_rowposn==2) itex2MML_rowposn=1;
 %}
 
-<INITIAL>"$"{1,2}   BEGIN(MATH); itex2MML_rowposn=2; if (yyleng==2) { itex2MML_displaymode=1; return STARTDMATH;}; itex2MML_displaymode=0; return STARTMATH;
-<INITIAL>"\\[" BEGIN(MATH); itex2MML_rowposn=2; itex2MML_displaymode=1; return STARTDMATH;
+<INITIAL>"$"{1,2}   BEGIN(MATH); itex2MML_inoptarg[0] = 0; itex2MML_rowposn=2; if (yyleng==2) { itex2MML_displaymode=1; return STARTDMATH;}; itex2MML_displaymode=0; return STARTMATH;
+<INITIAL>"\\[" BEGIN(MATH); itex2MML_inoptarg[0] = 0; itex2MML_rowposn=2; itex2MML_displaymode=1; return STARTDMATH;
 <INITIAL>EOF    return 0;
 <INITIAL>"\n" {itex2MML_lineno++; yylval=itex2MML_copy_string(yytext); return CHAR;}
 <INITIAL>.     {yylval=itex2MML_copy_string(yytext); return CHAR;}
@@ -52,8 +55,8 @@ int itex2MML_displaymode = 0;
 "^"            return SUP;
 "_"            return SUB; 
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
-"{"            {itex2MML_rowposn = 2; itex2MML_inoptarg = itex2MML_inoptarg*2; return MROWOPEN;}
-"}"            {itex2MML_inoptarg = itex2MML_inoptarg/2; return MROWCLOSE;}
+"{"            {itex2MML_rowposn = 2; itex2MML_inoptarg[itex2MML_optarg_ind] = itex2MML_inoptarg[itex2MML_optarg_ind]*2; return MROWOPEN;}
+"}"            {itex2MML_inoptarg[itex2MML_optarg_ind] = itex2MML_inoptarg[itex2MML_optarg_ind]/2; return MROWCLOSE;}
 
 "\\left"       itex2MML_rowposn=2; return LEFT;
 "\\right"      return RIGHT;
@@ -101,7 +104,7 @@ int itex2MML_displaymode = 0;
 "["             {yylval=itex2MML_copy_string(yytext); return LEFTDELIM;}
 
 ")"   {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}
-"]"   {if(itex2MML_inoptarg==1) {itex2MML_inoptarg=0; return OPTARGCLOSE;} else {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}}
+"]"   {if(itex2MML_inoptarg[itex2MML_optarg_ind]==1 && itex2MML_optarg_ind > 0) {itex2MML_inoptarg[itex2MML_optarg_ind]=0; itex2MML_optarg_ind--; return OPTARGCLOSE;} else {yylval=itex2MML_copy_string(yytext); return RIGHTDELIM;}}
 
 "\\lbrace" |
 "\\{"           {yylval=itex2MML_copy_string("{"); return LEFTDELIM;}
@@ -925,7 +928,7 @@ int itex2MML_displaymode = 0;
 <ATTRIBUTELIST>"{"[ \t\n\r #a-zA-Z0-9.\-]*"}"  {BEGIN(MATH); yylval=itex2MML_copy_string(yytext); if (yylval != itex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return ATTRLIST;}
 
 <OPTARG>{
-"[" {itex2MML_inoptarg=1; BEGIN(MATH); return OPTARGOPEN;}
+"[" {if(itex2MML_optarg_ind < itex2MML_optarg_depth - 1 && itex2MML_inoptarg[itex2MML_optarg_ind] !=1 ){itex2MML_optarg_ind++; itex2MML_inoptarg[itex2MML_optarg_ind]=1;}; BEGIN(MATH); return OPTARGOPEN;}
 .   {BEGIN(MATH); unput(yytext[0]);}
 }
 
