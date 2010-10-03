@@ -1,11 +1,11 @@
-/*             itex2MML 1.4.4
- *   itex2MML.l last modified 9/30/2010
+/*             itex2MML 1.4.5
+ *   itex2MML.l last modified 10/2/2010
  */
 
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG
+%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS COLOPTS
 %{
 #include <string.h>
 
@@ -27,6 +27,7 @@ extern char * yylval;
 int itex2MML_lineno = 1;
 int itex2MML_inoptarg[itex2MML_optarg_depth];
 int itex2MML_optarg_ind = 0;
+int itex2MML_env_start = 0;
 
 int itex2MML_rowposn = 0;
 int itex2MML_displaymode = 0;
@@ -55,8 +56,8 @@ int itex2MML_displaymode = 0;
 "^"            return SUP;
 "_"            return SUB; 
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
-"{"            {itex2MML_rowposn = 2; itex2MML_inoptarg[itex2MML_optarg_ind] = itex2MML_inoptarg[itex2MML_optarg_ind]*2; return MROWOPEN;}
-"}"            {itex2MML_inoptarg[itex2MML_optarg_ind] = itex2MML_inoptarg[itex2MML_optarg_ind]/2; return MROWCLOSE;}
+"{"            {itex2MML_rowposn = 2; if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]++; return MROWOPEN;}
+"}"            {if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]--; return MROWCLOSE;}
 
 "\\left"       itex2MML_rowposn=2; return LEFT;
 "\\right"      return RIGHT;
@@ -753,6 +754,7 @@ int itex2MML_displaymode = 0;
 "\\tfrac"         {return TFRAC;}
 
 "\\binom"        {return BINOM;}
+"\\tbinom"        {return TBINOM;}
 
 "\\tensor"       {return TENSOR;}
 
@@ -798,7 +800,7 @@ int itex2MML_displaymode = 0;
 
 "\\underoverset"  {return UNDEROVER;}
 
-"\\sqrt"         {return SQRT;}
+"\\sqrt"         {BEGIN(OPTARG); return SQRT;}
 
 "\\root"         {return ROOT;}
 
@@ -848,7 +850,7 @@ int itex2MML_displaymode = 0;
 
 "\\mathcal"       {BEGIN(CALLIGRAPHIC); return CAL;}
 
-"\\begin"        {BEGIN(MATHENV); return BEGINENV;}
+"\\begin"        {itex2MML_env_start = 1; BEGIN(MATHENV); return BEGINENV;}
 "\\end"        {BEGIN(MATHENV); return ENDENV;}
 
 "\\substack"     {return SUBSTACK;}
@@ -933,18 +935,35 @@ int itex2MML_displaymode = 0;
 }
 
 <MATHENV>{
-"\{matrix\}" {BEGIN(MATH); return MATRIX;}
-"\{pmatrix\}" {BEGIN(MATH); return PMATRIX;}
-"\{bmatrix\}" {BEGIN(MATH); return BMATRIX;}
-"\{Bmatrix\}" {BEGIN(MATH); return BBMATRIX;}
-"\{vmatrix\}" {BEGIN(MATH); return VMATRIX;}
-"\{Vmatrix\}" {BEGIN(MATH); return VVMATRIX;}
-"\{smallmatrix\}" {BEGIN(MATH); return SMALLMATRIX;}
-"\{cases\}" {BEGIN(MATH); return CASES;}
-"\{aligned\}" {BEGIN(MATH); return ALIGNED;}
-"\{gathered\}" {BEGIN(MATH); return GATHERED;}
-"\{split\}" {BEGIN(MATH); return ALIGNED;}
-"\{svg\}" {BEGIN(SVGENV); return SVG;}
+"\{matrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return MATRIX;}
+"\{pmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return PMATRIX;}
+"\{bmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return BMATRIX;}
+"\{Bmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return BBMATRIX;}
+"\{vmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return VMATRIX;}
+"\{Vmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return VVMATRIX;}
+"\{smallmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return SMALLMATRIX;}
+"\{cases\}" {itex2MML_env_start = 0; BEGIN(MATH); return CASES;}
+"\{aligned\}" {itex2MML_env_start = 0; BEGIN(MATH); return ALIGNED;}
+"\{gathered\}" {itex2MML_env_start = 0; BEGIN(MATH); return GATHERED;}
+"\{split\}" {itex2MML_env_start = 0; BEGIN(MATH); return ALIGNED;}
+"\{array\}" {if (itex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
+"\{svg\}" {itex2MML_env_start = 0; BEGIN(SVGENV); return SVG;}
+}
+
+<ARRAYOPTIONS>{
+"[t]" {yylval=itex2MML_copy_string("axis 1"); return ARRAYALIGN;}
+"[c]" {yylval=itex2MML_copy_string("center"); return ARRAYALIGN;}
+"[b]" {yylval=itex2MML_copy_string("axis -1"); return ARRAYALIGN;}
+"\{"  {BEGIN(COLOPTS); return ST;}
+[\t\n\r ]+       ;
+}
+
+<COLOPTS>{
+"\}"  {itex2MML_env_start = 0; BEGIN(MATH); return END;}
+"c"   {yylval=itex2MML_copy_string("center"); return COLUMNALIGN;}
+"l"   {yylval=itex2MML_copy_string("left"); return COLUMNALIGN;}
+"r"   {yylval=itex2MML_copy_string("right"); return COLUMNALIGN;}
+[\t\n\r ]+       ;
 }
 
 <SVGENV>{
