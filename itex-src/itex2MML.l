@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.5
- *   itex2MML.l last modified 10/2/2010
+/*             itex2MML 1.4.6
+ *   itex2MML.l last modified 7/7/2011
  */
 
 %{
@@ -97,7 +97,9 @@ int itex2MML_displaymode = 0;
 
 [a-zA-Z]+       {yylval=itex2MML_copy_string(yytext); return MI;}
 
-[0-9,.]*[0-9]+          {yylval=itex2MML_copy_string(yytext); return MN;}
+[0-9]{1,3}(,[0-9]{3,3})*(\.[0-9]+)? |
+[0-9]*[\.][0-9]+                   |
+[0-9]+           {yylval=itex2MML_copy_string(yytext); return MN;}
 "\\infty"   |
 "\\infinity"     {yylval=itex2MML_copy_string("&infin;"); return MN;}
 
@@ -911,6 +913,7 @@ int itex2MML_displaymode = 0;
 "\\mathop"        {BEGIN(PLAINTEXT); return MATHOP;}
 "\\mathbin"       {BEGIN(PLAINTEXT); return MATHBIN;}
 "\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
+"\\itexnum"       {BEGIN(PLAINTEXT); return ITEXNUM;}
 
 "\\includegraphics"(\[[^\]]*\])?\{[^}]*\}	;
 
