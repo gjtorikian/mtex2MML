@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.6
- *   itex2MML.y last modified 7/7/2011
+/*             itex2MML 1.4.7
+ *   itex2MML.y last modified 9/7/2011
  */
 
 %{
@@ -277,7 +277,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
 
 %%
 
@@ -529,6 +529,7 @@ closedTerm: array
 | binom
 | msqrt 
 | mroot
+| raisebox
 | munder
 | mover
 | bar
@@ -1331,6 +1332,73 @@ mroot: SQRT OPTARGOPEN compoundTermList OPTARGCLOSE closedTerm {
   itex2MML_free_string(s1);
   itex2MML_free_string($2);
   itex2MML_free_string($3);
+};
+
+raisebox: RAISEBOX TEXTSTRING TEXTSTRING TEXTSTRING closedTerm {
+  char * s1 = itex2MML_copy3("<mpadded voffset='", $2, "' height='");
+  char * s2 = itex2MML_copy3(s1, $3, "' depth='");
+  char * s3 = itex2MML_copy3(s2, $4, "'>");
+  $$ = itex2MML_copy3(s3, $5, "</mpadded>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($2);
+  itex2MML_free_string($3);
+  itex2MML_free_string($4);
+  itex2MML_free_string($5);
+}
+| RAISEBOX NEG TEXTSTRING TEXTSTRING TEXTSTRING closedTerm {
+  char * s1 = itex2MML_copy3("<mpadded voffset='-", $3, "' height='");
+  char * s2 = itex2MML_copy3(s1, $4, "' depth='");
+  char * s3 = itex2MML_copy3(s2, $5, "'>");
+  $$ = itex2MML_copy3(s3, $6, "</mpadded>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($3);
+  itex2MML_free_string($4);
+  itex2MML_free_string($5);
+  itex2MML_free_string($6);
+}
+| RAISEBOX TEXTSTRING TEXTSTRING closedTerm {
+  char * s1 = itex2MML_copy3("<mpadded voffset='", $2, "' height='");
+  char * s2 = itex2MML_copy3(s1, $3, "' depth='depth'>");
+  $$ = itex2MML_copy3(s2, $4, "</mpadded>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($2);
+  itex2MML_free_string($3);
+  itex2MML_free_string($4);
+}
+| RAISEBOX NEG TEXTSTRING TEXTSTRING closedTerm {
+  char * s1 = itex2MML_copy3("<mpadded voffset='-", $3, "' height='");
+  char * s2 = itex2MML_copy3(s1, $4, "' depth='+");
+  char * s3 = itex2MML_copy3(s2, $3, "'>");
+  $$ = itex2MML_copy3(s3, $5, "</mpadded>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($3);
+  itex2MML_free_string($4);
+  itex2MML_free_string($5);
+}
+| RAISEBOX TEXTSTRING closedTerm {
+  char * s1 = itex2MML_copy3("<mpadded voffset='", $2, "' height='+");
+  char * s2 = itex2MML_copy3(s1, $2, "' depth='depth'>");
+  $$ = itex2MML_copy3(s2, $3, "</mpadded>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($2);
+  itex2MML_free_string($3);
+}
+| RAISEBOX NEG TEXTSTRING closedTerm {
+  char * s1 = itex2MML_copy3("<mpadded voffset='-", $3, "' height='0pt' depth='+");
+  char * s2 = itex2MML_copy3(s1, $3, "'>");
+  $$ = itex2MML_copy3(s2, $4, "</mpadded>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($3);
+  itex2MML_free_string($4);
 };
 
 munder: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE EMPTYMROW {
