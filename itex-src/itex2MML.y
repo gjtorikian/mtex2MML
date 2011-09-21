@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.7
- *   itex2MML.y last modified 9/7/2011
+/*             itex2MML 1.4.8
+ *   itex2MML.y last modified 9/21/2011
  */
 
 %{
@@ -917,27 +917,27 @@ textstring: TEXTBOX TEXTSTRING {
   itex2MML_free_string($2);
 };
 
-displaystyle: DISPLAY closedTerm {
+displaystyle: DISPLAY compoundTermList {
   $$ = itex2MML_copy3("<mstyle displaystyle=\"true\">", $2, "</mstyle>");
   itex2MML_free_string($2);
 };
 
-textstyle: TEXTSTY closedTerm {
+textstyle: TEXTSTY compoundTermList {
   $$ = itex2MML_copy3("<mstyle displaystyle=\"false\">", $2, "</mstyle>");
   itex2MML_free_string($2);
 };
 
-textsize: TEXTSIZE closedTerm {
+textsize: TEXTSIZE compoundTermList {
   $$ = itex2MML_copy3("<mstyle scriptlevel=\"0\">", $2, "</mstyle>");
   itex2MML_free_string($2);
 };
 
-scriptsize: SCSIZE closedTerm {
+scriptsize: SCSIZE compoundTermList {
   $$ = itex2MML_copy3("<mstyle scriptlevel=\"1\">", $2, "</mstyle>");
   itex2MML_free_string($2);
 };
 
-scriptscriptsize: SCSCSIZE closedTerm {
+scriptscriptsize: SCSCSIZE compoundTermList {
   $$ = itex2MML_copy3("<mstyle scriptlevel=\"2\">", $2, "</mstyle>");
   itex2MML_free_string($2);
 };

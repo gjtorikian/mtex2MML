@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.7
- *   itex2MML.l last modified 9/7/2011
+/*             itex2MML 1.4.8
+ *   itex2MML.l last modified 9/21/2011
  */
 
 %{
@@ -826,9 +826,9 @@ int itex2MML_displaymode = 0;
 "\\color"        {BEGIN(ATTRIBUTELIST); return COLOR;}
 "\\bgcolor"        {BEGIN(ATTRIBUTELIST); return BGCOLOR;}
 
-"\\displaystyle"  {itex2MML_rowposn=2; return DISPLAY;}
+"\\displaystyle"  {itex2MML_displaymode=1; itex2MML_rowposn=2; return DISPLAY;}
 
-"\\textstyle"     {itex2MML_rowposn=2; return TEXTSTY;}
+"\\textstyle"     {itex2MML_displaymode=0; itex2MML_rowposn=2; return TEXTSTY;}
 
 "\\textsize"     {return TEXTSIZE;}
 
