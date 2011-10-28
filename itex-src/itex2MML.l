@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.8
- *   itex2MML.l last modified 9/21/2011
+/*             itex2MML 1.4.9
+ *   itex2MML.l last modified 10/27/2011
  */
 
 %{
@@ -936,6 +936,7 @@ int itex2MML_displaymode = 0;
 
 <OPTARG>{
 "[" {if(itex2MML_optarg_ind < itex2MML_optarg_depth - 1 && itex2MML_inoptarg[itex2MML_optarg_ind] !=1 ){itex2MML_optarg_ind++; itex2MML_inoptarg[itex2MML_optarg_ind]=1;}; BEGIN(MATH); return OPTARGOPEN;}
+[\n\r\t ]+    ;
 .   {BEGIN(MATH); unput(yytext[0]);}
 }
 
