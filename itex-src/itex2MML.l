@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.10
- *   itex2MML.l last modified 6/16/2012
+/*             itex2MML 1.4.11
+ *   itex2MML.l last modified 9/3/2013
  */
 
 %{
@@ -127,13 +127,17 @@ int itex2MML_displaymode = 0;
 
 "\\lfloor" |
 "\\lceil"  |
+"\\lmoustache" |
 "\\lang"   |
 "\\langle"      {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return LEFTDELIM;}
+"\\llangle"     {yylval=itex2MML_copy_string("&Lang;"); return LEFTDELIM;}
 
 "\\rfloor" |
 "\\rceil"  |
+"\\rmoustache" |
 "\\rang"   |
 "\\rangle"      {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return RIGHTDELIM;}
+"\\rrangle"     {yylval=itex2MML_copy_string("&Rang;"); return RIGHTDELIM;}
 
 "/"             {yylval=itex2MML_copy_string(yytext); return OTHERDELIM;}
 
@@ -366,6 +370,10 @@ int itex2MML_displaymode = 0;
 "\\nleftrightarrow"     |
 "\\nRightarrow"         |
 "\\nrightarrow"         |
+"\\rightharpoonup"      |
+"\\rightharpoondown"    |
+"\\leftharpoonup"       |
+"\\leftharpoondown"     |
 "\\downharpoonleft"     |
 "\\downharpoonright"    |
 "\\leftrightharpoons"   |
