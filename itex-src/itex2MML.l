@@ -953,7 +953,7 @@ int itex2MML_displaymode = 0;
 <OPTARG>{
 "[" {if(itex2MML_optarg_ind < itex2MML_optarg_depth - 1 && itex2MML_inoptarg[itex2MML_optarg_ind] !=1 ){itex2MML_optarg_ind++; itex2MML_inoptarg[itex2MML_optarg_ind]=1;}; BEGIN(MATH); return OPTARGOPEN;}
 [\n\r\t ]+    ;
-.   {BEGIN(MATH); unput(yytext[0]);}
+.   {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
 }
 
 <RAISEBOX1>{
@@ -968,12 +968,12 @@ int itex2MML_displaymode = 0;
 
 <TEXTOPTARG1>{
 \[[^\]]*?\] {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(TEXTOPTARG); return TEXTSTRING;}
-. {BEGIN(MATH); unput(yytext[0]);}
+. {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
 }
 
 <TEXTOPTARG>{
 \[[^\]]*?\] {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
-. {BEGIN(MATH); unput(yytext[0]);}
+. {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
 }
 
 <MATHENV>{
