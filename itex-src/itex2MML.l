@@ -31,9 +31,8 @@ int itex2MML_env_start = 0;
 
 #define YY_USER_ACTION itex2MML_capture_eqn_src();
 # define itex2MML_eqn_bufsize 131072
-char itex2MML_eqn_buffer[itex2MML_eqn_bufsize];
-char * itex2MML_eqn_src = itex2MML_eqn_buffer;
-char * itex2MML_eqn_end = itex2MML_eqn_buffer;
+char itex2MML_eqn_src[itex2MML_eqn_bufsize];
+char * itex2MML_eqn_end = itex2MML_eqn_src;
 
 int itex2MML_rowposn = 0;
 int itex2MML_displaymode = 0;
@@ -56,7 +55,7 @@ int itex2MML_displaymode = 0;
 
 
 "$"{1,2} |
-"\\]"           {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src-yyleng]=0; itex2MML_eqn_end=itex2MML_eqn_buffer; yylval=itex2MML_copy_escaped(itex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
+"\\]"           {itex2MML_eqn_src[itex2MML_eqn_end-itex2MML_eqn_src-yyleng]=0; itex2MML_eqn_end=itex2MML_eqn_src; yylval=itex2MML_copy_escaped(itex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
 
 
 "^"            return SUP;
@@ -953,7 +952,7 @@ int itex2MML_displaymode = 0;
 <OPTARG>{
 "[" {if(itex2MML_optarg_ind < itex2MML_optarg_depth - 1 && itex2MML_inoptarg[itex2MML_optarg_ind] !=1 ){itex2MML_optarg_ind++; itex2MML_inoptarg[itex2MML_optarg_ind]=1;}; BEGIN(MATH); return OPTARGOPEN;}
 [\n\r\t ]+    ;
-.   {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
+.   {itex2MML_eqn_src[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
 }
 
 <RAISEBOX1>{
@@ -968,12 +967,12 @@ int itex2MML_displaymode = 0;
 
 <TEXTOPTARG1>{
 \[[^\]]*?\] {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(TEXTOPTARG); return TEXTSTRING;}
-. {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
+. {itex2MML_eqn_src[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
 }
 
 <TEXTOPTARG>{
 \[[^\]]*?\] {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
-. {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
+. {itex2MML_eqn_src[itex2MML_eqn_end-itex2MML_eqn_src]=0; --itex2MML_eqn_end; BEGIN(MATH); unput(yytext[0]);}
 }
 
 <MATHENV>{
