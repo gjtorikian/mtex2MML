@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.8
- *   itex2MML.y last modified 9/21/2011
+/*             itex2MML 1.5.0
+ *   itex2MML.y last modified 12/8/2013
  */
 
 %{
@@ -296,8 +296,11 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}
 | STARTMATH compoundTermList ENDMATH {
   char ** r = (char **) ret_str;
-  char * s = itex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>", $2, "</math>");
-  itex2MML_free_string($2);
+  char * p = itex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow>", $2, "</mrow><annotation encoding='application/x-tex'>");
+  char * s = itex2MML_copy3(p, $3, "</annotation></semantics></math>");
+  itex2MML_free_string(p);
+  itex2MML_free_string($2);  
+  itex2MML_free_string($3);
   if (r) {
     (*r) = (s == itex2MML_empty_string) ? 0 : s;
   }
@@ -309,8 +312,11 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 }
 | STARTDMATH compoundTermList ENDMATH {
   char ** r = (char **) ret_str;
-  char * s = itex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>", $2, "</math>");
-  itex2MML_free_string($2);
+  char * p = itex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><semantics><mrow>", $2, "</mrow><annotation encoding='application/x-tex'>");
+  char * s = itex2MML_copy3(p, $3, "</annotation></semantics></math>");
+  itex2MML_free_string(p);
+  itex2MML_free_string($2);  
+  itex2MML_free_string($3);
   if (r) {
     (*r) = (s == itex2MML_empty_string) ? 0 : s;
   }

@@ -1,5 +1,5 @@
-/*             itex2MML 1.4.11
- *   itex2MML.l last modified 9/3/2013
+/*             itex2MML 1.5.0
+ *   itex2MML.l last modified 12/8/2013
  */
 
 %{
@@ -29,6 +29,12 @@ int itex2MML_inoptarg[itex2MML_optarg_depth];
 int itex2MML_optarg_ind = 0;
 int itex2MML_env_start = 0;
 
+#define YY_USER_ACTION itex2MML_capture_eqn_src();
+# define itex2MML_eqn_bufsize 131072
+char itex2MML_eqn_buffer[itex2MML_eqn_bufsize];
+char * itex2MML_eqn_src = itex2MML_eqn_buffer;
+char * itex2MML_eqn_end = itex2MML_eqn_buffer;
+
 int itex2MML_rowposn = 0;
 int itex2MML_displaymode = 0;
 
@@ -50,7 +56,7 @@ int itex2MML_displaymode = 0;
 
 
 "$"{1,2} |
-"\\]"           {BEGIN(INITIAL); return ENDMATH;}
+"\\]"           {itex2MML_eqn_buffer[itex2MML_eqn_end-itex2MML_eqn_src-yyleng]=0; itex2MML_eqn_end=itex2MML_eqn_buffer; yylval=itex2MML_copy_escaped(itex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
 
 
 "^"            return SUP;
@@ -1091,6 +1097,15 @@ void itex2MML_setup (const char * buffer, unsigned long length)
 
 	s_itex2MML_buffer = buffer;
 	s_itex2MML_length = length;
+}
+
+int itex2MML_capture_eqn_src()
+{
+	if (YY_START != INITIAL && itex2MML_eqn_bufsize - (itex2MML_eqn_end-itex2MML_eqn_src) - yyleng > 1)
+	{
+		strcpy(itex2MML_eqn_end, yytext);
+		itex2MML_eqn_end += yyleng;
+	}
 }
 
 static int s_itex2MML_read (char * buffer, int max_size)
