@@ -1009,7 +1009,7 @@ int itex2MML_displaymode = 0;
 }
 
 <SVGENV>{
-"\\end\{svg" {itex2MML_capture_eqn_src(); yylval=itex2MML_copy_string(yytext); yylval[yyleng-8]=0; BEGIN(SVGEND); return XMLSTRING;}
+"\\end\{svg" {itex2MML_do_capture_eqn(); yylval=itex2MML_copy_string(yytext); yylval[yyleng-8]=0; BEGIN(SVGEND); return XMLSTRING;}
 (.|\n) {yymore();}
 }
 
@@ -1101,7 +1101,13 @@ void itex2MML_setup (const char * buffer, unsigned long length)
 
 int itex2MML_capture_eqn_src()
 {
-	if (YY_START != INITIAL && YY_START != SVGENV && itex2MML_eqn_bufsize - (itex2MML_eqn_end-itex2MML_eqn_src+yyleng) > 1)
+	if (YY_START != INITIAL && YY_START != SVGENV)
+		itex2MML_do_capture_eqn();
+}
+
+int itex2MML_do_capture_eqn()
+{
+	if (itex2MML_eqn_bufsize - (itex2MML_eqn_end-itex2MML_eqn_src+yyleng) > 1)
 	{
 		strcpy(itex2MML_eqn_end, yytext);
 		itex2MML_eqn_end += yyleng;
