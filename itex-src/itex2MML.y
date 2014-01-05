@@ -504,11 +504,11 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   itex2MML_free_string($3);
 }
 | SUB closedTerm {
-  $$ = itex2MML_copy3("<msub><mo></mo>", $2, "</msub>");
+  $$ = itex2MML_copy3("<msub><mo/>", $2, "</msub>");
   itex2MML_free_string($2);
 }
 | SUP closedTerm {
-  $$ = itex2MML_copy3("<msup><mo></mo>", $2, "</msup>");
+  $$ = itex2MML_copy3("<msup><mo/>", $2, "</msup>");
   itex2MML_free_string($2);
 }
 | closedTerm {
@@ -1136,7 +1136,7 @@ tensor: TENSOR closedTerm MROWOPEN subsupList MROWCLOSE {
 
 multi: MULTI MROWOPEN subsupList MROWCLOSE closedTerm MROWOPEN subsupList MROWCLOSE {
   char * s1 = itex2MML_copy3("<mmultiscripts>", $5, $7);
-  char * s2 = itex2MML_copy3("<mprescripts></mprescripts>", $3, "</mmultiscripts>");
+  char * s2 = itex2MML_copy3("<mprescripts/>", $3, "</mmultiscripts>");
   $$ = itex2MML_copy2(s1, s2);
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
@@ -1146,7 +1146,7 @@ multi: MULTI MROWOPEN subsupList MROWCLOSE closedTerm MROWOPEN subsupList MROWCL
 }
 | MULTI MROWOPEN subsupList MROWCLOSE closedTerm EMPTYMROW {
   char * s1 = itex2MML_copy2("<mmultiscripts>", $5);
-  char * s2 = itex2MML_copy3("<mprescripts></mprescripts>", $3, "</mmultiscripts>");
+  char * s2 = itex2MML_copy3("<mprescripts/>", $3, "</mmultiscripts>");
   $$ = itex2MML_copy2(s1, s2);
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
@@ -1177,15 +1177,15 @@ subsupTerm: SUB closedTerm SUP closedTerm {
   itex2MML_free_string($4);
 }
 | SUB closedTerm {
-  $$ = itex2MML_copy2($2, " <none></none>");
+  $$ = itex2MML_copy2($2, " <none/>");
   itex2MML_free_string($2);
 }
 | SUP closedTerm {
-  $$ = itex2MML_copy2("<none></none> ", $2);
+  $$ = itex2MML_copy2("<none/> ", $2);
   itex2MML_free_string($2);
 }
 | SUB SUP closedTerm {
-  $$ = itex2MML_copy2("<none></none> ", $3);
+  $$ = itex2MML_copy2("<none/> ", $3);
   itex2MML_free_string($3);
 };
 
@@ -1483,7 +1483,7 @@ munderover: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE closedTerm {
 };
 
 emptymrow: EMPTYMROW {
-  $$ = itex2MML_copy_string("<mrow></mrow>");
+  $$ = itex2MML_copy_string("<mrow/>");
 };
 
 mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
@@ -1738,7 +1738,7 @@ arowopt: colalign {
 };
 
 tableCell:   {
-  $$ = itex2MML_copy_string("<mtd></mtd>");
+  $$ = itex2MML_copy_string("<mtd/>");
 }
 | compoundTermList {
   $$ = itex2MML_copy3("<mtd>", $1, "</mtd>");
