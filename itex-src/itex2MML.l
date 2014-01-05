@@ -829,6 +829,8 @@ int itex2MML_displaymode = 0;
 "\\tooltip"       {BEGIN(PLAINTEXT); return TOOLTIP;}
 
 "\\toggle"        {return TOGGLE;}
+"\\begintoggle"   {return TOGGLESTART;}
+"\\endtoggle"     {return TOGGLEEND;}
 
 "\\mathraisebox"  {BEGIN(RAISEBOX1); return RAISEBOX;}
 
@@ -854,6 +856,7 @@ int itex2MML_displaymode = 0;
 "\\mathit"       {return ITALICS;}
 
 "\\mathsf"       {return SANS;}
+"\\mathtt"       {return TT;}
 
 "\\boldsymbol" |
 "\\mathbf"       {return BOLD;}
