@@ -1,5 +1,5 @@
-/*             itex2MML 1.5.0
- *   itex2MML.y last modified 12/8/2013
+/*             itex2MML 1.5.1
+ *   itex2MML.y last modified 1/5/2014
  */
 
 %{
@@ -277,7 +277,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
 
 %%
 
@@ -561,6 +561,7 @@ closedTerm: array
 | scriptsize
 | scriptscriptsize
 | italics
+| sans
 | bold
 | roman
 | rmchars
@@ -577,6 +578,8 @@ closedTerm: array
 | quad
 | qquad
 | negspace
+| negmedspace
+| negthickspace
 | phantom
 | href
 | statusline
@@ -840,7 +843,7 @@ mo: mob
 space: SPACE ST INTONE END ST INTTWO END ST INTTHREE END {
   char * s1 = itex2MML_copy3("<mspace height=\"", $3, "ex\" depth=\"");
   char * s2 = itex2MML_copy3($6, "ex\" width=\"", $9);
-  $$ = itex2MML_copy3(s1, s2, "em\"></mspace>");
+  $$ = itex2MML_copy3(s1, s2, "em\"/>");
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
   itex2MML_free_string($3);
@@ -953,6 +956,11 @@ italics: ITALICS closedTerm {
   itex2MML_free_string($2);
 };
 
+sans: SANS closedTerm {
+  $$ = itex2MML_copy3("<mstyle mathvariant=\"sans-serif\">", $2, "</mstyle>");
+  itex2MML_free_string($2);
+};
+
 slashed: SLASHED closedTerm {
   $$ = itex2MML_copy3("<menclose notation=\"updiagonalstrike\">", $2, "</menclose>");
   itex2MML_free_string($2);
@@ -1055,27 +1063,35 @@ calletter: CALCHAR {
 };
 
 thinspace: THINSPACE {
-  $$ = itex2MML_copy_string("<mspace width=\"thinmathspace\"></mspace>");
+  $$ = itex2MML_copy_string("<mspace width=\"thinmathspace\"/>");
 };
 
 medspace: MEDSPACE {
-  $$ = itex2MML_copy_string("<mspace width=\"mediummathspace\"></mspace>");
+  $$ = itex2MML_copy_string("<mspace width=\"mediummathspace\"/>");
 };
 
 thickspace: THICKSPACE {
-  $$ = itex2MML_copy_string("<mspace width=\"thickmathspace\"></mspace>");
+  $$ = itex2MML_copy_string("<mspace width=\"thickmathspace\"/>");
 };
 
 quad: QUAD {
-  $$ = itex2MML_copy_string("<mspace width=\"1em\"></mspace>");
+  $$ = itex2MML_copy_string("<mspace width=\"1em\"/>");
 };
 
 qquad: QQUAD {
-  $$ = itex2MML_copy_string("<mspace width=\"2em\"></mspace>");
+  $$ = itex2MML_copy_string("<mspace width=\"2em\"/>");
 };
 
 negspace: NEGSPACE {
-  $$ = itex2MML_copy_string("<mspace width=\"-0.1667 em\"></mspace>");
+  $$ = itex2MML_copy_string("<mspace width=\"-0.1667 em\"/>");
+};
+
+negmedspace: NEGMEDSPACE {
+  $$ = itex2MML_copy_string("<mspace width=\"negativemediummathspace\"/>");
+};
+
+negthickspace: NEGTHICKSPACE {
+  $$ = itex2MML_copy_string("<mspace width=\"negativethickmathspace\"/>");
 };
 
 phantom: PHANTOM closedTerm {
@@ -1179,7 +1195,7 @@ mfrac: FRAC closedTerm closedTerm {
 };
 
 pmod: PMOD closedTerm {
-  $$ = itex2MML_copy3( "<mo lspace=\"mediummathspace\">(</mo><mo rspace=\"thinmathspace\">mod</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo>");
+  $$ = itex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo><mo rspace=\"thinmathspace\">mod</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
   itex2MML_free_string($2);
 }
 

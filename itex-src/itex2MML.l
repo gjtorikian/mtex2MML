@@ -1,5 +1,5 @@
-/*             itex2MML 1.5.0
- *   itex2MML.l last modified 12/8/2013
+/*             itex2MML 1.5.1
+ *   itex2MML.l last modified 1/5/2014
  */
 
 %{
@@ -120,9 +120,9 @@ int itex2MML_displaymode = 0;
 "\\}"           {yylval=itex2MML_copy_string("}"); return RIGHTDELIM;}
 
 "\\vert" |
-"|"             {yylval=itex2MML_copy_string("&VerticalBar;"); return OTHERDELIM;}
+"|"             {yylval=itex2MML_copy_string("&vert;"); return OTHERDELIM;}
 "\\Vert" |
-"\\|"           {yylval=itex2MML_copy_string("&DoubleVerticalBar;"); return OTHERDELIM;}
+"\\|"           {yylval=itex2MML_copy_string("&Vert;"); return OTHERDELIM;}
 
 "\\setminus"   {yylval=itex2MML_copy_string("&setminus;"); return MO;}
 "\\backslash"   {yylval=itex2MML_copy_string("&bsol;"); return MO;}
@@ -853,6 +853,8 @@ int itex2MML_displaymode = 0;
 
 "\\mathit"       {return ITALICS;}
 
+"\\mathsf"       {return SANS;}
+
 "\\boldsymbol" |
 "\\mathbf"       {return BOLD;}
 
@@ -920,7 +922,12 @@ int itex2MML_displaymode = 0;
 "\\qquad"       {return QQUAD;}
 
 "\\!" |
-"\\negspace"    {return NEGSPACE;}
+"\\negspace" |
+"\\negthinspace"    {return NEGSPACE;}
+
+"\\negmedspace"   {return NEGMEDSPACE;}
+
+"\\negthickspace" {return NEGTHICKSPACE;}
 
 "\\phantom"     {return PHANTOM;}
 
