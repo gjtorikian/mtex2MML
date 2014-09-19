@@ -1,5 +1,4 @@
-require_relative '../src/itex2MML'
-require 'minitest/autorun'
+require 'itex2MML'
 require 'thread'
 
 module Itex2MML

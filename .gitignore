@@ -10,3 +10,14 @@ src/y.tab_ruby.o
 src/itex2MML
 src/lex.yy.o
 src/y.tab.o
+ext/Makefile
+ext/itex2MML.bundle
+ext/itex2MML.h
+ext/itex2MML_ruby.c
+ext/itex2MML_ruby.o
+ext/lex.yy.c
+ext/lex.yy.o
+ext/y.tab.c
+ext/y.tab.h
+ext/y.tab.o
+lib/itex2MML.bundle
