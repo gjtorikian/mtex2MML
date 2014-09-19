@@ -6,4 +6,8 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :default => [:test]
+task :default => [:ch_dir, :test]
+
+task :ch_dir do
+  system "cd src && make"
+end
