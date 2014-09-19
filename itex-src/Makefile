@@ -28,10 +28,10 @@ lex.yy.o:	lex.yy.c y.tab.c itex2MML.h
 itex2MML:	lex.yy.o y.tab.o itex2MML.cc itex2MML.h
 		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o itex2MML.cc
 
-universal:		
+universal:
 		CFLAGS='-arch i686 -arch ppc' make all
 
-clean:		
+clean:
 		$(RM) y.tab.* lex.yy.c itex2MML *.o *.output *.so *.dll *.sl *.bundle itex2MML_ruby.c
 
 install:	itex2MML
@@ -39,7 +39,7 @@ install:	itex2MML
 
 RUBY_CFLAGS = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["CFLAGS"]')
 RUBY_LD = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["LDSHARED"]')
-RUBYLIBDIR =$(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["libdir"]') 
+RUBYLIBDIR =$(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["libdir"]')
 RUBY_PREFIX =  $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["rubylibdir"]')
 RUBY_ARCH = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["arch"]')
 RUBYDIR = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["archdir"]')
@@ -62,7 +62,7 @@ itex2MML_ruby.c:	itex2MML.i
 			$(SWIG) -ruby -o itex2MML_ruby.c  itex2MML.i
 
 itex2MML_ruby.o:	itex2MML_ruby.c
-			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c itex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -o itex2MML_ruby.o
+			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c itex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -o itex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c
 			$(CC) $(RUBY_CFLAGS) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
