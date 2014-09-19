@@ -1,0 +1,9 @@
+itex-src/itex2MML.bundle
+itex-src/itex2MML_ruby.c
+itex-src/itex2MML_ruby.o
+itex-src/lex.yy.c
+itex-src/lex.yy_ruby.o
+itex-src/y.output
+itex-src/y.tab.c
+itex-src/y.tab.h
+itex-src/y.tab_ruby.o
