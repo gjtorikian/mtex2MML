@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Itex2MMLTest < MiniTest::Unit::TestCase
+class Itex2MMLTest < MiniTest::Test
 
   def test_inline_html
     itex = Itex2MML::Parser.new
