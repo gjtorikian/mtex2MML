@@ -7,3 +7,6 @@ src/y.output
 src/y.tab.c
 src/y.tab.h
 src/y.tab_ruby.o
+src/itex2MML
+src/lex.yy.o
+src/y.tab.o
