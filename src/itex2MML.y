@@ -1791,13 +1791,130 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
+char *substring(char *string, int position, int length)
+{
+   char *pointer;
+   int c;
+
+   pointer = malloc(length + 1);
+
+   if (pointer == NULL)
+   {
+      printf("Unable to allocate memory.\n");
+      exit(EXIT_FAILURE);
+   }
+
+   for (c = 0 ; c < position -1 ; c++)
+      string++;
+
+   for (c = 0 ; c < length ; c++)
+   {
+      *(pointer+c) = *string;
+      string++;
+   }
+
+   *(pointer+c) = '\0';
+
+   return pointer;
+}
+
+char *join(char* s1, char* s2)
+{
+    char* result = malloc(strlen(s1) + " " + strlen(s2) + 1);
+
+    if (result) // thanks @pmg
+    {
+        strcpy(result, s1);
+        strcat(result, s2);
+    }
+
+    return result;
+}
+
+void insert_substring(char *a, char *b, int position)
+{
+   char *f, *e;
+   int length;
+
+   length = strlen(a);
+
+   f = substring(a, 1, position - 1 );
+   e = substring(a, position, length-position+1);
+
+   strcpy(a, "");
+   strcat(a, f);
+   free(f);
+   strcat(a, b);
+   strcat(a, e);
+   free(e);
+}
+
+char *
+hline_replace (const char *string, const char *from, const char *until, const char *substr){
+  char *tok = NULL;
+  char *newstr = strdup(string);
+  char *chunk = NULL;
+  char *s = newstr, *e = newstr, *attr_strings = "";
+  int substr_count = 0, n_count = 0, start = 0, end = 0, i = 0, offset = 0;
+
+  while (1) {
+    // find the starting match
+    s = strstr(s, from);
+    if (!s) break;
+    start = (int)(newstr - s);
+
+    // find the ending match
+    e = strstr(e, until);
+    if (!e) break;
+    end = (int)(newstr - e);
+
+    // how big is this string?
+    int array_length = start - end;
+
+    chunk = substring(newstr, -start, array_length);
+
+    char *line = strtok(chunk, "\n");
+    while(line)
+    {
+      if (n_count >= 2) {
+        if (strstr(line, substr) != NULL) {
+          attr_strings = join(attr_strings, "s");
+        }
+        else {
+          attr_strings = join(attr_strings, "0");
+        }
+      }
+      else
+        n_count++;
+
+      line = strtok(NULL, "\n");
+    }
+
+    if ( (tok = strstr(chunk, "]{")) != NULL) {
+      offset = (int)(tok - chunk) + 1;
+      attr_strings = join(join("(", attr_strings), ")");
+      insert_substring(newstr, attr_strings, -start + offset);
+    }
+    else if ( (tok = strstr(chunk, "}{")) != NULL) {
+      offset = (int)(tok - chunk) + 1;
+      attr_strings = join(join("(", attr_strings), ")");
+      insert_substring(newstr, attr_strings, -start + offset);
+    }
+
+    s = e + 1;
+  }
+
+  return newstr;
+}
+
 char * itex2MML_parse (const char * buffer, unsigned long length)
 {
   char * mathml = 0;
 
   int result;
 
-  itex2MML_setup (buffer, length);
+  const char *replaced_buffer = hline_replace(buffer, "\\begin{array}", "\\end{array}", "\\hline");
+  itex2MML_setup (replaced_buffer, length);
   itex2MML_restart ();
 
   result = itex2MML_yyparse (&mathml);
@@ -1812,7 +1929,8 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
 
 int itex2MML_filter (const char * buffer, unsigned long length)
 {
-  itex2MML_setup (buffer, length);
+  const char *replaced_buffer = hline_replace(buffer, "\\begin{array}", "\\end{array}", "\\hline");
+  itex2MML_setup (replaced_buffer, length);
   itex2MML_restart ();
 
   return itex2MML_yyparse (0);
