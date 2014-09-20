@@ -21,3 +21,5 @@ ext/y.tab.c
 ext/y.tab.h
 ext/y.tab.o
 lib/itex2MML.bundle
+
+test.html
