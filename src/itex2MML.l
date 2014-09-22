@@ -5,7 +5,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -61,6 +61,10 @@ int itex2MML_displaymode = 0;
 "^"            return SUP;
 "_"            return SUB;
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
+
+"\\hline" |
+"\\hdashline"      { /* Ignore */ ;}
+
 "{"            {itex2MML_rowposn = 2; if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]++; return MROWOPEN;}
 "}"            {if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]--; return MROWCLOSE;}
 
@@ -1005,7 +1009,16 @@ int itex2MML_displaymode = 0;
 "[t]" {yylval=itex2MML_copy_string("axis 1"); return ARRAYALIGN;}
 "[c]" {yylval=itex2MML_copy_string("center"); return ARRAYALIGN;}
 "[b]" {yylval=itex2MML_copy_string("axis -1"); return ARRAYALIGN;}
+"\("  {BEGIN(ROWLINEOPTS); return ST;}
 "\{"  {BEGIN(COLOPTS); return ST;}
+[\t\n\r ]+       ;
+}
+
+<ROWLINEOPTS>{
+"\)\{"   {BEGIN(COLOPTS); return END;}
+"s"   {yylval=itex2MML_copy_string("solid"); return ROWLINESDEF;}
+"d"   {yylval=itex2MML_copy_string("dashed"); return ROWLINESDEF;}
+"0"   {yylval=itex2MML_copy_string("none"); return ROWLINESDEF;}
 [\t\n\r ]+       ;
 }
 

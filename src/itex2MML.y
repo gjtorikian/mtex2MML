@@ -13,6 +13,9 @@
 #define YYPARSE_PARAM_TYPE char **
 #define YYPARSE_PARAM ret_str
 
+#define YYDEBUG 1
+yydebug = 1;
+
 #define yytext itex2MML_yytext
 
  extern int yylex ();
@@ -277,7 +280,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN ROWLINESDEF COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
 
 %%
 
@@ -1536,6 +1539,29 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($5);
   itex2MML_free_string($7);
 }
+| BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" rowlines=\"");
+  char * s2 = itex2MML_copy3(s1, $5, "\" columnalign=\"");
+  char * s3 = itex2MML_copy3(s2, $7, "\">");
+  $$ = itex2MML_copy3(s3, $9, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($3);
+  itex2MML_free_string($5);
+  itex2MML_free_string($7);
+  itex2MML_free_string($9);
+}
+| BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"");
+  char * s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
   char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", $4, "\">");
   $$ = itex2MML_copy3(s1, $6, "</mtable>");
@@ -1549,6 +1575,16 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 }
 | BEGINENV SVG ENDSVG {
   $$ = itex2MML_copy_string(" ");
+};
+
+rowLinesDefList: rowLinesDefList ROWLINESDEF {
+  $$ = itex2MML_copy3($1, " ", $2);
+  itex2MML_free_string($1);
+  itex2MML_free_string($2);
+}
+| ROWLINESDEF {
+  $$ = itex2MML_copy_string($1);
+  itex2MML_free_string($1);
 };
 
 columnAlignList: columnAlignList COLUMNALIGN {
@@ -1791,6 +1827,42 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
+/****************************************
+*
+* Added methods for string maniuplation
+*
+****************************************/
+char *replace_str(const char *str, const char *old, const char *new)
+{
+  char *ret, *r;
+  const char *p, *q;
+  size_t oldlen = strlen(old);
+  size_t count, retlen, newlen = strlen(new);
+
+  if (oldlen != newlen) {
+    for (count = 0, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen)
+      count++;
+    /* this is undefined if p - str > PTRDIFF_MAX */
+    retlen = p - str + strlen(p) + count * (newlen - oldlen);
+  } else
+    retlen = strlen(str);
+
+  if ((ret = malloc(retlen + 1)) == NULL)
+    return NULL;
+
+  for (r = ret, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen) {
+    /* this is undefined if q - p > PTRDIFF_MAX */
+    int l = q - p;
+    memcpy(r, p, l);
+    r += l;
+    memcpy(r, new, newlen);
+    r += newlen;
+  }
+  strcpy(r, p);
+
+  return ret;
+}
+
 char *substring(char *string, int position, int length)
 {
    char *pointer;
@@ -1822,13 +1894,20 @@ char *join(char* s1, char* s2)
 {
     char* result = malloc(strlen(s1) + " " + strlen(s2) + 1);
 
-    if (result) // thanks @pmg
+    if (result)
     {
         strcpy(result, s1);
         strcat(result, s2);
     }
 
     return result;
+}
+
+char *remove_last_char(char* str)
+{
+  size_t len = strlen(str);
+  memmove(str, str, len-1);
+  str[len-1] = 0;
 }
 
 void insert_substring(char *a, char *b, int position)
@@ -1850,12 +1929,12 @@ void insert_substring(char *a, char *b, int position)
 }
 
 char *
-hline_replace (const char *string, const char *from, const char *until, const char *substr){
-  char *tok = NULL;
+hline_replace (const char *string) {
+  char *tok = NULL, *chunk = NULL;
   char *newstr = strdup(string);
-  char *chunk = NULL;
+  const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline";
   char *s = newstr, *e = newstr, *attr_strings = "";
-  int substr_count = 0, n_count = 0, start = 0, end = 0, i = 0, offset = 0;
+  int substr_count = 0, n_count = 0, start = 0, end = 0, i = 0, offset = 0, attr_strings_len = 0;
 
   while (1) {
     // find the starting match
@@ -1869,16 +1948,27 @@ hline_replace (const char *string, const char *from, const char *until, const ch
     end = (int)(newstr - e);
 
     // how big is this string?
-    int array_length = start - end;
+    int array_length = abs(end - start);
 
-    chunk = substring(newstr, -start, array_length);
+    // this is just the "from - until" string chunk
+    chunk = substring(newstr, abs(start), array_length);
 
     char *line = strtok(chunk, "\n");
-    while(line)
+    while(line != NULL)
     {
       if (n_count >= 2) {
-        if (strstr(line, substr) != NULL) {
+        attr_strings_len = strlen(attr_strings);
+
+        // looking for a line match
+        if (strstr(line, hline) != NULL) {
+          if (attr_strings_len > 0)
+            remove_last_char(attr_strings);
           attr_strings = join(attr_strings, "s");
+        }
+        else if (strstr(line, hdashline) != NULL) {
+          if (attr_strings_len > 0)
+            remove_last_char(attr_strings);
+          attr_strings = join(attr_strings, "d");
         }
         else {
           attr_strings = join(attr_strings, "0");
@@ -1890,18 +1980,25 @@ hline_replace (const char *string, const char *from, const char *until, const ch
       line = strtok(NULL, "\n");
     }
 
-    if ( (tok = strstr(chunk, "]{")) != NULL) {
+    // array is form of \begin{array}[t]{cc..c}
+    if ( (tok = strstr(chunk, "]{")) != NULL && strncmp(attr_strings, "", 1) != 0) {
       offset = (int)(tok - chunk) + 1;
       attr_strings = join(join("(", attr_strings), ")");
       insert_substring(newstr, attr_strings, -start + offset);
     }
-    else if ( (tok = strstr(chunk, "}{")) != NULL) {
+    // array is form of \begin{array}{cc..c}
+    else if ( (tok = strstr(chunk, "}{")) != NULL && strncmp(attr_strings, "", 1) != 0) {
       offset = (int)(tok - chunk) + 1;
       attr_strings = join(join("(", attr_strings), ")");
       insert_substring(newstr, attr_strings, -start + offset);
     }
 
     s = e + 1;
+  }
+
+  if (YYDEBUG) {
+    printf("Working with %s", newstr);
+    printf("\n at a %lu", strlen(newstr));
   }
 
   return newstr;
@@ -1913,8 +2010,8 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
 
   int result;
 
-  const char *replaced_buffer = hline_replace(buffer, "\\begin{array}", "\\end{array}", "\\hline");
-  itex2MML_setup (replaced_buffer, length);
+  const char *replaced_buffer = hline_replace(buffer);
+  itex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   itex2MML_restart ();
 
   result = itex2MML_yyparse (&mathml);
@@ -1929,8 +2026,8 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
 
 int itex2MML_filter (const char * buffer, unsigned long length)
 {
-  const char *replaced_buffer = hline_replace(buffer, "\\begin{array}", "\\end{array}", "\\hline");
-  itex2MML_setup (replaced_buffer, length);
+  const char *replaced_buffer = hline_replace(buffer);
+  itex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   itex2MML_restart ();
 
   return itex2MML_yyparse (0);
