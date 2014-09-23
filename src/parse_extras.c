@@ -72,15 +72,18 @@ char *substring(char *inpStr, int startPos, int strLen) {
   return buff;
 }
 
-char *join(char* s1, char* s2) {
-  size_t len1 = strlen(s1);
-  size_t len2 = strlen(s2);
-  char *result = malloc(len1 + len2 + 1); // +1 for the zero-terminator
+char *join(char* first, char* second) {
+  int  first_length =  strlen(first);
+  int second_length = strlen(second);
 
-  memcpy(result, s1, len1);
-  memcpy(result+len1, s2, len2 + 1); // +1 to copy the null-terminator
+  char * copy = (char *) malloc(first_length + second_length  + 1); // +1 for the zero-terminator
 
-  return result;
+  if (copy) {
+    strcpy(copy, first);
+    strcat(copy, second);
+  }
+
+  return copy;
 }
 
 void remove_last_char(char* str) {
@@ -109,7 +112,7 @@ char * hline_replace(const char *string) {
   char *newstr = strdup(string);
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline";
   char *s = newstr, *e = newstr, *attr_strings = "";
-  int substr_count = 0, n_count = 0, start = 0, end = 0, i = 0, offset = 0, attr_strings_len = 0;
+  int n_count = 0, start = 0, end = 0, offset = 0, attr_strings_len = 0;
 
   while (1) {
     // find the starting match
@@ -127,6 +130,8 @@ char * hline_replace(const char *string) {
 
     // this is just the "from - until" string chunk
     chunk = substring(newstr, abs(start), array_length);
+
+    printf("dat chunk tho %s", chunk);
 
     char *line = strtok(chunk, "\n");
     while(line != NULL)
@@ -174,6 +179,52 @@ char * hline_replace(const char *string) {
   return newstr;
 }
 
-const char *vertical_pipe_replace(const char *string) {
-  return string;
+const char *vertical_pipe_extract(const char *string) {
+  char *orig = strdup(string), *token = strtok(orig, " ");
+  char *columnlines = "", *previous_column = "";
+  int i = 0;
+
+  while (token != NULL) {
+    if (strncmp(token, "s", 1) == 0) {
+      if (i == 0)
+        columnlines = "frame=\"solid\" columnlines=\"";
+      else {
+        previous_column = "s";
+        columnlines = join(columnlines, "solid ");
+      }
+    }
+    else if (strncmp(token, "d", 1) == 0) {
+      if (i == 0)
+        columnlines = "frame=\"dashed\" columnlines=\"";
+      else {
+        previous_column = "d";
+        columnlines = join(columnlines, "dashed ");
+      }
+    }
+    else {
+      if (i == 0) // we must skip the first blank col
+        columnlines = "columnlines=\"";
+      else if (i > 1) {
+        // only if there is no previous border should a border be considered, eg. "cc", not "c|c"
+        if (strncmp(previous_column, "s", 1) != 0 && strncmp(previous_column, "d", 1) != 0) {
+          columnlines = join(columnlines, "none ");
+        }
+        previous_column = "0";
+      }
+    }
+
+    i++;
+    token = strtok(NULL, " ");
+  }
+
+  return columnlines;
+}
+
+const char *remove_excess_pipe_chars(const char *string) {
+  char *dup = strdup(string);
+
+  dup = replace_str(dup, "s", "");
+  dup = replace_str(dup, "d", "");
+
+  return dup;
 }

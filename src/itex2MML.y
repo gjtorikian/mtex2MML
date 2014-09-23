@@ -10,8 +10,8 @@
 #define YYPARSE_PARAM_TYPE char **
 #define YYPARSE_PARAM ret_str
 
-// #define YYDEBUG 1
-// yydebug = 1;
+#define YYDEBUG 1
+yydebug = 1;
 
 #define yytext itex2MML_yytext
 
@@ -1527,42 +1527,68 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($3);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($5);
+  char *column_align = remove_excess_pipe_chars($5);
+
   char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" columnalign=\"");
-  char * s2 = itex2MML_copy3(s1, $5, "\">");
-  $$ = itex2MML_copy3(s2, $7, "</mtable>");
-  itex2MML_free_string(s1);
-  itex2MML_free_string(s2);
-  itex2MML_free_string($3);
-  itex2MML_free_string($5);
-  itex2MML_free_string($7);
-}
-| BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" rowlines=\"");
-  char * s2 = itex2MML_copy3(s1, $5, "\" columnalign=\"");
-  char * s3 = itex2MML_copy3(s2, $7, "\">");
-  $$ = itex2MML_copy3(s3, $9, "</mtable>");
+  char * s2 = itex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = itex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s3, $7, "</mtable>");
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
   itex2MML_free_string(s3);
   itex2MML_free_string($3);
   itex2MML_free_string($5);
   itex2MML_free_string($7);
-  itex2MML_free_string($9);
+  itex2MML_free_string(column_align);
+  itex2MML_free_string(pipe_chars);
 }
-| BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"");
-  char * s2 = itex2MML_copy3(s1, $6, "\">");
-  $$ = itex2MML_copy3(s2, $8, "</mtable>");
+| BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($7);
+  char *column_align = remove_excess_pipe_chars($7);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" rowlines=\"");
+  char * s2 = itex2MML_copy3(s1, $5, "\" columnalign=\"");
+  char * s3 = itex2MML_copy3(s2, column_align, "\" ");
+  char * s4 = itex2MML_copy3(s3, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s4, $9, "</mtable>");
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string(s4);
+  itex2MML_free_string($3);
+  itex2MML_free_string($5);
+  itex2MML_free_string($7);
+  itex2MML_free_string($9);
+  itex2MML_free_string(column_align);
+  itex2MML_free_string(pipe_chars);
+}
+| BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($6);
+  char *column_align = remove_excess_pipe_chars($6);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"");
+  char * s2 = itex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = itex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s3, $8, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
   itex2MML_free_string($4);
   itex2MML_free_string($6);
   itex2MML_free_string($8);
+  itex2MML_free_string(column_align);
+  itex2MML_free_string(pipe_chars);
 }
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
-  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", $4, "\">");
-  $$ = itex2MML_copy3(s1, $6, "</mtable>");
+  char *pipe_chars = vertical_pipe_extract($4);
+  char *column_align = remove_excess_pipe_chars($4);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", column_align, "\" ");
+  char * s2 = itex2MML_copy3(s1, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s2, $6, "</mtable>");
   itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
   itex2MML_free_string($4);
   itex2MML_free_string($6);
 }
@@ -1826,7 +1852,7 @@ colspan: COLSPAN ATTRLIST {
 
 const char *format_array(const char *string) {
   const char *hline_replaced_string = hline_replace(string);
-  return vertical_pipe_replace(hline_replaced_string);
+  return hline_replaced_string;
 }
 
 char * itex2MML_parse (const char * buffer, unsigned long length)

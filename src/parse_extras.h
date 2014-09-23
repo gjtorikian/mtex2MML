@@ -27,7 +27,11 @@ extern "C" {
   // This is so that the Bison parser can properly act on these
   extern char * hline_replace (const char *string);
 
-  extern const char *vertical_pipe_replace(const char *string);
+  // determines the column border arrangement
+  extern const char *vertical_pipe_extract(const char *string);
+
+  // removes placeholder pipe characters from columnalign
+  extern const char *remove_excess_pipe_chars(const char *string);
 #ifdef __cplusplus
 }
 #endif

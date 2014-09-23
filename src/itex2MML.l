@@ -1024,6 +1024,8 @@ int itex2MML_displaymode = 0;
 "c"   {yylval=itex2MML_copy_string("center"); return COLUMNALIGN;}
 "l"   {yylval=itex2MML_copy_string("left"); return COLUMNALIGN;}
 "r"   {yylval=itex2MML_copy_string("right"); return COLUMNALIGN;}
+"|"   {yylval=itex2MML_copy_string("s"); return COLUMNALIGN;}
+":"   {yylval=itex2MML_copy_string("d"); return COLUMNALIGN;}
 [\t\n\r ]+       ;
 }
 

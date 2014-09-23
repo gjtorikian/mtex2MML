@@ -14,8 +14,6 @@ def write_to_test_file(converted)
 
 #{converted}
 
-</math>
-
 </body>
 
 </html>

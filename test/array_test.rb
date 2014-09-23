@@ -83,4 +83,46 @@ $$
 
     assert_equal(@itex.filter(text), fixture_file("array_pos_alignment_with_hline"))
   end
+
+  def test_array_vertical_column
+    text = '''
+$$
+\begin{array}{c|c}
+Bad & Good
+\end{array}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("array_vertical_column"))
+  end
+
+  def test_array_vertical_column_with_align
+    text = '''
+$$
+\begin{array}[b]{:c:c}
+Bad & Good
+\end{array}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("array_vertical_column_with_align"))
+  end
+
+  def test_array_with_vertical_and_horizontal_dashes
+
+text = '''
+$$
+\begin{array}{:c:cc:c:}
+\hdashline
+1 & 2 & 3 & 4\\\\
+\hdashline
+4 & 5 & 6 & 7\\\\
+\hdashline
+7 & 8 & 9 & 10
+\end{array}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("array_with_vertical_and_horizontal_dashes"))
+  end
 end
