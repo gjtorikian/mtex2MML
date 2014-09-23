@@ -64,4 +64,23 @@ $$
 
     assert_equal(@itex.filter(text), fixture_file("array_pos_alignment"))
   end
+
+  def test_array_pos_alignment_with_hline
+    text = '''
+$$
+\begin{array}[t]{clcr}
+n & \text{Left} & \text{Center} & \text{Right} \\\\
+\hline
+1 & 0.24 & 1 & 125 \\\\
+\hline
+2 & -1 & 189 & -8 \\\\
+\hline
+3 & -20 & 2000 & 1+10i
+\hline
+\end{array}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("array_pos_alignment_with_hline"))
+  end
 end
