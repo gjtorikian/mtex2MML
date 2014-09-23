@@ -1929,22 +1929,20 @@ char *remove_last_char(char* str)
   str[len-1] = 0;
 }
 
-void insert_substring(char *a, char *b, int position)
 // Insert a substring (`new_str`) into a string (`str`) at `position`
+void insert_substring(char *str, char *new_str, int position)
 {
    char *f, *e;
-   int length;
+   size_t length = strlen(str);
 
-   length = strlen(a);
+   f = substring(str, 1, position - 1 );
+   e = substring(str, position, length-position+1);
 
-   f = substring(a, 1, position - 1 );
-   e = substring(a, position, length-position+1);
-
-   strcpy(a, "");
-   strcat(a, f);
+   strcpy(str, "");
+   strcat(str, f);
    free(f);
-   strcat(a, b);
-   strcat(a, e);
+   strcat(str, new_str);
+   strcat(str, e);
    free(e);
 }
 
