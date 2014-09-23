@@ -2016,11 +2016,6 @@ hline_replace (const char *string) {
     s = e + 1;
   }
 
-  if (YYDEBUG) {
-    printf("Working with %s", newstr);
-    printf("\n at a %lu", strlen(newstr));
-  }
-
   return newstr;
 }
 
