@@ -1864,32 +1864,47 @@ char *replace_str(const char *str, const char *old, const char *new)
   return ret;
 }
 
-char *substring(char *string, int position, int length)
 // Fetches a substring within `inpStr`, starting at `startPos` and as long as `strLen`
+char *substring(char *inpStr, int startPos, int strLen)
 {
-   char *pointer;
-   int c;
+  /* Cannot do anything with NULL. */
 
-   pointer = malloc(length + 1);
+  if (inpStr == NULL) return NULL;
 
-   if (pointer == NULL)
-   {
-      printf("Unable to allocate memory.\n");
-      exit(EXIT_FAILURE);
-   }
+  char *buff;
 
-   for (c = 0 ; c < position -1 ; c++)
-      string++;
+  /* All negative positions to go from end, and cannot
+     start before start of string, force to start. */
 
-   for (c = 0 ; c < length ; c++)
-   {
-      *(pointer+c) = *string;
-      string++;
-   }
+  if (startPos < 0)
+      startPos = strlen (inpStr) + startPos;
+  if (startPos < 0)
+      startPos = 0;
 
-   *(pointer+c) = '\0';
+  /* Force negative lengths to zero and cannot
+     start after end of string, force to end. */
 
-   return pointer;
+  if (strLen < 0)
+      strLen = 0;
+  if (startPos >strlen (inpStr))
+      startPos = strlen (inpStr);
+
+  /* Adjust length if source string too short. */
+
+  if (strLen > strlen (&inpStr[startPos]))
+      strLen = strlen (&inpStr[startPos]);
+
+  /* Get long enough string from heap, return NULL if no go. */
+
+  if ((buff = malloc (strLen + 1)) == NULL)
+      return NULL;
+
+  /* Transfer string section and return it. */
+
+  memcpy (buff, &(inpStr[startPos]), strLen);
+  buff[strLen] = '\0';
+
+  return buff;
 }
 
 // Join two strings together
