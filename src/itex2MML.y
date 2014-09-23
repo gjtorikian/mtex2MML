@@ -13,8 +13,8 @@
 #define YYPARSE_PARAM_TYPE char **
 #define YYPARSE_PARAM ret_str
 
-#define YYDEBUG 1
-yydebug = 1;
+// #define YYDEBUG 1
+// yydebug = 1;
 
 #define yytext itex2MML_yytext
 
