@@ -1,6 +1,6 @@
 # amsmath-tex2MML
 
-This is a Bison grammar to convert TeX math into MathML. It is written in C, with Ruby used for the test suite.
+This is a Bison grammar to convert TeX math into MathML. It is written in C, with Ruby used for the test suite. Rather than a standalone program, it's meant to be used within another library--perhaps wrapped in a higher-level language for easier use.
 
 This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distler/blog/itex2MML.html), originally written by Jacques Distler and Paul Gartside.
 
