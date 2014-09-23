@@ -5,24 +5,6 @@ class AmsMathTex2MMLArrayTest < MiniTest::Test
     @itex = Itex2MML::Parser.new
   end
 
-  def write_to_test_file(converted)
-    outfile = """
-    <html>
-
-    <body>
-
-    #{converted}
-
-    </math>
-
-    </body>
-
-    </html>
-    """
-
-    File.open("test.html", "w") { |f| f.write(outfile) }
-  end
-
   def test_basic_array
     text = '''
 $$
