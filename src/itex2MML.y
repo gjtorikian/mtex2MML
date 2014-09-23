@@ -1832,6 +1832,7 @@ colspan: COLSPAN ATTRLIST {
 * Added methods for string maniuplation
 *
 ****************************************/
+// Replace a substring (`old`) with some text (`new`) in the string `str`.
 char *replace_str(const char *str, const char *old, const char *new)
 {
   char *ret, *r;
@@ -1864,6 +1865,7 @@ char *replace_str(const char *str, const char *old, const char *new)
 }
 
 char *substring(char *string, int position, int length)
+// Fetches a substring within `inpStr`, starting at `startPos` and as long as `strLen`
 {
    char *pointer;
    int c;
@@ -1890,6 +1892,7 @@ char *substring(char *string, int position, int length)
    return pointer;
 }
 
+// Join two strings together
 char *join(char* s1, char* s2)
 {
     char* result = malloc(strlen(s1) + " " + strlen(s2) + 1);
@@ -1903,6 +1906,7 @@ char *join(char* s1, char* s2)
     return result;
 }
 
+// Remove the previous character in a string
 char *remove_last_char(char* str)
 {
   size_t len = strlen(str);
@@ -1911,6 +1915,7 @@ char *remove_last_char(char* str)
 }
 
 void insert_substring(char *a, char *b, int position)
+// Insert a substring (`new_str`) into a string (`str`) at `position`
 {
    char *f, *e;
    int length;
@@ -1928,6 +1933,8 @@ void insert_substring(char *a, char *b, int position)
    free(e);
 }
 
+// Move the `hline` and `hlinedash` symbols inline with the `\begin{array}` line
+// This is so that the Bison parser can properly act on these
 char *
 hline_replace (const char *string) {
   char *tok = NULL, *chunk = NULL;
