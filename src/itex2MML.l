@@ -1,7 +1,3 @@
-/*             itex2MML 1.5.1
- *   itex2MML.l last modified 1/5/2014
- */
-
 %{
 %}
 %option noyywrap
