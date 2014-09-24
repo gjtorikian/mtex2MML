@@ -125,4 +125,45 @@ $$
 
     assert_equal(@itex.filter(text), fixture_file("array_with_vertical_and_horizontal_dashes"))
   end
+
+  def test_array_nesting
+
+  text = '''
+$$
+\begin{array}{c}
+  \begin{array}{c:c}
+    \begin{array}{c|cclc}
+      \text{min} & 0 & 1 & 2 & 3\\\\
+      \hline
+      0 & 0 & 0 & 0 & 0\\\\
+      1 & 0 & 1 & 1 & 1\\\\
+      2 & 0 & 1 & 2 & 2\\\\
+      3 & 0 & 1 & 2 & 3
+    \end{array}
+  &
+    \begin{array}{c|cccl}
+      \text{max}&0&1&2&3\\\\
+      \hline
+      0 & 0 & 1 & 2 & 3\\\\
+      1 & 1 & 1 & 2 & 3\\\\
+      2 & 2 & 2 & 2 & 3\\\\
+      3 & 3 & 3 & 3 & 3
+    \end{array}
+  \end{array}
+\\\\
+  \begin{array}{l|cccc}
+    \Delta&0&1&2&3\\\\
+    \hline
+    0 & 0 & 1 & 2 & 3\\\\
+    1 & 1 & 0 & 1 & 2\\\\
+    2 & 2 & 1 & 0 & 1\\\\
+    3 & 3 & 2 & 1 & 0
+  \end{array}
+\end{array}
+$$
+'''
+
+    write_to_test_file @itex.filter(text)
+    assert_equal(@itex.filter(text), fixture_file("array_nesting"))
+  end
 end
