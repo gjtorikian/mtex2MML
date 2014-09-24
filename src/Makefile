@@ -13,7 +13,16 @@ YYPREFIX=itex2MML_yy
 
 all:    y.tab.c lex.yy.c itex2MML
 
-y.tab.c:	itex2MML.y
+stack.o: stack.c stack.h
+	$(CC) -fPIC -c -o stack.o stack.c
+
+string_extras.o: string_extras.c string_extras.h
+	$(CC) -fPIC -c -o string_extras.o string_extras.c
+
+parse_extras.o: parse_extras.c parse_extras.h
+	$(CC) -fPIC -c -o parse_extras.o parse_extras.c
+
+y.tab.c:	itex2MML.y stack.o string_extras.o parse_extras.o
 		$(YACC) -p $(YYPREFIX) -d itex2MML.y
 
 lex.yy.c:	itex2MML.l
@@ -23,10 +32,10 @@ y.tab.o:	y.tab.c itex2MML.h
 		$(CC) $(CFLAGS) -c -o y.tab.o y.tab.c
 
 lex.yy.o:	lex.yy.c y.tab.c itex2MML.h
-		$(CC) $(CFLAGS) -c -o lex.yy.o lex.yy.c
+		$(CC) $(CFLAGS) -c -o lex.yy.o stack.o string_extras.o parse_extras.o lex.yy.c
 
 itex2MML:	lex.yy.o y.tab.o itex2MML.cc itex2MML.h
-		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o itex2MML.cc
+		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o stack.o string_extras.o parse_extras.o itex2MML.cc
 
 universal:
 		CFLAGS='-arch i686 -arch ppc' make all
@@ -64,14 +73,14 @@ itex2MML_ruby.c:	itex2MML.i
 itex2MML_ruby.o:	itex2MML_ruby.c
 			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c itex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -o itex2MML_ruby.o
 
-y.tab_ruby.o:		y.tab.c
+y.tab_ruby.o:		y.tab.c stack.o string_extras.o parse_extras.o
 			$(CC) $(RUBY_CFLAGS) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
 
 lex.yy_ruby.o:	lex.yy.c y.tab.c itex2MML.h
-		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o lex.yy.c
+		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o stack.o string_extras.o parse_extras.o lex.yy.c
 
 ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
-	$(LD_TARGET) $(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
+	$(LD_TARGET) $(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o stack.o string_extras.o parse_extras.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
 
 test_ruby:
 	$(RUBY) ./itextomml.rb

@@ -1,11 +1,7 @@
-/*             itex2MML 1.5.1
- *   itex2MML.l last modified 1/5/2014
- */
-
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -13,6 +9,7 @@
 
 #include "y.tab.h"
 #include "itex2MML.h"
+#include "parse_extras.h"
 
 #define YY_NEVER_INTERACTIVE 1
 #define YY_INPUT(buffer,result,max_size) result = s_itex2MML_read (buffer, max_size)
@@ -37,7 +34,7 @@ char * itex2MML_eqn_end = itex2MML_eqn_src;
 int itex2MML_rowposn = 0;
 int itex2MML_displaymode = 0;
 
-%} 
+%}
 %%
 %{ if (itex2MML_rowposn==1) itex2MML_rowposn=0;
    if (itex2MML_rowposn==2) itex2MML_rowposn=1;
@@ -59,8 +56,14 @@ int itex2MML_displaymode = 0;
 
 
 "^"            return SUP;
-"_"            return SUB; 
+"_"            return SUB;
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
+
+"\\hline" |
+"\\hdashline"      { /* Ignore */ ;}
+
+^%.+               { /* Ignore */ ;}
+
 "{"            {itex2MML_rowposn = 2; if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]++; return MROWOPEN;}
 "}"            {if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]--; return MROWCLOSE;}
 
@@ -266,8 +269,8 @@ int itex2MML_displaymode = 0;
 "\\Mu"     |
 "\\Nu"    |
 "\\Rho"   |
-"\\Tau"  | 
-"\\mho"  | 
+"\\Tau"  |
+"\\mho"  |
 "\\Omega"     {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return MI;}
 
 "\\Upsilon" |
@@ -788,7 +791,7 @@ int itex2MML_displaymode = 0;
 "\\closure" |
 "\\widebar"      {return WIDEBAR;}
 
-"\\vec"       {return VEC;} 
+"\\vec"       {return VEC;}
 "\\widevec"   {return WIDEVEC;}
 
 "\\dot"       {return DOT;}
@@ -796,15 +799,15 @@ int itex2MML_displaymode = 0;
 "\\dddot"      {return DDDOT;}
 "\\ddddot"      {return DDDDOT;}
 
-"\\tilde"       {return TILDE;} 
+"\\tilde"       {return TILDE;}
 "\\widetilde"   {return WIDETILDE;}
 
 
-"\\check"       {return CHECK;} 
+"\\check"       {return CHECK;}
 "\\widecheck"   {return WIDECHECK;}
 
 
-"\\hat"       {return HAT;} 
+"\\hat"       {return HAT;}
 "\\widehat"   {return WIDEHAT;}
 
 "\\underset"     {return UNDER;}
@@ -905,7 +908,7 @@ int itex2MML_displaymode = 0;
 
 "\\rowopts"    {return ROWOPTS;}
 
-"\\cellopts"   {return CELLOPTS;} 
+"\\cellopts"   {return CELLOPTS;}
 
 "\\rowspan"     {BEGIN(ATTRIBUTELIST); return ROWSPAN;}
 
@@ -1005,7 +1008,16 @@ int itex2MML_displaymode = 0;
 "[t]" {yylval=itex2MML_copy_string("axis 1"); return ARRAYALIGN;}
 "[c]" {yylval=itex2MML_copy_string("center"); return ARRAYALIGN;}
 "[b]" {yylval=itex2MML_copy_string("axis -1"); return ARRAYALIGN;}
+"\("  {BEGIN(ROWLINEOPTS); return ST;}
 "\{"  {BEGIN(COLOPTS); return ST;}
+[\t\n\r ]+       ;
+}
+
+<ROWLINEOPTS>{
+"\)\{"   {BEGIN(COLOPTS); return END;}
+"s"   {yylval=itex2MML_copy_string("solid"); return ROWLINESDEF;}
+"d"   {yylval=itex2MML_copy_string("dashed"); return ROWLINESDEF;}
+"0"   {yylval=itex2MML_copy_string("none"); return ROWLINESDEF;}
 [\t\n\r ]+       ;
 }
 
@@ -1014,6 +1026,8 @@ int itex2MML_displaymode = 0;
 "c"   {yylval=itex2MML_copy_string("center"); return COLUMNALIGN;}
 "l"   {yylval=itex2MML_copy_string("left"); return COLUMNALIGN;}
 "r"   {yylval=itex2MML_copy_string("right"); return COLUMNALIGN;}
+"|"   {yylval=itex2MML_copy_string("s"); return COLUMNALIGN;}
+":"   {yylval=itex2MML_copy_string("d"); return COLUMNALIGN;}
 [\t\n\r ]+       ;
 }
 
@@ -1064,7 +1078,7 @@ int itex2MML_displaymode = 0;
 \{[^\}]*?\}  {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
 }
 
-<INT1>{ 
+<INT1>{
 "\{"      {return ST;}
 "\}"      {BEGIN(INT2); return END;}
 [0-9]+    {yylval=itex2MML_copy_string_extra(yytext, 1); if (yyleng && (yylval != itex2MML_empty_string)) { yylval[yyleng]=yylval[yyleng-1]; yylval[yyleng-1]='.'; yylval[yyleng+1]='\0'; } return INTONE;}

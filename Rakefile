@@ -40,5 +40,9 @@ task :build_ext do
   end
 
   # move the bundle to the lib folder
-  cp "ext/itex2MML.bundle", "lib/"
+  if ENV['TRAVIS']
+    cp "ext/itex2MML.so", "lib/"
+  else
+    cp "ext/itex2MML.bundle", "lib/"
+  end
 end

@@ -1,17 +1,17 @@
-/*             itex2MML 1.5.2
- *   itex2MML.y last modified 6/13/2014
- */
-
 %{
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #include "itex2MML.h"
+#include "parse_extras.h"
 
 #define YYSTYPE char *
 #define YYPARSE_PARAM_TYPE char **
 #define YYPARSE_PARAM ret_str
+
+// #define YYDEBUG 1
+// yydebug = 1;
 
 #define yytext itex2MML_yytext
 
@@ -119,7 +119,7 @@
 #else
     void (*itex2MML_write) (const char * buffer, unsigned long length) = itex2MML_default_write;
     void (*itex2MML_write_mathml) (const char * mathml) = itex2MML_default_write_mathml;
-#endif 
+#endif
 
  char * itex2MML_empty_string = "";
 
@@ -277,7 +277,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN ROWLINESDEF COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
 
 %%
 
@@ -290,7 +290,7 @@ xmlmmlTermList:
 | xmlmmlTermList char {/* all proc. in body*/}
 | xmlmmlTermList expression {/* all proc. in body*/};
 
-char: CHAR {printf("%s", $1);};
+char: CHAR { /* Do nothing...but what did this used to do? printf("%s", $1); */ };
 
 expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}
@@ -299,7 +299,7 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
   char * p = itex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow>", $2, "</mrow><annotation encoding='application/x-tex'>");
   char * s = itex2MML_copy3(p, $3, "</annotation></semantics></math>");
   itex2MML_free_string(p);
-  itex2MML_free_string($2);  
+  itex2MML_free_string($2);
   itex2MML_free_string($3);
   if (r) {
     (*r) = (s == itex2MML_empty_string) ? 0 : s;
@@ -315,7 +315,7 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
   char * p = itex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><semantics><mrow>", $2, "</mrow><annotation encoding='application/x-tex'>");
   char * s = itex2MML_copy3(p, $3, "</annotation></semantics></math>");
   itex2MML_free_string(p);
-  itex2MML_free_string($2);  
+  itex2MML_free_string($2);
   itex2MML_free_string($3);
   if (r) {
     (*r) = (s == itex2MML_empty_string) ? 0 : s;
@@ -528,12 +528,12 @@ closedTerm: array
   $$ = itex2MML_copy3("<mn>", $1, "</mn>");
   itex2MML_free_string($1);
 }
-| mo 
+| mo
 | tensor
 | multi
 | mfrac
 | binom
-| msqrt 
+| msqrt
 | mroot
 | raisebox
 | munder
@@ -645,7 +645,7 @@ bigdelim: BIG LEFTDELIM {
   itex2MML_rowposn = 2;
   $$ = itex2MML_copy3("<mo maxsize=\"1.2em\" minsize=\"1.2em\">", $2, "</mo>");
   itex2MML_free_string($2);
-} 
+}
 | BIG RIGHTDELIM {
   $$ = itex2MML_copy3("<mo maxsize=\"1.2em\" minsize=\"1.2em\">", $2, "</mo>");
   itex2MML_free_string($2);
@@ -671,7 +671,7 @@ bigdelim: BIG LEFTDELIM {
   itex2MML_rowposn = 2;
   $$ = itex2MML_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
   itex2MML_free_string($2);
-} 
+}
 | BIGG RIGHTDELIM {
   $$ = itex2MML_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
   itex2MML_free_string($2);
@@ -717,7 +717,7 @@ bigdelim: BIG LEFTDELIM {
   itex2MML_rowposn = 2;
   $$ = itex2MML_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
   itex2MML_free_string($2);
-} 
+}
 | BIGGL OTHERDELIM {
   itex2MML_rowposn = 2;
   $$ = itex2MML_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
@@ -1158,7 +1158,7 @@ multi: MULTI MROWOPEN subsupList MROWCLOSE closedTerm MROWOPEN subsupList MROWCL
   $$ = itex2MML_copy2(s1, "</mmultiscripts>");
   itex2MML_free_string(s1);
   itex2MML_free_string($3);
-  itex2MML_free_string($5); 
+  itex2MML_free_string($5);
 };
 
 subsupList: subsupTerm {
@@ -1527,19 +1527,62 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($3);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($5);
+  char *column_align = remove_excess_pipe_chars($5);
+
   char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" columnalign=\"");
-  char * s2 = itex2MML_copy3(s1, $5, "\">");
-  $$ = itex2MML_copy3(s2, $7, "</mtable>");
+  char * s2 = itex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = itex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s3, $7, "</mtable>");
   itex2MML_free_string(s1);
   itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
   itex2MML_free_string($3);
   itex2MML_free_string($5);
   itex2MML_free_string($7);
 }
-| BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
-  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", $4, "\">");
-  $$ = itex2MML_copy3(s1, $6, "</mtable>");
+| BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($7);
+  char *column_align = remove_excess_pipe_chars($7);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" rowlines=\"");
+  char * s2 = itex2MML_copy3(s1, $5, "\" columnalign=\"");
+  char * s3 = itex2MML_copy3(s2, column_align, "\" ");
+  char * s4 = itex2MML_copy3(s3, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s4, $9, "</mtable>");
   itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string(s4);
+  itex2MML_free_string($3);
+  itex2MML_free_string($5);
+  itex2MML_free_string($7);
+  itex2MML_free_string($9);
+}
+| BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($6);
+  char *column_align = remove_excess_pipe_chars($6);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"");
+  char * s2 = itex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = itex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s3, $8, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
+| BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($4);
+  char *column_align = remove_excess_pipe_chars($4);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", column_align, "\" ");
+  char * s2 = itex2MML_copy3(s1, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s2, $6, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
   itex2MML_free_string($4);
   itex2MML_free_string($6);
 }
@@ -1549,6 +1592,16 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 }
 | BEGINENV SVG ENDSVG {
   $$ = itex2MML_copy_string(" ");
+};
+
+rowLinesDefList: rowLinesDefList ROWLINESDEF {
+  $$ = itex2MML_copy3($1, " ", $2);
+  itex2MML_free_string($1);
+  itex2MML_free_string($2);
+}
+| ROWLINESDEF {
+  $$ = itex2MML_copy_string($1);
+  itex2MML_free_string($1);
 };
 
 columnAlignList: columnAlignList COLUMNALIGN {
@@ -1791,13 +1844,18 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
+const char *format_additions(const char *string) {
+  return hline_replace(strdup(string));
+}
+
 char * itex2MML_parse (const char * buffer, unsigned long length)
 {
   char * mathml = 0;
 
   int result;
 
-  itex2MML_setup (buffer, length);
+  const char *replaced_buffer = format_additions(buffer);
+  itex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   itex2MML_restart ();
 
   result = itex2MML_yyparse (&mathml);
@@ -1812,7 +1870,8 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
 
 int itex2MML_filter (const char * buffer, unsigned long length)
 {
-  itex2MML_setup (buffer, length);
+  const char *replaced_buffer = format_additions(buffer);
+  itex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   itex2MML_restart ();
 
   return itex2MML_yyparse (0);

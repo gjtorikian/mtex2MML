@@ -1,7 +1,3 @@
-/*             itex2MML 1.5.2
- *   itex2MML.h last modified 6/13/2014
- */
-
 #ifndef ITEX2MML_H
 #define ITEX2MML_H
 
