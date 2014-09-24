@@ -78,7 +78,7 @@ char * hline_replace(const char *string) {
 
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline";
 
-  int start = 0, offset = 0, attr_strings_len = 0, str_len = 0;
+  int start = 0, offset = 0, attr_strings_len = 0, str_len = 0, i = 0;
   hlineDataArray hline_data_array;
   hlineData hline_data;
 
@@ -151,7 +151,7 @@ char * hline_replace(const char *string) {
   // sort array by highest values first, so that we can insert to newstr from the
   // bottom to the top (ensuring line numbers don't shift)
   sortHLineDataArray(&hline_data_array);
-  for (int i = 0; i < hline_data_array.used; i++) {
+  for (i = 0; i < hline_data_array.used; i++) {
     insert_substring(&newstr, hline_data_array.array[i].attr_strings, hline_data_array.array[i].offset_pos);
   }
 
