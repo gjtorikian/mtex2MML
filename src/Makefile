@@ -14,10 +14,13 @@ YYPREFIX=itex2MML_yy
 all:    y.tab.c lex.yy.c itex2MML
 
 stack.o: stack.c stack.h
+	$(CC) -fPIC -c -o stack.o stack.c
 
 string_extras.o: string_extras.c string_extras.h
+	$(CC) -fPIC -c -o string_extras.o string_extras.c
 
-parse_extras.o: stack.o parse_extras.c parse_extras.h
+parse_extras.o: parse_extras.c parse_extras.h
+	$(CC) -fPIC -c -o parse_extras.o parse_extras.c
 
 y.tab.c:	itex2MML.y stack.o string_extras.o parse_extras.o
 		$(YACC) -p $(YYPREFIX) -d itex2MML.y
@@ -57,7 +60,7 @@ DYLIB_EXT = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["DLEX
 RUBY_target_os = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["target_os"]')
 
 ifneq (, $(findstring darwin, $(RUBY_target_os)) )
-EXTRA_CFLAGS = -DHAVE_SNPRINTF -DHAVE_STRUCT_TIMESPEC -DHAVE_STRUCT_TIMEZONE -fpic
+EXTRA_CFLAGS = -DHAVE_SNPRINTF -DHAVE_STRUCT_TIMESPEC -DHAVE_STRUCT_TIMEZONE
 LD_TARGET = MACOSX_DEPLOYMENT_TARGET=10.4
 else
 EXTRA_CFLAGS = ''
