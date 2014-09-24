@@ -1844,9 +1844,8 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
-const char *format_array(const char *string) {
-  const char *hline_replaced_string = hline_replace(string);
-  return hline_replaced_string;
+const char *format_additions(const char *string) {
+  return hline_replace(strdup(string));
 }
 
 char * itex2MML_parse (const char * buffer, unsigned long length)
@@ -1855,7 +1854,7 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
 
   int result;
 
-  const char *replaced_buffer = format_array(buffer);
+  const char *replaced_buffer = format_additions(buffer);
   itex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   itex2MML_restart ();
 
@@ -1871,7 +1870,7 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
 
 int itex2MML_filter (const char * buffer, unsigned long length)
 {
-  const char *replaced_buffer = format_array(buffer);
+  const char *replaced_buffer = format_additions(buffer);
   itex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   itex2MML_restart ();
 
