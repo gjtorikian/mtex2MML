@@ -1540,8 +1540,6 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($3);
   itex2MML_free_string($5);
   itex2MML_free_string($7);
-  itex2MML_free_string(column_align);
-  itex2MML_free_string(pipe_chars);
 }
 | BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
   char *pipe_chars = vertical_pipe_extract($7);
@@ -1560,8 +1558,6 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($5);
   itex2MML_free_string($7);
   itex2MML_free_string($9);
-  itex2MML_free_string(column_align);
-  itex2MML_free_string(pipe_chars);
 }
 | BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
   char *pipe_chars = vertical_pipe_extract($6);
@@ -1577,8 +1573,6 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($4);
   itex2MML_free_string($6);
   itex2MML_free_string($8);
-  itex2MML_free_string(column_align);
-  itex2MML_free_string(pipe_chars);
 }
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
   char *pipe_chars = vertical_pipe_extract($4);
