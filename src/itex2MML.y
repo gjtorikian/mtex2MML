@@ -290,7 +290,7 @@ xmlmmlTermList:
 | xmlmmlTermList char {/* all proc. in body*/}
 | xmlmmlTermList expression {/* all proc. in body*/};
 
-char: CHAR {printf("%s", $1);};
+char: CHAR { /* Do nothing...but what did this used to do? printf("%s", $1); */ };
 
 expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}
