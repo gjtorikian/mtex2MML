@@ -57,7 +57,7 @@ DYLIB_EXT = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["DLEX
 RUBY_target_os = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["target_os"]')
 
 ifneq (, $(findstring darwin, $(RUBY_target_os)) )
-EXTRA_CFLAGS = -DHAVE_SNPRINTF -DHAVE_STRUCT_TIMESPEC -DHAVE_STRUCT_TIMEZONE
+EXTRA_CFLAGS = -DHAVE_SNPRINTF -DHAVE_STRUCT_TIMESPEC -DHAVE_STRUCT_TIMEZONE -fpic
 LD_TARGET = MACOSX_DEPLOYMENT_TARGET=10.4
 else
 EXTRA_CFLAGS = ''
