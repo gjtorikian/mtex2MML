@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class AmsMathTex2MMLArrayTest < MiniTest::Test
+
   def setup
     @itex = Itex2MML::Parser.new
   end

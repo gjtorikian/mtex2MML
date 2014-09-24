@@ -62,6 +62,8 @@ int itex2MML_displaymode = 0;
 "\\hline" |
 "\\hdashline"      { /* Ignore */ ;}
 
+^%.+               { /* Ignore */ ;}
+
 "{"            {itex2MML_rowposn = 2; if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]++; return MROWOPEN;}
 "}"            {if(itex2MML_inoptarg[itex2MML_optarg_ind] != 0) itex2MML_inoptarg[itex2MML_optarg_ind]--; return MROWCLOSE;}
 
