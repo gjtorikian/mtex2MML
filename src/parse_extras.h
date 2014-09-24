@@ -1,9 +1,5 @@
-/* Added methods for string manipulation */
-
 #ifndef PARSE_EXTRAS_H
 #define PARSE_EXTRAS_H
-
-#define ITEX2MML_VERSION "1.5.2"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,25 +18,6 @@ extern "C" {
     size_t size;
   } hlineDataArray;
 
-  // Replace a substring (`old`) with some text (`new`) in the string `str`.
-  extern char *replace_str(const char *str, const char *old, const char *new);
-
-  // Fetches a substring within `inpStr`, starting at `startPos` and as long as `strLen`
-  extern char *substring(char *inpStr, int startPos, int strLen);
-
-  // Join two strings together
-  // fuck strncpy
-  extern char *join(char* s1, char* s2);
-
-  // Remove the final character in a string
-  extern void remove_last_char(char* str);
-
-  // Insert a substring (`ins`) into a string (`dest`) at `location`
-  extern void insert_substring(char **dest, char *ins, size_t location);
-
-  // Reverse the substring
-  extern void strrev(char *str);
-
   // set up array of hlineData
   extern void initHlineDataArray(hlineDataArray *a, size_t initialSize);
 
@@ -54,10 +31,41 @@ extern "C" {
   extern void deleteHlineDataArray(hlineDataArray *a);
 
   // Move the `hline` and `hlinedash` symbols inline with the `\begin{array}` line
-  // This is so that the Bison parser can properly act on these
+  // This is so that the Bison parser can properly act on these.
+
+  // In order to properly address arrays, we need to parse them, find their hlines, and then
+  // modify the starting environment declaration to point out where those hlines are.
+  //
+  // Suppose there is an array like:
+  //
+  // \begin{array}{c:c}
+  //   \begin{array}{c|cclc}
+  //     \text{min} & 0 & 1 & 2 & 3\\\\
+  //     \hline
+  //     0 & 0 & 0 & 0 & 0\\\\
+  //     1 & 0 & 1 & 1 & 1\\\\
+  //     2 & 0 & 1 & 2 & 2\\\\
+  //     3 & 0 & 1 & 2 & 3
+  //   \end{array}
+  // &
+  //   \begin{array}{c|cccl}
+  //     \text{max}&0&1&2&3\\\\
+  //     \hline
+  //     0 & 0 & 1 & 2 & 3\\\\
+  //     1 & 1 & 1 & 2 & 3\\\\
+  //     2 & 2 & 2 & 2 & 3\\\\
+  //     3 & 3 & 3 & 3 & 3
+  //   \end{array}
+  // \end{array}
+  //
+  // The hline_replace function will push every line onto a stack. When an \end
+  // is detected, it starts popping off the stack until it reaches the corresponding
+  // \begin. It then modifies that line with attr_strings, an arrangement of the
+  // the \hlines encountered while popping lines off.
+
   extern char * hline_replace (const char *string);
 
-  // determines the column border arrangement
+  // determines the column border arrangement from the array environment definition
   extern const char *vertical_pipe_extract(const char *string);
 
   // removes placeholder pipe characters from columnalign

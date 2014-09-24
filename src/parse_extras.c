@@ -2,148 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parse_extras.h"
+#include "string_extras.h"
 #include "stack.h"
-
-char *replace_str(const char *str, const char *old, const char *new) {
-  char *ret, *r;
-  const char *p, *q;
-  size_t oldlen = strlen(old);
-  size_t count, retlen, newlen = strlen(new);
-
-  if (oldlen != newlen) {
-    for (count = 0, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen)
-      count++;
-    /* this is undefined if p - str > PTRDIFF_MAX */
-    retlen = p - str + strlen(p) + count * (newlen - oldlen);
-  } else
-    retlen = strlen(str);
-
-  if ((ret = malloc(retlen + 1)) == NULL)
-    return NULL;
-
-  for (r = ret, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen) {
-    /* this is undefined if q - p > PTRDIFF_MAX */
-    int l = q - p;
-    memcpy(r, p, l);
-    r += l;
-    memcpy(r, new, newlen);
-    r += newlen;
-  }
-  strcpy(r, p);
-
-  return ret;
-}
-
-char *substring(char *inpStr, int startPos, int strLen) {
-  /* Cannot do anything with NULL. */
-
-  if (inpStr == NULL) return NULL;
-
-  char *buff;
-
-  /* All negative positions to go from end, and cannot
-     start before start of string, force to start. */
-
-  if (startPos < 0)
-      startPos = strlen (inpStr) + startPos;
-  if (startPos < 0)
-      startPos = 0;
-
-  /* Force negative lengths to zero and cannot
-     start after end of string, force to end. */
-
-  if (strLen < 0)
-      strLen = 0;
-  if (startPos > strlen (inpStr))
-      startPos = strlen (inpStr);
-
-  /* Adjust length if source string too short. */
-
-  if (strLen > strlen (&inpStr[startPos]))
-      strLen = strlen (&inpStr[startPos]);
-
-  /* Get long enough string from heap, return NULL if no go. */
-
-  if ((buff = malloc(strLen + 1)) == NULL)
-      return NULL;
-
-  /* Transfer string section and return it. */
-
-  memcpy (buff, &(inpStr[startPos]), strLen);
-  buff[strLen] = '\0';
-
-  return buff;
-}
-
-char *join(char* first, char* second) {
-  int  first_length =  strlen(first);
-  int second_length = strlen(second);
-
-  char * copy = (char *) malloc(first_length + second_length  + 1); // +1 for the zero-terminator
-
-  if (copy) {
-    strcpy(copy, first);
-    strcat(copy, second);
-  }
-
-  return copy;
-}
-
-void remove_last_char(char* str) {
-  size_t len = strlen(str);
-  memmove(str, str, len-1);
-  str[len-1] = 0;
-}
-
-void insert_substring(char **dest, char *ins, size_t location) {
-  size_t origsize = 0;
-  size_t resize = 0;
-  size_t inssize = 0;
-  size_t destsize = strlen(&dest) + 1;
-
-  if (!dest || !ins)
-      return;  // invalid parameter
-
-  if (strlen(ins) == 0)
-    return; // invalid parameter
-
-  origsize = strlen(*dest);
-  inssize = strlen(ins);
-  resize = strlen(*dest) + inssize + 1; // 1 for the null terminator
-
-  if (location > origsize)
-    return; // invalid location, out of original string
-
-  // resize string to accommodate inserted string if necessary
-  if (destsize < resize)
-    *dest = (char*)realloc(*dest, resize);
-
-  // move string to make room for insertion
-  memmove(&(*dest)[location+inssize], &(*dest)[location], origsize - location);
-  (*dest)[origsize + inssize] = '\0'; // null terminate string
-
-  // insert string
-  memcpy(&(*dest)[location], ins, inssize);
-}
-
-void strrev(char *str) {
-  char temp, *end_ptr;
-
-  /* If str is NULL or empty, do nothing */
-  if( str == NULL || !(*str) )
-    return;
-
-  end_ptr = str + strlen(str) - 1;
-
-  /* Swap the chars */
-  while( end_ptr > str ) {
-    temp = *str;
-    *str = *end_ptr;
-    *end_ptr = temp;
-    str++;
-    end_ptr--;
-  }
-}
 
 void initHlineDataArray(hlineDataArray *a, size_t initialSize)
 {
@@ -190,8 +50,10 @@ void sortHLineDataArray(hlineDataArray *a) {
 
 void deleteHlineDataArray(hlineDataArray *a)
 {
+  int i;
+
   // Free all name variables of each array element first
-  for(int i = 0; i <a->used; i++)
+  for(i = 0; i <a->used; i++)
   {
     free(a->array[i].attr_strings);
     a->array[i].attr_strings = NULL;
@@ -207,13 +69,16 @@ void deleteHlineDataArray(hlineDataArray *a)
 
 char * hline_replace(const char *string) {
   stackT array_stack;
-  char *tok = NULL, *chunk = NULL;
+  stackElementT stack_item, last_stack_item;
+
+  char *tok = NULL;
   char *newstr = strdup(string);
   char *line = strtok(strdup(string), "\n");
+  char *attr_strings = "";
+
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline";
-  char *s = newstr, *e = newstr, *attr_strings = "";
-  stackElementT stack_item, last_stack_item;
-  int n_count = 0, start = 0, end = 0, offset = 0, attr_strings_len = 0, str_len = 0;
+
+  int start = 0, offset = 0, attr_strings_len = 0, str_len = 0;
   hlineDataArray hline_data_array;
   hlineData hline_data;
 
@@ -261,29 +126,19 @@ char * hline_replace(const char *string) {
 
       if (attr_strings_len != 0) {
         // array is form of \begin{array}[t]{cc..c}
-        if ( (tok = strstr(last_stack_item.line, "]{")) != NULL && strncmp(attr_strings, "", 1) != 0) {
-          offset = last_stack_item.line_pos + (tok - last_stack_item.line);
-          // we cut the last char because we can skip the first row
-          remove_last_char(attr_strings);
-          // we reverse the string, because we're going backwards
-          strrev(attr_strings);
-          attr_strings = join(join("(", attr_strings), ")");
-          hline_data.attr_strings = strdup(attr_strings);
-          hline_data.offset_pos = offset + 1;
-          insertHlineDataArray(&hline_data_array, hline_data);
+        if ( (tok = strstr(last_stack_item.line, "]{")) == NULL) {
+          tok = strstr(last_stack_item.line, "}{"); // array is form of \begin{array}{cc..c}
         }
-        // array is form of \begin{array}{cc..c}
-        else if ( (tok = strstr(last_stack_item.line, "}{")) != NULL && strncmp(attr_strings, "", 1) != 0) {
-          offset = last_stack_item.line_pos + (tok - last_stack_item.line);
-          // we cut the last char because we can skip the first row
-          remove_last_char(attr_strings);
-          // we reverse the string, because we're going backwards
-          strrev(attr_strings);
-          attr_strings = join(join("(", attr_strings), ")");
-          hline_data.attr_strings = strdup(attr_strings);
-          hline_data.offset_pos = offset + 1;
-          insertHlineDataArray(&hline_data_array, hline_data);
-        }
+
+        offset = last_stack_item.line_pos + (tok - last_stack_item.line);
+        // we cut the last char because we can skip the first row
+        remove_last_char(attr_strings);
+        // we reverse the string, because we're going backwards
+        strrev(attr_strings);
+        attr_strings = join(join("(", attr_strings), ")");
+        hline_data.attr_strings = strdup(attr_strings);
+        hline_data.offset_pos = offset + 1;
+        insertHlineDataArray(&hline_data_array, hline_data);
       }
 
       attr_strings = "";
@@ -293,8 +148,8 @@ char * hline_replace(const char *string) {
     line = strtok(NULL, "\n");
   }
 
-  // sort array by highes value first, so that we can insert to newstr from the
-  // bottom to the top (ensuring line numbers stay accurate)
+  // sort array by highest values first, so that we can insert to newstr from the
+  // bottom to the top (ensuring line numbers don't shift)
   sortHLineDataArray(&hline_data_array);
   for (int i = 0; i < hline_data_array.used; i++) {
     insert_substring(&newstr, hline_data_array.array[i].attr_strings, hline_data_array.array[i].offset_pos);
