@@ -17,6 +17,8 @@ CLOBBER.include('lib/*{.so,.bundle}')
 
 desc 'Build the itex2MML bindings'
 task :build_ext do
+  host_os = RbConfig::CONFIG['host_os']
+
   # generate Ruby file with Swig
   Dir.chdir("src/") do
     sh "make ruby"
@@ -40,9 +42,9 @@ task :build_ext do
   end
 
   # move the bundle to the lib folder
-  if ENV['TRAVIS']
-    cp "ext/itex2MML.so", "lib/"
-  else
+  if host_os =~ /darwin|mac os/
     cp "ext/itex2MML.bundle", "lib/"
+  else
+    cp "ext/itex2MML.so", "lib/"
   end
 end
