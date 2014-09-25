@@ -199,6 +199,10 @@ const char *vertical_pipe_extract(const char *string) {
     token = strtok(NULL, " ");
   }
 
+  // an empty string here angers Lasem
+  if (strncmp(columnlines, "columnlines=\"\0", 14) == 0)
+    columnlines = "columnlines=\"none";
+
   return columnlines;
 }
 
