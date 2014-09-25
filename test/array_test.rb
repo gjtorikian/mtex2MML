@@ -166,4 +166,20 @@ $$
 
     assert_equal(@itex.filter(text), fixture_file("array_nesting"))
   end
+
+  def test_strip_excess_whitespace_in_array_attributes
+
+    text = '''
+$$
+\begin{array}{c|c}
+\mathrm{Bad} & \mathrm{Better} \\\\
+\hline \\\\
+\iiint_V f(x)dz dy dx & \iiint_V f(x)\,dz\,dy\,dx
+\end{array}
+$$
+  '''
+
+    write_to_test_file @itex.filter(text)
+    assert_equal(@itex.filter(text), fixture_file("strip_excess_whitespace_in_array_attributes"))
+  end
 end

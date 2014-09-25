@@ -5,6 +5,12 @@
 #include "string_extras.h"
 #include "stack.h"
 
+#ifdef FLIP_OFFSET_VAL
+#define OFFSET_VAL 0
+#else
+#define OFFSET_VAL 1
+#endif
+
 void initHlineDataArray(hlineDataArray *a, size_t initialSize)
 {
   // Allocate initial space
@@ -137,7 +143,7 @@ char * hline_replace(const char *string) {
         strrev(attr_strings);
         attr_strings = join(join("(", attr_strings), ")");
         hline_data.attr_strings = strdup(attr_strings);
-        hline_data.offset_pos = offset + 1;
+        hline_data.offset_pos = offset + OFFSET_VAL;
         insertHlineDataArray(&hline_data_array, hline_data);
       }
 
@@ -202,6 +208,9 @@ const char *vertical_pipe_extract(const char *string) {
   // an empty string here angers Lasem
   if (strncmp(columnlines, "columnlines=\"\0", 14) == 0)
     columnlines = "columnlines=\"none";
+  // an empty space also angers Lasem
+  else
+    remove_last_char(columnlines);
 
   return columnlines;
 }
