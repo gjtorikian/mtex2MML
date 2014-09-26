@@ -128,6 +128,22 @@ char * env_replacements(const char *string) {
         else {
           attr_rowlines = join(attr_rowlines, "0");
         }
+
+        if (strstr(last_stack_item.line, line_separator) != NULL) {
+          if ( (tok = strstr(last_stack_item.line, em_pattern_begin)) != NULL) {
+            temp = tok + 1;
+            if ( (tok = strstr(temp, "]")) != NULL) {
+              offset = (int)(tok - temp);
+              em_str = malloc(offset);
+              memmove(em_str, temp, offset);
+              attr_rowspacings = join(join(attr_rowspacings, em_str), "|");
+              free(em_str);
+            }
+          }
+          else {
+            attr_rowspacings = join(attr_rowspacings, "~");
+          }
+        }
       }
 
       if (!StackIsEmpty(&array_stack)) // should never be empty, assuming appropriately closed array
