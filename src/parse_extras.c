@@ -168,31 +168,35 @@ char * hline_replace(const char *string) {
 }
 
 const char *vertical_pipe_extract(const char *string) {
-  char *orig = strdup(string), *token = strtok(orig, " ");
+  char *orig = strdup(string);
   char *columnlines = "", *previous_column = "";
   int i = 0;
 
+  if (strncmp(orig, "s", 1) == 0) {
+    columnlines = "frame=\"solid\" columnlines=\"";
+    remove_first_char(orig);
+  }
+  else if (strncmp(orig, "d", 1) == 0) {
+    columnlines = "frame=\"dashed\" columnlines=\"";
+    remove_first_char(orig);
+  }
+  else {
+    columnlines = "columnlines=\"";
+  }
+
+  char *token = strtok(orig, " ");
+
   while (token != NULL) {
     if (strncmp(token, "s", 1) == 0) {
-      if (i == 0)
-        columnlines = "frame=\"solid\" columnlines=\"";
-      else {
-        previous_column = "s";
-        columnlines = join(columnlines, "solid ");
-      }
+      previous_column = "s";
+      columnlines = join(columnlines, "solid ");
     }
     else if (strncmp(token, "d", 1) == 0) {
-      if (i == 0)
-        columnlines = "frame=\"dashed\" columnlines=\"";
-      else {
-        previous_column = "d";
-        columnlines = join(columnlines, "dashed ");
-      }
+      previous_column = "d";
+      columnlines = join(columnlines, "dashed ");
     }
     else {
-      if (i == 0) // we must skip the first blank col
-        columnlines = "columnlines=\"";
-      else if (i > 1) {
+      if (i >= 1) { // we must skip the first blank col
         // only if there is no previous border should a border be considered, eg. "cc", not "c|c"
         if (strncmp(previous_column, "s", 1) != 0 && strncmp(previous_column, "d", 1) != 0) {
           columnlines = join(columnlines, "none ");

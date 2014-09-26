@@ -53,6 +53,11 @@ void remove_last_char(char* str) {
   str[len-1] = 0;
 }
 
+void remove_first_char(char* str) {
+  size_t len = strlen(str);
+  memmove(str, str + 1, len);
+}
+
 void insert_substring(char **dest, char *ins, size_t location) {
   size_t origsize = 0;
   size_t resize = 0;

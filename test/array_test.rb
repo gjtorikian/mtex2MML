@@ -179,7 +179,21 @@ $$
 $$
   '''
 
-    write_to_test_file @itex.filter(text)
     assert_equal(@itex.filter(text), fixture_file("strip_excess_whitespace_in_array_attributes"))
+  end
+
+  def test_augmented_matrix
+
+    text = '''
+$$ \left[
+    \begin{array}{cc|c}
+      1&2&3\\\\
+      4&5&6
+    \end{array}
+\right] $$
+    '''
+
+    write_to_test_file @itex.filter(text)
+    assert_equal(@itex.filter(text), fixture_file("augmented_matrix"))
   end
 end
