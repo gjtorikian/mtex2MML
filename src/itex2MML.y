@@ -1845,7 +1845,7 @@ colspan: COLSPAN ATTRLIST {
 %%
 
 const char *format_additions(const char *string) {
-  return hline_replace(strdup(string));
+  return env_replacements(strdup(string));
 }
 
 char * itex2MML_parse (const char * buffer, unsigned long length)

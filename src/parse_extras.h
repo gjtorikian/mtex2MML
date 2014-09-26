@@ -6,35 +6,36 @@ extern "C" {
 #endif
 
   typedef struct {
-    char *attr_strings;
+    char *attribute;
     int  offset_pos;
-  } hlineData;
+  } symbolData;
 
   // array of structs
   typedef struct
   {
-    hlineData *array;
+    symbolData *array;
     size_t used;
     size_t size;
-  } hlineDataArray;
+  } symbolDataArray;
 
-  // set up array of hlineData
-  extern void initHlineDataArray(hlineDataArray *a, size_t initialSize);
+  // set up array of symbols (like hlines)
+  extern void initSymbolDataArray(symbolDataArray *a, size_t initialSize);
 
-  // insert into hlineData array
-  extern void insertHlineDataArray(hlineDataArray *a, hlineData element);
+  // insert into symbol array
+  extern void insertSymbolDataArray(symbolDataArray *a, symbolData element);
 
   // sort the array based on offset_pos
-  extern void sortHLineDataArray(hlineDataArray *a);
+  extern void sortSymbolDataArray(symbolDataArray *a);
 
   // destroyes the array
-  extern void deleteHlineDataArray(hlineDataArray *a);
+  extern void deleteSymbolDataArray(symbolDataArray *a);
 
-  // Move the `hline` and `hlinedash` symbols inline with the `\begin{array}` line
-  // This is so that the Bison parser can properly act on these.
-
-  // In order to properly address arrays, we need to parse them, find their hlines, and then
-  // modify the starting environment declaration to point out where those hlines are.
+  // Move various symbols not easily supported inline with the `\begin` line
+  // This is so that the Bison parser can properly act on these. For example,
+  // `\hline`, `\hlinedash`, or `\\[2ex]` declerations.
+  //
+  // In order to properly address these situations, we need to parse them, find their symbols,
+  // and then modify the starting environment declaration to point out where those symbols are.
   //
   // Suppose there is an array like:
   //
@@ -58,12 +59,11 @@ extern "C" {
   //   \end{array}
   // \end{array}
   //
-  // The hline_replace function will push every line onto a stack. When an \end
+  // The env_replacements function will push every line onto a stack. When an \end
   // is detected, it starts popping off the stack until it reaches the corresponding
-  // \begin. It then modifies that line with attr_strings, an arrangement of the
-  // the \hlines encountered while popping lines off.
-
-  extern char * hline_replace (const char *string);
+  // \begin. It then modifies that line with attribute strings, an arrangement of the
+  // the symbols encountered while popping lines off.
+  extern char * env_replacements(const char *string);
 
   // determines the column border arrangement from the array environment definition
   extern const char *vertical_pipe_extract(const char *string);
