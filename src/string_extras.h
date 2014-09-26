@@ -17,6 +17,9 @@ extern "C" {
   // Remove the final character in a string
   extern void remove_last_char(char* str);
 
+  // Remove the first character in a string
+  extern void remove_first_char(char* str);
+
   // Insert a substring (`ins`) into a string (`dest`) at `location`
   extern void insert_substring(char **dest, char *ins, size_t location);
 
