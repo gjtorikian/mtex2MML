@@ -40,7 +40,7 @@ void insertSymbolDataArray(symbolDataArray *a, symbolData element)
   a->used++;
 }
 
-void sortHLineDataArray(symbolDataArray *a) {
+void sortSymbolDataArray(symbolDataArray *a) {
   int i, j, n = a->used;
 
   for(i = 1;i < n; i++) {
@@ -175,7 +175,7 @@ char * env_replacements(const char *string) {
 
   // sort array by highest values first, so that we can insert to new_start from the
   // bottom to the top (ensuring line numbers don't shift)
-  sortHLineDataArray(&symbol_data_array);
+  sortSymbolDataArray(&symbol_data_array);
   for (i = 0; i < symbol_data_array.used; i++) {
     insert_substring(&new_start, symbol_data_array.array[i].attribute, symbol_data_array.array[i].offset_pos);
     printf("Row lines %s\n", new_start);
