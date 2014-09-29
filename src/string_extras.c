@@ -127,6 +127,7 @@ void convertToEm(char *str) {
   strncat(type, str + i, len);
 
   // TODO: the reallocation is necessary, but the size is an invention
+  // How can I make it more accurate?
   str = realloc(str, len * 2);
 
   if (strncmp(type, "em", 2) == 0) {
@@ -163,4 +164,25 @@ void convertToEm(char *str) {
 
   free(number);
   free(type);
+}
+
+int empty_row_spacings(char *str)
+{
+  int len = strlen(str), i = 0;
+
+  // Looking for a repeating pattern of "0em|", so bail if this fails
+  if (len % 4 != 0)
+    return 0;
+
+  char *substr = malloc(4);
+  for (i = 0; i < len; i += 4) {
+    strncpy(substr, str + i, 4);
+    if (strncmp(str, "0em|", 4) != 0) {
+      free(substr);
+      return 0;
+    }
+  }
+
+  free(substr);
+  return 1;
 }

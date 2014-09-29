@@ -1573,11 +1573,47 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($7);
   itex2MML_free_string($9);
 }
+| BEGINENV ARRAY ARRAYALIGN ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($9);
+  char *column_align = remove_excess_pipe_chars($9);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" rowspacing=\"");
+  char * s2 = itex2MML_copy3(s1, $5, "\" rowlines=\"");
+  char * s3 = itex2MML_copy3(s2, $7, "\" columnalign=\"");
+  char * s4 = itex2MML_copy3(s3, column_align, "\" ");
+  char * s5 = itex2MML_copy3(s4, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s5, $11, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string(s4);
+  itex2MML_free_string(s5);
+  itex2MML_free_string($3);
+  itex2MML_free_string($7);
+  itex2MML_free_string($9);
+  itex2MML_free_string($11);
+}
+| BEGINENV ARRAY ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($8);
+  char *column_align = remove_excess_pipe_chars($8);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char * s2 = itex2MML_copy3(s1, $6,"\" columnalign=\"");
+  char * s3 = itex2MML_copy3(s2, column_align, "\" ");
+  char * s4 = itex2MML_copy3(s3, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s4, $10, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string(s4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+  itex2MML_free_string($10);
+}
 | BEGINENV ARRAY ST rowSpacingDefList END columnAlignList END tableRowList ENDENV ARRAY {
   char *pipe_chars = vertical_pipe_extract($6);
   char *column_align = remove_excess_pipe_chars($6);
 
-  printf("Guess %s", $4);
   char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" columnalign=\"");
   char * s2 = itex2MML_copy3(s1, column_align, "\" ");
   char * s3 = itex2MML_copy3(s2, pipe_chars, "\">");
@@ -1885,7 +1921,7 @@ colspan: COLSPAN ATTRLIST {
 %%
 
 const char *format_additions(const char *string) {
-  return env_replacements(strdup(string));
+  return env_replacements(string);
 }
 
 char * itex2MML_parse (const char * buffer, unsigned long length)
@@ -1905,6 +1941,7 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
       itex2MML_free_string (mathml);
       mathml = 0;
     }
+
   return mathml;
 }
 

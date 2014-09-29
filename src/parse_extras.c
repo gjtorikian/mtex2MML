@@ -96,11 +96,16 @@ char * env_replacements(const char *string) {
   // set up the array stack
   StackInit(&array_stack, strlen(new_start));
   initSymbolDataArray(&hline_data_array, 5);
-  initSymbolDataArray(&row_spacing_data_array, 0);
+  initSymbolDataArray(&row_spacing_data_array, 1);
 
-  // if not an environment, don't both going on
-  if ((strstr(string, from) == NULL && strstr(string, until) == NULL))
+  // if not an environment, don't bother going on
+  if ((strstr(string, from) == NULL && strstr(string, until) == NULL)) {
+    StackDestroy(&array_stack);
+    deleteSymbolDataArray(&hline_data_array);
+    deleteSymbolDataArray(&row_spacing_data_array);
+
     return string;
+  }
 
   while (line != NULL) {
     str_len = strlen(line) + 1;
@@ -148,7 +153,7 @@ char * env_replacements(const char *string) {
             }
           }
           else {
-            row_spacing_data.attribute = "~";
+            row_spacing_data.attribute = "0em";
             row_spacing_data.offset_pos = -1; // this value is not really important
             insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
           }
@@ -178,12 +183,19 @@ char * env_replacements(const char *string) {
         strrev(attr_rowlines);
         attr_rowlines = join(join("(", attr_rowlines), ")");
 
+        for (i = row_spacing_data_array.used - 1; i >= 0; i--) {
+          attr_rowspacing = join(join(attr_rowspacing, row_spacing_data_array.array[i].attribute), "|");
+        }
+
         if (strlen(attr_rowspacing) > 0) {
-          for (i = row_spacing_data_array.used - 1; i >= 0; i--) {
-            attr_rowspacing = join(join(attr_rowspacing, row_spacing_data_array.array[i].attribute), "|");
+          if (empty_row_spacings(attr_rowspacing) == 1) {
+            attr_rowspacing = "0.5ex";
           }
-          // last char is a pipe (|)
-          remove_last_char(attr_rowspacing);
+          else {
+            // last char is a pipe (|)
+            remove_last_char(attr_rowspacing);
+          }
+
           attr_rowspacing = join(join("<", attr_rowspacing), ">");
         }
 
@@ -193,6 +205,7 @@ char * env_replacements(const char *string) {
       }
 
       attr_rowlines = "";
+      attr_rowspacing = "";
       attr_rowlines_len = 0;
     }
 
@@ -209,6 +222,7 @@ char * env_replacements(const char *string) {
 
   StackDestroy(&array_stack);
   deleteSymbolDataArray(&hline_data_array);
+  deleteSymbolDataArray(&row_spacing_data_array);
 
   return new_start;
 }
