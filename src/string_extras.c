@@ -107,3 +107,60 @@ void strrev(char *str) {
     end_ptr--;
   }
 }
+
+EM_PER_INCH = 7.2;
+void convertToEm(char *str) {
+  size_t len = strlen(str);
+  char *number, *type, *conversion;
+  int i = 0;
+  double numeric_portion = 0;
+
+  while(isdigit(str[i]))
+    i++;
+
+  numeric_portion = i;
+  number = malloc(numeric_portion);
+  strncat(number, str, numeric_portion);
+  numeric_portion = atof(number);
+
+  type = malloc(len - i);
+  strncat(type, str + i, len);
+
+  // TODO: the reallocation is necessary, but the size is an invention
+  str = realloc(str, len * 2);
+
+  if (strncmp(type, "em", 2) == 0) {
+    /* no op! */
+  }
+  else if (strncmp(type, "ex", 2) == 0) {
+    numeric_portion = numeric_portion * 0.43;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+  else if (strncmp(type, "pt", 2) == 0) {
+    numeric_portion = numeric_portion / 10;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+  else if (strncmp(type, "pc", 2) == 0) {
+    numeric_portion = numeric_portion * 1.2;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+  else if (strncmp(type, "in", 2) == 0) {
+    numeric_portion = numeric_portion * EM_PER_INCH;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+  else if (strncmp(type, "cm", 2) == 0) {
+    numeric_portion = numeric_portion * EM_PER_INCH / 2.54;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+  else if (strncmp(type, "mm", 2) == 0) {
+    numeric_portion = numeric_portion * EM_PER_INCH / 25.4;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+  else if (strncmp(type, "mu", 2) == 0) {
+    numeric_portion = numeric_portion / 18;
+    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+  }
+
+  free(number);
+  free(type);
+}

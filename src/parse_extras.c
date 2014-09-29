@@ -43,8 +43,8 @@ void insertSymbolDataArray(symbolDataArray *a, symbolData element)
 void sortSymbolDataArray(symbolDataArray *a) {
   int i, j, n = a->used;
 
-  for(i = 1;i < n; i++) {
-    for(j = 0;j < n - i; j++) {
+  for(i = 1; i < n; i++) {
+    for(j = 0; j < n - i; j++) {
       if(a->array[j].offset_pos < a->array[j+1].offset_pos) {
           symbolData temp = a->array[j];
           a->array[j] = a->array[j+1];
@@ -80,19 +80,23 @@ char * env_replacements(const char *string) {
   char *tok = NULL;
   char *new_start = strdup(string);
   char *line = strtok(strdup(string), "\n");
-  char *attr_rowlines = "", *attr_rowspacings = "", *em_str, *temp = "";
+  char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "";
 
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
              *line_separator = "\\\\",
              *em_pattern_begin = "[";
 
-  int start = 0, offset = 0, attr_rowlines_len = 0, attr_rowspacings_len = 0, str_len = 0, i = 0;
-  symbolDataArray symbol_data_array;
-  symbolData symbol_data;
+  int start = 0, offset = 0, attr_rowlines_len = 0, str_len = 0, i = 0;
+  symbolDataArray hline_data_array;
+  symbolData hline_data;
+
+  symbolDataArray row_spacing_data_array;
+  symbolData row_spacing_data;
 
   // set up the array stack
   StackInit(&array_stack, strlen(new_start));
-  initSymbolDataArray(&symbol_data_array, 5);
+  initSymbolDataArray(&hline_data_array, 5);
+  initSymbolDataArray(&row_spacing_data_array, 0);
 
   // if not an environment, don't both going on
   if ((strstr(string, from) == NULL && strstr(string, until) == NULL))
@@ -112,7 +116,6 @@ char * env_replacements(const char *string) {
       while (!StackIsEmpty(&array_stack) && strstr(StackTop(&array_stack).line, from) == NULL) {
         last_stack_item = StackPop(&array_stack);
         attr_rowlines_len = strlen(attr_rowlines);
-        attr_rowspacings_len = strlen(attr_rowspacings);
 
         // looking for a line match
         if (strstr(last_stack_item.line, hline) != NULL) {
@@ -136,12 +139,18 @@ char * env_replacements(const char *string) {
               offset = (int)(tok - temp);
               em_str = malloc(offset);
               memmove(em_str, temp, offset);
-              attr_rowspacings = join(join(attr_rowspacings, em_str), "|");
+              // MathML always expectes "em" points
+              convertToEm(em_str);
+              row_spacing_data.attribute = em_str;
+              row_spacing_data.offset_pos = -1; // this value is not really important
+              insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
               free(em_str);
             }
           }
           else {
-            attr_rowspacings = join(attr_rowspacings, "~");
+            row_spacing_data.attribute = "~";
+            row_spacing_data.offset_pos = -1; // this value is not really important
+            insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
           }
         }
       }
@@ -151,19 +160,36 @@ char * env_replacements(const char *string) {
 
       if (attr_rowlines_len != 0) {
         // array is form of \begin{array}[t]{cc..c}
-        if ( (tok = strstr(last_stack_item.line, "]{")) == NULL) {
-          tok = strstr(last_stack_item.line, "}{"); // array is form of \begin{array}{cc..c}
+        tok = strstr(last_stack_item.line, "]{");
+        if (tok == NULL) {
+          // array is form of \begin{array}{cc..c}
+          tok = strstr(last_stack_item.line, "}{");
+        }
+        if (tok == NULL) {
+          // not an array, but rather, some env, like \begin{cases}
+          tok = strstr(last_stack_item.line, "}");
         }
 
         offset = last_stack_item.line_pos + (tok - last_stack_item.line);
         // we cut the last char because we can skip the first row
         remove_last_char(attr_rowlines);
+
         // we reverse the string, because we're going backwards
         strrev(attr_rowlines);
         attr_rowlines = join(join("(", attr_rowlines), ")");
-        symbol_data.attribute = strdup(attr_rowlines);
-        symbol_data.offset_pos = offset + OFFSET_VAL;
-        insertSymbolDataArray(&symbol_data_array, symbol_data);
+
+        if (strlen(attr_rowspacing) > 0) {
+          for (i = row_spacing_data_array.used - 1; i >= 0; i--) {
+            attr_rowspacing = join(join(attr_rowspacing, row_spacing_data_array.array[i].attribute), "|");
+          }
+          // last char is a pipe (|)
+          remove_last_char(attr_rowspacing);
+          attr_rowspacing = join(join("<", attr_rowspacing), ">");
+        }
+
+        hline_data.attribute = join(attr_rowspacing, attr_rowlines);
+        hline_data.offset_pos = offset + OFFSET_VAL;
+        insertSymbolDataArray(&hline_data_array, hline_data);
       }
 
       attr_rowlines = "";
@@ -173,16 +199,16 @@ char * env_replacements(const char *string) {
     line = strtok(NULL, "\n");
   }
 
-  // sort array by highest values first, so that we can insert to new_start from the
-  // bottom to the top (ensuring line numbers don't shift)
-  sortSymbolDataArray(&symbol_data_array);
-  for (i = 0; i < symbol_data_array.used; i++) {
-    insert_substring(&new_start, symbol_data_array.array[i].attribute, symbol_data_array.array[i].offset_pos);
-    printf("Row lines %s\n", new_start);
+  // sort array by highest values first, so that we can insert to new_start from
+  // the bottom to the top (ensuring line numbers don't shift)
+  sortSymbolDataArray(&hline_data_array);
+
+  for (i = 0; i < hline_data_array.used; i++) {
+    insert_substring(&new_start, hline_data_array.array[i].attribute, hline_data_array.array[i].offset_pos);
   }
 
   StackDestroy(&array_stack);
-  deleteSymbolDataArray(&symbol_data_array);
+  deleteSymbolDataArray(&hline_data_array);
 
   return new_start;
 }
