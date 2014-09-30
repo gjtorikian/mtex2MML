@@ -1486,13 +1486,26 @@ emptymrow: EMPTYMROW {
   $$ = itex2MML_copy_string("<mrow/>");
 };
 
-mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
-  $$ = itex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow>");
-  itex2MML_free_string($3);
+mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV MATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
 }
 |  BEGINENV GATHERED tableRowList ENDENV GATHERED {
   $$ = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"1.0ex\">", $3, "</mtable></mrow>");
   itex2MML_free_string($3);
+| BEGINENV MATRIX ST rowLinesDefList END tableRowList ENDENV MATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
 }
 | BEGINENV PMATRIX tableRowList ENDENV PMATRIX {
   $$ = itex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>)</mo></mrow>");

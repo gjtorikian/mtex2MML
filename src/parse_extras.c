@@ -188,6 +188,11 @@ char * env_replacements(const char *string) {
 
         // we reverse the string, because we're going backwards
         strrev(attr_rowlines);
+
+        // empty rowlines should be reset
+        if (strlen(attr_rowlines) == 0)
+          attr_rowlines = join(attr_rowlines, "0");
+
         attr_rowlines = join(join("(", attr_rowlines), ")");
 
         for (i = row_spacing_data_array.used - 1; i >= 0; i--) {

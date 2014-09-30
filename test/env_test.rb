@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'test_helper'
 
 class AmsMathTex2MMLEnvTest < MiniTest::Test
@@ -7,6 +6,46 @@ class AmsMathTex2MMLEnvTest < MiniTest::Test
     @itex = Itex2MML::Parser.new
   end
 
+  def test_matrix_ex_spacing
+    text = '''
+$$
+\left\{
+  \begin{matrix} 1 & 2 & 3 \\\\[40ex]
+4 & 5 & 6
+\end{matrix}
+\right)
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("matrix_ex_spacing"))
+  end
+
+  def test_matrix_no_ex_spacing
+    text = '''
+$$
+\left\{
+  \begin{matrix} 1 & 2 & 3 \\\\
+4 & 5 & 6
+\end{matrix}
+\right)
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("matrix_no_ex_spacing"))
+  end
+
+  def test_matrix_no_lines
+    text = '''
+$$
+\left\{
+  \begin{matrix} 1 & 2 & 3
+\end{matrix}
+\right)
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("matrix_no_lines"))
+  end
   def test_cases_ex_spacing
     text = '''
 $$

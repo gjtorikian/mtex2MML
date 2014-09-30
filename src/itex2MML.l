@@ -1000,13 +1000,13 @@ int itex2MML_displaymode = 0;
 }
 
 <MATHENV>{
-"\{matrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return MATRIX;}
 "\{pmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return PMATRIX;}
 "\{bmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return BMATRIX;}
 "\{Bmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return BBMATRIX;}
 "\{vmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return VMATRIX;}
 "\{Vmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return VVMATRIX;}
 "\{smallmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return SMALLMATRIX;}
+"\{matrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return MATRIX;}
 "\{cases\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return CASES;}
 "\{aligned\}" {itex2MML_env_start = 0; BEGIN(MATH); return ALIGNED;}
 "\{gathered\}" {itex2MML_env_start = 0; BEGIN(MATH); return GATHERED;}
