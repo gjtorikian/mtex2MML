@@ -1,12 +1,12 @@
 require 'test_helper'
 
-class AmsMathTex2MMLArrayTest < MiniTest::Test
+class AmsMathTex2MMLEnvTest < MiniTest::Test
 
   def setup
     @itex = Itex2MML::Parser.new
   end
 
-  def test_ex_spacing
+  def test_cases_ex_spacing
     text = '''
 $$
 f(n) =
@@ -17,7 +17,6 @@ f(n) =
 $$
 '''
 
-    write_to_test_file @itex.filter(text)
-    assert_equal(@itex.filter(text), fixture_file("ex_spacing"))
+    assert_equal(@itex.filter(text), fixture_file("cases_ex_spacing"))
   end
 end
