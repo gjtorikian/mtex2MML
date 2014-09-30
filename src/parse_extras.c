@@ -77,7 +77,7 @@ char * env_replacements(const char *string) {
   stackT array_stack;
   stackElementT stack_item, last_stack_item;
 
-  char *tok = NULL;
+  char *tok = NULL, *at_top = NULL;
   char *new_start = strdup(string);
   char *line = strtok(strdup(string), "\n");
   char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "";
@@ -118,9 +118,15 @@ char * env_replacements(const char *string) {
     StackPush(&array_stack, stack_item);
 
     if (strstr(line, until) != NULL) {
-      while (!StackIsEmpty(&array_stack) && strstr(StackTop(&array_stack).line, from) == NULL) {
+      while (!StackIsEmpty(&array_stack)) {
         last_stack_item = StackPop(&array_stack);
         attr_rowlines_len = strlen(attr_rowlines);
+        at_top = strstr(last_stack_item.line, from);
+
+        // we've reached the top, but there looks like there might be some data
+        if (at_top != NULL && strstr(last_stack_item.line, line_separator) == NULL) {
+          break;
+        }
 
         // looking for a line match
         if (strstr(last_stack_item.line, hline) != NULL) {
@@ -158,10 +164,11 @@ char * env_replacements(const char *string) {
             insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
           }
         }
-      }
 
-      if (!StackIsEmpty(&array_stack)) // should never be empty, assuming appropriately closed array
-        last_stack_item = StackPop(&array_stack); // now, modify the starting \begin with the symbol info
+        // we've reached the top, so stop.
+        if (at_top != NULL)
+          break;
+      }
 
       if (attr_rowlines_len != 0) {
         // array is form of \begin{array}[t]{cc..c}

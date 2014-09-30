@@ -70,6 +70,7 @@ extern "C" {
 
   // removes placeholder pipe characters from columnalign
   extern const char *remove_excess_pipe_chars(const char *string);
+
 #ifdef __cplusplus
 }
 #endif
