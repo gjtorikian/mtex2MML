@@ -78,7 +78,7 @@ char * env_replacements(const char *string) {
   stackElementT stack_item, last_stack_item;
 
   char *tok = NULL, *at_top = NULL;
-  char *new_start = strdup(string);
+  char *new_environment = strdup(string);
   char *line = strtok(strdup(string), "\n");
   char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "";
 
@@ -94,7 +94,7 @@ char * env_replacements(const char *string) {
   symbolData row_spacing_data;
 
   // set up the array stack
-  StackInit(&array_stack, strlen(new_start));
+  StackInit(&array_stack, strlen(new_environment));
   initSymbolDataArray(&hline_data_array, 5);
   initSymbolDataArray(&row_spacing_data_array, 1);
 
@@ -219,19 +219,19 @@ char * env_replacements(const char *string) {
     line = strtok(NULL, "\n");
   }
 
-  // sort array by highest values first, so that we can insert to new_start from
+  // sort array by highest values first, so that we can insert to new_environment from
   // the bottom to the top (ensuring line numbers don't shift)
   sortSymbolDataArray(&hline_data_array);
 
   for (i = 0; i < hline_data_array.used; i++) {
-    insert_substring(&new_start, hline_data_array.array[i].attribute, hline_data_array.array[i].offset_pos);
+    insert_substring(&new_environment, hline_data_array.array[i].attribute, hline_data_array.array[i].offset_pos);
   }
 
   StackDestroy(&array_stack);
   deleteSymbolDataArray(&hline_data_array);
   deleteSymbolDataArray(&row_spacing_data_array);
 
-  return new_start;
+  return new_environment;
 }
 
 const char *vertical_pipe_extract(const char *string) {
