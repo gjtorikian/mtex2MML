@@ -1531,10 +1531,6 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   $$ = itex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow></mstyle>");
   itex2MML_free_string($3);
 }
-| BEGINENV CASES ST rowSpacingDefList END tableRowList ENDENV CASES {
-  $$ = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\">", $5, "</mtable></mrow></mrow>");
-  itex2MML_free_string($5);
-}
 | BEGINENV CASES ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV CASES {
   char * s1 = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
   char * s2 = itex2MML_copy3(s1, $6, "\" columnalign=\"left left\">");
@@ -1545,9 +1541,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   itex2MML_free_string($6);
   itex2MML_free_string($8);
 }
-| BEGINENV CASES tableRowList ENDENV CASES {
-  $$ = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\">", $3, "</mtable></mrow></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV CASES ST rowLinesDefList END tableRowList ENDENV CASES {
+  char * s1 = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"left left\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
 }
 | BEGINENV ALIGNED tableRowList ENDENV ALIGNED {
   $$ = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\">", $3, "</mtable></mrow>");

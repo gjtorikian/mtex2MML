@@ -46,6 +46,46 @@ $$
 
     assert_equal(@itex.filter(text), fixture_file("matrix_no_lines"))
   end
+
+  def test_gathered_ex_spacing
+    text = '''
+$$
+\begin{gathered}
+2x - 5y =  8 \\\\[2pt]
+3x^2 + 9y =  3a + c
+\end{gathered}
+$$
+'''
+
+    write_to_test_file @itex.filter(text)
+    assert_equal(@itex.filter(text), fixture_file("gathered_ex_spacing"))
+  end
+
+  def test_gathered_no_ex_spacing
+    text = '''
+$$
+\begin{gathered}
+2x - 5y =  8 \\\\
+3x^2 + 9y =  3a + c
+\end{gathered}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("gathered_no_ex_spacing"))
+  end
+
+  def test_gathered_no_lines
+    text = '''
+$$
+\begin{gathered}
+3x^2 + 9y =  3a + c
+\end{gathered}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("gathered_no_lines"))
+  end
+
   def test_cases_ex_spacing
     text = '''
 $$
@@ -58,5 +98,32 @@ $$
 '''
 
     assert_equal(@itex.filter(text), fixture_file("cases_ex_spacing"))
+  end
+
+  def test_cases_no_ex_spacing
+    text = '''
+$$
+f(n) =
+\begin{cases}
+\frac{n}{2},  & \text{if n is even} \\\\
+3n+1, & \text{if n is odd}
+\end{cases}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("cases_no_ex_spacing"))
+  end
+
+  def test_cases_no_lines
+    text = '''
+$$
+f(n) =
+\begin{cases}
+\frac{n}{2},  & \text{if n is even}
+\end{cases}
+$$
+'''
+
+    assert_equal(@itex.filter(text), fixture_file("cases_no_lines"))
   end
 end

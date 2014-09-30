@@ -128,38 +128,38 @@ void convertToEm(char *str) {
 
   // TODO: the reallocation is necessary, but the size is an invention
   // How can I make it more accurate?
-  str = realloc(str, len * 2);
+  str = realloc(str, len * 2 + 1);
 
   if (strncmp(type, "em", 2) == 0) {
     /* no op! */
   }
   else if (strncmp(type, "ex", 2) == 0) {
     numeric_portion = numeric_portion * 0.43;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
   else if (strncmp(type, "pt", 2) == 0) {
     numeric_portion = numeric_portion / 10;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
   else if (strncmp(type, "pc", 2) == 0) {
     numeric_portion = numeric_portion * 1.2;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
   else if (strncmp(type, "in", 2) == 0) {
     numeric_portion = numeric_portion * EM_PER_INCH;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
   else if (strncmp(type, "cm", 2) == 0) {
     numeric_portion = numeric_portion * EM_PER_INCH / 2.54;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
   else if (strncmp(type, "mm", 2) == 0) {
     numeric_portion = numeric_portion * EM_PER_INCH / 25.4;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
   else if (strncmp(type, "mu", 2) == 0) {
     numeric_portion = numeric_portion / 18;
-    snprintf(str, len * 2, "%0.2fem", numeric_portion);
+    snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
   }
 
   free(number);
