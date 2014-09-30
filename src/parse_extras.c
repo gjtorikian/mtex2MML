@@ -149,7 +149,7 @@ char * env_replacements(const char *string) {
             if ( (tok = strstr(temp, "]")) != NULL) {
               offset = (int)(tok - temp);
               em_str = malloc(offset);
-              memmove(em_str, temp, offset);
+              em_str = strndup(temp, offset);
               // MathML always expectes "em" points
               convertToEm(em_str);
               row_spacing_data.attribute = em_str;
