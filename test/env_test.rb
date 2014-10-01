@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AmsMathTex2MMLEnvTest < MiniTest::Test
+class MTex2MMLEnvTest < MiniTest::Test
 
   def setup
     @mtex = Mtex2MML::Parser.new
