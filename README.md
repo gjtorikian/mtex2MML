@@ -8,14 +8,35 @@ The goal of this particular fork is to implement as much of the AMS-TeX math as 
 
 ## Building
 
-You need GNU make to build the amsmath-tex2MML code. To build it:
+You need GNU make and [Flex](http://flex.sourceforge.net/) to build the amsmath-tex2MML code. To build it:
 
 ```
 cd src
 make
 ```
 
-The tests are written in Ruby, which is a leftover from  the original Ruby wrapper of this library. You need [SWIG](http://www.swig.org/) (>= 1.3) to run the tests. Then, just call `rake` to both make the Ruby library, and run the tests.
+The tests are written in Ruby, which is a leftover from the original Ruby wrapper of this library. You need [SWIG](http://www.swig.org/) (>= 1.3) to run the tests, and possibly `gem install minitest`. Then, just call `rake` to both make the Ruby library and run the tests.
+
+(I'll look to remove this requirement for a pure C test framework in The Future :tm:.)
+
+## Usage
+
+Pass in a string to this library and get a MathML representation as a result. *src/itex2MML.cc* provides an example of how you might do this.
+
+Inline equations are demarcated by `$...$`. Display equations are demarcated by `$$...$$` or `\[...\]`. You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not allowed.
+
+There are two main differences between itex and TeX:
+
+1.  In itex, `$pin$` is a single token, which is translated into `<mi>pin</mi>` in MathML. `$p i n$`, on the other hand, is three tokens, which is translated into `<mi>p</mi><mi>i</mi><mi>n</mi>` in MathML. TeX makes no distinction between these two.
+2.  It is possible (though probably not recommended) to insert MathML markup inside itex equations. So "\<" and "\>" are significant. To obtain a less-than or greater-than sign, you should use `\lt` or `\gt`, respectively.
+
+## What's supported?
+
+Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do.
+
+## Contributing
+
+Found a bug, or want to request a feature? Great! Check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information!
 
 ## License
 
