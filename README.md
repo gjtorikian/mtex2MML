@@ -1,12 +1,14 @@
 # mtex2MML
 
+[![Build Status](https://travis-ci.org/gjtorikian/mtex2MML.svg?branch=master)](https://travis-ci.org/gjtorikian/mtex2MML)
+
 This is a Bison grammar to convert TeX math into MathML. It is written in C, with Ruby used for the test suite. Rather than a standalone program, it's meant to be used within another library--perhaps wrapped in a higher-level language for easier use.
 
 This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distler/blog/itex2MML.html), originally written by Jacques Distler and Paul Gartside.
 
 The goal of this particular fork is to implement as much of the AMS-TeX math as possible, and less on customizations like WebTeX.
 
-## Why MathML?!
+### Why MathML?!
 
 It's true, MathML is not well supported in browsers. (Kudos to the Firefox team for sticking with it!)
 
