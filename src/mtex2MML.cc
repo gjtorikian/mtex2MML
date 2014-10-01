@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "itex2MML.h"
+#include "mtex2MML.h"
 
 int main (int argc, char ** argv)
 {
-	bool bPrintItex = false;
+	bool bPrintMtex = false;
 	bool bRawFilter = false;
 	bool bInline    = false;
 	bool bDisplay   = false;
@@ -20,44 +20,43 @@ int main (int argc, char ** argv)
 
 			if (args == "--version" || args == "-v")
 				{
-					fputs("itex2MML version " ITEX2MML_VERSION "\n"
-					      "See http://golem.ph.utexas.edu/~distler/blog/itex2MML.html for more information.\n", stdout);
+					fputs("mtex2MML version " ITEX2MML_VERSION "\n", stdout);
 					bStop = true;
 					break;
 				}
 
 			if (args == "--help" || args == "-h")
 				{
-					fputs ("usage: itex2MML [OPTIONS]\n"
+					fputs ("usage: mtex2MML [OPTIONS]\n"
 						   "\n"
-						   "itex2MML filters an input text stream (e.g., an XHTML web page) converting itex expressions\n"
-						   "to MathML. Inline itex expressions are delimited either side by single dollar symbols ($):\n"
+						   "mtex2MML filters an input text stream (e.g., an XHTML web page) converting mtex expressions\n"
+						   "to MathML. Inline mtex expressions are delimited either side by single dollar symbols ($):\n"
 						   "\n"
 						   "\t<p>The parameters $\\alpha$ and $\\beta$ in the function $f(x)$ are defined below.</p>\n"
 						   "\n"
-						   "For normal display of equations, etc., itex expressions can be delimited with double dollar\n"
+						   "For normal display of equations, etc., mtex expressions can be delimited with double dollar\n"
 						   "symbols ($$) either side or by \\[ to the left and \\] to the right:\n"
 						   "\n"
 						   "\t<p class=\"equation\">\\[\n"
 						   "\t\tf(x) = \\alpha x + \\frac{\\beta}{1+|x|}\n"
 						   "\t\\]</p>\n"
 						   "\n"
-						   "itex2MML Options:\n"
+						   "mtex2MML Options:\n"
 						   "\n"
 						   "  --raw-filter    filter input stream, converting equations as found to MathML [stops on error]\n"
-						   "  --inline        converts a single itex equation, without any $ symbols, to inline MathML\n"
-						   "  --display       converts a single itex equation, without any $ symbols, to display-mode MathML\n"
-						   "  --forbid-markup forbid markup (more precisely, the '<' and '>' characters) in itex equations\n"
-						   "  --print-itex    used in conjuction with --inline or --display: prints the itex string\n"
+						   "  --inline        converts a single mtex equation, without any $ symbols, to inline MathML\n"
+						   "  --display       converts a single mtex equation, without any $ symbols, to display-mode MathML\n"
+						   "  --forbid-markup forbid markup (more precisely, the '<' and '>' characters) in mtex equations\n"
+						   "  --print-mtex    used in conjuction with --inline or --display: prints the mtex string\n"
 						   "\n"
-						   "For further information, see http://golem.ph.utexas.edu/~distler/blog/itex2MML.html\n", stdout);
+						   "For further information, see https://github.com/gjtorikian/mtex2MML\n", stdout);
 
 					bStop = true;
 					break;
 				}
-			if (args == "--print-itex")
+			if (args == "--print-mtex")
 				{
-					bPrintItex = true;
+					bPrintMtex = true;
 					bRawFilter = false;
 					continue;
 				}
@@ -84,7 +83,7 @@ int main (int argc, char ** argv)
 			if (args == "--raw-filter")
 				{
 					bRawFilter = true;
-					bPrintItex = false;
+					bPrintMtex = false;
 					bInline    = false;
 					bDisplay   = false;
 					continue;
@@ -92,21 +91,21 @@ int main (int argc, char ** argv)
 		}
 	if (bStop) return 0;
 
-	std::string itex;
+	std::string mtex;
 
-	if (bInline)  itex += "$";
-	if (bDisplay) itex += "$$";
+	if (bInline)  mtex += "$";
+	if (bDisplay) mtex += "$$";
 
 #define BUFSIZE 1024
 	char buffer[BUFSIZE];
-	while (fgets (buffer, BUFSIZE, stdin)) itex += buffer;
+	while (fgets (buffer, BUFSIZE, stdin)) mtex += buffer;
 
-	if (bInline)  itex += "$";
-	if (bDisplay) itex += "$$";
+	if (bInline)  mtex += "$";
+	if (bDisplay) mtex += "$$";
 
-	if (bPrintItex)
+	if (bPrintMtex)
 		{
-			fputs (itex.c_str (), stdout);
+			fputs (mtex.c_str (), stdout);
 			fputs ("\n", stdout);
 			fflush (stdout);
 		}
@@ -114,28 +113,28 @@ int main (int argc, char ** argv)
 	if (!bInline && !bDisplay)
 		{
 			if (bRawFilter)
-				itex2MML_filter (itex.c_str(), itex.size());
+				mtex2MML_filter (mtex.c_str(), mtex.size());
 			else
 				if (bForbidMarkup)
-					itex2MML_strict_html_filter (itex.c_str(), itex.size());
+					mtex2MML_strict_html_filter (mtex.c_str(), mtex.size());
 				else
-					itex2MML_html_filter (itex.c_str(), itex.size());
+					mtex2MML_html_filter (mtex.c_str(), mtex.size());
 			return 0;
 		}
 
-	char * mathml = itex2MML_parse (itex.c_str(), itex.size());
+	char * mathml = mtex2MML_parse (mtex.c_str(), mtex.size());
 
 	if (mathml)
 		{
 			fputs (mathml, stdout);
 			fputs ("\n", stdout);
 
-			itex2MML_free_string (mathml);
+			mtex2MML_free_string (mathml);
 			mathml = 0;
 		}
 	else
 		{
-			fputs ("itex2MML: itex parser failed to generate MathML from itex!\n", stderr);
+			fputs ("mtex2MML: mtex parser failed to generate MathML from mtex!\n", stderr);
 		}
 	return 0;
 }

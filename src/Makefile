@@ -9,9 +9,9 @@ RM=rm -f
 INSTALL=install -c
 BINDIR=/usr/local/bin
 
-YYPREFIX=itex2MML_yy
+YYPREFIX=mtex2MML_yy
 
-all:    y.tab.c lex.yy.c itex2MML
+all:    y.tab.c lex.yy.c mtex2MML
 
 stack.o: stack.c stack.h
 	$(CC) -fPIC -c -o stack.o stack.c
@@ -22,29 +22,29 @@ string_extras.o: string_extras.c string_extras.h
 parse_extras.o: parse_extras.c parse_extras.h
 	$(CC) -fPIC -c -o parse_extras.o parse_extras.c
 
-y.tab.c:	itex2MML.y stack.o string_extras.o parse_extras.o
-		$(YACC) -p $(YYPREFIX) -d itex2MML.y
+y.tab.c:	mtex2MML.y stack.o string_extras.o parse_extras.o
+		$(YACC) -p $(YYPREFIX) -d mtex2MML.y
 
-lex.yy.c:	itex2MML.l
-		$(LEX) itex2MML.l
+lex.yy.c:	mtex2MML.l
+		$(LEX) mtex2MML.l
 
-y.tab.o:	y.tab.c itex2MML.h
+y.tab.o:	y.tab.c mtex2MML.h
 		$(CC) $(CFLAGS) -c -o y.tab.o y.tab.c
 
-lex.yy.o:	lex.yy.c y.tab.c itex2MML.h
+lex.yy.o:	lex.yy.c y.tab.c mtex2MML.h
 		$(CC) $(CFLAGS) -c -o lex.yy.o stack.o string_extras.o parse_extras.o lex.yy.c
 
-itex2MML:	lex.yy.o y.tab.o itex2MML.cc itex2MML.h
-		$(CXX) $(CFLAGS) -o itex2MML lex.yy.o y.tab.o stack.o string_extras.o parse_extras.o itex2MML.cc
+mtex2MML:	lex.yy.o y.tab.o mtex2MML.cc mtex2MML.h
+		$(CXX) $(CFLAGS) -o mtex2MML lex.yy.o y.tab.o stack.o string_extras.o parse_extras.o mtex2MML.cc
 
 universal:
 		CFLAGS='-arch i686 -arch ppc' make all
 
 clean:
-		$(RM) y.tab.* lex.yy.c itex2MML *.o *.output *.so *.dll *.sl *.bundle itex2MML_ruby.c
+		$(RM) y.tab.* lex.yy.c mtex2MML *.o *.output *.so *.dll *.sl *.bundle mtex2MML_ruby.c
 
-install:	itex2MML
-		$(INSTALL) itex2MML $(BINDIR)
+install:	mtex2MML
+		$(INSTALL) mtex2MML $(BINDIR)
 
 RUBY_CFLAGS = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["CFLAGS"]')
 RUBY_LD = $(shell $(RUBY) -e 'require "rbconfig"; print RbConfig::CONFIG["LDSHARED"]')
@@ -67,24 +67,24 @@ EXTRA_CFLAGS = ''
 LD_TARGET = ''
 endif
 
-itex2MML_ruby.c:	itex2MML.i
-			$(SWIG) -ruby -o itex2MML_ruby.c  itex2MML.i
+mtex2MML_ruby.c:	mtex2MML.i
+			$(SWIG) -ruby -o mtex2MML_ruby.c  mtex2MML.i
 
-itex2MML_ruby.o:	itex2MML_ruby.c
-			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c itex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -o itex2MML_ruby.o
+mtex2MML_ruby.o:	mtex2MML_ruby.c
+			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c mtex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -o mtex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c stack.o string_extras.o parse_extras.o
-			$(CC) $(RUBY_CFLAGS) -Ditex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
+			$(CC) $(RUBY_CFLAGS) -Dmtex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
 
-lex.yy_ruby.o:	lex.yy.c y.tab.c itex2MML.h
+lex.yy_ruby.o:	lex.yy.c y.tab.c mtex2MML.h
 		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o stack.o string_extras.o parse_extras.o lex.yy.c
 
-ruby:	itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
-	$(LD_TARGET) $(RUBY_LD) itex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o stack.o string_extras.o parse_extras.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o itex2MML.$(DYLIB_EXT)
+ruby:	mtex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
+	$(LD_TARGET) $(RUBY_LD) mtex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o stack.o string_extras.o parse_extras.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o mtex2MML.$(DYLIB_EXT)
 
 test_ruby:
-	$(RUBY) ./itextomml.rb
+	$(RUBY) ./mtextomml.rb
 
-install_ruby:	itex2MML.$(DYLIB_EXT)
-	$(INSTALL) itex2MML.$(DYLIB_EXT) $(RUBY_SITEARCHDIR)
-	$(INSTALL) itextomml.rb itex_stringsupport.rb $(RUBY_SITEDIR)
+install_ruby:	mtex2MML.$(DYLIB_EXT)
+	$(INSTALL) mtex2MML.$(DYLIB_EXT) $(RUBY_SITEARCHDIR)
+	$(INSTALL) mtextomml.rb mtex_stringsupport.rb $(RUBY_SITEDIR)

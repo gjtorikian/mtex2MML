@@ -1,7 +1,7 @@
-require 'itex2MML'
+require 'mtex2MML'
 require 'thread'
 
-module Itex2MML
+module Mtex2MML
   class Error < RuntimeError; end
 
   class Parser
@@ -10,19 +10,19 @@ module Itex2MML
     end
 
     def html_filter(string)
-      parse(string, :itex2MML_html_filter)
+      parse(string, :mtex2MML_html_filter)
     end
 
     def filter(string)
-      parse(string, :itex2MML_filter)
+      parse(string, :mtex2MML_filter)
     end
 
     def inline_filter(string)
-      parse("\$#{string}\$", :itex2MML_filter)
+      parse("\$#{string}\$", :mtex2MML_filter)
     end
 
     def block_filter(string)
-      parse("\$\$#{string}\$\$", :itex2MML_filter)
+      parse("\$\$#{string}\$\$", :mtex2MML_filter)
     end
 
   private
@@ -30,8 +30,8 @@ module Itex2MML
     def parse(string, message)
       str = as_bytes(string.to_str)
       self.class.semaphore.synchronize do
-        raise Itex2MML::Error unless Itex2MML.send(message, str, str.length) == 0
-        as_utf8(Itex2MML.itex2MML_output)
+        raise Mtex2MML::Error unless Mtex2MML.send(message, str, str.length) == 0
+        as_utf8(Mtex2MML.mtex2MML_output)
       end
     end
 

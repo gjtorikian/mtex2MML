@@ -15,7 +15,7 @@ CLEAN.include('ext/**/*{.o,.log,.so,.bundle}')
 CLEAN.include('ext/**/Makefile')
 CLOBBER.include('lib/*{.so,.bundle}')
 
-desc 'Build the itex2MML bindings'
+desc 'Build the mtex2MML bindings'
 task :build_ext do
   host_os = RbConfig::CONFIG['host_os']
 
@@ -43,8 +43,8 @@ task :build_ext do
 
   # move the bundle to the lib folder
   if host_os =~ /darwin|mac os/
-    cp "ext/itex2MML.bundle", "lib/"
+    cp "ext/mtex2MML.bundle", "lib/"
   else
-    cp "ext/itex2MML.so", "lib/"
+    cp "ext/mtex2MML.so", "lib/"
   end
 end

@@ -2,8 +2,8 @@
 
 If you're interested in fixing a bug, there are two files you'll likely need to change:
 
-* *itex2MML.l*, which contains the grammar rules for the TeX characters
-* *itex2MML.y*, which acts on the grammar states and converts the data into MathML
+* *mtex2MML.l*, which contains the grammar rules for the TeX characters
+* *mtex2MML.y*, which acts on the grammar states and converts the data into MathML
 
 If you submit a PR, you should also think about updating [SUPPORTED.md](SUPPORTED.md). You may need to add tests, too.
 

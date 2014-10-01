@@ -1,11 +1,11 @@
-src/itex2MML.bundle
-src/itex2MML_ruby.c
+src/mtex2MML.bundle
+src/mtex2MML_ruby.c
 src/*.o
 src/lex.yy.c
 src/y.output
 src/y.tab.c
 src/y.tab.h
-src/itex2MML
+src/mtex2MML
 src/y.tab.o
 src/*.so
 
@@ -16,6 +16,6 @@ ext/*.c
 ext/*.bundle
 ext/*.so
 
-lib/itex2MML.bundle
+lib/mtex2MML.bundle
 
 test.html
