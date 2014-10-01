@@ -6,6 +6,12 @@ This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distl
 
 The goal of this particular fork is to implement as much of the AMS-TeX math as possible, and less on customizations like WebTeX.
 
+## Why MathML?!
+
+It's true, MathML is not well supported in browsers. (Kudos to the Firefox team for sticking with it!)
+
+However, you can consider MathML as an intermediate format onto greater things, like conversion to SVG via [mathematical](https://github.com/gjtorikian/mathematical).
+
 ## Building
 
 You need GNU make and [Flex](http://flex.sourceforge.net/) to build the mtex2MML code. To build it:
