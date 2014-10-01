@@ -112,19 +112,23 @@ EM_PER_INCH = 7.2;
 void convertToEm(char *str) {
   size_t len = strlen(str);
   char *number, *type, *conversion;
-  int i = 0;
+  int i = 0, length_of_num = 0;
   double numeric_portion = 0;
 
   while(isdigit(str[i]) || str[i] == '.')
     i++;
 
-  numeric_portion = i;
-  number = malloc(numeric_portion);
-  strncat(number, str, numeric_portion);
+  // store the numeric part
+  length_of_num = i;
+  number = malloc(length_of_num);
+  memcpy(number, str, length_of_num);
+  number[length_of_num] = '\0';
   numeric_portion = atof(number);
 
-  type = malloc(len - i);
-  strncat(type, str + i, len);
+  // store the type
+  type = malloc(len - i + 1);
+  memcpy(type, str + i, len);
+  type[len - i + 1] = '\0';
 
   if (strncmp(type, "em", 2) == 0) {
     /* no op! */
