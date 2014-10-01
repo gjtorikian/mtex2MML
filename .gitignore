@@ -7,12 +7,14 @@ src/y.tab.c
 src/y.tab.h
 src/itex2MML
 src/y.tab.o
+src/*.so
 
 ext/Makefile
 ext/*.o
 ext/*.h
 ext/*.c
 ext/*.bundle
+ext/*.so
 
 lib/itex2MML.bundle
 
