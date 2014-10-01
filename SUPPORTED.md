@@ -115,14 +115,14 @@ Using the `svg` environment:
 \end{svg}
 ```
 
-allows you to embed snippets of SVG in itex equations. To assist in [Instiki](http://golem.ph.utexas.edu/instiki/show/HomePage)'s LaTeX export feature, you can also include a `graphicx` command:
+allows you to embed snippets of SVG in mtex equations. To assist in [Instiki](http://golem.ph.utexas.edu/instiki/show/HomePage)'s LaTeX export feature, you can also include a `graphicx` command:
 
 \begin{svg}
    ...
 \end{svg}
 \includegraphics[width=...]{foo}
 
-where `foo.pdf` is a file containing a PDF version of the graphic. In itex, the `\includegraphics` command is defined as a NOOP, and the SVG is embedded in the MathML output. In Instiki's LaTeX export, the opposite is true: the `svg` environment is a NOOP, and the `\includegraphics` command is included in the output.
+where `foo.pdf` is a file containing a PDF version of the graphic. In mtex, the `\includegraphics` command is defined as a NOOP, and the SVG is embedded in the MathML output. In Instiki's LaTeX export, the opposite is true: the `svg` environment is a NOOP, and the `\includegraphics` command is included in the output.
 
 ## WebTeX-style Arrays and Array Options
 
@@ -686,7 +686,7 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 * `\vdots`
 * `\colon`
 
-While ":" is allowed in math mode, it doesn't (either in LaTeX or in itex) produce the desired spacing for text like f:A→B. Use `\colon` instead.
+While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produce the desired spacing for text like f:A→B. Use `\colon` instead.
 
 ## Large Math Operators and Integrals
 
@@ -791,11 +791,11 @@ As in LaTeX, `\sqrt` accepts an optional argument, so that `\sqrt[3]{n+1}` is eq
 
 ## Numbers
 
-In MathML, numbers are represented as `<mn>127.3</mn>`. itex2MML does its best to intelligently parse what's a number and what's not. Unfortunately, conventions for things like [decimal markers](http://en.wikipedia.org/wiki/Decimal_separator) are very culture-dependent, and incompatibly-so. If you don't like the way itex2MML parses the would-be numbers in your input, you can force it to interpret a certain string as a number, using the `\itexnum{}` command.
+In MathML, numbers are represented as `<mn>127.3</mn>`. mtex2MML does its best to intelligently parse what's a number and what's not. Unfortunately, conventions for things like [decimal markers](http://en.wikipedia.org/wiki/Decimal_separator) are very culture-dependent, and incompatibly-so. If you don't like the way mtex2MML parses the would-be numbers in your input, you can force it to interpret a certain string as a number, using the `\mtexnum{}` command.
 
 ## Colors
 
-`\color{colourspec}` changes the current foreground colour. `colourspec` is either:
+`\color{colourspec}` changes the current foreground color. `colourspec` is either:
 
 * An HTML named-color:
   * `aqua`
@@ -814,7 +814,7 @@ In MathML, numbers are represented as `<mn>127.3</mn>`. itex2MML does its best t
   * `teal`
   * `white`
   * `yellow`
-* An RGB colour value:
+* An RGB color value:
   * `#rgb` or `#rrggbb`, a three- or six-digit hexadecimal number.
   `#000000` is black `#FFFFFF` is white, and `#1AC=#11AACC`.
 
@@ -824,7 +824,7 @@ For example:
 a { b \color{red} c \color{#0F0} d } e
 ```
 
-renders `a`, `b`, and `e` in the default colour (usually black), `c` in red, and `d` in green.
+renders `a`, `b`, and `e` in the default color (usually black), `c` in red, and `d` in green.
 
 The alternate LaTeX syntax, involving specifying a color model is not supported:
 
@@ -832,7 +832,7 @@ The alternate LaTeX syntax, involving specifying a color model is not supported:
 \color[cmyk]{0, 0.1, 0.5, 0.3}
 ```
 
-A new command, `\bgcolor{colourspec}` works the same way, but changes the current background colour.
+A new command, `\bgcolor{colourspec}` works the same way, but changes the current background color.
 
 ## Interactivity
 

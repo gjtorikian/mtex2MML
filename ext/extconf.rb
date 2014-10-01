@@ -1,4 +1,4 @@
 require 'mkmf'
 
-$CFLAGS << ' -Ditex2MML_CAPTURE'
-create_makefile("itex2MML")
+$CFLAGS << ' -Dmtex2MML_CAPTURE'
+create_makefile("mtex2MML")
