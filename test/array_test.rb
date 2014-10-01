@@ -193,7 +193,6 @@ $$ \left[
 \right] $$
     '''
 
-    write_to_test_file @itex.filter(text)
     assert_equal(@itex.filter(text), fixture_file("augmented_matrix"))
   end
 end

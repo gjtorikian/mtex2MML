@@ -1,7 +1,3 @@
-/*             itex2MML 1.3.3
- *   itex2MML.cc last modified 11/21/2007
- */
-
 #include <cstdio>
 
 #include <string>

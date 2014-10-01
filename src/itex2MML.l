@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ROWSPACINGOPTS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -102,6 +102,17 @@ int itex2MML_displaymode = 0;
 "\\%"           {yylval=itex2MML_copy_string("%"); return MI;}
 
 "\\\\"          itex2MML_rowposn=2; return ROWSEP;
+
+"\\\\"\[[0-9\.]+pt\] |
+"\\\\"\[[0-9\.]+em\] |
+"\\\\"\[[0-9\.]+ex\] |
+"\\\\"\[[0-9\.]+mu\] |
+"\\\\"\[[0-9\.]+px\] |
+"\\\\"\[[0-9\.]+pc\] |
+"\\\\"\[[0-9\.]+in\] |
+"\\\\"\[[0-9\.]+mm\] |
+"\\\\"\[[0-9\.]+cm\] |
+"\\\\"\[[0-9\.]+%\]    { itex2MML_rowposn=2; return ROWSEP;}
 
 [a-zA-Z]+       {yylval=itex2MML_copy_string(yytext); return MI;}
 
@@ -989,17 +1000,17 @@ int itex2MML_displaymode = 0;
 }
 
 <MATHENV>{
-"\{matrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return MATRIX;}
-"\{pmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return PMATRIX;}
-"\{bmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return BMATRIX;}
-"\{Bmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return BBMATRIX;}
-"\{vmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return VMATRIX;}
-"\{Vmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return VVMATRIX;}
-"\{smallmatrix\}" {itex2MML_env_start = 0; BEGIN(MATH); return SMALLMATRIX;}
-"\{cases\}" {itex2MML_env_start = 0; BEGIN(MATH); return CASES;}
-"\{aligned\}" {itex2MML_env_start = 0; BEGIN(MATH); return ALIGNED;}
-"\{gathered\}" {itex2MML_env_start = 0; BEGIN(MATH); return GATHERED;}
-"\{split\}" {itex2MML_env_start = 0; BEGIN(MATH); return ALIGNED;}
+"\{matrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return MATRIX;}
+"\{pmatrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return PMATRIX;}
+"\{bmatrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return BMATRIX;}
+"\{Bmatrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return BBMATRIX;}
+"\{vmatrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return VMATRIX;}
+"\{Vmatrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return VVMATRIX;}
+"\{smallmatrix\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return SMALLMATRIX;}
+"\{cases\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return CASES;}
+"\{aligned\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
+"\{gathered\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return GATHERED;}
+"\{split\}" {if (itex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
 "\{array\}" {if (itex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{svg\}" {itex2MML_env_start = 0; BEGIN(SVGENV); return SVG;}
 }
@@ -1008,16 +1019,34 @@ int itex2MML_displaymode = 0;
 "[t]" {yylval=itex2MML_copy_string("axis 1"); return ARRAYALIGN;}
 "[c]" {yylval=itex2MML_copy_string("center"); return ARRAYALIGN;}
 "[b]" {yylval=itex2MML_copy_string("axis -1"); return ARRAYALIGN;}
+"\<"  {BEGIN(ROWSPACINGOPTS); return ST;}
 "\("  {BEGIN(ROWLINEOPTS); return ST;}
 "\{"  {BEGIN(COLOPTS); return ST;}
 [\t\n\r ]+       ;
 }
 
+<ENVOPTIONS>{
+"\<"  {BEGIN(ROWSPACINGOPTS); return ST;}
+"\("  {BEGIN(ROWLINEOPTS); return ST;}
+[\t\n\r ]+       ;
+}
+
+<ROWSPACINGOPTS>{
+"\>"             {itex2MML_env_start = 0; BEGIN(MATH); return END;}
+"\>\("           {BEGIN(ROWLINEOPTS); return END;}
+"\>\{"           {BEGIN(COLOPTS); return END;}
+[0-9\.]+(em|ex|pt|pc|in|cm|mm|mu)         {yylval=itex2MML_copy_string(yytext); return ROWSPACINGDEF;}
+"~"      { return ROWSPACINGDEF; }
+"|"      { /* Ignore */ }
+[\t\n\r ]+       ;
+}
+
 <ROWLINEOPTS>{
 "\)\{"   {BEGIN(COLOPTS); return END;}
-"s"   {yylval=itex2MML_copy_string("solid"); return ROWLINESDEF;}
-"d"   {yylval=itex2MML_copy_string("dashed"); return ROWLINESDEF;}
-"0"   {yylval=itex2MML_copy_string("none"); return ROWLINESDEF;}
+"s"      {yylval=itex2MML_copy_string("solid"); return ROWLINESDEF;}
+"d"      {yylval=itex2MML_copy_string("dashed"); return ROWLINESDEF;}
+"0"      {yylval=itex2MML_copy_string("none"); return ROWLINESDEF;}
+"\)"     {itex2MML_env_start = 0; BEGIN(MATH); return END;}
 [\t\n\r ]+       ;
 }
 

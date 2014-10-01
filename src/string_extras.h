@@ -26,6 +26,13 @@ extern "C" {
   // Reverse the substring
   extern void strrev(char *str);
 
+  // Given a dimension, like "20ex," this converts it into an em string for MathML, like "8.6em"
+  // Unashamedly taken from MathJax: http://git.io/Pd8EJQ
+  extern void convertToEm(char *str);
+
+  // Find out if a string is just full of empty RowSpacings (0em)
+  extern int empty_row_spacings(char *str);
+
 #ifdef __cplusplus
 }
 #endif

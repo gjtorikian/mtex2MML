@@ -277,7 +277,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN ROWLINESDEF COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN ROWSPACINGDEF ROWLINESDEF COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
 
 %%
 
@@ -1486,45 +1486,175 @@ emptymrow: EMPTYMROW {
   $$ = itex2MML_copy_string("<mrow/>");
 };
 
-mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
-  $$ = itex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow>");
-  itex2MML_free_string($3);
+mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV MATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
 }
-|  BEGINENV GATHERED tableRowList ENDENV GATHERED {
-  $$ = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"1.0ex\">", $3, "</mtable></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV MATRIX ST rowLinesDefList END tableRowList ENDENV MATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
 }
-| BEGINENV PMATRIX tableRowList ENDENV PMATRIX {
-  $$ = itex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>)</mo></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV GATHERED ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV GATHERED {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
 }
-| BEGINENV BMATRIX tableRowList ENDENV BMATRIX {
-  $$ = itex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>]</mo></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV GATHERED ST rowLinesDefList END tableRowList ENDENV GATHERED {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"1.0ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
 }
-| BEGINENV VMATRIX tableRowList ENDENV VMATRIX {
-  $$ = itex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV PMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV PMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow><mo>)</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
 }
-| BEGINENV BBMATRIX tableRowList ENDENV BBMATRIX {
-  $$ = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>}</mo></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV PMATRIX ST rowLinesDefList END tableRowList ENDENV PMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow><mo>)</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
 }
-| BEGINENV VVMATRIX tableRowList ENDENV VVMATRIX {
-  $$ = itex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV BMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV BMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow><mo>]</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
 }
-| BEGINENV SMALLMATRIX tableRowList ENDENV SMALLMATRIX {
-  $$ = itex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow></mstyle>");
-  itex2MML_free_string($3);
+| BEGINENV BMATRIX ST rowLinesDefList END tableRowList ENDENV BMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow><mo>]</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
 }
-| BEGINENV CASES tableRowList ENDENV CASES {
-  $$ = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\">", $3, "</mtable></mrow></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV VMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV VMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
 }
-| BEGINENV ALIGNED tableRowList ENDENV ALIGNED {
-  $$ = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\">", $3, "</mtable></mrow>");
-  itex2MML_free_string($3);
+| BEGINENV VMATRIX ST rowLinesDefList END tableRowList ENDENV VMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
+| BEGINENV BBMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV BBMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow><mo>}</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
+| BEGINENV BBMATRIX ST rowLinesDefList END tableRowList ENDENV BBMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow><mo>}</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
+| BEGINENV VVMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV VVMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
+| BEGINENV VVMATRIX ST rowLinesDefList END tableRowList ENDENV VVMATRIX {
+  char *s1 = itex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
+| BEGINENV SMALLMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV SMALLMATRIX {
+  char *s1 = itex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow></mstyle>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
+| BEGINENV SMALLMATRIX ST rowLinesDefList END tableRowList ENDENV SMALLMATRIX {
+  char *s1 = itex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow></mstyle>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
+| BEGINENV CASES ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV CASES {
+  char * s1 = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char * s2 = itex2MML_copy3(s1, $6, "\" columnalign=\"left left\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
+| BEGINENV CASES ST rowLinesDefList END tableRowList ENDENV CASES {
+  char * s1 = itex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"left left\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
+| BEGINENV ALIGNED ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV ALIGNED {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s2 = itex2MML_copy3(s1, $6, "\">");
+  $$ = itex2MML_copy3(s2, $8, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
+| BEGINENV ALIGNED ST rowLinesDefList END tableRowList ENDENV ALIGNED {
+  char *s1 = itex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
   char *pipe_chars = vertical_pipe_extract($5);
@@ -1559,6 +1689,58 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   itex2MML_free_string($7);
   itex2MML_free_string($9);
 }
+| BEGINENV ARRAY ARRAYALIGN ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($9);
+  char *column_align = remove_excess_pipe_chars($9);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" rowspacing=\"");
+  char * s2 = itex2MML_copy3(s1, $5, "\" rowlines=\"");
+  char * s3 = itex2MML_copy3(s2, $7, "\" columnalign=\"");
+  char * s4 = itex2MML_copy3(s3, column_align, "\" ");
+  char * s5 = itex2MML_copy3(s4, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s5, $11, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string(s4);
+  itex2MML_free_string(s5);
+  itex2MML_free_string($3);
+  itex2MML_free_string($7);
+  itex2MML_free_string($9);
+  itex2MML_free_string($11);
+}
+| BEGINENV ARRAY ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($8);
+  char *column_align = remove_excess_pipe_chars($8);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char * s2 = itex2MML_copy3(s1, $6,"\" columnalign=\"");
+  char * s3 = itex2MML_copy3(s2, column_align, "\" ");
+  char * s4 = itex2MML_copy3(s3, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s4, $10, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string(s4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+  itex2MML_free_string($10);
+}
+| BEGINENV ARRAY ST rowSpacingDefList END columnAlignList END tableRowList ENDENV ARRAY {
+  char *pipe_chars = vertical_pipe_extract($6);
+  char *column_align = remove_excess_pipe_chars($6);
+
+  char * s1 = itex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" columnalign=\"");
+  char * s2 = itex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = itex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = itex2MML_copy3(s3, $8, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string(s3);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+  itex2MML_free_string($8);
+}
 | BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
   char *pipe_chars = vertical_pipe_extract($6);
   char *column_align = remove_excess_pipe_chars($6);
@@ -1592,6 +1774,16 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 }
 | BEGINENV SVG ENDSVG {
   $$ = itex2MML_copy_string(" ");
+};
+
+rowSpacingDefList: rowSpacingDefList ROWSPACINGDEF {
+  $$ = itex2MML_copy3($1, " ", $2);
+  itex2MML_free_string($1);
+  itex2MML_free_string($2);
+}
+| ROWSPACINGDEF {
+  $$ = itex2MML_copy_string($1);
+  itex2MML_free_string($1);
 };
 
 rowLinesDefList: rowLinesDefList ROWLINESDEF {
@@ -1845,7 +2037,7 @@ colspan: COLSPAN ATTRLIST {
 %%
 
 const char *format_additions(const char *string) {
-  return hline_replace(strdup(string));
+  return env_replacements(string);
 }
 
 char * itex2MML_parse (const char * buffer, unsigned long length)
@@ -1865,6 +2057,7 @@ char * itex2MML_parse (const char * buffer, unsigned long length)
       itex2MML_free_string (mathml);
       mathml = 0;
     }
+
   return mathml;
 }
 

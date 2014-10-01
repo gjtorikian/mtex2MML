@@ -37,7 +37,7 @@ char *join(char* first, char* second) {
   int first_length  =  strlen(first);
   int second_length = strlen(second);
 
-  char * copy = (char *) malloc(first_length + second_length  + 1); // +1 for the zero-terminator
+  char * copy = (char *) malloc(first_length + second_length + 1); // +1 for the zero-terminator
 
   if (copy) {
     strcpy(copy, first);
@@ -106,4 +106,89 @@ void strrev(char *str) {
     str++;
     end_ptr--;
   }
+}
+
+EM_PER_INCH = 7.2;
+void convertToEm(char *str) {
+  size_t len = strlen(str);
+  char *number, *type, *conversion;
+  int i = 0, length_of_num = 0;
+  double numeric_portion = 0;
+
+  while(isdigit(str[i]) || str[i] == '.')
+    i++;
+
+  // store the numeric part
+  length_of_num = i;
+  number = malloc(length_of_num);
+  memcpy(number, str, length_of_num);
+  number[length_of_num] = '\0';
+  numeric_portion = atof(number);
+
+  // store the type
+  type = malloc(len - i + 1);
+  memcpy(type, str + i, len);
+  type[len - i + 1] = '\0';
+
+  if (strncmp(type, "em", 2) == 0) {
+    /* no op! */
+  }
+  else {
+    // TODO: the reallocation *might* be necessary, if the conversion below produces
+    // a larger number--but the size is an invention. How can I make it more accurate?
+    str = realloc(str, len * 2 + 1);
+
+    if (strncmp(type, "ex", 2) == 0) {
+      numeric_portion = numeric_portion * 0.43;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+    else if (strncmp(type, "pt", 2) == 0) {
+      numeric_portion = numeric_portion / 10;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+    else if (strncmp(type, "pc", 2) == 0) {
+      numeric_portion = numeric_portion * 1.2;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+    else if (strncmp(type, "in", 2) == 0) {
+      numeric_portion = numeric_portion * EM_PER_INCH;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+    else if (strncmp(type, "cm", 2) == 0) {
+      numeric_portion = numeric_portion * EM_PER_INCH / 2.54;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+    else if (strncmp(type, "mm", 2) == 0) {
+      numeric_portion = numeric_portion * EM_PER_INCH / 25.4;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+    else if (strncmp(type, "mu", 2) == 0) {
+      numeric_portion = numeric_portion / 18;
+      snprintf(str, len * 2 + 1, "%0.2fem", numeric_portion);
+    }
+  }
+
+  free(number);
+  free(type);
+}
+
+int empty_row_spacings(char *str)
+{
+  int len = strlen(str), i = 0;
+
+  // Looking for a repeating pattern of "0em|", so bail if this fails
+  if (len % 4 != 0)
+    return 0;
+
+  char *substr = malloc(4);
+  for (i = 0; i < len; i += 4) {
+    strncpy(substr, str + i, 4);
+    if (strncmp(str, "0em|", 4) != 0) {
+      free(substr);
+      return 0;
+    }
+  }
+
+  free(substr);
+  return 1;
 }
