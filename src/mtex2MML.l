@@ -1028,6 +1028,7 @@ int mtex2MML_displaymode = 0;
 <ENVOPTIONS>{
 "\<"  {BEGIN(ROWSPACINGOPTS); return ST;}
 "\("  {BEGIN(ROWLINEOPTS); return ST;}
+.     {BEGIN(MATH); unput(yytext[0]); }
 [\t\n\r ]+       ;
 }
 
