@@ -152,10 +152,12 @@ char * env_replacements(const char *string) {
               em_str = strndup(temp, offset);
               // MathML always expectes "em" points
               convertToEm(em_str);
-              row_spacing_data.attribute = em_str;
-              row_spacing_data.offset_pos = -1; // this value is not really important
-              insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
-              free(em_str);
+              if (strlen(em_str) != 0) {
+                row_spacing_data.attribute = em_str;
+                row_spacing_data.offset_pos = -1; // this value is not really important
+                insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
+                free(em_str);
+              }
             }
           }
           else {
