@@ -108,7 +108,7 @@ void strrev(char *str) {
   }
 }
 
-EM_PER_INCH = 7.2;
+double EM_PER_INCH = 7.2;
 void convertToEm(char *str) {
   size_t len = strlen(str);
   char *number, *type, *conversion;
