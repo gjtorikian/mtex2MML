@@ -118,6 +118,10 @@ void convertToEm(char *str) {
   while(isdigit(str[i]) || str[i] == '.')
     i++;
 
+  // no match found, probably a false positive
+  if (i == len)
+    return;
+
   // store the numeric part
   length_of_num = i;
   number = malloc(length_of_num);
