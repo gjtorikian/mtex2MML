@@ -1,7 +1,7 @@
-#ifndef ITEX2MML_H
-#define ITEX2MML_H
+#ifndef MTEX2MML_H
+#define MTEX2MML_H
 
-#define ITEX2MML_VERSION "1.0.0"
+#define MTEX2MML_VERSION "1.0.0"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,4 +56,4 @@ extern "C" {
 }
 #endif
 
-#endif /* ! ITEX2MML_H */
+#endif /* ! MTEX2MML_H */
