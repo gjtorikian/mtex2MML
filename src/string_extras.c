@@ -184,15 +184,10 @@ int empty_row_spacings(char *str)
   if (len % 4 != 0)
     return 0;
 
-  char *substr = malloc(4);
   for (i = 0; i < len; i += 4) {
-    strncpy(substr, str + i, 4);
-    if (strncmp(str, "0em|", 4) != 0) {
-      free(substr);
-      return 0;
-    }
+    if (str[i] != '0' || str[i + 1] != 'e' || str[i + 2] != 'm' || str[i + 3] != '|')
+      break;
   }
 
-  free(substr);
-  return 1;
+  return i == len ? 1 : 0;
 }
