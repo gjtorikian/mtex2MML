@@ -2093,6 +2093,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
       mtex2MML_free_string (mathml);
       mathml = 0;
     }
+  mtex2MML_free_string(replaced_buffer);
 
   return mathml;
 }
