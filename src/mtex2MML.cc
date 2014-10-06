@@ -20,7 +20,7 @@ int main (int argc, char ** argv)
 
 			if (args == "--version" || args == "-v")
 				{
-					fputs("mtex2MML version " ITEX2MML_VERSION "\n", stdout);
+					fputs("mtex2MML version " MTEX2MML_VERSION "\n", stdout);
 					bStop = true;
 					break;
 				}
