@@ -2106,9 +2106,9 @@ int mtex2MML_filter (const char * buffer, unsigned long length)
   return mtex2MML_yyparse (0);
 }
 
-#define ITEX_DELIMITER_DOLLAR 0
-#define ITEX_DELIMITER_DOUBLE 1
-#define ITEX_DELIMITER_SQUARE 2
+#define MTEX_DELIMITER_DOLLAR 0
+#define MTEX_DELIMITER_DOUBLE 1
+#define MTEX_DELIMITER_SQUARE 2
 
 static char * mtex2MML_last_error = 0;
 
@@ -2175,17 +2175,17 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
     {
       if ((*ptr2 == '\\') && (*(ptr2+1) == '['))
 	{
-	  type = ITEX_DELIMITER_SQUARE;
+	  type = MTEX_DELIMITER_SQUARE;
 	  ptr2 += 2;
 	}
       else if ((*ptr2 == '$') && (*(ptr2+1) == '$'))
 	{
-	  type = ITEX_DELIMITER_DOUBLE;
+	  type = MTEX_DELIMITER_DOUBLE;
 	  ptr2 += 2;
 	}
       else
 	{
-	  type = ITEX_DELIMITER_DOLLAR;
+	  type = MTEX_DELIMITER_DOLLAR;
 	  ptr2 += 2;
 	}
     }
@@ -2212,7 +2212,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 		}
 	      else if (*(ptr2 + 1) == ']')
 		{
-		  if (type == ITEX_DELIMITER_SQUARE)
+		  if (type == MTEX_DELIMITER_SQUARE)
 		    {
 		      ptr2 += 2;
 		      match = 1;
@@ -2226,7 +2226,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 	  break;
 
 	case '$':
-	  if (type == ITEX_DELIMITER_SQUARE)
+	  if (type == MTEX_DELIMITER_SQUARE)
 	    {
 	      skip = 1;
 	    }
@@ -2234,7 +2234,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 	    {
 	      if (*(ptr2 + 1) == '$')
 		{
-		  if (type == ITEX_DELIMITER_DOLLAR)
+		  if (type == MTEX_DELIMITER_DOLLAR)
 		    {
 		      ptr2++;
 		      match = 1;
@@ -2247,7 +2247,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 		}
 	      else
 		{
-		  if (type == ITEX_DELIMITER_DOLLAR)
+		  if (type == MTEX_DELIMITER_DOLLAR)
 		    {
 		      ptr2++;
 		      match = 1;
@@ -2260,7 +2260,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 	    }
 	  else
 	    {
-	      if (type == ITEX_DELIMITER_DOLLAR)
+	      if (type == MTEX_DELIMITER_DOLLAR)
 		{
 		  ptr2++;
 		  match = 1;
@@ -2281,7 +2281,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
     }
   if (skip)
     {
-      if (type == ITEX_DELIMITER_DOLLAR)
+      if (type == MTEX_DELIMITER_DOLLAR)
 	{
 	  if (mtex2MML_write)
 	    (*mtex2MML_write) (ptr1, 1);
@@ -2311,7 +2311,7 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 	  ++result;
 	  if (mtex2MML_write)
 	    {
-	      if (type == ITEX_DELIMITER_DOLLAR)
+	      if (type == MTEX_DELIMITER_DOLLAR)
 		(*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><merror><mtext>", 0);
 	      else
 		(*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><merror><mtext>", 0);

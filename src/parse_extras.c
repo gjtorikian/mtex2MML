@@ -78,13 +78,13 @@ char * env_replacements(const char *string) {
   stackElementT stack_item, last_stack_item;
 
   char *tok = NULL, *at_top = NULL;
-  char *new_environment = strdup(string);
-  char *line = strtok(strdup(string), "\n");
+  char *new_environment = dupe_string(string), *dupe_str = dupe_string(string);
+  char *line = strtok(dupe_str, "\n");
   char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "";
 
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
              *line_separator = "\\\\",
-             *em_pattern_begin = "[";
+             *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int start = 0, offset = 0, attr_rowlines_len = 0, str_len = 0, i = 0;
   symbolDataArray hline_data_array;
@@ -103,6 +103,7 @@ char * env_replacements(const char *string) {
     StackDestroy(&array_stack);
     deleteSymbolDataArray(&hline_data_array);
     deleteSymbolDataArray(&row_spacing_data_array);
+    free(dupe_str);
 
     return string;
   }
@@ -145,14 +146,14 @@ char * env_replacements(const char *string) {
 
         if (strstr(last_stack_item.line, line_separator) != NULL) {
           if ( (tok = strstr(last_stack_item.line, em_pattern_begin)) != NULL) {
-            temp = tok + 1;
-            if ( (tok = strstr(temp, "]")) != NULL) {
+            temp = tok + 2;
+            if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
               offset = (int)(tok - temp);
               em_str = malloc(offset);
-              em_str = strndup(temp, offset);
-              // MathML always expectes "em" points
-              convertToEm(em_str);
               if (strlen(em_str) != 0) {
+                em_str = dupe_string_n(temp, offset);
+                // MathML always expectes "em" points
+                convertToEm(em_str);
                 row_spacing_data.attribute = em_str;
                 row_spacing_data.offset_pos = -1; // this value is not really important
                 insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
@@ -237,12 +238,13 @@ char * env_replacements(const char *string) {
   StackDestroy(&array_stack);
   deleteSymbolDataArray(&hline_data_array);
   deleteSymbolDataArray(&row_spacing_data_array);
+  free(dupe_str);
 
   return new_environment;
 }
 
 const char *vertical_pipe_extract(const char *string) {
-  char *orig = strdup(string);
+  char *orig = dupe_string(string);
   char *columnlines = "", *previous_column = "";
   int i = 0;
 
@@ -290,11 +292,12 @@ const char *vertical_pipe_extract(const char *string) {
   else
     remove_last_char(columnlines);
 
+  free(orig);
   return columnlines;
 }
 
 const char *remove_excess_pipe_chars(const char *string) {
-  char *dup = strdup(string);
+  char *dup = dupe_string(string);
 
   dup = replace_str(dup, "s", "");
   dup = replace_str(dup, "d", "");

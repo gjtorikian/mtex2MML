@@ -33,6 +33,12 @@ extern "C" {
   // Find out if a string is just full of empty RowSpacings (0em)
   extern int empty_row_spacings(char *str);
 
+  // Duplicates an immutable string
+  extern char * dupe_string(const char * s);
+
+  // Duplicates an immutable string (up to n bytes)
+  extern char * dupe_string_n(const char * s, size_t n);
+
 #ifdef __cplusplus
 }
 #endif
