@@ -84,7 +84,7 @@ char * env_replacements(const char *string) {
 
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
              *line_separator = "\\\\",
-             *em_pattern_begin = "[";
+             *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int start = 0, offset = 0, attr_rowlines_len = 0, str_len = 0, i = 0;
   symbolDataArray hline_data_array;
@@ -145,8 +145,8 @@ char * env_replacements(const char *string) {
 
         if (strstr(last_stack_item.line, line_separator) != NULL) {
           if ( (tok = strstr(last_stack_item.line, em_pattern_begin)) != NULL) {
-            temp = tok + 1;
-            if ( (tok = strstr(temp, "]")) != NULL) {
+            temp = tok + 2;
+            if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
               offset = (int)(tok - temp);
               em_str = malloc(offset);
               em_str = strndup(temp, offset);
