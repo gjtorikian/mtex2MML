@@ -191,3 +191,21 @@ int empty_row_spacings(char *str)
 
   return i == len ? 1 : 0;
 }
+
+char * dupe_string(const char * s) {
+  size_t len = 1+strlen(s);
+  char *p = malloc(len);
+
+  return p ? memcpy(p, s, len) : NULL;
+}
+
+char *dupe_string_n(const char *s, size_t n) {
+  size_t l = strlen(s);
+
+  if (l <= n) return strdup(s);
+
+  char *rv = (char *)malloc(n + 1);
+  strncpy(rv, s, n);
+  rv[n] = 0;
+  return rv;
+}
