@@ -263,16 +263,19 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 
 * `\rightarrow` (`\to`)
 * `\longrightarrow`
+* `\Longrightarrow`
 * `\Rightarrow` (`\implies`)
 * `\hookrightarrow` (`\embedsin`)
 * `\mapsto` (`\\map`)
 * `\leftarrow`
 * `\longleftarrow`
+* `\Longleftarrow`
 * `\Leftarrow` (`\\impliedby`)
 * `\hookleftarrow`
 * `\leftrightarrow`
 * `\Leftrightarrow`
 * `\Longleftrightarrow` (`\iff`)
+* `\longleftrightarrow`
 * `\nearrow` (`\nearr`)
 * `\nwarrow` (`\nwarr`)
 * `\searrow` (`\searr`)
@@ -283,6 +286,8 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\swArrow` (`\swArr`)
 * `\darr`
 * `\Downarrow`
+* `\Arrowvert`
+* `\arrowvert`
 * `\uparr`
 * `\Uparrow`
 * `\downuparrow` (`\duparr` and `\updarr`)
@@ -331,6 +336,12 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\rightleftharpoons`
 * `\upharpoonleft`
 * `\upharpoonright`
+* `\overleftarrow`
+* `\overleftrightarrow`
+* `\overrightarrow`
+* `\underleftarrow`
+* `\underleftrightarrow`
+* `\underrightarrow`
 
 ### Extensible Arrows
 
@@ -348,7 +359,10 @@ The set of extensible arrows is:
 * `\xrightleftharpoons`
 * `\xhookleftarrow`
 * `\xhookrightarrow`
-* `\xmapsto`
+* `\xtwoheadrightarrow`
+* `\xtwoheadleftarrow`
+* `\xlongequal`
+* `\xtofrom`
 
 ## Delimiters
 
@@ -764,6 +778,10 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\widehat`
 * `\slash`
 * `\boxed`
+* `\acute`
+* `\grave`
+* `\breve`
+* `\mathring`
 
 ## Fractions, Sub/Superscripts, and Roots
 
@@ -776,6 +794,8 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\substack`
 * `\overbrace`
 * `\underbrace`
+* `\overbracket`
+* `\underbracket`
 * `\underset`
 * `\overset` (`\stackrel`)
 * `\underoverset` (such as `\underoverset{subscript}{superscript}{symbol}`)
