@@ -290,6 +290,8 @@ int mtex2MML_displaymode = 0;
 "\\iff" |
 "\\Longleftrightarrow"  {yylval=mtex2MML_copy_string("&iff;"); return MOL;}
 
+"\\longleftrightarrow"  {yylval=mtex2MML_copy_string("&#10231;"); return MOL;}
+
 "\\Leftrightarrow"  {yylval=mtex2MML_copy_string("&Leftrightarrow;"); return MOL;}
 
 "\\impliedby" |
@@ -305,7 +307,11 @@ int mtex2MML_displaymode = 0;
 
 "\\longleftarrow"   {yylval=mtex2MML_copy_string("&longleftarrow;"); return MOL;}
 
+"\\Longleftarrow"   {yylval=mtex2MML_copy_string("&#10232;"); return MOL;}
+
 "\\longrightarrow"  {yylval=mtex2MML_copy_string("&longrightarrow;"); return MOL;}
+
+"\\Longrightarrow"  {yylval=mtex2MML_copy_string("&#10233;"); return MOL;}
 
 "\\leftarrow"   {yylval=mtex2MML_copy_string("&leftarrow;"); return MOL;}
 
@@ -344,6 +350,10 @@ int mtex2MML_displaymode = 0;
 "\\darr"     {yylval=mtex2MML_copy_string("&darr;"); return MOL;}
 
 "\\Downarrow" {yylval=mtex2MML_copy_string("&dArr;"); return MOL;}
+
+"\\Arrowvert" {yylval=mtex2MML_copy_string("&#8214;"); return MOL;}
+
+"\\arrowvert" {yylval=mtex2MML_copy_string("&#9168;"); return MOL;}
 
 "\\uparr"    {yylval=mtex2MML_copy_string("&uarr;"); return MOL;}
 
@@ -410,7 +420,13 @@ int mtex2MML_displaymode = 0;
 "\\xrightleftharpoons" |
 "\\xhookleftarrow"     |
 "\\xhookrightarrow"    |
+"\\xtwoheadrightarrow"    |
+"\\xtwoheadleftarrow"    |
 "\\xmapsto" {BEGIN(OPTARG); char * s1 = mtex2MML_copy_string(yytext+2); yylval = mtex2MML_copy3("&", s1, ";"); mtex2MML_free_string(s1); return XARROW;}
+
+"\\xlongequal" {BEGIN(OPTARG); yylval=mtex2MML_copy_string("&#61;"); return XARROW;}
+
+"\\xtofrom"    {BEGIN(OPTARG); yylval=mtex2MML_copy_string("&#8644;"); return XARROW;}
 
 "\\dots" |
 "\\ldots"  {yylval=mtex2MML_copy_string("&hellip;"); return MI;}
@@ -801,6 +817,12 @@ int mtex2MML_displaymode = 0;
 
 "\\underline"   {return UNDERLINE;}
 
+"\\underleftarrow" { return UNDERLEFTARROW;}
+
+"\\underleftrightarrow" { return UNDERLEFTRIGHTARROW;}
+
+"\\underrightarrow" { return UNDERRIGHTARROW;}
+
 "\\bar"          {return BAR;}
 "\\overline" |
 "\\closure" |
@@ -840,6 +862,12 @@ int mtex2MML_displaymode = 0;
 
 "\\over"         {return TEXOVER;}
 "\\atop"         {return TEXATOP;}
+
+"\\overleftarrow" {return OVERLEFTARROW;}
+
+"\\overleftrightarrow" {return OVERLEFTRIGHTARROW;}
+
+"\\overrightarrow" {return OVERRIGHTARROW;}
 
 "\\underoverset"  {return UNDEROVER;}
 
