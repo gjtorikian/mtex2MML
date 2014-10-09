@@ -802,6 +802,14 @@ int mtex2MML_displaymode = 0;
 "\\closure" |
 "\\widebar"      {return WIDEBAR;}
 
+"\\acute"        {return ACUTE;}
+
+"\\grave"        {return GRAVE;}
+
+"\\breve"        {return BREVE;}
+
+"\\mathring"     {return MATHRING;}
+
 "\\vec"       {return VEC;}
 "\\widevec"   {return WIDEVEC;}
 
