@@ -61,15 +61,16 @@ task :convert_mathjax_tests do
     doc = Nokogiri::XML(f)
     element = doc.css('#reftest-element')
     if element.length == 1
-      contents = element.first
+      contents = element.first.inner_html.strip
       outfile = file.sub(mathjax_test_src_dir + File::SEPARATOR, '')
       outfile_dirname = File.dirname(outfile)
       FileUtils.mkdir_p(File.join(mathjax_test_out_dir, outfile_dirname))
       FileUtils.mkdir_p(File.join(mathjax_test_tex_dir, outfile_dirname))
+
       if file =~ /-ref.html/
         File.write(File.join(mathjax_test_out_dir, outfile), contents)
       else
-        File.write(File.join(mathjax_test_tex_dir, outfile), contents)
+        File.write(File.join(mathjax_test_tex_dir, outfile.sub('html', 'tex')), "$$\n#{contents}\n$$")
       end
     else
       puts "#{file} did not have just one reftest-element: it had #{element.length}"

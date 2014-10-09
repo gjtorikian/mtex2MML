@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MTex2MMLMathJaxTest < MiniTest::Test
-  Dir['test/markups/README.*'].each do |readme|
+  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/.*'].each do |readme|
     next if readme =~ /html$/
     markup = readme.split('/').last.gsub(/^README\./, '')
 
