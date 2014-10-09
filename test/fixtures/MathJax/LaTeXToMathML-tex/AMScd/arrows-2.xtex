@@ -1,5 +1,4 @@
-$$
-\(
+
       \begin{CD}
         @&gt;A&gt;&gt;
       \end{CD}
@@ -24,5 +23,4 @@ $$
       \begin{CD}
         @VVDV
       \end{CD}
-      \)
-$$
+$

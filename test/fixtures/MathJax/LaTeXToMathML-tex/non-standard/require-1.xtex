@@ -1,7 +1,5 @@
-$$
-\(
+
       \require{AMSmath}
       \require{AMSsymbols}
       \binom{\bigstar}{\triangledown}
-      \)
-$$
+$

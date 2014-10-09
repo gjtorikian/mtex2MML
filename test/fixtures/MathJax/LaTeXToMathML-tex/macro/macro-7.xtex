@@ -1,5 +1,4 @@
-$$
-\(
+
       \newenvironment{myenv}{
       \displaystyle
       \small
@@ -9,5 +8,4 @@ $$
       \begin{myenv}
       x
       \end{myenv}
-      \)
-$$
+$

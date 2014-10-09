@@ -1,5 +1,4 @@
-$$
-\(
+
       \ce{CO2 + C -&gt;[\text{above}] 2CO}
       \ce{CO2 + C -&gt;[\text{above}][\text{below}] 2CO}
       \ce{CO2 + C -&gt;T[above][below] 2CO}
@@ -7,5 +6,4 @@ $$
       \ce{$A$ -&gt;C[+H2O] $B$}
       \ce{SO4^2- + Ba^2+ -&gt; BaSO4 v}
       \ce{$A$ -&gt;T[{enclose spaces!}] $A&#x2019;$}
-      \)
-$$
+$
