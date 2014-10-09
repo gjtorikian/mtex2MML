@@ -1,57 +1,29 @@
 require 'test_helper'
 
 class MTex2MMLMathJaxTest < MiniTest::Test
-  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/.*'].each do |readme|
-    next if readme =~ /html$/
-    markup = readme.split('/').last.gsub(/^README\./, '')
 
-    define_method "test_#{markup}" do
-      source = File.read(readme)
+  def setup
+    @mtex = Mtex2MML::Parser.new
+  end
 
-      expected_file = "#{readme}.html"
-      expected = File.read(expected_file).rstrip
-      actual = GitHub::Markup.render(readme, File.read(readme)).rstrip.force_encoding("utf-8")
+  MATHJAX_TEST_TEST_DIR = File.join('test', 'fixtures', 'MathJax')
+  MATHJAX_TEST_TEX_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-tex')
+  MATHJAX_TEST_OUT_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-out')
 
-      if source != expected
-        assert(source != actual, "#{markup} did not render anything")
-      end
+  DIRS_WE_DO = %w(above-below).join("|")
+  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.tex'].each do |tex|
+    next unless tex =~ /#{DIRS_WE_DO}/
+    next if File.directory? tex
 
-      diff = IO.popen("diff -u - #{expected_file}", 'r+') do |f|
-        f.write actual
-        f.close_write
-        f.read
-      end
+    define_method "test_#{tex}" do
+      tex_contents = File.read(tex)
+      outfile = tex.sub(MATHJAX_TEST_TEX_DIR + File::SEPARATOR, '').sub('.tex', '-ref.html')
+      outfile = File.join(MATHJAX_TEST_OUT_DIR, outfile)
+      expected = File.read(outfile)
+      actual = @mtex.filter(tex_contents)
 
-      assert expected == actual, <<message
-#{File.basename expected_file}'s contents don't match command output:
-#{diff}
-message
+      write_to_test_file(actual)
+      assert_equal(actual.strip, expected.strip)
     end
-  end
-
-  def test_knows_what_it_can_and_cannot_render
-    assert_equal false, GitHub::Markup.can_render?('README.html')
-    assert_equal true, GitHub::Markup.can_render?('README.markdown')
-    assert_equal true, GitHub::Markup.can_render?('README.rmd')
-    assert_equal true, GitHub::Markup.can_render?('README.Rmd')
-    assert_equal false, GitHub::Markup.can_render?('README.cmd')
-    assert_equal true, GitHub::Markup.can_render?('README.litcoffee')
-  end
-
-  def test_raises_error_if_command_exits_non_zero
-    GitHub::Markup.command('echo "failure message">&2 && false', /fail/)
-    assert GitHub::Markup.can_render?('README.fail')
-    begin
-      GitHub::Markup.render('README.fail', "stop swallowing errors")
-    rescue GitHub::Markup::CommandError => e
-      assert_equal "failure message", e.message
-    else
-      fail "an exception was expected but was not raised"
-    end
-  end
-
-  def test_preserve_markup
-    content = "Noël"
-    assert_equal content.encoding.name, GitHub::Markup.render('Foo.rst', content).encoding.name
   end
 end
