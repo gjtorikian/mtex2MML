@@ -1,0 +1,48 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>phantom</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+  </head>
+
+  <body>
+    <div id="reftest-element">
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mi>a</mi>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mphantom>
+            <mtext>bcdef</mtext>
+          </mphantom>
+        </mrow>
+        <mi>g</mi>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mpadded height="0" depth="0">
+            <mphantom>
+              <mi>h</mi>
+            </mphantom>
+          </mpadded>
+        </mrow>
+        <mi>i</mi>
+        <msqrt>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mpadded width="0">
+              <mphantom>
+                <mfrac>
+                  <mn>1</mn>
+                  <mn>2</mn>
+                </mfrac>
+              </mphantom>
+            </mpadded>
+          </mrow>
+          <mi>X</mi>
+        </msqrt>
+      </math>
+    </div>
+  </body>
+</html>

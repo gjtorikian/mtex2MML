@@ -1,0 +1,28 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>using math</title>
+    <!-- Copyright (c) 2012 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+    <script type="text/javascript">
+      function preMathJax()
+      {
+      gConfigObject.TeX = { extensions: ["mhchem.js", "AMSmath.js"] };
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="reftest-element">
+      \(
+      \ce{Fe(CN)_{$\frac{6}{2}$}}
+      \ce{$x\,$ Na(NH4)HPO4 ->[\Delta] (NaPO3)_{$x$} + $x\,$ NH3 ^ + $x\,$ H2O}
+      \)
+    </div>
+  </body>
+</html>

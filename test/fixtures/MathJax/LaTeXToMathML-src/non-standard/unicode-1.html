@@ -1,0 +1,25 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>unicode</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+  </head>
+
+  <body>
+    <div id="reftest-element">\(
+      \unicode{65}                        % the character 'A' <br>
+      \unicode{x41}                       % the character 'A' <br>
+      \unicode[.55,0.05]{x22D6}           % less-than with dot, with height .55em and depth 0.05em <br>
+      \unicode[.55,0.05][Geramond]{x22D6} % same taken from Geramond font <br>
+      \unicode[Garamond]{x22D6}           % same, but with default height, depth of .8em,.2em<br/>
+      \unicode[Zapf Dingbats]{x22D6}      % font name with space (issue 142)
+      \)
+    </div>
+  </body>
+</html>

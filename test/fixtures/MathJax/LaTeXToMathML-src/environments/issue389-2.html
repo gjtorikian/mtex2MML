@@ -1,0 +1,28 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>issue 389</title>
+    <!-- Copyright (c) 2013 MathJax Consortium
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript">
+      function preMathJax() {
+        gConfigObject.extensions.push("TeX/AMSmath.js");
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- See issue 389
+         https://github.com/mathjax/MathJax/issues/389 -->
+
+    \begin{multline}
+    a+b+c+d+e+f\\
+    +i+j+k+l+m+n
+    \end{multline}
+
+  </body>
+</html>

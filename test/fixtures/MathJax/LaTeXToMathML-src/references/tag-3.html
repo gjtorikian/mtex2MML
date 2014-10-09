@@ -1,0 +1,33 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>Tag</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../scriptTests.js"></script>
+    <script type="text/javascript">
+      function getTestCases()
+      {
+      var id = "mjx-eqn-ID";
+      var node = document.getElementById(id);
+      node.parentNode.removeChild(node);
+      node = document.getElementById(id);
+      return [
+        newScriptReftestResult("There is only one of id '" + id+"'", !node)
+      ];
+      }
+    </script>
+  </head>
+
+  <body>
+    \[1 \tag{ID}\]
+
+    <!-- See issue 240
+         https://github.com/mathjax/MathJax/issues#issue/240 -->
+    \[2 \tag{ID}\]
+  </body>
+</html>

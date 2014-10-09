@@ -1,0 +1,33 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>basic operators</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+    <script type="text/javascript">
+      function preMathJax()
+      {
+      gConfigObject.TeX = { extensions: ["AMSmath.js"] };
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Testing basic operators:
+         #
+         &
+         \\
+         %
+      -->
+    <div id="reftest-element">\(
+      \newcommand\s[3]{#1+#2+#3} \s a b c
+      \begin{smallmatrix} a&b\\ c&d \end{smallmatrix}
+      % comment
+      \)</div>
+  </body>
+</html>

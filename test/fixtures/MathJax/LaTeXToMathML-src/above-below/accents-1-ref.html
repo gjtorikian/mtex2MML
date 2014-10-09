@@ -1,0 +1,129 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>accents</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+  </head>
+
+  <body>
+    <div id="reftest-element">
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+
+        <!-- \acute {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x00B4;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \grave {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x0060;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \bar {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">        
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x00AF;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \overline {abc} -->
+        <mover>
+          <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+          <mo stretchy="true" accent="false">&#x00AF;</mo>
+        </mover>
+
+        <!-- \underline {abc} -->
+        <munder>
+          <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+          <mo stretchy="true" accent="true">_</mo>
+        </munder>
+
+        <!-- \vec {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x2192;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \dot {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x02D9;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \ddot {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x00A8;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \tilde {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x007E;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \widetilde {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="true" accent="true">&#x007E;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \check {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x02C7;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \hat {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x005E;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \widehat {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="true" accent="true">&#x005E;</mo>
+          </mover>
+        </mrow>
+
+        <!-- \breve {abc} -->
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover accent="true">
+            <mrow><mi>a</mi><mi>b</mi><mi>c</mi></mrow>
+            <mo stretchy="false" accent="true">&#x02D8;</mo>
+          </mover>
+        </mrow>
+
+      </math>
+    </div>
+  </body>
+</html>

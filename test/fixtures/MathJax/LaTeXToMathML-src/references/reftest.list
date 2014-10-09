@@ -1,0 +1,22 @@
+#
+# @issue225
+#
+# <p>
+# See <a href="https://github.com/mathjax/MathJax/issues/225">issue 225</a>.</p>
+#
+# @issue240
+#
+# <p>
+# See <a href="https://github.com/mathjax/MathJax/issues/240">issue 240</a>.</p>
+
+tree== eqref-1.html eqref-1-ref.html
+tree== label-1.html label-1-ref.html
+annotate(@issue225) tree== label-2.html label-2-ref.html
+tree== ref-1a.html ref-1-ref.html
+tree== ref-1b.html ref-1-ref.html
+tree== ref-2.html ref-2-ref.html
+tree== ref-3.html ref-3-ref.html
+require(HTML-CSS) fails-if(Quirks||IE7) == tag-1.html tag-1-ref.html
+== tag-2.html tag-2-ref.html
+annotate(@issue240) script tag-3.html
+== notag-1.html notag-1-ref.html

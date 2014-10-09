@@ -48,3 +48,32 @@ task :build_ext do
     cp "ext/mtex2MML.so", "lib/"
   end
 end
+
+desc 'Convert MatJax test suite'
+task :convert_mathjax_tests do
+  require 'nokogiri'
+  mathjax_test_dir = File.join('test', 'fixtures', 'MathJax')
+  mathjax_test_src_dir = File.join(mathjax_test_dir, 'LaTeXToMathML-src')
+  mathjax_test_tex_dir = File.join(mathjax_test_dir, 'LaTeXToMathML-tex')
+  mathjax_test_out_dir = File.join(mathjax_test_dir, 'LaTeXToMathML-out')
+  Dir["#{mathjax_test_src_dir}/**/*.html"].each do |file|
+    f = File.open(file)
+    doc = Nokogiri::XML(f)
+    element = doc.css('#reftest-element')
+    if element.length == 1
+      contents = element.first
+      outfile = file.sub(mathjax_test_src_dir + File::SEPARATOR, '')
+      outfile_dirname = File.dirname(outfile)
+      FileUtils.mkdir_p(File.join(mathjax_test_out_dir, outfile_dirname))
+      FileUtils.mkdir_p(File.join(mathjax_test_tex_dir, outfile_dirname))
+      if file =~ /-ref.html/
+        File.write(File.join(mathjax_test_out_dir, outfile), contents)
+      else
+        File.write(File.join(mathjax_test_tex_dir, outfile), contents)
+      end
+    else
+      puts "#{file} did not have just one reftest-element: it had #{element.length}"
+    end
+    f.close
+  end
+end

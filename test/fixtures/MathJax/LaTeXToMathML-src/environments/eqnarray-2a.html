@@ -1,0 +1,31 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>eqnarray</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+    <script type="text/javascript">
+      function preMathJax()
+      {
+      gConfigObject.TeX = { 
+        equationNumbers: { autoNumber: "AMS" }
+      }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="reftest-element">\(
+      \begin{eqnarray}
+      a & = & b & + & c \\
+      d & = & e & + & f \\
+      g & = & h & + & i
+      \end{eqnarray}
+      \)</div>
+  </body>
+</html>

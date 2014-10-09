@@ -1,0 +1,31 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>Tag</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/x-mathjax-config">
+      if (MathJax.Hub.Browser.isMSIE) {
+        MathJax.Hub.Config({
+          styles: {
+            "#bluebox": {"margin-top": "0px ! important"}
+          }
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- See issue 77
+         https://github.com/mathjax/MathJax/issues#issue/77 -->
+   <div id="bluebox" style="float:right; width:20em; height: 5em; background:blue;
+               margin-top:-1em"></div>
+    <div style="margin-right:20em">
+    $$ x = e = mc^2 \tag{1} $$
+    </div>
+  </body>
+</html>

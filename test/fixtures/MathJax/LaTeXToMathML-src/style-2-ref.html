@@ -1,0 +1,53 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>style - mathchoice</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../header.js"></script>
+    <script type="text/javascript" src="../treeReftests.js"></script>
+  </head>
+
+  <body>
+    <div id="reftest-element">
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mstyle scriptlevel="0" displaystyle="false">
+            <mrow>
+              <mn>1</mn>
+              <mtext>over</mtext>
+              <mn>2</mn>
+            </mrow>
+          </mstyle>
+        </mrow>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mstyle scriptlevel="0" displaystyle="true">
+            <mfrac>
+              <mn>1</mn>
+              <mn>2</mn>
+            </mfrac>
+          </mstyle>
+        </mrow>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mstyle scriptlevel="2" displaystyle="false">
+            <mtext>&#x00BD;<!-- ½ --></mtext>
+          </mstyle>
+        </mrow>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mstyle scriptlevel="1" displaystyle="false">
+            <mrow>
+              <mn>1</mn>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mo>/</mo>
+              </mrow>
+              <mn>2</mn>
+            </mrow>
+          </mstyle>
+        </mrow>
+      </math>
+    </div>
+  </body>
+</html>

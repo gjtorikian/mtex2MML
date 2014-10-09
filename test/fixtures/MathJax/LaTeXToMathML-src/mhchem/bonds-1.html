@@ -1,0 +1,35 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>special symbols</title>
+    <!-- Copyright (c) 2012 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+    <script type="text/javascript">
+      function preMathJax()
+      {
+      gConfigObject.TeX = { extensions: ["mhchem.js"] };
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="reftest-element">
+      \(
+      \ce{C6H5-CHO}
+      \ce{X=Y#Z}
+      \ce{A\sbond B\dbond C\tbond D}
+      \ce{A\bond{-}B\bond{=}C\bond{#}D}
+      \ce{A\bond{~}B\bond{~-}C}
+      \ce{A\bond{~=}B\bond{~--}C\bond{-~-}D}
+      \ce{A\bond{...}B\bond{....}C}
+      \ce{A\bond{->}B\bond{<-}C}
+      \ce{A\bond{unknown}B}
+      \)
+    </div>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!-- -*- mode: HTML; tab-width: 2; indent-tabs-mode: nil; -*- -->
+<!-- vim: set tabstop=2 expandtab shiftwidth=2 textwidth=80:  -->
+<!DOCTYPE html>
+<html class="reftest-wait">
+  <head>
+    <title>DefineColor: gray model</title>
+    <!-- Copyright (c) 2011 Design Science, Inc.
+         License: Apache License 2.0 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../header.js"></script>
+    <script type="text/javascript" src="../../treeReftests.js"></script>
+    <script type="text/javascript">
+      function preMathJax()
+      {
+      gConfigObject.TeX = { extensions: ["color.js"] };
+      }
+    </script>
+  </head>
+
+  <body>
+    <div>
+      \(
+      \definecolor{noir}{gray}{0}
+      \definecolor{gray1}{gray}{.1}
+      \definecolor{gray2}{gray}{.2}
+      \definecolor{gray3}{gray}{.3}
+      \definecolor{gray4}{gray}{.4}
+      \definecolor{gray5}{gray}{.5}
+      \definecolor{gray6}{gray}{.6}
+      \definecolor{gray7}{gray}{.7}
+      \definecolor{gray8}{gray}{.8}
+      \definecolor{gray9}{gray}{.9}
+      \definecolor{blanc}{gray}{1}
+      \)
+    </div>
+
+    <div id="reftest-element">\(
+      {\color{noir}{\text{noir}}}
+      {\color{gray1}{\text{gray1}}}
+      {\color{gray2}{\text{gray2}}}
+      {\color{gray3}{\text{gray3}}}
+      {\color{gray4}{\text{gray4}}}
+      {\color{gray5}{\text{gray5}}}
+      {\color{gray6}{\text{gray6}}}
+      {\color{gray7}{\text{gray7}}}
+      {\color{gray8}{\text{gray8}}}
+      {\color{gray9}{\text{gray9}}}
+      {\color{blanc}{\text{blanc}}}
+      \)</div>
+  </body>
+</html>
