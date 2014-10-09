@@ -15,7 +15,7 @@ Bad & Good
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("basic_array"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "basic_array"))
   end
 
   def test_array_with_hline
@@ -31,7 +31,7 @@ n & \text{Left} & \text{Center} & \text{Right} \\\\
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_with_hline"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_with_hline"))
   end
 
   def test_array_with_hline_and_hdashline
@@ -48,7 +48,7 @@ n & \text{Left} & \text{Center} & \text{Right} \\\\
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_with_hline_and_hdashline"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_with_hline_and_hdashline"))
   end
 
   def test_array_pos_alignment
@@ -63,7 +63,7 @@ n & \text{Left} & \text{Center} & \text{Right} \\\\
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_pos_alignment"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_pos_alignment"))
   end
 
   def test_array_pos_alignment_with_hline
@@ -82,7 +82,7 @@ n & \text{Left} & \text{Center} & \text{Right} \\\\
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_pos_alignment_with_hline"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_pos_alignment_with_hline"))
   end
 
   def test_array_vertical_column
@@ -94,7 +94,7 @@ Bad & Good
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_vertical_column"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_vertical_column"))
   end
 
   def test_array_vertical_column_with_align
@@ -106,7 +106,7 @@ Bad & Good
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_vertical_column_with_align"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_vertical_column_with_align"))
   end
 
   def test_array_with_vertical_and_horizontal_dashes
@@ -124,7 +124,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_with_vertical_and_horizontal_dashes"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_with_vertical_and_horizontal_dashes"))
   end
 
   def test_array_nesting
@@ -164,7 +164,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("array_nesting"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "array_nesting"))
   end
 
   def test_strip_excess_whitespace_in_array_attributes
@@ -179,7 +179,7 @@ $$
 $$
   '''
 
-    assert_equal(@mtex.filter(text), fixture_file("strip_excess_whitespace_in_array_attributes"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "strip_excess_whitespace_in_array_attributes"))
   end
 
   def test_augmented_matrix
@@ -193,6 +193,6 @@ $$ \left[
 \right] $$
     '''
 
-    assert_equal(@mtex.filter(text), fixture_file("augmented_matrix"))
+    assert_equal(@mtex.filter(text), fixture_file("array", "augmented_matrix"))
   end
 end

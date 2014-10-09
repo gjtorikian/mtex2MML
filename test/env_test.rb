@@ -17,7 +17,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("matrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "matrix_ex_spacing"))
   end
 
   def test_matrix_no_ex_spacing
@@ -31,7 +31,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("matrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "matrix_no_ex_spacing"))
   end
 
   def test_matrix_no_lines
@@ -44,7 +44,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("matrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "matrix_no_lines"))
   end
 
   def test_pmatrix_ex_spacing
@@ -56,7 +56,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("pmatrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "pmatrix_ex_spacing"))
   end
 
   def test_pmatrix_no_ex_spacing
@@ -68,7 +68,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("pmatrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "pmatrix_no_ex_spacing"))
   end
 
   def test_pmatrix_no_lines
@@ -79,7 +79,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("pmatrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "pmatrix_no_lines"))
   end
 
   def test_bmatrix_ex_spacing
@@ -91,7 +91,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("bmatrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "bmatrix_ex_spacing"))
   end
 
   def test_bmatrix_no_ex_spacing
@@ -103,7 +103,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("bmatrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "bmatrix_no_ex_spacing"))
   end
 
   def test_bmatrix_no_lines
@@ -114,7 +114,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("bmatrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "bmatrix_no_lines"))
   end
 
   def test_bb_matrix_ex_spacing
@@ -126,7 +126,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("bbmatrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "bbmatrix_ex_spacing"))
   end
 
   def test_bb_matrix_no_ex_spacing
@@ -138,7 +138,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("bbmatrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "bbmatrix_no_ex_spacing"))
   end
 
   def test_bb_matrix_no_lines
@@ -149,7 +149,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("bbmatrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "bbmatrix_no_lines"))
   end
 
   def test_vmatrix_ex_spacing
@@ -161,7 +161,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("vmatrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "vmatrix_ex_spacing"))
   end
 
   def test_vmatrix_no_ex_spacing
@@ -173,7 +173,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("vmatrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "vmatrix_no_ex_spacing"))
   end
 
   def test_vmatrix_no_lines
@@ -184,7 +184,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("vmatrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "vmatrix_no_lines"))
   end
 
   def test_V_matrix_ex_spacing
@@ -197,7 +197,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("vvmatrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "vvmatrix_ex_spacing"))
   end
 
   def test_V_matrix_no_ex_spacing
@@ -210,7 +210,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("vvmatrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "vvmatrix_no_ex_spacing"))
   end
 
   def test_V_matrix_no_lines
@@ -222,7 +222,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("vvmatrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "vvmatrix_no_lines"))
   end
 
   def test_smallmatrix_ex_spacing
@@ -237,7 +237,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("smallmatrix_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "smallmatrix_ex_spacing"))
   end
 
   def test_smallmatrix_no_ex_spacing
@@ -251,7 +251,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("smallmatrix_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "smallmatrix_no_ex_spacing"))
   end
 
   def test_smallmatrix_no_lines
@@ -263,7 +263,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("smallmatrix_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "smallmatrix_no_lines"))
   end
 
   def test_aligned_ex_spacing
@@ -276,7 +276,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("aligned_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "aligned_ex_spacing"))
   end
 
   def test_aligned_no_ex_spacing
@@ -289,7 +289,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("aligned_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "aligned_no_ex_spacing"))
   end
 
   def test_aligned_no_lines
@@ -301,7 +301,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("aligned_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "aligned_no_lines"))
   end
 
   def test_gathered_ex_spacing
@@ -314,7 +314,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("gathered_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "gathered_ex_spacing"))
   end
 
   def test_gathered_no_ex_spacing
@@ -327,7 +327,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("gathered_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "gathered_no_ex_spacing"))
   end
 
   def test_gathered_no_lines
@@ -339,7 +339,7 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("gathered_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "gathered_no_lines"))
   end
 
   def test_split_ex_spacing
@@ -352,7 +352,7 @@ A & = \frac{\pi r^2}{2} \\\\[22.2ex]
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("split_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "split_ex_spacing"))
   end
 
   def test_split_no_ex_spacing
@@ -365,7 +365,7 @@ A & = \frac{\pi r^2}{2} \\\\
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("split_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "split_no_ex_spacing"))
   end
 
   def test_split_no_lines
@@ -377,7 +377,7 @@ A & = \frac{\pi r^2}{2}
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("split_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "split_no_lines"))
   end
 
   def test_cases_ex_spacing
@@ -391,7 +391,7 @@ f(n) =
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("cases_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "cases_ex_spacing"))
   end
 
   def test_cases_no_ex_spacing
@@ -405,7 +405,7 @@ f(n) =
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("cases_no_ex_spacing"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "cases_no_ex_spacing"))
   end
 
   def test_cases_no_lines
@@ -418,6 +418,6 @@ f(n) =
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("cases_no_lines"))
+    assert_equal(@mtex.filter(text), fixture_file("env", "cases_no_lines"))
   end
 end

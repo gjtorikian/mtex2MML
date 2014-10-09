@@ -2,8 +2,8 @@ $:.unshift File.expand_path( File.join( File.dirname( __FILE__ ), "../lib" ) )
 require 'mtextomml'
 require 'minitest/autorun'
 
-def fixture_file(name)
-  File.read( File.join(File.dirname( __FILE__ ), "fixtures", "#{name}.html") ).strip
+def fixture_file(dir, name)
+  File.read( File.join(File.dirname( __FILE__ ), "fixtures", dir, "#{name}.html") ).strip
 end
 
 def write_to_test_file(converted)
