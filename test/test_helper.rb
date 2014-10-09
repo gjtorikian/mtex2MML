@@ -7,17 +7,5 @@ def fixture_file(dir, name)
 end
 
 def write_to_test_file(converted)
-  outfile = """
-<html>
-
-<body>
-
-#{converted}
-
-</body>
-
-</html>
-  """
-
-  File.open("test.html", "w") { |f| f.write(outfile) }
+  File.open("test.html", "w") { |f| f.write(converted) }
 end

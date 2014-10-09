@@ -22,7 +22,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
       expected = File.read(outfile)
       actual = @mtex.filter(tex_contents)
 
-      write_to_test_file(actual)
+      write_to_test_file(actual) if tex =~ /underset-1/
       assert_equal(actual.strip, expected.strip)
     end
   end

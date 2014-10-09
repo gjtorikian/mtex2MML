@@ -793,7 +793,11 @@ int mtex2MML_displaymode = 0;
 
 "\\overbrace"     {return OVERBRACE;}
 
+"\\overbracket"     {return OVERBRACKET;}
+
 "\\underbrace"   {return UNDERBRACE;}
+
+"\\underbracket"   {return UNDERBRACKET;}
 
 "\\underline"   {return UNDERLINE;}
 
