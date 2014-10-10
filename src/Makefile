@@ -16,13 +16,16 @@ all:    y.tab.c lex.yy.c mtex2MML
 stack.o: stack.c stack.h
 	$(CC) -fPIC -c -o stack.o stack.c
 
+color_definitions.o: color_definitions.c
+	$(CC) -fPIC -c -o color_definitions.o color_definitions.c
+
 string_extras.o: string_extras.c string_extras.h
 	$(CC) -fPIC -c -o string_extras.o string_extras.c
 
 parse_extras.o: parse_extras.c parse_extras.h
 	$(CC) -fPIC -c -o parse_extras.o parse_extras.c
 
-y.tab.c:	mtex2MML.y stack.o string_extras.o parse_extras.o
+y.tab.c:	mtex2MML.y stack.o string_extras.o parse_extras.o color_definitions.o
 		$(YACC) -p $(YYPREFIX) -d mtex2MML.y
 
 lex.yy.c:	mtex2MML.l
@@ -32,10 +35,10 @@ y.tab.o:	y.tab.c mtex2MML.h
 		$(CC) $(CFLAGS) -c -o y.tab.o y.tab.c
 
 lex.yy.o:	lex.yy.c y.tab.c mtex2MML.h
-		$(CC) $(CFLAGS) -c -o lex.yy.o stack.o string_extras.o parse_extras.o lex.yy.c
+		$(CC) $(CFLAGS) -c -o lex.yy.o stack.o string_extras.o parse_extras.o color_definitions.o lex.yy.c
 
 mtex2MML:	lex.yy.o y.tab.o mtex2MML.cc mtex2MML.h
-		$(CXX) $(CFLAGS) -o mtex2MML lex.yy.o y.tab.o stack.o string_extras.o parse_extras.o mtex2MML.cc
+		$(CXX) $(CFLAGS) -o mtex2MML lex.yy.o y.tab.o stack.o string_extras.o color_definitions.o parse_extras.o mtex2MML.cc
 
 universal:
 		CFLAGS='-arch i686 -arch ppc' make all
@@ -73,14 +76,14 @@ mtex2MML_ruby.c:	mtex2MML.i
 mtex2MML_ruby.o:	mtex2MML_ruby.c
 			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c mtex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -o mtex2MML_ruby.o
 
-y.tab_ruby.o:		y.tab.c stack.o string_extras.o parse_extras.o
+y.tab_ruby.o:		y.tab.c stack.o string_extras.o parse_extras.o color_definitions.o
 			$(CC) $(RUBY_CFLAGS) -Dmtex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c
 
 lex.yy_ruby.o:	lex.yy.c y.tab.c mtex2MML.h
-		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o stack.o string_extras.o parse_extras.o lex.yy.c
+		$(CC) $(RUBY_CFLAGS) -c -o lex.yy_ruby.o stack.o string_extras.o parse_extras.o color_definitions.o lex.yy.c
 
 ruby:	mtex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o
-	$(LD_TARGET) $(RUBY_LD) mtex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o stack.o string_extras.o parse_extras.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o mtex2MML.$(DYLIB_EXT)
+	$(LD_TARGET) $(RUBY_LD) mtex2MML_ruby.o y.tab_ruby.o lex.yy_ruby.o stack.o string_extras.o color_definitions.o parse_extras.o -L$(RUBYLIBDIR) $(LIBRUBYARG) -o mtex2MML.$(DYLIB_EXT)
 
 test_ruby:
 	$(RUBY) ./mtextomml.rb

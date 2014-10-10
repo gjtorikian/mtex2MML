@@ -1,6 +1,8 @@
 #ifndef PARSE_EXTRAS_H
 #define PARSE_EXTRAS_H
 
+#include "../deps/uthash/uthash.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -17,6 +19,12 @@ extern "C" {
     size_t used;
     size_t size;
   } symbolDataArray;
+
+  struct css_colors {
+    char name[20];                    /* key */
+    char color[10];
+    UT_hash_handle hh;         /* makes this structure hashable */
+  };
 
   // set up array of symbols (like hlines)
   extern void initSymbolDataArray(symbolDataArray *a, size_t initialSize);

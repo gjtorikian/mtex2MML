@@ -895,6 +895,8 @@ int mtex2MML_displaymode = 0;
 "\\bghilight" |
 "\\bghighlight"   {BEGIN(ATTRIBUTELIST); return BGHIGHLIGHT;}
 
+"\\colorbox"     {BEGIN(ATTRIBUTELIST); return COLORBOX;}
+
 "\\color"        {BEGIN(ATTRIBUTELIST); return COLOR;}
 "\\bgcolor"        {BEGIN(ATTRIBUTELIST); return BGCOLOR;}
 

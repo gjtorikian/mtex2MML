@@ -819,23 +819,8 @@ In MathML, numbers are represented as `<mn>127.3</mn>`. mtex2MML does its best t
 
 `\color{colourspec}` changes the current foreground color. `colourspec` is either:
 
-* An HTML named-color:
-  * `aqua`
-  * `black`
-  * `blue`
-  * `fuchsia`
-  * `gray`
-  * `green`
-  * `lime`
-  * `maroon`
-  * `navy`
-  * `olive`
-  * `purple`
-  * `red`
-  * `silver`
-  * `teal`
-  * `white`
-  * `yellow`
+* A CSS named color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_Keywords
+* A LaTeX named color: http://en.wikibooks.org/wiki/LaTeX/Colors
 * An RGB color value:
   * `#rgb` or `#rrggbb`, a three- or six-digit hexadecimal number.
   `#000000` is black `#FFFFFF` is white, and `#1AC=#11AACC`.
@@ -855,6 +840,8 @@ The alternate LaTeX syntax, involving specifying a color model is not supported:
 ```
 
 A new command, `\bgcolor{colourspec}` works the same way, but changes the current background color.
+
+`\colorbox` changes the background color, and adds some padding, using the `mpadding` element.
 
 ## Interactivity
 
