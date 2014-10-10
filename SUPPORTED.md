@@ -370,12 +370,17 @@ The set of extensible arrows is:
 * `)`
 * `[`
 * `]`
+* `\bracevert`
 * `\langle` (`\lang`)
 * `\rangle` (`\rang`)
 * `\llangle`
+* `\lgroup`
 * `\rrangle`
+* `\rgroup`
 * `\lbrace` (`\{`)
 * `\rbrace` (`\}`)
+* `\lbrack`
+* `\rbrack`
 * `\lceil`
 * `\rceil`
 * `\lmoustache`
@@ -387,6 +392,10 @@ The set of extensible arrows is:
 * `\updownarrow`
 * `\vert` (`\|`)
 * `\Vert` (`\|`)
+* `\lvert`
+* `\rvert`
+* `\lVert`
+* `\rVert`
 * `/`
 
 In TeX, delimiters are non-stretchy, by default. Stretchy delimiters are obtained with `\left<delim>` and `\right<delim>`. Each `\left<delim>` must be matched with a corresponding `\right<delim>`. If you don't want a visible matching delimiter, you can match with the invisible delimiters
@@ -405,7 +414,11 @@ Fixed-size large delimiters are generated with the modifiers:
 * `\bigr`
 * `\Bigr`
 * `\biggr`
-* `\Biggr`.
+* `\Biggr`
+* `\bigm`
+* `\Bigm`
+* `\biggm`
+* `\Biggm`
 
 For example
 * `\Biggr)` generates a very large (3 * normal size) right parenthesis; `\bigl\vert` generates a large (1.2 * natural size) left vertical bar.

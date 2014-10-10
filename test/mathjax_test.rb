@@ -10,7 +10,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
   MATHJAX_TEST_TEX_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-tex')
   MATHJAX_TEST_OUT_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-out')
 
-  DIRS_WE_DO = %w(above-below arrows basic-operators colors)
+  DIRS_WE_DO = %w(above-below arrows basic-operators colors delimiters)
   DIRS_WE_DO_GLOB = "{#{DIRS_WE_DO.join(',')}}"
   DIRS_IGNORED = %w(action AMScd atoms)
 
@@ -28,7 +28,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
       expected = File.read(outfile)
       actual = @mtex.filter(tex_contents)
 
-      write_to_test_file(actual) if tex =~ /remap/
+      write_to_test_file(actual) if tex =~ /left-right-1/
       assert_equal(actual.strip, expected.strip)
       done_count += 1
     end

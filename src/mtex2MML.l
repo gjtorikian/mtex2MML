@@ -85,6 +85,11 @@ int mtex2MML_displaymode = 0;
 "\\biggl" {return BIGGL;}
 "\\Biggl" {return BBIGGL;}
 
+"\\bigm"  {return BIGM;}
+"\\Bigm"  {return BBIGM;}
+"\\biggm" {return BIGGM;}
+"\\Biggm" {return BBIGGM;}
+
 "\\mathrlap"  {return RLAP;}
 "\\mathllap"  {return LLAP;}
 "\\mathclap"  {return CLAP;}
@@ -139,6 +144,17 @@ int mtex2MML_displaymode = 0;
 "\\Vert" |
 "\\|"           {yylval=mtex2MML_copy_string("&Vert;"); return OTHERDELIM;}
 
+"\\lbrack"      {yylval=mtex2MML_copy_string("&#91;"); return LEFTDELIM;}
+"\\rbrack"      {yylval=mtex2MML_copy_string("&#93;"); return RIGHTDELIM;}
+
+"\\lVert"      {yylval=mtex2MML_copy_string("&#8741;"); return LEFTDELIM;}
+"\\rVert"      {yylval=mtex2MML_copy_string("&#8741;"); return RIGHTDELIM;}
+
+"\\lvert"      {yylval=mtex2MML_copy_string("&#8739;"); return LEFTDELIM;}
+"\\rvert"      {yylval=mtex2MML_copy_string("&#8739;"); return RIGHTDELIM;}
+
+"\\bracevert"   {yylval=mtex2MML_copy_string("&#9130;"); return OTHERDELIM;}
+
 "\\setminus"   {yylval=mtex2MML_copy_string("&setminus;"); return MO;}
 "\\backslash"   {yylval=mtex2MML_copy_string("&bsol;"); return MO;}
 "\\smallsetminus"   {yylval=mtex2MML_copy_string("&#xFE68;"); return MOF;}
@@ -147,10 +163,10 @@ int mtex2MML_displaymode = 0;
 
 "\\lfloor" |
 "\\lceil"  |
-"\\lmoustache" |
 "\\lang"   |
 "\\langle"      {yylval=mtex2MML_copy2(yytext, ";"); if (yylval != mtex2MML_empty_string) yylval[0]='&'; return LEFTDELIM;}
 "\\llangle"     {yylval=mtex2MML_copy_string("&Lang;"); return LEFTDELIM;}
+"\\lgroup"      {yylval=mtex2MML_copy_string("&#10222;"); return LEFTDELIM;}
 
 "\\rfloor" |
 "\\rceil"  |
@@ -158,6 +174,7 @@ int mtex2MML_displaymode = 0;
 "\\rang"   |
 "\\rangle"      {yylval=mtex2MML_copy2(yytext, ";"); if (yylval != mtex2MML_empty_string) yylval[0]='&'; return RIGHTDELIM;}
 "\\rrangle"     {yylval=mtex2MML_copy_string("&Rang;"); return RIGHTDELIM;}
+"\\rgroup"      {yylval=mtex2MML_copy_string("&#10223;"); return RIGHTDELIM;}
 
 "/"             {yylval=mtex2MML_copy_string(yytext); return OTHERDELIM;}
 
