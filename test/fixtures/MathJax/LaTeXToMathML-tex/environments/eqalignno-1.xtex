@@ -1,8 +1,8 @@
-
+$
       \begin{equation}
       \eqalignno{
-      a = b \\
-      c = d
+      a &= b \\
+      c &= d
       }
       \end{equation}
 $

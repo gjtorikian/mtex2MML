@@ -270,7 +270,7 @@ $$
     text = '''
 $$
 \begin{aligned}
-2x - 5y &=  8 \\\\[.5em]
+2x - 5y &=  8 \\\\[2.49201em]
 3x + 9y &=  -12
 \end{aligned}
 $$
@@ -283,7 +283,7 @@ $$
     text = '''
 $$
 \begin{aligned}
-2x - 5y &=  8 \\\\[2.49201em]
+2x - 5y &=  8 \\\\
 3x + 9y &=  -12
 \end{aligned}
 $$

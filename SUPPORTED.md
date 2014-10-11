@@ -18,10 +18,15 @@ where `env` is one of
 * `smallmatrix`
 * `cases`
 * `aligned`
+* `align`
+* `alignedat`
+* `gather`
 * `gathered`
 * `split`
 * `array`
 * `svg`
+
+The `*` notation (where applicable) is currently not supported; no equations are numbered.
 
 ### Horizontal lines
 
