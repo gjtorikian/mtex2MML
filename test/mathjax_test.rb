@@ -28,7 +28,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
       expected = File.read(outfile)
       actual = @mtex.filter(tex_contents)
 
-      write_to_test_file(actual) if tex =~ /tfrac-1.tex/
+      write_to_test_file(actual) if tex =~ /big-1.tex/
       assert_equal(actual.strip, expected.strip)
       done_count += 1
     end
