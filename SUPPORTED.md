@@ -805,10 +805,19 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 
 * `\frac`
 * `\tfrac`
+* `\dfrac`
+* `\above`
+* `\abovewithdelims`
 * `\binom`
 * `\tbinom`
+* `\brace`
+* `\brack`
+* `\choose`
+* `\dbinom`
 * `\over`
+* `\overwithdelims`
 * `\atop`
+* `\atopwithdelims`
 * `\substack`
 * `\overbrace`
 * `\underbrace`

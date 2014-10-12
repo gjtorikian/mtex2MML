@@ -10,9 +10,9 @@ class MTex2MMLMathJaxTest < MiniTest::Test
   MATHJAX_TEST_TEX_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-tex')
   MATHJAX_TEST_OUT_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-out')
 
-  DIRS_WE_DO = %w(above-below arrows basic-operators colors delimiters environments)
+  DIRS_WE_DO = %w(above-below arrows basic-operators colors delimiters environments frac)
   DIRS_WE_DO_GLOB = "{#{DIRS_WE_DO.join(',')}}"
-  DIRS_IGNORED = %w(action AMScd atoms)
+  DIRS_IGNORED = %w(action AMScd atoms errors)
 
   done_count = Dir["test/fixtures/MathJax/LaTeXToMathML-tex/#{DIRS_WE_DO_GLOB}/*.tex"].length
   skipped_count = Dir["test/fixtures/MathJax/LaTeXToMathML-tex/#{DIRS_WE_DO_GLOB}/*.xtex"].length
@@ -28,6 +28,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
       expected = File.read(outfile)
       actual = @mtex.filter(tex_contents)
 
+      write_to_test_file(actual) if tex =~ /tfrac-1.tex/
       assert_equal(actual.strip, expected.strip)
       done_count += 1
     end

@@ -109,16 +109,9 @@ int mtex2MML_displaymode = 0;
 
 "\\\\"          mtex2MML_rowposn=2; return ROWSEP;
 
-"\\\\"\[[0-9\.]+pt\] |
-"\\\\"\[[0-9\.]+em\] |
-"\\\\"\[[0-9\.]+ex\] |
-"\\\\"\[[0-9\.]+mu\] |
-"\\\\"\[[0-9\.]+px\] |
-"\\\\"\[[0-9\.]+pc\] |
-"\\\\"\[[0-9\.]+in\] |
-"\\\\"\[[0-9\.]+mm\] |
-"\\\\"\[[0-9\.]+cm\] |
-"\\\\"\[[0-9\.]+%\]    { mtex2MML_rowposn=2; return ROWSEP;}
+"\\\\"\[[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%)\] { mtex2MML_rowposn=2; return ROWSEP;}
+
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
 
 [a-zA-Z]+       {yylval=mtex2MML_copy_string(yytext); return MI;}
 
@@ -817,9 +810,14 @@ int mtex2MML_displaymode = 0;
 
 "\\frac"         {return FRAC;}
 "\\tfrac"         {return TFRAC;}
+"\\dfrac"         {return DFRAC;}
 
 "\\binom"        {return BINOM;}
 "\\tbinom"        {return TBINOM;}
+"\\brace"        {return BRACE;}
+"\\brack"        {return BRACK;}
+"\\choose"        {return CHOOSE;}
+"\\dbinom"        {return DBINOM;}
 
 "\\tensor"       {return TENSOR;}
 
@@ -879,7 +877,11 @@ int mtex2MML_displaymode = 0;
 "\\overset"      {return OVER;}
 
 "\\over"         {return TEXOVER;}
+"\\overwithdelims"         {return TEXOVERWITHDELIMS;}
 "\\atop"         {return TEXATOP;}
+"\\atopwithdelims"         {return TEXATOPWITHDELIMS;}
+"\\above"        {return TEXABOVE;}
+"\\abovewithdelims"        {return TEXABOVEWITHDELIMS;}
 
 "\\overleftarrow" {return OVERLEFTARROW;}
 
@@ -1129,7 +1131,7 @@ int mtex2MML_displaymode = 0;
 "\>"             {mtex2MML_env_start = 0; BEGIN(MATH); return END;}
 "\>\("           {BEGIN(ROWLINEOPTS); return END;}
 "\>\{"           {BEGIN(COLOPTS); return END;}
-[0-9\.]+(em|ex|pt|pc|in|cm|mm|mu)         {yylval=mtex2MML_copy_string(yytext); return ROWSPACINGDEF;}
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%)         {yylval=mtex2MML_copy_string(yytext); return ROWSPACINGDEF;}
 "~"      { return ROWSPACINGDEF; }
 "|"      { /* Ignore */ }
 [\t\n\r ]+       ;

@@ -280,8 +280,8 @@ struct css_colors *colors = NULL;
 
 %}
 
-%left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN ROWSPACINGDEF ROWLINESDEF COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG
+%left TEXOVER TEXOVERWITHDELIMS TEXATOP TEXATOPWITHDELIMS TEXABOVE TEXABOVEWITHDELIMS
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN ROWSPACINGDEF ROWLINESDEF COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG
 
 %%
 
@@ -537,6 +537,9 @@ closedTerm: array
 | multi
 | mfrac
 | binom
+| brace
+| brack
+| choose
 | msqrt
 | mroot
 | raisebox
@@ -607,7 +610,11 @@ closedTerm: array
 | colorbox
 | color
 | texover
+| texoverwithdelims
 | texatop
+| texatopwithdelims
+| texabove
+| texabovewithdelims
 | MROWOPEN closedTerm MROWCLOSE {
   $$ = mtex2MML_copy_string($2);
   mtex2MML_free_string($2);
@@ -1276,6 +1283,13 @@ mfrac: FRAC closedTerm closedTerm {
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($3);
+}
+| DFRAC closedTerm closedTerm {
+  char * s1 = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac>", $2, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac></mstyle>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
 };
 
 pmod: PMOD closedTerm {
@@ -1289,6 +1303,13 @@ texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($4);
+}
+| closedTerm TEXOVER closedTerm {
+  char * s1 = mtex2MML_copy3("<mfrac>", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</frac>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
 }
 | left compoundTermList TEXOVER compoundTermList right {
   char * s1 = mtex2MML_copy3("<mrow>", $1, "<mfrac><mrow>");
@@ -1304,6 +1325,20 @@ texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   mtex2MML_free_string($5);
 };
 
+texoverwithdelims: closedTerm TEXOVERWITHDELIMS LEFTDELIM RIGHTDELIM closedTerm {
+  char * s1 = mtex2MML_copy3("<mo fence=\"true\" stretchy=\"true\">", $3, "</mo><mfrac>");
+  char * s2 = mtex2MML_copy3(s1, $1, $5);
+  char * s3 = mtex2MML_copy2(s2, "</mfrac><mo fence=\"true\" stretchy=\"true\">");
+  $$ = mtex2MML_copy3(s3, $4, "</mo>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($5);
+};
+
 texatop: MROWOPEN compoundTermList TEXATOP compoundTermList MROWCLOSE {
   char * s1 = mtex2MML_copy3("<mfrac linethickness=\"0\"><mrow>", $2, "</mrow><mrow>");
   $$ = mtex2MML_copy3(s1, $4, "</mrow></mfrac>");
@@ -1311,18 +1346,54 @@ texatop: MROWOPEN compoundTermList TEXATOP compoundTermList MROWCLOSE {
   mtex2MML_free_string($2);
   mtex2MML_free_string($4);
 }
-| left compoundTermList TEXATOP compoundTermList right {
-  char * s1 = mtex2MML_copy3("<mrow>", $1, "<mfrac linethickness=\"0\"><mrow>");
-  char * s2 = mtex2MML_copy3($2, "</mrow><mrow>", $4);
-  char * s3 = mtex2MML_copy3("</mrow></mfrac>", $5, "</mrow>");
-  $$ = mtex2MML_copy3(s1, s2, s3);
+| closedTerm TEXATOP closedTerm {
+  char * s1 = mtex2MML_copy3("<mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</frac>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+texatopwithdelims: closedTerm TEXATOPWITHDELIMS LEFTDELIM RIGHTDELIM closedTerm {
+  char * s1 = mtex2MML_copy3("<mo fence=\"true\" stretchy=\"true\">", $3, "</mo><mfrac linethickness=\"0\">");
+  char * s2 = mtex2MML_copy3(s1, $1, $5);
+  char * s3 = mtex2MML_copy2(s2, "</mfrac><mo fence=\"true\" stretchy=\"true\">");
+  $$ = mtex2MML_copy3(s3, $4, "</mo>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string(s3);
   mtex2MML_free_string($1);
-  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
   mtex2MML_free_string($4);
   mtex2MML_free_string($5);
+};
+
+texabove: closedTerm TEXABOVE MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mfrac linethickness=\"", $4, "\">");
+  char * s2 = mtex2MML_copy3(s1, $1, $6);
+  $$ = mtex2MML_copy2(s2, "</mfrac>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+};
+
+texabovewithdelims: closedTerm TEXABOVEWITHDELIMS LEFTDELIM RIGHTDELIM PXSTRING closedTerm {
+  char * s1 = mtex2MML_copy3("<mo fence=\"true\" stretchy=\"true\">", $3, "</mo>");
+  char * s2 = mtex2MML_copy3(s1, "<mfrac linethickness=\"", $5);
+  char * s3 = mtex2MML_copy3(s2, "\">", $1);
+  char * s4 = mtex2MML_copy3(s3, $6, "</mfrac><mo fence=\"true\" stretchy=\"true\">");
+  $$ = mtex2MML_copy3(s4, $4, "</mo>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string(s4);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($5);
+  mtex2MML_free_string($6);
 };
 
 binom: BINOM closedTerm closedTerm {
@@ -1337,6 +1408,37 @@ binom: BINOM closedTerm closedTerm {
   $$ = mtex2MML_copy2(s1, "</mfrac></mstyle><mo>)</mo></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+}
+| DBINOM closedTerm closedTerm {
+    char * s1 = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $3);
+    $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow></mstyle>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string($2);
+    mtex2MML_free_string($3);
+};
+
+brace: closedTerm BRACE closedTerm {
+  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo>}</mo></mrow>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+brack: closedTerm BRACK closedTerm {
+  char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo>]</mo></mrow>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+choose: closedTerm CHOOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
   mtex2MML_free_string($3);
 };
 
