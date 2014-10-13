@@ -772,9 +772,9 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\negmedspace`
 * `\negthickspace`
 * `\phantom`
-* `\mathrlap`
-* `\mathllap`
-* `\mathclap`
+* `\mathrlap` (`\rlap`)
+* `\mathllap` (`\llap`)
+* `\mathclap` (`\clap`)
 * `\space` (Taken from [WebTeX](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec8.html#ARBSIZE "\space in the WebTeX Manual"))
 
 ## Accents
@@ -796,6 +796,9 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\widehat`
 * `\slash`
 * `\boxed`
+* `\fbox`
+* `\hbox`
+* `\mbox`
 * `\acute`
 * `\grave`
 * `\breve`

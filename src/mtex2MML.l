@@ -88,9 +88,12 @@ int mtex2MML_displaymode = 0;
 "\\biggm" {return BIGGM;}
 "\\Biggm" {return BBIGGM;}
 
-"\\mathrlap"  {return RLAP;}
-"\\mathllap"  {return LLAP;}
-"\\mathclap"  {return CLAP;}
+"\\mathrlap" |
+"\\rlap"         {return RLAP;}
+"\\mathllap" |
+"\\llap"         {return LLAP;}
+"\\mathclap" |
+"\\clap"         {return CLAP;}
 "\\rlap" |
 "\\llap" |
 "\\ulap" |
@@ -945,6 +948,10 @@ int mtex2MML_displaymode = 0;
 "\\slash"       {return SLASHED;}
 
 "\\boxed"       {return BOXED;}
+
+"\\fbox"        {return FBOX;}
+"\\hbox"        {return HBOX;}
+"\\mbox"        {return MBOX;}
 
 "\\mathcal"       {BEGIN(CALLIGRAPHIC); return CAL;}
 
