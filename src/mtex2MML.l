@@ -233,6 +233,18 @@ int mtex2MML_displaymode = 0;
 "\\phi"  {yylval=mtex2MML_copy_string("&#x03D5;"); return MI;}
 "\\varphi"  {yylval=mtex2MML_copy_string("&#x03C6;"); return MI;}
 
+"\\varDelta" {yylval=mtex2MML_copy_string("&#x394;"); return MI;}
+"\\varGamma" {yylval=mtex2MML_copy_string("&#x393;"); return MI;}
+"\\varLambda" {yylval=mtex2MML_copy_string("&#x39B;"); return MI;}
+"\\varOmega" {yylval=mtex2MML_copy_string("&#x3A9;"); return MI;}
+"\\varPhi" {yylval=mtex2MML_copy_string("&#x3A6;"); return MI;}
+"\\varPi" {yylval=mtex2MML_copy_string("&#x3A0;"); return MI;}
+"\\varPsi" {yylval=mtex2MML_copy_string("&#x3A8;"); return MI;}
+"\\varSigma" {yylval=mtex2MML_copy_string("&#x3A3;"); return MI;}
+"\\varTheta" {yylval=mtex2MML_copy_string("&#x398;"); return MI;}
+"\\varUpsilon" {yylval=mtex2MML_copy_string("&#x3A5;"); return MI;}
+"\\varXi" {yylval=mtex2MML_copy_string("&#x39E;"); return MI;}
+
 "\\arccos"  |
 "\\arcsin"  |
 "\\arctan"  |
@@ -695,6 +707,8 @@ int mtex2MML_displaymode = 0;
 
 "\\aleph" |
 "\\beth" |
+"\\gimel" |
+"\\daleth" |
 "\\eth" |
 "\\ell" |
 "\\hbar" |

@@ -226,6 +226,17 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\Omega`
 * `\digamma`
 * `\mho`
+* `\varDelta`
+* `\varGamma`
+* `\varLambda`
+* `\varOmega`
+* `\varPhi`
+* `\varPi`
+* `\varPsi`
+* `\varSigma`
+* `\varTheta`
+* `\varUpsilon`
+* `\varXi`
 
 ## Log-like Symbols
 
@@ -699,6 +710,8 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 
 * `\aleph`
 * `\beth`
+* `\gimel`
+* `\daleth`
 * `\ell`
 * `\hbar`
 * `\Im`
