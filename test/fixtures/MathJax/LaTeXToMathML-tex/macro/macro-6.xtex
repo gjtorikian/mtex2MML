@@ -1,4 +1,4 @@
-
+$
       \renewcommand\frac[2]{#1 / #2}
       \frac a b
 

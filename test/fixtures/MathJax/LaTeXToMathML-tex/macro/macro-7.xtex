@@ -1,4 +1,4 @@
-
+$
       \newenvironment{myenv}{
       \displaystyle
       \small
