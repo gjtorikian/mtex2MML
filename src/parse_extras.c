@@ -26,10 +26,10 @@ void initSymbolDataArray(symbolDataArray *a, size_t initialSize)
 void insertSymbolDataArray(symbolDataArray *a, symbolData element)
 {
   if (a->used == a->size) {
-      a->size *= 2;
-      a->array = (symbolData *)realloc(a->array, a->size * sizeof(symbolData));
-      // Initialize the last/new elements of the reallocated array
-      memset(&a->array[a->used],0, sizeof(symbolData) * (a->size - a->used));
+    a->size *= 2;
+    a->array = (symbolData *)realloc(a->array, a->size * sizeof(symbolData));
+    // Initialize the last/new elements of the reallocated array
+    memset(&a->array[a->used],0, sizeof(symbolData) * (a->size - a->used));
   }
 
   a->array[a->used].attribute = (char*)malloc(strlen(element.attribute) + 1);
@@ -40,15 +40,16 @@ void insertSymbolDataArray(symbolDataArray *a, symbolData element)
   a->used++;
 }
 
-void sortSymbolDataArray(symbolDataArray *a) {
+void sortSymbolDataArray(symbolDataArray *a)
+{
   int i, j, n = a->used;
 
   for(i = 1; i < n; i++) {
     for(j = 0; j < n - i; j++) {
       if(a->array[j].offset_pos < a->array[j+1].offset_pos) {
-          symbolData temp = a->array[j];
-          a->array[j] = a->array[j+1];
-          a->array[j+1] = temp;
+        symbolData temp = a->array[j];
+        a->array[j] = a->array[j+1];
+        a->array[j+1] = temp;
       }
     }
   }
@@ -59,8 +60,7 @@ void deleteSymbolDataArray(symbolDataArray *a)
   int i;
 
   // Free all name variables of each array element first
-  for(i = 0; i <a->used; i++)
-  {
+  for(i = 0; i <a->used; i++) {
     free(a->array[i].attribute);
     a->array[i].attribute = NULL;
   }
@@ -73,7 +73,8 @@ void deleteSymbolDataArray(symbolDataArray *a)
   a->size = 0;
 }
 
-char * env_replacements(const char *string) {
+char * env_replacements(const char *string)
+{
   stackT array_stack;
   stackElementT stack_item, last_stack_item;
 
@@ -83,8 +84,8 @@ char * env_replacements(const char *string) {
   char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "";
 
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
-             *line_separator = "\\\\",
-             *em_pattern_begin = "\\[", *em_pattern_end = "]";
+              *line_separator = "\\\\",
+               *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int start = 0, offset = 0, attr_rowlines_len = 0, str_len = 0, i = 0;
   symbolDataArray hline_data_array;
@@ -103,6 +104,7 @@ char * env_replacements(const char *string) {
     StackDestroy(&array_stack);
     deleteSymbolDataArray(&hline_data_array);
     deleteSymbolDataArray(&row_spacing_data_array);
+    free(new_environment);
     free(dupe_str);
 
     return string;
@@ -131,16 +133,16 @@ char * env_replacements(const char *string) {
 
         // looking for a line match
         if (strstr(last_stack_item.line, hline) != NULL) {
-          if (attr_rowlines_len > 0)
+          if (attr_rowlines_len > 0) {
             remove_last_char(attr_rowlines);
+          }
           attr_rowlines = join(attr_rowlines, "s");
-        }
-        else if (strstr(last_stack_item.line, hdashline) != NULL) {
-          if (attr_rowlines_len > 0)
+        } else if (strstr(last_stack_item.line, hdashline) != NULL) {
+          if (attr_rowlines_len > 0) {
             remove_last_char(attr_rowlines);
+          }
           attr_rowlines = join(attr_rowlines, "d");
-        }
-        else {
+        } else {
           attr_rowlines = join(attr_rowlines, "0");
         }
 
@@ -158,8 +160,7 @@ char * env_replacements(const char *string) {
                 free(em_str);
               }
             }
-          }
-          else {
+          } else {
             row_spacing_data.attribute = "0em";
             row_spacing_data.offset_pos = -1; // this value is not really important
             insertSymbolDataArray(&row_spacing_data_array, row_spacing_data);
@@ -167,8 +168,9 @@ char * env_replacements(const char *string) {
         }
 
         // we've reached the top, so stop.
-        if (at_top != NULL)
+        if (at_top != NULL) {
           break;
+        }
       }
 
       // TODO: we are skipping equation environments
@@ -180,14 +182,16 @@ char * env_replacements(const char *string) {
           tok = strstr(last_stack_item.line, "}{");
           // because of complexities with envopts, place the added data after
           // the alignat signifier (if we are dealing with \begin{alignat})
-          if (strstr(last_stack_item.line, "alignat") != NULL || strstr(last_stack_item.line, "alignedat") != NULL)
+          if (strstr(last_stack_item.line, "alignat") != NULL || strstr(last_stack_item.line, "alignedat") != NULL) {
             tok = strrchr(last_stack_item.line, '}') - 1;
+          }
 
           // possibly something like \begin{aligned}[t]
           if (tok == NULL) {
             tok = strstr(last_stack_item.line, "}[");
-            if (tok != NULL)
+            if (tok != NULL) {
               tok += 2;
+            }
           }
           if (tok == NULL) {
             // not an array, but rather, some env, like \begin{cases}
@@ -203,8 +207,9 @@ char * env_replacements(const char *string) {
         strrev(attr_rowlines);
 
         // empty rowlines should be reset
-        if (strlen(attr_rowlines) == 0)
+        if (strlen(attr_rowlines) == 0) {
           attr_rowlines = join(attr_rowlines, "0");
+        }
 
         attr_rowlines = join(join("(", attr_rowlines), ")");
 
@@ -215,8 +220,7 @@ char * env_replacements(const char *string) {
         if (strlen(attr_rowspacing) > 0) {
           if (empty_row_spacings(attr_rowspacing) == 1) {
             attr_rowspacing = "0.5ex";
-          }
-          else {
+          } else {
             // last char is a pipe (|)
             remove_last_char(attr_rowspacing);
           }
@@ -253,7 +257,8 @@ char * env_replacements(const char *string) {
   return new_environment;
 }
 
-const char *vertical_pipe_extract(const char *string) {
+const char *vertical_pipe_extract(const char *string)
+{
   char *orig = dupe_string(string);
   char *columnlines = "", *previous_column = "";
   int i = 0;
@@ -261,12 +266,10 @@ const char *vertical_pipe_extract(const char *string) {
   if (strncmp(orig, "s", 1) == 0) {
     columnlines = "frame=\"solid\" columnlines=\"";
     remove_first_char(orig);
-  }
-  else if (strncmp(orig, "d", 1) == 0) {
+  } else if (strncmp(orig, "d", 1) == 0) {
     columnlines = "frame=\"dashed\" columnlines=\"";
     remove_first_char(orig);
-  }
-  else {
+  } else {
     columnlines = "columnlines=\"";
   }
 
@@ -276,12 +279,10 @@ const char *vertical_pipe_extract(const char *string) {
     if (strncmp(token, "s", 1) == 0) {
       previous_column = "s";
       columnlines = join(columnlines, "solid ");
-    }
-    else if (strncmp(token, "d", 1) == 0) {
+    } else if (strncmp(token, "d", 1) == 0) {
       previous_column = "d";
       columnlines = join(columnlines, "dashed ");
-    }
-    else {
+    } else {
       if (i >= 1) { // we must skip the first blank col
         // only if there is no previous border should a border be considered, eg. "cc", not "c|c"
         if (strncmp(previous_column, "s", 1) != 0 && strncmp(previous_column, "d", 1) != 0) {
@@ -296,17 +297,20 @@ const char *vertical_pipe_extract(const char *string) {
   }
 
   // an empty string here angers Lasem
-  if (strncmp(columnlines, "columnlines=\"\0", 14) == 0)
+  if (strncmp(columnlines, "columnlines=\"\0", 14) == 0) {
     columnlines = "columnlines=\"none";
+  }
   // an empty space also angers Lasem
-  else
+  else {
     remove_last_char(columnlines);
+  }
 
   free(orig);
   return columnlines;
 }
 
-const char *remove_excess_pipe_chars(const char *string) {
+const char *remove_excess_pipe_chars(const char *string)
+{
   char *dup = dupe_string(string);
 
   dup = replace_str(dup, "s", "");

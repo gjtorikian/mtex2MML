@@ -6,7 +6,7 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :default => [:build_ext, :test]
+task :default => [:compile, :test]
 
 require 'rake/clean'
 require 'fileutils'
@@ -16,7 +16,7 @@ CLEAN.include('ext/**/Makefile')
 CLOBBER.include('lib/*{.so,.bundle}')
 
 desc 'Build the mtex2MML bindings'
-task :build_ext do
+task :compile do
   host_os = RbConfig::CONFIG['host_os']
 
   # generate Ruby file with Swig
@@ -77,4 +77,9 @@ task :convert_mathjax_tests do
     end
     f.close
   end
+end
+
+desc 'Pretty format C code'
+task :format do
+  puts `astyle --indent=spaces=2 --style=1tbs --keep-one-line-blocks $(ack -f --type=cpp --type=cc src/)`
 end

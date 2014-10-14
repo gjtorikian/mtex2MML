@@ -1,6 +1,7 @@
 $:.unshift File.expand_path( File.join( File.dirname( __FILE__ ), "../lib" ) )
 require 'mtextomml'
 require 'minitest/autorun'
+require 'minitest/pride'
 
 def fixture_file(dir, fixture)
   File.read( File.join(File.dirname( __FILE__ ), "fixtures", dir, "#{fixture}.html") ).strip

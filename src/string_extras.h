@@ -7,33 +7,33 @@
 extern "C" {
 #endif
 
-  // Replace a substring (`old`) with some text (`new`) in the string `str`.
-  extern char *replace_str(const char *str, const char *old, const char *new);
+// Replace a substring (`old`) with some text (`new`) in the string `str`.
+extern char *replace_str(const char *str, const char *old, const char *new);
 
-  // Join two strings together
-  // fuck strncpy
-  extern char *join(char* s1, char* s2);
+// Join two strings together
+// fuck strncpy
+extern char *join(char* s1, char* s2);
 
-  // Remove the final character in a string
-  extern void remove_last_char(char* str);
+// Remove the final character in a string
+extern void remove_last_char(char* str);
 
-  // Remove the first character in a string
-  extern void remove_first_char(char* str);
+// Remove the first character in a string
+extern void remove_first_char(char* str);
 
-  // Insert a substring (`ins`) into a string (`dest`) at `location`
-  extern void insert_substring(char **dest, char *ins, size_t location);
+// Insert a substring (`ins`) into a string (`dest`) at `location`
+extern void insert_substring(char **dest, char *ins, size_t location);
 
-  // Reverse the substring
-  extern void strrev(char *str);
+// Reverse the substring
+extern void strrev(char *str);
 
-  // Find out if a string is just full of empty RowSpacings (0em)
-  extern int empty_row_spacings(char *str);
+// Find out if a string is just full of empty RowSpacings (0em)
+extern int empty_row_spacings(char *str);
 
-  // Duplicates an immutable string
-  extern char * dupe_string(const char * s);
+// Duplicates an immutable string
+extern char * dupe_string(const char * s);
 
-  // Duplicates an immutable string (up to n bytes)
-  extern char * dupe_string_n(const char * s, size_t n);
+// Duplicates an immutable string (up to n bytes)
+extern char * dupe_string_n(const char * s, size_t n);
 
 #ifdef __cplusplus
 }
