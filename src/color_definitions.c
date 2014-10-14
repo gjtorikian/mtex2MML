@@ -1,5 +1,5 @@
 #include "parse_extras.h"
-#include "../deps/uthash/uthash.h"
+#include "deps/uthash/uthash.h"
 
 void create_css_colors(struct css_colors **colors)
 {
