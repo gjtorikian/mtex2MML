@@ -9,12 +9,8 @@ src/mtex2MML
 src/y.tab.o
 src/*.so
 
-ext/Makefile
-ext/*.o
-ext/*.h
-ext/*.c
-ext/*.bundle
-ext/*.so
+ext/
+!ext/extconf.rb
 
 lib/mtex2MML.bundle
 

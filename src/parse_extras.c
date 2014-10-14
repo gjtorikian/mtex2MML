@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "deps/str-replace/str-replace.h"
 #include "parse_extras.h"
 #include "string_extras.h"
 #include "stack.h"
@@ -260,7 +261,7 @@ char * env_replacements(const char *string)
 const char *vertical_pipe_extract(const char *string)
 {
   char *orig = dupe_string(string);
-  char *columnlines = "", *previous_column = "";
+  char *columnlines = malloc(30), *previous_column = "";
   int i = 0;
 
   if (strncmp(orig, "s", 1) == 0) {
@@ -298,23 +299,22 @@ const char *vertical_pipe_extract(const char *string)
 
   // an empty string here angers Lasem
   if (strncmp(columnlines, "columnlines=\"\0", 14) == 0) {
-    columnlines = "columnlines=\"none";
+    columnlines = join("columnlines=\"none", "");
   }
-  // an empty space also angers Lasem
+  // an empty space at the end also angers Lasem
   else {
     remove_last_char(columnlines);
   }
 
   free(orig);
+
   return columnlines;
 }
 
 const char *remove_excess_pipe_chars(const char *string)
 {
-  char *dup = dupe_string(string);
-
-  dup = replace_str(dup, "s", "");
-  dup = replace_str(dup, "d", "");
+  char *dup = str_replace(string, "s", "");
+  dup = str_replace(dup, "d", "");
 
   return dup;
 }

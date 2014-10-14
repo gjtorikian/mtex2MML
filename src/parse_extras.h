@@ -2,6 +2,7 @@
 #define PARSE_EXTRAS_H
 
 #include "deps/uthash/uthash.h"
+#include "deps/str-replace/str-replace.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -17,6 +17,17 @@ CLOBBER.include('lib/*{.so,.bundle}')
 
 desc 'Build the mtex2MML bindings'
 task :compile do
+  def clear_ext_dir
+    # clear the ext dir
+    Dir["ext/*"].select { |f| File.file?(f) }.each do |f|
+      should_skip = File.basename( f ) =~ /^extconf\.rb$/
+      FileUtils.rm( f ) unless should_skip
+    end
+    Dir["ext/*"].select { |f| !File.file?(f) }.each do |f|
+      FileUtils.rm_rf(f)
+    end
+  end
+
   host_os = RbConfig::CONFIG['host_os']
 
   # generate Ruby file with Swig
@@ -25,15 +36,15 @@ task :compile do
   end
 
   # clear the ext dir
-  Dir["ext/*"].each do |f|
-    should_skip = File.basename( f ) =~ /^extconf\.rb$/
-    FileUtils.rm( f ) unless should_skip
-  end
+  clear_ext_dir
 
   # copy over source files
-  Dir.glob("src/*.{c,h}") do |file|
+  # LOL WTF I DUNNO
+  Dir.glob("src/**/*.{c,h}") do |file|
     FileUtils.cp(file, 'ext')
   end
+  FileUtils.cp_r 'src/deps', 'ext/deps'
+  FileUtils.copy_entry 'src/deps', 'ext'
 
   # build Ruby's Makefile and run it
   Dir.chdir("ext/") do
@@ -47,6 +58,9 @@ task :compile do
   else
     cp "ext/mtex2MML.so", "lib/"
   end
+
+  # clear the ext dir, again
+  clear_ext_dir
 end
 
 desc 'Convert MatJax test suite'

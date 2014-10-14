@@ -2073,8 +2073,8 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($6);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($5);
-  char *column_align = remove_excess_pipe_chars($5);
+  const char *pipe_chars = vertical_pipe_extract($5);
+  const char *column_align = remove_excess_pipe_chars($5);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
@@ -2086,10 +2086,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string($7);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($7);
-  char *column_align = remove_excess_pipe_chars($7);
+  const char *pipe_chars = vertical_pipe_extract($7);
+  const char *column_align = remove_excess_pipe_chars($7);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" rowlines=\"");
   char * s2 = mtex2MML_copy3(s1, $5, "\" columnalign=\"");
@@ -2104,10 +2106,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($5);
   mtex2MML_free_string($7);
   mtex2MML_free_string($9);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ARRAYALIGN ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($9);
-  char *column_align = remove_excess_pipe_chars($9);
+  const char *pipe_chars = vertical_pipe_extract($9);
+  const char *column_align = remove_excess_pipe_chars($9);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" rowspacing=\"");
   char * s2 = mtex2MML_copy3(s1, $5, "\" rowlines=\"");
@@ -2124,10 +2128,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($7);
   mtex2MML_free_string($9);
   mtex2MML_free_string($11);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($8);
-  char *column_align = remove_excess_pipe_chars($8);
+  const char *pipe_chars = vertical_pipe_extract($8);
+  const char *column_align = remove_excess_pipe_chars($8);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
   char * s2 = mtex2MML_copy3(s1, $6,"\" columnalign=\"");
@@ -2141,10 +2147,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($6);
   mtex2MML_free_string($8);
   mtex2MML_free_string($10);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ST rowSpacingDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($6);
-  char *column_align = remove_excess_pipe_chars($6);
+  const char *pipe_chars = vertical_pipe_extract($6);
+  const char *column_align = remove_excess_pipe_chars($6);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
@@ -2156,10 +2164,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
   mtex2MML_free_string($8);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($6);
-  char *column_align = remove_excess_pipe_chars($6);
+  const char *pipe_chars = vertical_pipe_extract($6);
+  const char *column_align = remove_excess_pipe_chars($6);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
@@ -2171,10 +2181,12 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
   mtex2MML_free_string($8);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($4);
-  char *column_align = remove_excess_pipe_chars($4);
+  const char *pipe_chars = vertical_pipe_extract($4);
+  const char *column_align = remove_excess_pipe_chars($4);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", column_align, "\" ");
   char * s2 = mtex2MML_copy3(s1, pipe_chars, "\">");
@@ -2183,6 +2195,8 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string(s2);
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV SVG XMLSTRING ENDSVG {
   $$ = mtex2MML_copy3("<semantics><annotation-xml encoding=\"SVG1.1\">", $3, "</annotation-xml></semantics>");

@@ -3,12 +3,11 @@
 #ifndef STRING_EXTRAS_H
 #define STRING_EXTRAS_H
 
+#include "deps/str-replace/str-replace.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-// Replace a substring (`old`) with some text (`new`) in the string `str`.
-extern char *replace_str(const char *str, const char *old, const char *new);
 
 // Join two strings together
 // fuck strncpy
