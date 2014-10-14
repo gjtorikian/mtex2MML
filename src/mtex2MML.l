@@ -1204,7 +1204,7 @@ int mtex2MML_displaymode = 0;
 
 <ROMAN>{
 "\{"  {mtex2MML_variant_start = 1; return ST;}
-"\}"  {BEGIN(MATH); return END;}
+"\}"  {mtex2MML_variant_start = 0; BEGIN(MATH); return END;}
 [a-zA-Z]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return RMCHAR;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
@@ -1212,7 +1212,7 @@ int mtex2MML_displaymode = 0;
 
 <SCRIPT>{
 "\{"  {mtex2MML_variant_start = 1; return ST;}
-"\}"  {BEGIN(MATH); return END;}
+"\}"  {mtex2MML_variant_start = 0; BEGIN(MATH); return END;}
 [a-zA-Z]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return SCRCHAR;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
@@ -1220,7 +1220,7 @@ int mtex2MML_displaymode = 0;
 
 <PMBSTRING>{
 "\{"  {mtex2MML_variant_start = 1; return ST;}
-"\}"  {BEGIN(MATH); return END;}
+"\}"  {mtex2MML_variant_start = 0; BEGIN(MATH); return END;}
 [a-zA-Z]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return PMBCHAR;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
@@ -1228,7 +1228,7 @@ int mtex2MML_displaymode = 0;
 
 <BBOLD>{
 "\{"  {mtex2MML_variant_start = 1; return ST;}
-"\}"  {BEGIN(MATH); return END;}
+"\}"  {mtex2MML_variant_start = 0; BEGIN(MATH); return END;}
 [a-z] {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return BBLOWERCHAR;}
 [A-Z]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return BBUPPERCHAR;}
 [0-9]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return BBDIGIT;}
@@ -1238,7 +1238,7 @@ int mtex2MML_displaymode = 0;
 
 <CALLIGRAPHIC>{
 "\{"  {mtex2MML_variant_start = 1; return ST;}
-"\}"  {BEGIN(MATH); return END;}
+"\}"  {mtex2MML_variant_start = 0; BEGIN(MATH); return END;}
 [a-zA-Z]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return CALCHAR;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
@@ -1246,7 +1246,7 @@ int mtex2MML_displaymode = 0;
 
 <FRAKTUR>{
 "\{"  {mtex2MML_variant_start = 1; return ST;}
-"\}"  {BEGIN(MATH); return END;}
+"\}"  {mtex2MML_variant_start = 0; BEGIN(MATH); return END;}
 [a-zA-Z]   {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return FRAKCHAR;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
