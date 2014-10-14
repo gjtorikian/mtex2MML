@@ -15,3 +15,5 @@ ext/
 lib/mtex2MML.bundle
 
 test.html
+test/minimal.rb
+test/minimal_test.rb
