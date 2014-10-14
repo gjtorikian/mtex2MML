@@ -83,7 +83,7 @@ mtex2MML_ruby.c:	mtex2MML.i
 			$(SWIG) -ruby -o mtex2MML_ruby.c  mtex2MML.i
 
 mtex2MML_ruby.o:	mtex2MML_ruby.c
-			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c mtex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -Ideps-o mtex2MML_ruby.o
+			$(CC) $(RUBY_CFLAGS)  $(EXTRA_CFLAGS) -c mtex2MML_ruby.c -I$(RUBYHDRDIR) -I$(RUBYDIR) -I$(RUBYHDRDIR)/$(RUBY_ARCH) -Ideps -o mtex2MML_ruby.o
 
 y.tab_ruby.o:		y.tab.c stack.o string_extras.o occurrences.o str_copy.o str_replace.o parse_extras.o color_definitions.o
 			$(CC) $(RUBY_CFLAGS) -Dmtex2MML_CAPTURE -c -o y.tab_ruby.o y.tab.c

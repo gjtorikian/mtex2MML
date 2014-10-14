@@ -63,7 +63,7 @@ task :compile do
   clear_ext_dir
 end
 
-desc 'Convert MatJax test suite'
+desc 'Convert MathJax test suite'
 task :convert_mathjax_tests do
   require 'nokogiri'
   mathjax_test_dir = File.join('test', 'fixtures', 'MathJax')
