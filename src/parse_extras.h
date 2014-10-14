@@ -20,7 +20,7 @@ typedef struct {
 } symbolDataArray;
 
 struct css_colors {
-  char name[20];                    /* key */
+  char name[22];                    /* key */
   char color[10];
   UT_hash_handle hh;         /* makes this structure hashable */
 };
