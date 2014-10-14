@@ -2477,6 +2477,13 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
       mathml = 0;
     }
 
+  struct css_colors *color, *tmp;
+
+  HASH_ITER(hh, colors, color, tmp) {
+    HASH_DEL(colors,color);
+    free(colors);
+  }
+
   return mathml;
 }
 
