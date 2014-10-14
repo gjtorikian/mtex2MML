@@ -764,15 +764,17 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\textsize`
 * `\scriptsize`
 * `\scriptscriptsize`
-* `\mathit`
-* `\mathbf` (`\boldsymbol`)
-* `\mathrm`
-* `\mathbb`
-* `\mathfrak` (`\mathfr`)
-* `\mathcal`
-* `\mathsf`
-* `\mathtt`
+* `\mathit` (`\it` and `\textit`)
+* `\mathbf` (`\boldsymbol`, `\bf`, `\textbf`)
+* `\mathrm` (`\rm` and `\textrm`)
+* `\mathbb` (`\Bbb`)
+* `\mathfrak` (`\mathfr` and `\frak`)
+* `\mathcal` (`\cal`)
+* `\mathscr` (`\scr`)
+* `\mathsf` (`\sf` and `\textsf`)
+* `\mathtt` (`\tt` and `\texttt`)
 * `\text`
+* `\pmb`
 
 ## Spaces
 
