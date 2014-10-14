@@ -97,3 +97,29 @@ desc 'Pretty format C code'
 task :format do
   puts `astyle --indent=spaces=2 --style=1tbs --keep-one-line-blocks $(ack -f --type=cpp --type=cc src/)`
 end
+
+task :valgrind  do
+  #
+  # See:
+  # http://blog.flavorjon.es/2009/06/easily-valgrind-gdb-your-ruby-c.html
+  #
+  def valgrind_errors(what)
+    valgrind_cmd="valgrind --log-fd=1 --tool=memcheck --partial-loads-ok=yes --undef-value-errors=no --leak-check=full --show-leak-kinds=all ruby -Ilib:test:ext #{what}"
+    puts "Executing: #{valgrind_cmd}"
+    output=`#{valgrind_cmd}`
+    puts output
+    /ERROR SUMMARY: (\d+) ERRORS/i.match(output)[1].to_i
+  end
+
+  errors = valgrind_errors('test/mathjax_test.rb')
+
+  if errors > 0
+    abort "Memory leaks are present, please check! (#{errors} leaks!)"
+  end
+end
+
+task :poor_mans_valgrind do
+  for i in 1..10 do
+    puts `rake test`
+  end
+end
