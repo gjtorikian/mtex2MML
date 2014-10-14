@@ -13,16 +13,16 @@ YYPREFIX=mtex2MML_yy
 
 all:    y.tab.c lex.yy.c mtex2MML
 
-stack.o: stack.c stack.h
+stack.o:
 	$(CC) -fPIC -c -o stack.o stack.c
 
-color_definitions.o: color_definitions.c
+color_definitions.o:
 	$(CC) -fPIC -c -o color_definitions.o color_definitions.c
 
-string_extras.o: string_extras.c string_extras.h
+string_extras.o:
 	$(CC) -fPIC -c -o string_extras.o string_extras.c
 
-parse_extras.o: parse_extras.c parse_extras.h
+parse_extras.o:
 	$(CC) -fPIC -c -o parse_extras.o parse_extras.c
 
 y.tab.c:	mtex2MML.y stack.o string_extras.o parse_extras.o color_definitions.o
