@@ -6,12 +6,6 @@
 #include "string_extras.h"
 #include "stack.h"
 
-#ifdef FLIP_OFFSET_VAL
-#define OFFSET_VAL 0
-#else
-#define OFFSET_VAL 1
-#endif
-
 void initSymbolDataArray(symbolDataArray *a, size_t initialSize)
 {
   // Allocate initial space
@@ -230,7 +224,7 @@ char * env_replacements(const char *string)
         }
 
         hline_data.attribute = join(attr_rowspacing, attr_rowlines);
-        hline_data.offset_pos = offset + OFFSET_VAL;
+        hline_data.offset_pos = offset + 1;
         insertSymbolDataArray(&hline_data_array, hline_data);
       }
 
