@@ -13,6 +13,7 @@ ext/
 !ext/extconf.rb
 
 lib/mtex2MML.bundle
+lib/mtex2MML.so
 
 test.html
 test/minimal.rb
