@@ -909,6 +909,7 @@ int mtex2MML_displaymode = 0;
 "\\sqrt"         {BEGIN(OPTARG); return SQRT;}
 
 "\\root"         {return ROOT;}
+"\\of"           {/* Ignore */}
 
 "\\space"        {BEGIN(INT1); return SPACE;}
 
