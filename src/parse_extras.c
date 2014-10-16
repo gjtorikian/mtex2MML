@@ -175,23 +175,28 @@ char * env_replacements(const char *string)
         if (tok == NULL) {
           // array is form of \begin{array}{cc..c}
           tok = strstr(last_stack_item.line, "}{");
-          // because of complexities with envopts, place the added data after
-          // the alignat signifier (if we are dealing with \begin{alignat})
-          if (strstr(last_stack_item.line, "alignat") != NULL || strstr(last_stack_item.line, "alignedat") != NULL) {
-            tok = strrchr(last_stack_item.line, '}') - 1;
-          }
+        }
+        if (tok == NULL) {
+          // array is form of \begin{array}(00)
+          tok = strstr(last_stack_item.line, "}(");
+        }
+        // because of complexities with envopts, place the added data after
+        // the alignat signifier (if we are dealing with \begin{alignat})
+        if (strstr(last_stack_item.line, "alignat") != NULL || strstr(last_stack_item.line, "alignedat") != NULL) {
+          tok = strrchr(last_stack_item.line, '}') - 1;
+        }
 
-          // possibly something like \begin{aligned}[t]
-          if (tok == NULL) {
-            tok = strstr(last_stack_item.line, "}[");
-            if (tok != NULL) {
-              tok += 2;
-            }
+        // possibly something like \begin{aligned}[t]
+        if (tok == NULL) {
+          tok = strstr(last_stack_item.line, "}[");
+          if (tok != NULL) {
+            tok += 2;
           }
-          if (tok == NULL) {
-            // not an array, but rather, some env, like \begin{cases}
-            tok = strstr(last_stack_item.line, "}");
-          }
+        }
+
+        if (tok == NULL) {
+          // not an array, but rather, some env, like \begin{cases}
+          tok = strstr(last_stack_item.line, "}");
         }
 
         offset = last_stack_item.line_pos + (tok - last_stack_item.line);
