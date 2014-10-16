@@ -29,7 +29,7 @@ extern void strrev(char *str);
 extern int empty_row_spacings(char *str);
 
 // Duplicates an immutable string
-extern char * dupe_string(const char * s);
+extern char * dupe_string(const char * str);
 
 // Duplicates an immutable string (up to n bytes)
 extern char * dupe_string_n(const char * s, size_t n);

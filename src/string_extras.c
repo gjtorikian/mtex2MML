@@ -106,22 +106,20 @@ int empty_row_spacings(char *str)
   return i == len ? 1 : 0;
 }
 
-char * dupe_string(const char * s)
+char * dupe_string(const char * str)
 {
-  size_t len = 1+strlen(s);
-  char *p = malloc(len);
-
-  return p ? memcpy(p, s, len) : NULL;
+  int len = strlen(str) + 1;
+  char *buf = malloc(len);
+  if (buf) memcpy(buf, str, len);
+  return buf;
 }
 
 char *dupe_string_n(const char *s, size_t n)
 {
-  size_t l = strlen(s);
-
-  if (l <= n) { return strdup(s); }
-
-  char *rv = (char *)malloc(n + 1);
-  strncpy(rv, s, n);
-  rv[n] = 0;
-  return rv;
+  char* buf = malloc(n+1);
+  if (buf) {
+      strncpy(buf, s, n);
+      buf[n] = '\0';
+  }
+  return buf;
 }
