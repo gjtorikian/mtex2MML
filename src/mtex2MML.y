@@ -1967,9 +1967,9 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($3);
 }
 | BEGINENV SMALLMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV SMALLMATRIX {
-  char *s1 = mtex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
+  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" rowspacing=\"", $4, "\" rowlines=\"");
   char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow></mstyle>");
+  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string($4);
@@ -1977,14 +1977,14 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($8);
 }
 | BEGINENV SMALLMATRIX ST rowLinesDefList END tableRowList ENDENV SMALLMATRIX {
-  char *s1 = mtex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow></mstyle>");
+  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" rowspacing=\"0.2em\" rowlines=\"", $4, "\">");
+  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
 }
 | BEGINENV SMALLMATRIX tableRowList ENDENV SMALLMATRIX {
-  $$ = mtex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow></mstyle>");
+  $$ = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" rowspacing=\"0.2em\">", $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
 }
 | BEGINENV CASES ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV CASES {

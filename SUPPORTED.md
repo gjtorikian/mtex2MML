@@ -42,6 +42,8 @@ You can type `\hline` or `\hlinedash` to insert a horizontal line or dashed hori
 \end{array}
 ```
 
+`\cr` is also supported as a linebreak option.
+
 ### The `array` Environment
 
 As in standard LaTeX, the `array` environment takes one optional

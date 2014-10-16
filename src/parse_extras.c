@@ -174,10 +174,7 @@ char * env_replacements(const char *string)
           // array is form of \begin{array}{cc..c}
           tok = strstr(last_stack_item.line, "}{");
         }
-        if (tok == NULL) {
-          // array is form of \begin{array}(00)
-          tok = strstr(last_stack_item.line, "}(");
-        }
+
         // because of complexities with envopts, place the added data after
         // the alignat signifier (if we are dealing with \begin{alignat})
         if (strstr(last_stack_item.line, "alignat") != NULL || strstr(last_stack_item.line, "alignedat") != NULL) {
