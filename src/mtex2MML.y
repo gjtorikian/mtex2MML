@@ -281,7 +281,7 @@ struct css_colors *colors = NULL;
 %}
 
 %left TEXOVER TEXOVERWITHDELIMS TEXATOP TEXATOPWITHDELIMS TEXABOVE TEXABOVEWITHDELIMS
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN ROWSPACINGDEF ROWLINESDEF COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED FBOX HBOX MBOX SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK PMOD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN ROWSPACINGDEF ROWLINESDEF COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
 
 %%
 
@@ -483,6 +483,16 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
 }
+| closedTerm NOLIMITS SUB closedTerm SUP closedTerm {
+  char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
+  char * s2 = mtex2MML_copy3($4, " ", $6);
+  $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+}
 | closedTerm SUP closedTerm SUB closedTerm {
   char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
   char * s2 = mtex2MML_copy3($5, " ", $3);
@@ -591,7 +601,11 @@ closedTerm: array
 | pmbchars
 | bbold
 | frak
+| not
 | slashed
+| bcanceled
+| xcanceled
+| canceledto
 | boxed
 | fbox
 | hbox
@@ -599,6 +613,7 @@ closedTerm: array
 | cal
 | space
 | textstring
+| verbstring
 | thinspace
 | medspace
 | thickspace
@@ -608,6 +623,12 @@ closedTerm: array
 | negmedspace
 | negthickspace
 | phantom
+| tex
+| latex
+| varinjlim
+| varliminf
+| varlimsup
+| varprojlm
 | href
 | statusline
 | tooltip
@@ -640,7 +661,9 @@ closedTerm: array
 }
 | mathenv
 | substack
+| bmod
 | pmod
+| pod
 | unrecognized;
 
 left: LEFT LEFTDELIM {
@@ -817,6 +840,22 @@ unaryplus: UNARYPLUS {
   $$ = mtex2MML_copy_string("<mo lspace=\"verythinmathspace\" rspace=\"0em\">+</mo>");
 };
 
+varinjlim: VARINJLIM {
+  $$ = mtex2MML_copy_string("<munder>lim<mo>&#x2192;</mo></munder>");
+};
+
+varliminf: VARLIMINF {
+  $$ = mtex2MML_copy_string("<munder>lim<mo>_</mo></munder>");
+};
+
+varlimsup: VARLIMSUP {
+  $$ = mtex2MML_copy_string("<mover>lim<mo>&#xAF;</mo></mover>");
+};
+
+varprojlm: VARPROJLIM {
+  $$ = mtex2MML_copy_string("<munder>lim<mo>&#x2190;</mo></munder>");
+};
+
 mi: MI;
 
 mib: MIB {
@@ -854,6 +893,25 @@ mo: mob
   mtex2MML_rowposn = 2;
   $$ = mtex2MML_copy3("<mstyle scriptlevel=\"0\"><mo>", $1, "</mo></mstyle>");
   mtex2MML_free_string($1);
+}
+| MOL LIMITS SUB closedTerm SUP closedTerm {
+  if (mtex2MML_displaymode == 1) {
+    char * s1 = mtex2MML_copy3("<munderover>", $1, " ");
+    char * s2 = mtex2MML_copy3($4, " ", $6);
+    $$ = mtex2MML_copy3(s1, s2, "</munderover>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string(s2);
+  }
+  else {
+    char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
+    char * s2 = mtex2MML_copy3($4, " ", $6);
+    $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string(s2);
+  }
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
 }
 | RIGHTDELIM {
   $$ = mtex2MML_copy3("<mo stretchy=\"false\">", $1, "</mo>");
@@ -1019,6 +1077,11 @@ textstring: TEXTBOX TEXTSTRING {
   mtex2MML_free_string($2);
 };
 
+verbstring: VERBBOX VERBSTRING END {
+  $$ = mtex2MML_copy3("<mstyle mathvariant=\"monospace\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
 displaystyle: DISPLAY compoundTermList {
   $$ = mtex2MML_copy3("<mstyle displaystyle=\"true\">", $2, "</mstyle>");
   mtex2MML_free_string($2);
@@ -1059,9 +1122,33 @@ mono: TT closedTerm {
   mtex2MML_free_string($2);
 };
 
+not: NOT closedTerm {
+  $$ = mtex2MML_copy3("<mi>", $2, "&#x0338;</mi>");
+  mtex2MML_free_string($2);
+};
+
 slashed: SLASHED closedTerm {
   $$ = mtex2MML_copy3("<menclose notation=\"updiagonalstrike\">", $2, "</menclose>");
   mtex2MML_free_string($2);
+};
+
+bcanceled: BCANCELED closedTerm {
+  $$ = mtex2MML_copy3("<menclose notation=\"downdiagonalstrike\">", $2, "</menclose>");
+  mtex2MML_free_string($2);
+};
+
+xcanceled: XCANCELED closedTerm {
+  $$ = mtex2MML_copy3("<menclose notation=\"updiagonalstrike downdiagonalstrike\">", $2, "</menclose>");
+  mtex2MML_free_string($2);
+};
+
+canceledto: CANCELEDTO closedTerm closedTerm {
+  char * s1 = mtex2MML_copy3("<msup><menclose notation=\"updiagonalstrike updiagonalarrow\"><mn>", $3, "</mn></menclose><mpadded height=\"+.1em\" depth=\"-.1em\" voffset=\".1em\"><mn>");
+  $$ = mtex2MML_copy3(s1, $2, "</mn></mpadded></msup>");
+
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
 };
 
 boxed: BOXED closedTerm {
@@ -1274,6 +1361,14 @@ phantom: PHANTOM closedTerm {
   mtex2MML_free_string($2);
 };
 
+tex: TEXSYMBOL {
+  $$ = mtex2MML_copy_string("<mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+};
+
+latex: LATEXSYMBOL {
+  $$ = mtex2MML_copy_string("<mi>L</mi><mspace width=\"-.325em\"></mspace><mpadded height=\"+.21em\" depth=\"-.21em\" voffset=\"+.21em\"><mrow class=\"MJX-TeXAtom-ORD\"><mstyle scriptlevel=\"1\" displaystyle=\"false\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>A</mi></mrow></mstyle></mrow></mpadded><mspace width=\"-.17em\"></mspace><mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+};
+
 href: HREF TEXTSTRING closedTerm {
   char * s1 = mtex2MML_copy3("<mrow href=\"", $2, "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"simple\" xlink:href=\"");
   char * s2 = mtex2MML_copy3(s1, $2, "\">");
@@ -1376,8 +1471,18 @@ mfrac: FRAC closedTerm closedTerm {
   mtex2MML_free_string($3);
 };
 
+pod: POD closedTerm {
+  $$ = mtex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
+  mtex2MML_free_string($2);
+}
+
 pmod: PMOD closedTerm {
   $$ = mtex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo><mo rspace=\"thinmathspace\">mod</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
+  mtex2MML_free_string($2);
+}
+
+bmod: BMOD closedTerm {
+  $$ = mtex2MML_copy3( "<mrow><mo lspace=\"thickmathspace\" rspace=\"thickmathspace\">mod</mo>", $2, "</mrow>");
   mtex2MML_free_string($2);
 }
 

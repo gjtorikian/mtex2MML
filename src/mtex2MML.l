@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS ROWSPACINGOPTS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS ROWSPACINGOPTS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -55,6 +55,9 @@ int mtex2MML_displaymode = 0;
 "$"{1,2} |
 "\\]"           {mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0; mtex2MML_eqn_end=mtex2MML_eqn_src; yylval=mtex2MML_copy_escaped(mtex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
 
+
+"\\limits"    return LIMITS;
+"\\nolimits"    return NOLIMITS;
 "^"            return SUP;
 "_"            return SUB;
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
@@ -267,6 +270,14 @@ int mtex2MML_displaymode = 0;
 "\\sinh"    |
 "\\tan"     |
 "\\tanh"    {yylval=mtex2MML_copy_string(yytext+1); return MI;}
+
+"\\injlim"  {yylval=mtex2MML_copy_string("inj lim"); return MO;}
+"\\projlim" {yylval=mtex2MML_copy_string("proj lim"); return MO;}
+
+"\\varinjlim"   return VARINJLIM;
+"\\varliminf"   return VARLIMINF;
+"\\varlimsup"   return VARLIMSUP;
+"\\varprojlim"  return VARPROJLIM;
 
 "\\det"     |
 "\\gcd"     |
@@ -687,7 +698,6 @@ int mtex2MML_displaymode = 0;
 "\\nexists" |
 "\\dagger" |
 "\\ddagger" |
-"\\not" |
 "\\top" |
 "\\natural" |
 "\\angle" |
@@ -755,6 +765,9 @@ int mtex2MML_displaymode = 0;
 "\\vartriangle" {yylval=mtex2MML_copy_string("&#x25B3;"); return MOL;}
 "\\yen" {yylval=mtex2MML_copy_string("&#xA5;"); return MOL;}
 
+"\\TeX"   {return TEXSYMBOL;}
+"\\LaTeX" {return LATEXSYMBOL;}
+
 "\\aleph" |
 "\\beth" |
 "\\gimel" |
@@ -796,6 +809,8 @@ int mtex2MML_displaymode = 0;
 
 "\\mod" {yylval=mtex2MML_copy_string("mod"); return MOS;}
 "\\pmod" {return PMOD;}
+"\\bmod" {return BMOD;}
+"\\pod"  {return POD;}
 
 "\\bottom" {yylval=mtex2MML_copy_string("&perp;"); return MOL;}
 
@@ -967,6 +982,7 @@ int mtex2MML_displaymode = 0;
 "\\space"        {BEGIN(INT1); return SPACE;}
 
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
+"\\verb?"         {BEGIN(VERBTEXT); return VERBBOX;}
 
 "\\statusline"    {BEGIN(PLAINTEXT); return STATLINE;}
 "\\tooltip"       {BEGIN(PLAINTEXT); return TOOLTIP;}
@@ -1031,7 +1047,16 @@ int mtex2MML_displaymode = 0;
 
 "\\pmb"         {BEGIN(PMBSTRING); return PMB;}
 
+"\\not"         {return NOT;}
+
+"\\cancel"   |
 "\\slash"       {return SLASHED;}
+
+"\\bcancel"       {return BCANCELED;}
+
+"\\xcancel"       {return XCANCELED;}
+
+"\\cancelto"       {return CANCELEDTO;}
 
 "\\boxed"       {return BOXED;}
 
@@ -1310,6 +1335,12 @@ int mtex2MML_displaymode = 0;
 <PLAINTEXT>{
 \{[^\}]*?\}  {yylval=mtex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != mtex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
 .            {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return TEXTSTRING;}
+[\t\n\r ]+       ;
+}
+
+<VERBTEXT>{
+"?"          {yylval=mtex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != mtex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return END;}
+[^?]+        {yylval=mtex2MML_copy_string(yytext); return VERBSTRING;}
 [\t\n\r ]+       ;
 }
 

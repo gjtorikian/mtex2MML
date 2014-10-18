@@ -262,13 +262,23 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\lg`
 * `\lim`
 * `\liminf`
+* `\nolimits`
+* `\limits`
 * `\limsup`
+* `\injlim`
+* `\projlim`
+* `\varinjlim`
+* `\varliminf`
+* `\varlimsup`
+* `\varprojlim`
 * `\ln`
 * `\log`
 * `\max`
 * `\min`
 * `\mod`
+* `\bmod`
 * `\pmod`
+* `\pod`
 * `\Pr`
 * `\sec`
 * `\sin`
@@ -598,7 +608,8 @@ For example
 * `\multimap`
 * `\nabla` (`\Del`)
 * `\natural`
-* `\not` (`\neg`)
+* `\not`
+* `\neg`
 * `\odot`
 * `\odash` (`\circleddash`)
 * `\otimes`
@@ -760,6 +771,8 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 * `\wp`
 * `\infty` (`\infinity`)
 * `\emptyset` (`\varnothing)
+* `\TeX`
+* `\LaTeX`
 
 ## Dots
 
@@ -823,6 +836,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\mathsf` (`\sf` and `\textsf`)
 * `\mathtt` (`\tt` and `\texttt`)
 * `\text`
+* `\verb?`
 * `\pmb`
 
 ## Spaces
@@ -858,7 +872,10 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\widecheck`
 * `\hat`
 * `\widehat`
-* `\slash`
+* `\slash` (`\cancel`)
+* `\xcancel`
+* `\bcancel`
+* `\canceledto`
 * `\boxed`
 * `\fbox`
 * `\hbox`

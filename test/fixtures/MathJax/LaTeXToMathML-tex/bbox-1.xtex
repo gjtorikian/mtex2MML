@@ -1,6 +1,0 @@
-
-      \bbox[2pt]{x+y}
-      \bbox[green]{x+y}
-      \bbox[green,2pt]{x+y}
-      \bbox[red,border:3px solid blue,5px]{x+y}
-$
