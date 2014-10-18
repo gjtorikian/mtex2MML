@@ -10,9 +10,9 @@ class MTex2MMLMathJaxTest < MiniTest::Test
   MATHJAX_TEST_TEX_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-tex')
   MATHJAX_TEST_OUT_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-out')
 
-  DIRS_WE_DO = %w(above-below arrows basic-operators colors delimiters environments frac layout letters mathvariant matrices roots)
+  DIRS_WE_DO = %w(above-below arrows basic-operators colors delimiters environments frac layout letters mathvariant matrices roots symbols)
   DIRS_WE_DO_GLOB = "{#{DIRS_WE_DO.join(',')}}"
-  DIRS_IGNORED = %w(action AMScd atoms errors macro)
+  DIRS_IGNORED = %w(action AMScd atoms errors macro mhchem non-standard references)
 
   done_count = Dir["test/fixtures/MathJax/LaTeXToMathML-tex/#{DIRS_WE_DO_GLOB}/*.tex"].length
   skipped_count = Dir["test/fixtures/MathJax/LaTeXToMathML-tex/#{DIRS_WE_DO_GLOB}/*.xtex"].length

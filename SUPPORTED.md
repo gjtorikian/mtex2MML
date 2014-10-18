@@ -280,14 +280,17 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 ## Arrows
 
 * `\rightarrow` (`\to`)
+* `\leadsto`
 * `\longrightarrow`
 * `\Longrightarrow`
 * `\Rightarrow` (`\implies`)
 * `\hookrightarrow` (`\embedsin`)
 * `\mapsto` (`\\map`)
 * `\leftarrow`
+* `\gets`
 * `\longleftarrow`
 * `\Longleftarrow`
+* `\longmapsto`
 * `\Leftarrow` (`\\impliedby`)
 * `\hookleftarrow`
 * `\leftrightarrow`
@@ -443,6 +446,7 @@ For example
 
 ## Operators
 
+* `\And`
 * `\amalg`
 * `\angle`
 * `\measuredangle`
@@ -465,16 +469,24 @@ For example
 * `\cap` (`\intersection`)
 * `\cup` (`\union`)
 * `\Cap`
+* `\checkmark`
 * `\Cup`
-* `\cdot`
 * `\circledast`
 * `\circledcirc`
+* `\circledR`
+* `\circledS`
 * `\clubsuit`
+* `\complement`
 * `\curlyvee`
 * `\curlywedge`
+* `\diagdown`
+* `\diagup`
 * `\diamondsuit`
 * `\divideontimes`
+* `\doublecap`
+* `\doublecup`
 * `\dotplus`
+* `\doteq`
 * `\heartsuit`
 * `\spadesuit`
 * `\circ`
@@ -498,6 +510,9 @@ For example
 * `\equiv`
 * `\nequiv`
 * `\eqcirc`
+* `\eqsim`
+* `\Finv`
+* `\Game`
 * `\neq` (`\ne`)
 * `\Bumpeq`
 * `\bumpeq`
@@ -512,10 +527,13 @@ For example
 * `\forall`
 * `\frown`
 * `\smallfrown`
+* `\intop`
 * `\gt`
 * `\ngtr`
+* `\hslash`
 * `\gg`
 * `\ggg`
+* `\gggtr`
 * `\geq` (`\ge`)
 * `\ngeq`
 * `\geqq`
@@ -546,9 +564,13 @@ For example
 * `\rightthreetimes`
 * `\lt`
 * `\nless`
+* `\land`
 * `\ll`
 * `\lll`
 * `\leq` (`\le`)
+* `llless`
+* `lmoustache`
+* `lnot`
 * `\nleq`
 * `\leqq`
 * `\nleqq`
@@ -609,6 +631,8 @@ For example
 * `\varpropto`
 * `\rhd`
 * `\unrhd`
+* `\ulcorner`
+* `\urcorner`
 * `\rtimes`
 * `\setminus`
 * `\smallsetminus`
@@ -619,6 +643,7 @@ For example
 * `\simeq`
 * `\backsimeq`
 * `\thicksim`
+* `\surd`
 * `\smile`
 * `\smallsmile`
 * `\sslash`
@@ -640,6 +665,7 @@ For example
 * `\succapprox`
 * `\succnapprox`
 * `\succcurlyeq`
+* `\succneqq`
 * `\curlyeqsucc`
 * `\succsim`
 * `\succnsim`
@@ -661,6 +687,14 @@ For example
 * `\sqsubseteq`
 * `\sqsupset`
 * `\sqsupseteq`
+* `\Join`
+* `\nsupseteqq`
+* `\nVdash`
+* `\owns`
+* `\precneqq`
+* `\restriction`
+* `\lcorner`
+* `\llcorner`
 * `\star`
 * `\bigstar`
 * `\therefore`
@@ -683,6 +717,7 @@ For example
 * `\trianglelefteq`
 * `\trianglerighteq`
 * `\triangleq`
+* `\vartriangle`
 * `\vartriangleleft`
 * `\vartriangleright`
 * `\uplus`
@@ -705,6 +740,7 @@ For example
 * `\colonsim`
 * `\Colonsim`
 * `\dblcolon`
+* `\yen`
 
 In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/TR/2003/REC-MathML2-20031021/byalpha.html), `\smallsetminus` (U+FE68) is designated as a small (non-stretchy) reverse solidus, `\backslash` is a reverse solidus (U+05C), and `\setminus` (∖ = U+2216) is stretchy.
 
@@ -727,8 +763,17 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 
 ## Dots
 
+* `\cdot`
+* `\cdotp`
+* `\centerdot`
 * `\dots`
+* `\dotsb`
+* `\dotsc`
+* `\dotsi`
+* `\dotsm`
+* `\dotso`
 * `\ldots`
+* `\ldotp`
 * `\cdots`
 * `\ddots`
 * `\udots`
@@ -753,10 +798,12 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\coprod` (`\coproduct`)
 * `\prod` (`\product`)
 * `\sum`
+* `\smallint`
 * `\int` (`\integral`)
 * `\iint` (`\doubleintegral`)
 * `\iiint` (`\tripleintegral`)
 * `\iiiint` (`\quadrupleintegral`)
+* `\idotsint`
 * `\oint` (`\conint\` and `\contourintegral`)
 
 ## Sizes and Styles

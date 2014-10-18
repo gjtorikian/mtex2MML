@@ -284,6 +284,16 @@ int mtex2MML_displaymode = 0;
 "\\epsilon"  {yylval=mtex2MML_copy_string("&epsi;"); return MI;}
 
 "\\cdot"   {yylval=mtex2MML_copy_string("&sdot;"); return MO;}
+"\\cdotp"   {yylval=mtex2MML_copy_string("&middot;"); return MO;}
+"\\centerdot"   {yylval=mtex2MML_copy_string("&centerdot;"); return MO;}
+
+"\\dotsb"   |
+"\\dotsi"   |
+"\\dotsm"     {yylval=mtex2MML_copy_string("&#x22EF;"); return MI;}
+
+"\\ldotp"   |
+"\\dotsc"   |
+"\\dotso"     {yylval=mtex2MML_copy_string("&#x2026;"); return MI;}
 
 "\\Alpha"   |
 "\\Beta" |
@@ -705,6 +715,46 @@ int mtex2MML_displaymode = 0;
 "\\bigtriangledown" |
 "\\nprec"  {yylval=mtex2MML_copy2(yytext, ";"); if (yylval != mtex2MML_empty_string) yylval[0]='&'; return MOL;}
 
+"\\land"  {yylval=mtex2MML_copy_string("&and;"); return MOL;}
+"\\lor"   {yylval=mtex2MML_copy_string("&or;"); return MOL;}
+"\\surd"  {yylval=mtex2MML_copy_string("&radic;"); return MOL;}
+"\\And"   {yylval=mtex2MML_copy_string("&amp;"); return MOL;}
+"\\checkmark" {yylval=mtex2MML_copy_string("&#10003;"); return MOL;}
+"\\circledR" {yylval=mtex2MML_copy_string("&reg;"); return MOL;}
+"\\circledS" {yylval=mtex2MML_copy_string("&#9416;"); return MOL;}
+"\\complement" {yylval=mtex2MML_copy_string("&#8705;"); return MOL;}
+"\\diagdown" {yylval=mtex2MML_copy_string("&#9586;"); return MOL;}
+"\\diagup" {yylval=mtex2MML_copy_string("&#9585;"); return MOL;}
+"\\doublecap" {yylval=mtex2MML_copy_string("&#8914;"); return MOL;}
+"\\doublecup" {yylval=mtex2MML_copy_string("&#8915;"); return MOL;}
+"\\eqsim" {yylval=mtex2MML_copy_string("&#8770;"); return MOL;}
+"\\Finv" {yylval=mtex2MML_copy_string("&#8498;"); return MOL;}
+"\\Game" {yylval=mtex2MML_copy_string("&#8513;"); return MOL;}
+"\\gggtr" {yylval=mtex2MML_copy_string("&#8921;"); return MOL;}
+"\\gets" {yylval=mtex2MML_copy_string("&#x2190;"); return MOL;}
+"\\hslash" {yylval=mtex2MML_copy_string("&#x210F;"); return MOL;}
+"\\intop" {yylval=mtex2MML_copy_string("&#x222B;"); return MOL;}
+"\\Join" {yylval=mtex2MML_copy_string("&#x22C8;"); return MOL;}
+"\\leadsto" {yylval=mtex2MML_copy_string("&#x21DD;"); return MOL;}
+"\\llcorner"  {yylval=mtex2MML_copy_string("&#x231E;"); return MOL;}
+"\\lrcorner"  {yylval=mtex2MML_copy_string("&#x231F;"); return MOL;}
+"\\llless"  {yylval=mtex2MML_copy_string("&#x22D8;"); return MOL;}
+"\\lmoustache"  {yylval=mtex2MML_copy_string("&#x23B0;"); return MOL;}
+"\\lnot"  {yylval=mtex2MML_copy_string("&#xAC;"); return MOL;}
+"\\longmapsto"  {yylval=mtex2MML_copy_string("&#x27FC;"); return MOL;}
+"\\maltese" {yylval=mtex2MML_copy_string("&#x2720;"); return MOL;}
+"\\nsupseteqq" {yylval=mtex2MML_copy_string("&#x2289;"); return MOL;}
+"\\nVdash" {yylval=mtex2MML_copy_string("&#x22AE;"); return MOL;}
+"\\owns" {yylval=mtex2MML_copy_string("&#x220B;"); return MOL;}
+"\\precneqq" {yylval=mtex2MML_copy_string("&#x2AB5;"); return MOL;}
+"\\restriction" {yylval=mtex2MML_copy_string("&#x21BE;"); return MOL;}
+"\\smallint" {yylval=mtex2MML_copy_string("&#x222B;"); return MOL;}
+"\\succneqq" {yylval=mtex2MML_copy_string("&#x2AB6;"); return MOL;}
+"\\ulcorner" {yylval=mtex2MML_copy_string("&#x231C;"); return MOL;}
+"\\urcorner" {yylval=mtex2MML_copy_string("&#x231D;"); return MOL;}
+"\\vartriangle" {yylval=mtex2MML_copy_string("&#x25B3;"); return MOL;}
+"\\yen" {yylval=mtex2MML_copy_string("&#xA5;"); return MOL;}
+
 "\\aleph" |
 "\\beth" |
 "\\gimel" |
@@ -721,6 +771,7 @@ int mtex2MML_displaymode = 0;
 "\\Perp" |
 "\\Vbar" {yylval=mtex2MML_copy_string("&Vbar;"); return MOL;}
 "\\boxdot" {yylval=mtex2MML_copy_string("&sdotb;"); return MOL;}
+"\\Doteq" {yylval=mtex2MML_copy_string("&#8785;"); return MOL;}
 "\\Box" |
 "\\square" {yylval=mtex2MML_copy_string("&square;"); return MOL;}
 "\\emptyset" |
@@ -767,6 +818,8 @@ int mtex2MML_displaymode = 0;
 
 "\\iiiint"   |
 "\\quadrupleintegral" {yylval=mtex2MML_copy_string("&qint;"); return MOL;}
+
+"\\idotsint" {yylval=mtex2MML_copy_string("&#x222B; &#x22EF; &#x222B;"); return MOL;}
 
 "\\oint"    |
 "\\conint"  |
