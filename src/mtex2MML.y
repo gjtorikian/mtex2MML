@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "mtex2MML.h"
+#include "stack.h"
 #include "parse_extras.h"
 
 #include "deps/uthash/uthash.h"
@@ -18,6 +19,8 @@ struct css_colors *colors = NULL;
 // yydebug = 1;
 
 #define yytext mtex2MML_yytext
+
+ stackT environment_data_stack;
 
  extern int yylex ();
 
@@ -2292,12 +2295,16 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
   const char *pipe_chars = vertical_pipe_extract($4);
   const char *column_align = remove_excess_pipe_chars($4);
+  const char *row_lines = convert_rowlines(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", column_align, "\" ");
-  char * s2 = mtex2MML_copy3(s1, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s2, $6, "</mtable>");
+  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", row_lines, "\" columnalign=\"");
+  char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = mtex2MML_copy3(s3, $6, "</mtable>");
+
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
   mtex2MML_free_string(pipe_chars);
@@ -2575,7 +2582,7 @@ const char *format_additions(const char *string) {
   if (colors == NULL)
     create_css_colors(&colors);
 
-  return env_replacements(string);
+  return env_replacements(&environment_data_stack, string);
 }
 
 char * mtex2MML_parse (const char * buffer, unsigned long length)
@@ -2609,6 +2616,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 int mtex2MML_filter (const char * buffer, unsigned long length)
 {
   const char *replaced_buffer = format_additions(buffer);
+
   mtex2MML_setup (replaced_buffer, strlen(replaced_buffer));
   mtex2MML_restart ();
 

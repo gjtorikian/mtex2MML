@@ -1,6 +1,7 @@
 #ifndef PARSE_EXTRAS_H
 #define PARSE_EXTRAS_H
 
+#include "stack.h"
 #include "deps/uthash/uthash.h"
 #include "deps/str-replace/str-replace.h"
 
@@ -21,7 +22,7 @@ typedef struct {
 } symbolDataArray;
 
 struct css_colors {
-  char name[22];                    /* key */
+  char name[22];             /* key */
   char color[10];
   UT_hash_handle hh;         /* makes this structure hashable */
 };
@@ -31,9 +32,6 @@ extern void initSymbolDataArray(symbolDataArray *a, size_t initialSize);
 
 // insert into symbol array
 extern void insertSymbolDataArray(symbolDataArray *a, symbolData element);
-
-// sort the array based on offset_pos
-extern void sortSymbolDataArray(symbolDataArray *a);
 
 // destroyes the array
 extern void deleteSymbolDataArray(symbolDataArray *a);
@@ -71,13 +69,16 @@ extern void deleteSymbolDataArray(symbolDataArray *a);
 // is detected, it starts popping off the stack until it reaches the corresponding
 // \begin. It then modifies that line with attribute strings, an arrangement of the
 // the symbols encountered while popping lines off.
-extern char * env_replacements(const char *string);
+extern char * env_replacements(stackT *environment_data_stack, const char *environment);
 
 // determines the column border arrangement from the array environment definition
 extern const char *vertical_pipe_extract(const char *string);
 
 // removes placeholder pipe characters from columnalign
 extern const char *remove_excess_pipe_chars(const char *string);
+
+// return the proper rowlines string
+extern const char *convert_rowlines(stackT *environment_data_stack);
 
 #ifdef __cplusplus
 }

@@ -35,21 +35,6 @@ void insertSymbolDataArray(symbolDataArray *a, symbolData element)
   a->used++;
 }
 
-void sortSymbolDataArray(symbolDataArray *a)
-{
-  int i, j, n = a->used;
-
-  for(i = 1; i < n; i++) {
-    for(j = 0; j < n - i; j++) {
-      if(a->array[j].offset_pos < a->array[j+1].offset_pos) {
-        symbolData temp = a->array[j];
-        a->array[j] = a->array[j+1];
-        a->array[j+1] = temp;
-      }
-    }
-  }
-}
-
 void deleteSymbolDataArray(symbolDataArray *a)
 {
   int i;
@@ -68,13 +53,13 @@ void deleteSymbolDataArray(symbolDataArray *a)
   a->size = 0;
 }
 
-char * env_replacements(const char *string)
+char * env_replacements(stackT *environment_data_stack, const char *environment)
 {
   stackT array_stack;
-  stackElementT stack_item, last_stack_item;
+  stackElementT stack_item, last_stack_item, hline_data;
 
   char *tok = NULL, *at_top = NULL;
-  char *new_environment = dupe_string(string), *dupe_str = dupe_string(string);
+  char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
   char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "";
 
@@ -83,27 +68,21 @@ char * env_replacements(const char *string)
                *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int start = 0, offset = 0, attr_rowlines_len = 0, str_len = 0, i = 0;
-  symbolDataArray hline_data_array;
-  symbolData hline_data;
 
   symbolDataArray row_spacing_data_array;
   symbolData row_spacing_data;
 
-  // set up the array stack
-  StackInit(&array_stack, strlen(new_environment));
-  initSymbolDataArray(&hline_data_array, 5);
-  initSymbolDataArray(&row_spacing_data_array, 1);
-
   // if not an environment, don't bother going on
-  if ((strstr(string, from) == NULL && strstr(string, until) == NULL)) {
-    StackDestroy(&array_stack);
-    deleteSymbolDataArray(&hline_data_array);
-    deleteSymbolDataArray(&row_spacing_data_array);
-    free(new_environment);
+  if ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) {
     free(dupe_str);
 
-    return string;
+    return environment;
   }
+
+  // set up the array stack
+  StackInit(&array_stack, strlen(environment));
+  StackInit(environment_data_stack, 5);
+  initSymbolDataArray(&row_spacing_data_array, 1);
 
   while (line != NULL) {
     str_len = strlen(line) + 1;
@@ -206,8 +185,6 @@ char * env_replacements(const char *string)
           attr_rowlines = join(attr_rowlines, "0");
         }
 
-        attr_rowlines = join(join("(", attr_rowlines), ")");
-
         for (i = row_spacing_data_array.used - 1; i >= 0; i--) {
           attr_rowspacing = join(join(attr_rowspacing, row_spacing_data_array.array[i].attribute), "|");
         }
@@ -220,12 +197,10 @@ char * env_replacements(const char *string)
             remove_last_char(attr_rowspacing);
           }
 
-          attr_rowspacing = join(join("<", attr_rowspacing), ">");
         }
 
-        hline_data.attribute = join(attr_rowspacing, attr_rowlines);
-        hline_data.offset_pos = offset + 1;
-        insertSymbolDataArray(&hline_data_array, hline_data);
+        hline_data.line = join(attr_rowspacing, attr_rowlines);
+        StackPush(environment_data_stack, hline_data);
       }
 
       attr_rowlines = "";
@@ -236,20 +211,16 @@ char * env_replacements(const char *string)
     line = strtok(NULL, "\n");
   }
 
-  // sort array by highest values first, so that we can insert to new_environment from
-  // the bottom to the top (ensuring line numbers don't shift)
-  sortSymbolDataArray(&hline_data_array);
+  // for (i = 0; i < hline_data_array.used; i++) {
+  //   insert_substring(&new_environment, hline_data_array.array[i].attribute, hline_data_array.array[i].offset_pos);
+  // }
+  //
+  // StackDestroy(&array_stack);
+  // deleteSymbolDataArray(&hline_data_array);
+  // deleteSymbolDataArray(&row_spacing_data_array);
+  // free(dupe_str);
 
-  for (i = 0; i < hline_data_array.used; i++) {
-    insert_substring(&new_environment, hline_data_array.array[i].attribute, hline_data_array.array[i].offset_pos);
-  }
-
-  StackDestroy(&array_stack);
-  deleteSymbolDataArray(&hline_data_array);
-  deleteSymbolDataArray(&row_spacing_data_array);
-  free(dupe_str);
-
-  return new_environment;
+  return environment;
 }
 
 const char *vertical_pipe_extract(const char *string)
@@ -311,4 +282,34 @@ const char *remove_excess_pipe_chars(const char *string)
   dup = str_replace(dup, "d", "");
 
   return dup;
+}
+
+const char *convert_rowlines(stackT *environment_data_stack)
+{
+  if (StackIsEmpty(environment_data_stack)) {
+    return "none";
+  }
+
+  char *string = StackPop(environment_data_stack).line;
+
+  int i = 0, len = strlen(string);
+  char *row_lines = "", c;
+
+  for (i = 0; i < len; i++) {
+    c = string[i];
+    if (c == '0') {
+      row_lines = join(row_lines, "none ");
+    }
+    else if (c == 's') {
+      row_lines = join(row_lines, "solid ");
+    }
+    else if (c == 'd') {
+      row_lines = join(row_lines, "dashed ");
+    }
+  }
+
+  // this is an empty space
+  remove_last_char(row_lines);
+
+  return row_lines;
 }
