@@ -35,7 +35,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
                *em_pattern_begin = "\\[", *em_pattern_end = "]",
-               *is_smallmatrix, *is_gathered;
+               *is_smallmatrix = NULL, *is_gathered = NULL;
 
   int attr_rowlines_len = 0, em_offset = 0;
 
@@ -108,9 +108,10 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
           break;
         }
       }
-
-      is_smallmatrix = strstr(at_top, "\\begin{smallmatrix}");
-      is_gathered = strstr(at_top, "\\begin{gathered}");
+      if (at_top != NULL) {
+        is_smallmatrix = strstr(at_top, "\\begin{smallmatrix}");
+        is_gathered = strstr(at_top, "\\begin{gathered}");
+      }
 
       // TODO: we are skipping equation environments
       if ((attr_rowlines_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
