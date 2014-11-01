@@ -42,5 +42,4 @@ void create_css_colors(struct css_colors **colors)
     strncpy(c->color, *h, 10);
     HASH_ADD_STR(*colors, name, c );
   }
-
 }

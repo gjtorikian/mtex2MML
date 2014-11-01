@@ -1,8 +1,8 @@
 #ifndef PARSE_EXTRAS_H
 #define PARSE_EXTRAS_H
 
-#include "stack.h"
 #include "deps/uthash/uthash.h"
+#include "deps/uthash/utarray.h"
 #include "deps/str-replace/str-replace.h"
 
 #ifdef __cplusplus
@@ -10,31 +10,21 @@ extern "C" {
 #endif
 
 typedef struct {
+  char *rowspacing;
+  char *rowlines;
+  int empty;
+} envdata_t;
+
+typedef struct {
   char *attribute;
   int  offset_pos;
 } symbolData;
-
-// array of structs
-typedef struct {
-  symbolData *array;
-  size_t used;
-  size_t size;
-} symbolDataArray;
 
 struct css_colors {
   char name[22];             /* key */
   char color[10];
   UT_hash_handle hh;         /* makes this structure hashable */
 };
-
-// set up array of symbols (like hlines)
-extern void initSymbolDataArray(symbolDataArray *a, size_t initialSize);
-
-// insert into symbol array
-extern void insertSymbolDataArray(symbolDataArray *a, symbolData element);
-
-// destroyes the array
-extern void deleteSymbolDataArray(symbolDataArray *a);
 
 // Move various symbols not easily supported inline with the `\begin` line
 // This is so that the Bison parser can properly act on these. For example,
@@ -67,9 +57,9 @@ extern void deleteSymbolDataArray(symbolDataArray *a);
 //
 // The env_replacements function will push every line onto a stack. When an \end
 // is detected, it starts popping off the stack until it reaches the corresponding
-// \begin. It then modifies that line with attribute strings, an arrangement of the
+// \begin. It then modifies that stack with attribute strings, an arrangement of the
 // the symbols encountered while popping lines off.
-extern char * env_replacements(stackT *environment_data_stack, const char *environment);
+void env_replacements(UT_array **environment_data_stack, const char *environment);
 
 // determines the column border arrangement from the array environment definition
 extern const char *vertical_pipe_extract(const char *string);
@@ -77,8 +67,8 @@ extern const char *vertical_pipe_extract(const char *string);
 // removes placeholder pipe characters from columnalign
 extern const char *remove_excess_pipe_chars(const char *string);
 
-// return the proper rowlines string
-extern const char *convert_rowlines(stackT *environment_data_stack);
+// return the proper rowlines information
+extern const char *convert_row_data(UT_array **environment_data_stack);
 
 #ifdef __cplusplus
 }

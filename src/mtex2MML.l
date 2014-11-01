@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS ROWSPACINGOPTS ROWLINEOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -1182,36 +1182,40 @@ int mtex2MML_displaymode = 0;
 }
 
 <MATHENV>{
-"\{matrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return MATRIX;}
-"\{matrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return MATRIX;}
-"\{pmatrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return PMATRIX;}
-"\{pmatrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return PMATRIX;}
-"\{bmatrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return BMATRIX;}
-"\{bmatrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return BMATRIX;}
-"\{Bmatrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return BBMATRIX;}
-"\{Bmatrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return BBMATRIX;}
-"\{vmatrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return VMATRIX;}
-"\{vmatrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return VMATRIX;}
-"\{Vmatrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return VVMATRIX;}
-"\{Vmatrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return VVMATRIX;}
-"\{smallmatrix\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return SMALLMATRIX;}
-"\{smallmatrix*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return SMALLMATRIX;}
-"\{cases\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return CASES;}
-"\{cases*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return CASES;}
-"\{aligned\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
-"\{aligned*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
-"\{align\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
-"\{align*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
+"\{matrix\}" {BEGIN(MATH); return MATRIX;}
+"\{matrix*\}" {BEGIN(MATH); return MATRIX;}
+"\{pmatrix\}" {BEGIN(MATH); return PMATRIX;}
+"\{pmatrix*\}" {BEGIN(MATH); return PMATRIX;}
+"\{bmatrix\}" {BEGIN(MATH); return BMATRIX;}
+"\{bmatrix*\}" {BEGIN(MATH); return BMATRIX;}
+"\{Bmatrix\}" {BEGIN(MATH); return BBMATRIX;}
+"\{Bmatrix*\}" {BEGIN(MATH); return BBMATRIX;}
+"\{vmatrix\}" {BEGIN(MATH); return VMATRIX;}
+"\{vmatrix*\}" {BEGIN(MATH); return VMATRIX;}
+"\{Vmatrix\}" {BEGIN(MATH); return VVMATRIX;}
+"\{Vmatrix*\}" {BEGIN(MATH); return VVMATRIX;}
+"\{smallmatrix\}" {BEGIN(MATH); return SMALLMATRIX;}
+"\{smallmatrix*\}" {BEGIN(MATH); return SMALLMATRIX;}
+"\{cases\}" {BEGIN(MATH); return CASES;}
+"\{cases*\}" {BEGIN(MATH); return CASES;}
+"\{aligned\}[" {BEGIN(ENVOPTIONS); return ALIGNED;}
+"\{aligned*\}[" {BEGIN(ENVOPTIONS); return ALIGNED;}
+"\{aligned\}" {BEGIN(MATH); return ALIGNED;}
+"\{aligned*\}" {BEGIN(MATH); return ALIGNED;}
+"\{align\}" {BEGIN(MATH); return ALIGNED;}
+"\{align*\}" {BEGIN(MATH); return ALIGNED;}
 "\{alignat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
 "\{alignat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
 "\{alignedat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
 "\{alignedat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
-"\{gather\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return GATHERED;}
-"\{gather*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return GATHERED;}
-"\{gathered\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return GATHERED;}
-"\{gathered*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return GATHERED;}
-"\{split\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
-"\{split*\}" {if (mtex2MML_env_start == 1) BEGIN(ENVOPTIONS); else BEGIN(MATH); return ALIGNED;}
+"\{gather\}" {BEGIN(MATH); return GATHERED;}
+"\{gather*\}" {BEGIN(MATH); return GATHERED;}
+"\{gathered\}[" {BEGIN(ENVOPTIONS); return GATHERED;}
+"\{gathered*\}[" {BEGIN(ENVOPTIONS); return GATHERED;}
+"\{gathered\}" {BEGIN(MATH); return GATHERED;}
+"\{gathered*\}" {BEGIN(MATH); return GATHERED;}
+"\{split\}" {BEGIN(MATH); return ALIGNED;}
+"\{split*\}" {BEGIN(MATH); return ALIGNED;}
 "\{array\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{array*\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{svg\}" {mtex2MML_env_start = 0; BEGIN(SVGENV); return SVG;}
@@ -1221,8 +1225,6 @@ int mtex2MML_displaymode = 0;
 "[t]" {yylval=mtex2MML_copy_string("axis 1"); return ARRAYALIGN;}
 "[c]" {yylval=mtex2MML_copy_string("center"); return ARRAYALIGN;}
 "[b]" {yylval=mtex2MML_copy_string("axis -1"); return ARRAYALIGN;}
-"\<"  {BEGIN(ROWSPACINGOPTS); return ST;}
-"\("  {BEGIN(ROWLINEOPTS); return ST;}
 "\{"  {BEGIN(COLOPTS); return ST;}
 [\t\n\r ]+       ;
 }
@@ -1230,36 +1232,15 @@ int mtex2MML_displaymode = 0;
 <ALIGNATOPTS>{
 "\{"     { /* Ignore */ }
 [0-9]+   {yylval=mtex2MML_copy_string(yytext); return ALIGNATVALUE;}
-"\}"     {BEGIN(ENVOPTIONS); return END;}
+"\}"     {mtex2MML_env_start = 0; BEGIN(MATH); return END;}
 [\t\n\r ]+       ;
 }
 
 <ENVOPTIONS>{
-"[t]" {yylval=mtex2MML_copy_string("baseline 1"); return ARRAYALIGN;}
-"[c]" {yylval=mtex2MML_copy_string("center"); return ARRAYALIGN;}
-"[b]" {yylval=mtex2MML_copy_string("baseline -1"); return ARRAYALIGN;}
-"\<"  {BEGIN(ROWSPACINGOPTS); return ST;}
-"\("  {BEGIN(ROWLINEOPTS); return ST;}
-.     {BEGIN(MATH); unput(yytext[0]); }
-[\t\n\r ]+       ;
-}
-
-<ROWSPACINGOPTS>{
-"\>"             {mtex2MML_env_start = 0; BEGIN(MATH); return END;}
-"\>\("           {BEGIN(ROWLINEOPTS); return END;}
-"\>\{"           {BEGIN(COLOPTS); return END;}
-[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%)         {yylval=mtex2MML_copy_string(yytext); return ROWSPACINGDEF;}
-"~"      { return ROWSPACINGDEF; }
-"|"      { /* Ignore */ }
-[\t\n\r ]+       ;
-}
-
-<ROWLINEOPTS>{
-"\)\{"   {BEGIN(COLOPTS); return END;}
-"s"      {yylval=mtex2MML_copy_string("solid"); return ROWLINESDEF;}
-"d"      {yylval=mtex2MML_copy_string("dashed"); return ROWLINESDEF;}
-"0"      {yylval=mtex2MML_copy_string("none"); return ROWLINESDEF;}
-"\)"     {mtex2MML_env_start = 0; BEGIN(MATH); return END;}
+"t" {yylval=mtex2MML_copy_string("baseline 1"); return ARRAYALIGN;}
+"c" {yylval=mtex2MML_copy_string("center"); return ARRAYALIGN;}
+"b" {yylval=mtex2MML_copy_string("baseline -1"); return ARRAYALIGN;}
+"]"  {mtex2MML_env_start = 0; BEGIN(MATH); return END; }
 [\t\n\r ]+       ;
 }
 

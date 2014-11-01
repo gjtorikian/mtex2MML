@@ -88,25 +88,7 @@ void strrev(char *str)
   }
 }
 
-int empty_row_spacings(char *str)
-{
-  int len = strlen(str), i = 0;
-
-  // Looking for a repeating pattern of "0em|", so bail if this fails
-  if (len % 4 != 0) {
-    return 0;
-  }
-
-  for (i = 0; i < len; i += 4) {
-    if (str[i] != '0' || str[i + 1] != 'e' || str[i + 2] != 'm' || str[i + 3] != '|') {
-      break;
-    }
-  }
-
-  return i == len ? 1 : 0;
-}
-
-char * dupe_string(const char * str)
+char *dupe_string(const char * str)
 {
   int len = strlen(str) + 1;
   char *buf = malloc(len);

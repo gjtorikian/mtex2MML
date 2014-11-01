@@ -3,6 +3,7 @@
 #ifndef STRING_EXTRAS_H
 #define STRING_EXTRAS_H
 
+#include "deps/uthash/utstring.h"
 #include "deps/str-replace/str-replace.h"
 
 #ifdef __cplusplus
@@ -24,9 +25,6 @@ extern void insert_substring(char **dest, char *ins, size_t location);
 
 // Reverse the substring
 extern void strrev(char *str);
-
-// Find out if a string is just full of empty RowSpacings (0em)
-extern int empty_row_spacings(char *str);
 
 // Duplicates an immutable string
 extern char * dupe_string(const char * str);
