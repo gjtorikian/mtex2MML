@@ -13,6 +13,8 @@ struct css_colors *colors = NULL;
 #define YYSTYPE char *
 #define YYPARSE_PARAM_TYPE char **
 #define YYPARSE_PARAM ret_str
+/* set max nesting. utterly arbitrary number determined from http://git.io/FlWHfw */
+#define YYMAXDEPTH 430
 
 // #define YYDEBUG 1
 // yydebug = 1;
