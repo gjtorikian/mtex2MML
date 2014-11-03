@@ -70,6 +70,6 @@ Bad & Good
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("comments_are_ignored"))
+    assert_equal(@mtex.filter(text), fixture_file("basic", "comments_are_ignored"))
   end
 end

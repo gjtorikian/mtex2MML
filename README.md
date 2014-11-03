@@ -14,6 +14,14 @@ It's true, MathML is not well supported in browsers. (Kudos to the Firefox team 
 
 However, you can consider MathML as an intermediate format onto greater things, like conversion to SVG via [mathematical](https://github.com/gjtorikian/mathematical).
 
+## Methods available
+
+This library exposes the following methods:
+
+* `mtex2MML_html_filter(str)`: Converts all `$..$` / `$$..$$` TeX equations in `str` to MathML, passing the rest of the string unmodified. Returns the converted string.
+
+* `mtex2MML_filter(str)`: Converts all `$..$` / `$$..$$` TeX equations in `str` to MathML. Returns just the MathML equation(s), as a string.
+
 ## Building
 
 You need GNU make and [Flex](http://flex.sourceforge.net/) to build the mtex2MML code. To build it:

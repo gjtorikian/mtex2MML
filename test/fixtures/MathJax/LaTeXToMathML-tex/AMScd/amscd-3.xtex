@@ -1,0 +1,23 @@
+$$
+\begin{equation}
+      \minCDarrowwidth{150px}
+      \minCDarrowheight{100px}
+      \begin{CD}
+
+        A        @&gt;&gt;&gt;    B     @    C    \\
+        
+        @AAA           @A0AA         @AA1A    \\
+
+        D       @&gt;2&gt;&gt;    E     @3    F     \\
+
+        @VVV          @V4VV           @VV5V   \\
+
+        G       @&gt;&gt;6&gt;    H     @7     I    \\
+
+        @|              @.            @|    \\
+
+        J       @=      K     @=       L
+
+      \end{CD}
+      \end{equation}
+$$

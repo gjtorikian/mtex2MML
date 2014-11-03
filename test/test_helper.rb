@@ -1,23 +1,16 @@
 $:.unshift File.expand_path( File.join( File.dirname( __FILE__ ), "../lib" ) )
 require 'mtextomml'
 require 'minitest/autorun'
+require 'minitest/pride'
 
-def fixture_file(name)
-  File.read( File.join(File.dirname( __FILE__ ), "fixtures", "#{name}.html") ).strip
+def fixture_file(dir, fixture)
+  File.read( File.join(File.dirname( __FILE__ ), "fixtures", dir, "#{fixture}.html") ).strip
 end
 
 def write_to_test_file(converted)
-  outfile = """
-<html>
+  File.open("test.html", "w") { |f| f.write(converted) }
+end
 
-<body>
-
-#{converted}
-
-</body>
-
-</html>
-  """
-
-  File.open("test.html", "w") { |f| f.write(outfile) }
+def write_to_fixture_file(dir, fixture, converted)
+  File.open(File.join(File.dirname( __FILE__ ), "fixtures", dir, "#{fixture}.html"), "w") { |f| f.write(converted) }
 end

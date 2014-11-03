@@ -13,7 +13,7 @@ $g\'_{\tau} = \left(
 \begin{smallmatrix}v^{1/2}&0\\\\0&v^{-1/2}\end{smallmatrix} \right)$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("broken_up_inline_env"))
+    assert_equal(@mtex.filter(text), fixture_file("cornercases", "broken_up_inline_env"))
   end
 
   def test_some_crazy_alignment
@@ -44,6 +44,6 @@ $$
 $$
 '''
 
-    assert_equal(@mtex.filter(text), fixture_file("some_crazy_alignment"))
+    assert_equal(@mtex.filter(text), fixture_file("cornercases", "some_crazy_alignment"))
   end
 end

@@ -18,10 +18,15 @@ where `env` is one of
 * `smallmatrix`
 * `cases`
 * `aligned`
+* `align`
+* `alignedat`
+* `gather`
 * `gathered`
 * `split`
 * `array`
 * `svg`
+
+The `*` notation (where applicable) is currently not supported; no equations are numbered.
 
 ### Horizontal lines
 
@@ -36,6 +41,8 @@ You can type `\hline` or `\hlinedash` to insert a horizontal line or dashed hori
 7 & 8 & 9 & 10
 \end{array}
 ```
+
+`\cr` is also supported as a linebreak option.
 
 ### The `array` Environment
 
@@ -221,6 +228,17 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\Omega`
 * `\digamma`
 * `\mho`
+* `\varDelta`
+* `\varGamma`
+* `\varLambda`
+* `\varOmega`
+* `\varPhi`
+* `\varPi`
+* `\varPsi`
+* `\varSigma`
+* `\varTheta`
+* `\varUpsilon`
+* `\varXi`
 
 ## Log-like Symbols
 
@@ -244,13 +262,23 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\lg`
 * `\lim`
 * `\liminf`
+* `\nolimits`
+* `\limits`
 * `\limsup`
+* `\injlim`
+* `\projlim`
+* `\varinjlim`
+* `\varliminf`
+* `\varlimsup`
+* `\varprojlim`
 * `\ln`
 * `\log`
 * `\max`
 * `\min`
 * `\mod`
+* `\bmod`
 * `\pmod`
+* `\pod`
 * `\Pr`
 * `\sec`
 * `\sin`
@@ -262,17 +290,23 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 ## Arrows
 
 * `\rightarrow` (`\to`)
+* `\leadsto`
 * `\longrightarrow`
+* `\Longrightarrow`
 * `\Rightarrow` (`\implies`)
 * `\hookrightarrow` (`\embedsin`)
 * `\mapsto` (`\\map`)
 * `\leftarrow`
+* `\gets`
 * `\longleftarrow`
+* `\Longleftarrow`
+* `\longmapsto`
 * `\Leftarrow` (`\\impliedby`)
 * `\hookleftarrow`
 * `\leftrightarrow`
 * `\Leftrightarrow`
 * `\Longleftrightarrow` (`\iff`)
+* `\longleftrightarrow`
 * `\nearrow` (`\nearr`)
 * `\nwarrow` (`\nwarr`)
 * `\searrow` (`\searr`)
@@ -283,6 +317,8 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\swArrow` (`\swArr`)
 * `\darr`
 * `\Downarrow`
+* `\Arrowvert`
+* `\arrowvert`
 * `\uparr`
 * `\Uparrow`
 * `\downuparrow` (`\duparr` and `\updarr`)
@@ -331,6 +367,12 @@ The `\array{}` command allows much finer control over the layout of arrays than 
 * `\rightleftharpoons`
 * `\upharpoonleft`
 * `\upharpoonright`
+* `\overleftarrow`
+* `\overleftrightarrow`
+* `\overrightarrow`
+* `\underleftarrow`
+* `\underleftrightarrow`
+* `\underrightarrow`
 
 ### Extensible Arrows
 
@@ -348,7 +390,10 @@ The set of extensible arrows is:
 * `\xrightleftharpoons`
 * `\xhookleftarrow`
 * `\xhookrightarrow`
-* `\xmapsto`
+* `\xtwoheadrightarrow`
+* `\xtwoheadleftarrow`
+* `\xlongequal`
+* `\xtofrom`
 
 ## Delimiters
 
@@ -356,12 +401,17 @@ The set of extensible arrows is:
 * `)`
 * `[`
 * `]`
+* `\bracevert`
 * `\langle` (`\lang`)
 * `\rangle` (`\rang`)
 * `\llangle`
+* `\lgroup`
 * `\rrangle`
+* `\rgroup`
 * `\lbrace` (`\{`)
 * `\rbrace` (`\}`)
+* `\lbrack`
+* `\rbrack`
 * `\lceil`
 * `\rceil`
 * `\lmoustache`
@@ -373,6 +423,10 @@ The set of extensible arrows is:
 * `\updownarrow`
 * `\vert` (`\|`)
 * `\Vert` (`\|`)
+* `\lvert`
+* `\rvert`
+* `\lVert`
+* `\rVert`
 * `/`
 
 In TeX, delimiters are non-stretchy, by default. Stretchy delimiters are obtained with `\left<delim>` and `\right<delim>`. Each `\left<delim>` must be matched with a corresponding `\right<delim>`. If you don't want a visible matching delimiter, you can match with the invisible delimiters
@@ -391,13 +445,18 @@ Fixed-size large delimiters are generated with the modifiers:
 * `\bigr`
 * `\Bigr`
 * `\biggr`
-* `\Biggr`.
+* `\Biggr`
+* `\bigm`
+* `\Bigm`
+* `\biggm`
+* `\Biggm`
 
 For example
 * `\Biggr)` generates a very large (3 * normal size) right parenthesis; `\bigl\vert` generates a large (1.2 * natural size) left vertical bar.
 
 ## Operators
 
+* `\And`
 * `\amalg`
 * `\angle`
 * `\measuredangle`
@@ -420,16 +479,24 @@ For example
 * `\cap` (`\intersection`)
 * `\cup` (`\union`)
 * `\Cap`
+* `\checkmark`
 * `\Cup`
-* `\cdot`
 * `\circledast`
 * `\circledcirc`
+* `\circledR`
+* `\circledS`
 * `\clubsuit`
+* `\complement`
 * `\curlyvee`
 * `\curlywedge`
+* `\diagdown`
+* `\diagup`
 * `\diamondsuit`
 * `\divideontimes`
+* `\doublecap`
+* `\doublecup`
 * `\dotplus`
+* `\doteq`
 * `\heartsuit`
 * `\spadesuit`
 * `\circ`
@@ -453,6 +520,9 @@ For example
 * `\equiv`
 * `\nequiv`
 * `\eqcirc`
+* `\eqsim`
+* `\Finv`
+* `\Game`
 * `\neq` (`\ne`)
 * `\Bumpeq`
 * `\bumpeq`
@@ -467,10 +537,13 @@ For example
 * `\forall`
 * `\frown`
 * `\smallfrown`
+* `\intop`
 * `\gt`
 * `\ngtr`
+* `\hslash`
 * `\gg`
 * `\ggg`
+* `\gggtr`
 * `\geq` (`\ge`)
 * `\ngeq`
 * `\geqq`
@@ -501,9 +574,13 @@ For example
 * `\rightthreetimes`
 * `\lt`
 * `\nless`
+* `\land`
 * `\ll`
 * `\lll`
 * `\leq` (`\le`)
+* `llless`
+* `lmoustache`
+* `lnot`
 * `\nleq`
 * `\leqq`
 * `\nleqq`
@@ -531,7 +608,8 @@ For example
 * `\multimap`
 * `\nabla` (`\Del`)
 * `\natural`
-* `\not` (`\neg`)
+* `\not`
+* `\neg`
 * `\odot`
 * `\odash` (`\circleddash`)
 * `\otimes`
@@ -564,6 +642,8 @@ For example
 * `\varpropto`
 * `\rhd`
 * `\unrhd`
+* `\ulcorner`
+* `\urcorner`
 * `\rtimes`
 * `\setminus`
 * `\smallsetminus`
@@ -574,6 +654,7 @@ For example
 * `\simeq`
 * `\backsimeq`
 * `\thicksim`
+* `\surd`
 * `\smile`
 * `\smallsmile`
 * `\sslash`
@@ -595,6 +676,7 @@ For example
 * `\succapprox`
 * `\succnapprox`
 * `\succcurlyeq`
+* `\succneqq`
 * `\curlyeqsucc`
 * `\succsim`
 * `\succnsim`
@@ -616,6 +698,14 @@ For example
 * `\sqsubseteq`
 * `\sqsupset`
 * `\sqsupseteq`
+* `\Join`
+* `\nsupseteqq`
+* `\nVdash`
+* `\owns`
+* `\precneqq`
+* `\restriction`
+* `\lcorner`
+* `\llcorner`
 * `\star`
 * `\bigstar`
 * `\therefore`
@@ -638,6 +728,7 @@ For example
 * `\trianglelefteq`
 * `\trianglerighteq`
 * `\triangleq`
+* `\vartriangle`
 * `\vartriangleleft`
 * `\vartriangleright`
 * `\uplus`
@@ -660,6 +751,7 @@ For example
 * `\colonsim`
 * `\Colonsim`
 * `\dblcolon`
+* `\yen`
 
 In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/TR/2003/REC-MathML2-20031021/byalpha.html), `\smallsetminus` (U+FE68) is designated as a small (non-stretchy) reverse solidus, `\backslash` is a reverse solidus (U+05C), and `\setminus` (∖ = U+2216) is stretchy.
 
@@ -667,6 +759,8 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 
 * `\aleph`
 * `\beth`
+* `\gimel`
+* `\daleth`
 * `\ell`
 * `\hbar`
 * `\Im`
@@ -677,11 +771,22 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 * `\wp`
 * `\infty` (`\infinity`)
 * `\emptyset` (`\varnothing)
+* `\TeX`
+* `\LaTeX`
 
 ## Dots
 
+* `\cdot`
+* `\cdotp`
+* `\centerdot`
 * `\dots`
+* `\dotsb`
+* `\dotsc`
+* `\dotsi`
+* `\dotsm`
+* `\dotso`
 * `\ldots`
+* `\ldotp`
 * `\cdots`
 * `\ddots`
 * `\udots`
@@ -706,10 +811,12 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\coprod` (`\coproduct`)
 * `\prod` (`\product`)
 * `\sum`
+* `\smallint`
 * `\int` (`\integral`)
 * `\iint` (`\doubleintegral`)
 * `\iiint` (`\tripleintegral`)
 * `\iiiint` (`\quadrupleintegral`)
+* `\idotsint`
 * `\oint` (`\conint\` and `\contourintegral`)
 
 ## Sizes and Styles
@@ -719,15 +826,18 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\textsize`
 * `\scriptsize`
 * `\scriptscriptsize`
-* `\mathit`
-* `\mathbf` (`\boldsymbol`)
-* `\mathrm`
-* `\mathbb`
-* `\mathfrak` (`\mathfr`)
-* `\mathcal`
-* `\mathsf`
-* `\mathtt`
+* `\mathit` (`\it` and `\textit`)
+* `\mathbf` (`\boldsymbol`, `\bf`, `\textbf`)
+* `\mathrm` (`\rm` and `\textrm`)
+* `\mathbb` (`\Bbb`)
+* `\mathfrak` (`\mathfr` and `\frak`)
+* `\mathcal` (`\cal`)
+* `\mathscr` (`\scr`)
+* `\mathsf` (`\sf` and `\textsf`)
+* `\mathtt` (`\tt` and `\texttt`)
 * `\text`
+* `\verb?`
+* `\pmb`
 
 ## Spaces
 
@@ -740,9 +850,9 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\negmedspace`
 * `\negthickspace`
 * `\phantom`
-* `\mathrlap`
-* `\mathllap`
-* `\mathclap`
+* `\mathrlap` (`\rlap`)
+* `\mathllap` (`\llap`)
+* `\mathclap` (`\clap`)
 * `\space` (Taken from [WebTeX](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec8.html#ARBSIZE "\space in the WebTeX Manual"))
 
 ## Accents
@@ -762,20 +872,41 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\widecheck`
 * `\hat`
 * `\widehat`
-* `\slash`
+* `\slash` (`\cancel`)
+* `\xcancel`
+* `\bcancel`
+* `\canceledto`
 * `\boxed`
+* `\fbox`
+* `\hbox`
+* `\mbox`
+* `\acute`
+* `\grave`
+* `\breve`
+* `\mathring`
 
 ## Fractions, Sub/Superscripts, and Roots
 
 * `\frac`
 * `\tfrac`
+* `\dfrac`
+* `\above`
+* `\abovewithdelims`
 * `\binom`
 * `\tbinom`
+* `\brace`
+* `\brack`
+* `\choose`
+* `\dbinom`
 * `\over`
+* `\overwithdelims`
 * `\atop`
+* `\atopwithdelims`
 * `\substack`
 * `\overbrace`
 * `\underbrace`
+* `\overbracket`
+* `\underbracket`
 * `\underset`
 * `\overset` (`\stackrel`)
 * `\underoverset` (such as `\underoverset{subscript}{superscript}{symbol}`)
@@ -799,23 +930,8 @@ In MathML, numbers are represented as `<mn>127.3</mn>`. mtex2MML does its best t
 
 `\color{colourspec}` changes the current foreground color. `colourspec` is either:
 
-* An HTML named-color:
-  * `aqua`
-  * `black`
-  * `blue`
-  * `fuchsia`
-  * `gray`
-  * `green`
-  * `lime`
-  * `maroon`
-  * `navy`
-  * `olive`
-  * `purple`
-  * `red`
-  * `silver`
-  * `teal`
-  * `white`
-  * `yellow`
+* A CSS named color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_Keywords
+* A LaTeX named color: http://en.wikibooks.org/wiki/LaTeX/Colors
 * An RGB color value:
   * `#rgb` or `#rrggbb`, a three- or six-digit hexadecimal number.
   `#000000` is black `#FFFFFF` is white, and `#1AC=#11AACC`.
@@ -835,6 +951,8 @@ The alternate LaTeX syntax, involving specifying a color model is not supported:
 ```
 
 A new command, `\bgcolor{colourspec}` works the same way, but changes the current background color.
+
+`\colorbox` changes the background color, and adds some padding, using the `mpadding` element.
 
 ## Interactivity
 

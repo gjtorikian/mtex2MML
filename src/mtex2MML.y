@@ -6,6 +6,10 @@
 #include "mtex2MML.h"
 #include "parse_extras.h"
 
+#include "deps/uthash/uthash.h"
+
+struct css_colors *colors = NULL;
+
 #define YYSTYPE char *
 #define YYPARSE_PARAM_TYPE char **
 #define YYPARSE_PARAM ret_str
@@ -14,6 +18,8 @@
 // yydebug = 1;
 
 #define yytext mtex2MML_yytext
+
+ UT_array *environment_data_stack;
 
  extern int yylex ();
 
@@ -276,8 +282,8 @@
 
 %}
 
-%left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN ROWSPACINGDEF ROWLINESDEF COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG
+%left TEXOVER TEXOVERWITHDELIMS TEXATOP TEXATOPWITHDELIMS TEXABOVE TEXABOVEWITHDELIMS
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
 
 %%
 
@@ -479,6 +485,16 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
 }
+| closedTerm NOLIMITS SUB closedTerm SUP closedTerm {
+  char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
+  char * s2 = mtex2MML_copy3($4, " ", $6);
+  $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+}
 | closedTerm SUP closedTerm SUB closedTerm {
   char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
   char * s2 = mtex2MML_copy3($5, " ", $3);
@@ -533,6 +549,9 @@ closedTerm: array
 | multi
 | mfrac
 | binom
+| brace
+| brack
+| choose
 | msqrt
 | mroot
 | raisebox
@@ -541,14 +560,26 @@ closedTerm: array
 | bar
 | vec
 | hat
+| acute
+| grave
+| breve
+| mathring
 | dot
 | ddot
 | dddot
 | ddddot
 | check
 | tilde
+| overleftarrow
+| overleftrightarrow
+| overrightarrow
+| underleftarrow
+| underleftrightarrow
+| underrightarrow
 | moverbrace
+| moverbracket
 | munderbrace
+| munderbracket
 | munderline
 | munderover
 | emptymrow
@@ -566,13 +597,25 @@ closedTerm: array
 | bold
 | roman
 | rmchars
+| script
+| scrchars
+| pmb
+| pmbchars
 | bbold
 | frak
+| not
 | slashed
+| bcanceled
+| xcanceled
+| canceledto
 | boxed
+| fbox
+| hbox
+| mbox
 | cal
 | space
 | textstring
+| verbstring
 | thinspace
 | medspace
 | thickspace
@@ -582,15 +625,26 @@ closedTerm: array
 | negmedspace
 | negthickspace
 | phantom
+| tex
+| latex
+| varinjlim
+| varliminf
+| varlimsup
+| varprojlm
 | href
 | statusline
 | tooltip
 | toggle
 | fghighlight
 | bghighlight
+| colorbox
 | color
 | texover
+| texoverwithdelims
 | texatop
+| texatopwithdelims
+| texabove
+| texabovewithdelims
 | MROWOPEN closedTerm MROWCLOSE {
   $$ = mtex2MML_copy_string($2);
   mtex2MML_free_string($2);
@@ -609,7 +663,9 @@ closedTerm: array
 }
 | mathenv
 | substack
+| bmod
 | pmod
+| pod
 | unrecognized;
 
 left: LEFT LEFTDELIM {
@@ -732,6 +788,46 @@ bigdelim: BIG LEFTDELIM {
   mtex2MML_rowposn = 2;
   $$ = mtex2MML_copy3("<mo maxsize=\"3em\" minsize=\"3em\">", $2, "</mo>");
   mtex2MML_free_string($2);
+}
+|BIGM LEFTDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"1.2em\" minsize=\"1.2em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BIGM OTHERDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"1.2em\" minsize=\"1.2em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BBIGM LEFTDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"1.8em\" minsize=\"1.8em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BBIGM OTHERDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"1.8em\" minsize=\"1.8em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BIGGM LEFTDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BIGGM OTHERDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BBIGGM LEFTDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"3em\" minsize=\"3em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| BBIGGM OTHERDELIM {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo maxsize=\"3em\" minsize=\"3em\" fence=\"true\" stretchy=\"true\" symmetric=\"true\">", $2, "</mo>");
+  mtex2MML_free_string($2);
 };
 
 unrecognized: UNKNOWNCHAR {
@@ -744,6 +840,22 @@ unaryminus: UNARYMINUS {
 
 unaryplus: UNARYPLUS {
   $$ = mtex2MML_copy_string("<mo lspace=\"verythinmathspace\" rspace=\"0em\">+</mo>");
+};
+
+varinjlim: VARINJLIM {
+  $$ = mtex2MML_copy_string("<munder>lim<mo>&#x2192;</mo></munder>");
+};
+
+varliminf: VARLIMINF {
+  $$ = mtex2MML_copy_string("<munder>lim<mo>_</mo></munder>");
+};
+
+varlimsup: VARLIMSUP {
+  $$ = mtex2MML_copy_string("<mover>lim<mo>&#xAF;</mo></mover>");
+};
+
+varprojlm: VARPROJLIM {
+  $$ = mtex2MML_copy_string("<munder>lim<mo>&#x2190;</mo></munder>");
 };
 
 mi: MI;
@@ -783,6 +895,25 @@ mo: mob
   mtex2MML_rowposn = 2;
   $$ = mtex2MML_copy3("<mstyle scriptlevel=\"0\"><mo>", $1, "</mo></mstyle>");
   mtex2MML_free_string($1);
+}
+| MOL LIMITS SUB closedTerm SUP closedTerm {
+  if (mtex2MML_displaymode == 1) {
+    char * s1 = mtex2MML_copy3("<munderover>", $1, " ");
+    char * s2 = mtex2MML_copy3($4, " ", $6);
+    $$ = mtex2MML_copy3(s1, s2, "</munderover>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string(s2);
+  }
+  else {
+    char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
+    char * s2 = mtex2MML_copy3($4, " ", $6);
+    $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string(s2);
+  }
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
 }
 | RIGHTDELIM {
   $$ = mtex2MML_copy3("<mo stretchy=\"false\">", $1, "</mo>");
@@ -896,8 +1027,25 @@ bghighlight: BGHIGHLIGHT ATTRLIST closedTerm {
   mtex2MML_free_string($3);
 };
 
+colorbox: COLORBOX ATTRLIST closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded width=\"+10px\" height=\"+5px\" depth=\"+5px\" lspace=\"5px\" mathbackground=", $2, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+};
+
 color: COLOR ATTRLIST compoundTermList {
-  char * s1 = mtex2MML_copy3("<mstyle mathcolor=", $2, ">");
+  char * s1;
+  struct css_colors *c = NULL;
+
+  HASH_FIND_STR( colors, $2, c );
+
+  if (HASH_COUNT(c) > 0)
+    s1 = mtex2MML_copy3("<mstyle mathcolor=", c->color, ">");
+  else
+    s1 = mtex2MML_copy3("<mstyle mathcolor=", $2, ">");
+
   $$ = mtex2MML_copy3(s1, $3, "</mstyle>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
@@ -928,6 +1076,11 @@ mathclap: CLAP closedTerm {
 
 textstring: TEXTBOX TEXTSTRING {
   $$ = mtex2MML_copy3("<mtext>", $2, "</mtext>");
+  mtex2MML_free_string($2);
+};
+
+verbstring: VERBBOX VERBSTRING END {
+  $$ = mtex2MML_copy3("<mstyle mathvariant=\"monospace\">", $2, "</mstyle>");
   mtex2MML_free_string($2);
 };
 
@@ -971,13 +1124,52 @@ mono: TT closedTerm {
   mtex2MML_free_string($2);
 };
 
+not: NOT closedTerm {
+  $$ = mtex2MML_copy3("<mi>", $2, "&#x0338;</mi>");
+  mtex2MML_free_string($2);
+};
+
 slashed: SLASHED closedTerm {
   $$ = mtex2MML_copy3("<menclose notation=\"updiagonalstrike\">", $2, "</menclose>");
   mtex2MML_free_string($2);
 };
 
+bcanceled: BCANCELED closedTerm {
+  $$ = mtex2MML_copy3("<menclose notation=\"downdiagonalstrike\">", $2, "</menclose>");
+  mtex2MML_free_string($2);
+};
+
+xcanceled: XCANCELED closedTerm {
+  $$ = mtex2MML_copy3("<menclose notation=\"updiagonalstrike downdiagonalstrike\">", $2, "</menclose>");
+  mtex2MML_free_string($2);
+};
+
+canceledto: CANCELEDTO closedTerm closedTerm {
+  char * s1 = mtex2MML_copy3("<msup><menclose notation=\"updiagonalstrike updiagonalarrow\"><mn>", $3, "</mn></menclose><mpadded height=\"+.1em\" depth=\"-.1em\" voffset=\".1em\"><mn>");
+  $$ = mtex2MML_copy3(s1, $2, "</mn></mpadded></msup>");
+
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+};
+
 boxed: BOXED closedTerm {
   $$ = mtex2MML_copy3("<menclose notation=\"box\">", $2, "</menclose>");
+  mtex2MML_free_string($2);
+};
+
+fbox: FBOX closedTerm {
+  $$ = mtex2MML_copy3("<menclose notation=\"box\"><mtext>", $2, "</mtex></menclose>");
+  mtex2MML_free_string($2);
+};
+
+hbox: HBOX closedTerm {
+  $$ = mtex2MML_copy3("<mtext>", $2, "</mtext>");
+  mtex2MML_free_string($2);
+};
+
+mbox: MBOX closedTerm {
+  $$ = mtex2MML_copy3("<mtext>", $2, "</mtext>");
   mtex2MML_free_string($2);
 };
 
@@ -989,6 +1181,10 @@ bold: BOLD closedTerm {
 roman: RM ST rmchars END {
   $$ = mtex2MML_copy3("<mi mathvariant=\"normal\">", $3, "</mi>");
   mtex2MML_free_string($3);
+}
+| RM rmchars {
+  $$ = mtex2MML_copy3("<mi mathvariant=\"normal\">", $2, "</mi>");
+  mtex2MML_free_string($2);
 };
 
 rmchars: RMCHAR {
@@ -1001,9 +1197,59 @@ rmchars: RMCHAR {
   mtex2MML_free_string($2);
 };
 
+script: SCR ST scrchars END {
+  $$ = mtex2MML_copy3("<mi mathvariant=\"script\">", $3, "</mi>");
+  mtex2MML_free_string($3);
+}
+| SCR scrchars {
+  $$ = mtex2MML_copy3("<mi mathvariant=\"script\">", $2, "</mi>");
+  mtex2MML_free_string($2);
+};
+
+scrchars: SCRCHAR {
+  $$ = mtex2MML_copy_string($1);
+  mtex2MML_free_string($1);
+}
+| scrchars SCRCHAR {
+  $$ = mtex2MML_copy2($1, $2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($2);
+};
+
+pmb: PMB ST pmbchars END {
+  char * s1 = mtex2MML_copy3("<mpadded width=\"0\"><mi>", $3, "</mi></mpadded>");
+  char * s2 = mtex2MML_copy3(s1, "<mspace width=\"1px\"></mspace><mrow><mi>", $3);
+  $$ = mtex2MML_copy2(s2, "</mi></mrow>");
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+}
+| PMB pmbchars {
+  char * s1 = mtex2MML_copy3("<mpadded width=\"0\"><mi>", $2, "</mi></mpadded>");
+  char * s2 = mtex2MML_copy3(s1, "<mspace width=\"1px\"></mspace><mrow><mi>", $2);
+  $$ = mtex2MML_copy2(s2, "</mi></mrow>");
+  mtex2MML_free_string($2);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+};
+
+pmbchars: PMBCHAR {
+  $$ = mtex2MML_copy_string($1);
+  mtex2MML_free_string($1);
+}
+| pmbchars PMBCHAR {
+  $$ = mtex2MML_copy2($1, $2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($2);
+};
+
 bbold: BB ST bbchars END {
   $$ = mtex2MML_copy3("<mi>", $3, "</mi>");
   mtex2MML_free_string($3);
+}
+| BB bbchars {
+  $$ = mtex2MML_copy3("<mi>", $2, "</mi>");
+  mtex2MML_free_string($2);
 };
 
 bbchars: bbchar {
@@ -1035,6 +1281,10 @@ bbchar: BBLOWERCHAR {
 frak: FRAK ST frakletters END {
   $$ = mtex2MML_copy3("<mi>", $3, "</mi>");
   mtex2MML_free_string($3);
+}
+| FRAK frakletters {
+  $$ = mtex2MML_copy3("<mi>", $2, "</mi>");
+  mtex2MML_free_string($2);
 };
 
 frakletters: frakletter {
@@ -1055,6 +1305,10 @@ frakletter: FRAKCHAR {
 cal: CAL ST calletters END {
   $$ = mtex2MML_copy3("<mi>", $3, "</mi>");
   mtex2MML_free_string($3);
+}
+| CAL calletters {
+  $$ = mtex2MML_copy3("<mi>", $2, "</mi>");
+  mtex2MML_free_string($2);
 };
 
 calletters: calletter {
@@ -1107,6 +1361,14 @@ negthickspace: NEGTHICKSPACE {
 phantom: PHANTOM closedTerm {
   $$ = mtex2MML_copy3("<mphantom>", $2, "</mphantom>");
   mtex2MML_free_string($2);
+};
+
+tex: TEXSYMBOL {
+  $$ = mtex2MML_copy_string("<mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+};
+
+latex: LATEXSYMBOL {
+  $$ = mtex2MML_copy_string("<mi>L</mi><mspace width=\"-.325em\"></mspace><mpadded height=\"+.21em\" depth=\"-.21em\" voffset=\"+.21em\"><mrow class=\"MJX-TeXAtom-ORD\"><mstyle scriptlevel=\"1\" displaystyle=\"false\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>A</mi></mrow></mstyle></mrow></mpadded><mspace width=\"-.17em\"></mspace><mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
 };
 
 href: HREF TEXTSTRING closedTerm {
@@ -1202,10 +1464,27 @@ mfrac: FRAC closedTerm closedTerm {
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($3);
+}
+| DFRAC closedTerm closedTerm {
+  char * s1 = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac>", $2, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac></mstyle>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
 };
+
+pod: POD closedTerm {
+  $$ = mtex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
+  mtex2MML_free_string($2);
+}
 
 pmod: PMOD closedTerm {
   $$ = mtex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo><mo rspace=\"thinmathspace\">mod</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
+  mtex2MML_free_string($2);
+}
+
+bmod: BMOD closedTerm {
+  $$ = mtex2MML_copy3( "<mrow><mo lspace=\"thickmathspace\" rspace=\"thickmathspace\">mod</mo>", $2, "</mrow>");
   mtex2MML_free_string($2);
 }
 
@@ -1215,6 +1494,13 @@ texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($4);
+}
+| closedTerm TEXOVER closedTerm {
+  char * s1 = mtex2MML_copy3("<mfrac>", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</frac>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
 }
 | left compoundTermList TEXOVER compoundTermList right {
   char * s1 = mtex2MML_copy3("<mrow>", $1, "<mfrac><mrow>");
@@ -1230,6 +1516,20 @@ texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   mtex2MML_free_string($5);
 };
 
+texoverwithdelims: closedTerm TEXOVERWITHDELIMS LEFTDELIM RIGHTDELIM closedTerm {
+  char * s1 = mtex2MML_copy3("<mo fence=\"true\" stretchy=\"true\">", $3, "</mo><mfrac>");
+  char * s2 = mtex2MML_copy3(s1, $1, $5);
+  char * s3 = mtex2MML_copy2(s2, "</mfrac><mo fence=\"true\" stretchy=\"true\">");
+  $$ = mtex2MML_copy3(s3, $4, "</mo>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($5);
+};
+
 texatop: MROWOPEN compoundTermList TEXATOP compoundTermList MROWCLOSE {
   char * s1 = mtex2MML_copy3("<mfrac linethickness=\"0\"><mrow>", $2, "</mrow><mrow>");
   $$ = mtex2MML_copy3(s1, $4, "</mrow></mfrac>");
@@ -1237,18 +1537,54 @@ texatop: MROWOPEN compoundTermList TEXATOP compoundTermList MROWCLOSE {
   mtex2MML_free_string($2);
   mtex2MML_free_string($4);
 }
-| left compoundTermList TEXATOP compoundTermList right {
-  char * s1 = mtex2MML_copy3("<mrow>", $1, "<mfrac linethickness=\"0\"><mrow>");
-  char * s2 = mtex2MML_copy3($2, "</mrow><mrow>", $4);
-  char * s3 = mtex2MML_copy3("</mrow></mfrac>", $5, "</mrow>");
-  $$ = mtex2MML_copy3(s1, s2, s3);
+| closedTerm TEXATOP closedTerm {
+  char * s1 = mtex2MML_copy3("<mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</frac>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+texatopwithdelims: closedTerm TEXATOPWITHDELIMS LEFTDELIM RIGHTDELIM closedTerm {
+  char * s1 = mtex2MML_copy3("<mo fence=\"true\" stretchy=\"true\">", $3, "</mo><mfrac linethickness=\"0\">");
+  char * s2 = mtex2MML_copy3(s1, $1, $5);
+  char * s3 = mtex2MML_copy2(s2, "</mfrac><mo fence=\"true\" stretchy=\"true\">");
+  $$ = mtex2MML_copy3(s3, $4, "</mo>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string(s3);
   mtex2MML_free_string($1);
-  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
   mtex2MML_free_string($4);
   mtex2MML_free_string($5);
+};
+
+texabove: closedTerm TEXABOVE MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mfrac linethickness=\"", $4, "\">");
+  char * s2 = mtex2MML_copy3(s1, $1, $6);
+  $$ = mtex2MML_copy2(s2, "</mfrac>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+};
+
+texabovewithdelims: closedTerm TEXABOVEWITHDELIMS LEFTDELIM RIGHTDELIM PXSTRING closedTerm {
+  char * s1 = mtex2MML_copy3("<mo fence=\"true\" stretchy=\"true\">", $3, "</mo>");
+  char * s2 = mtex2MML_copy3(s1, "<mfrac linethickness=\"", $5);
+  char * s3 = mtex2MML_copy3(s2, "\">", $1);
+  char * s4 = mtex2MML_copy3(s3, $6, "</mfrac><mo fence=\"true\" stretchy=\"true\">");
+  $$ = mtex2MML_copy3(s4, $4, "</mo>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string(s4);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($5);
+  mtex2MML_free_string($6);
 };
 
 binom: BINOM closedTerm closedTerm {
@@ -1264,10 +1600,61 @@ binom: BINOM closedTerm closedTerm {
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($3);
+}
+| DBINOM closedTerm closedTerm {
+    char * s1 = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $3);
+    $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow></mstyle>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string($2);
+    mtex2MML_free_string($3);
+};
+
+brace: closedTerm BRACE closedTerm {
+  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo>}</mo></mrow>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+brack: closedTerm BRACK closedTerm {
+  char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo>]</mo></mrow>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+choose: closedTerm CHOOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+};
+
+underleftarrow: UNDERLEFTARROW closedTerm {
+  $$ = mtex2MML_copy3("<munder>", $2, "<mo>&larr;</mo></munder>");
+  mtex2MML_free_string($2);
+};
+
+underleftrightarrow: UNDERLEFTRIGHTARROW closedTerm {
+  $$ = mtex2MML_copy3("<munder>", $2, "<mo>&harr;</mo></munder>");
+  mtex2MML_free_string($2);
+};
+
+underrightarrow: UNDERRIGHTARROW closedTerm {
+  $$ = mtex2MML_copy3("<munder>", $2, "<mo>&rarr;</mo></munder>");
+  mtex2MML_free_string($2);
 };
 
 munderbrace: UNDERBRACE closedTerm {
   $$ = mtex2MML_copy3("<munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  mtex2MML_free_string($2);
+};
+
+munderbracket: UNDERBRACKET closedTerm {
+  $$ = mtex2MML_copy3("<munder>", $2, "<mo>&#9183;</mo></munder>");
   mtex2MML_free_string($2);
 };
 
@@ -1278,6 +1665,26 @@ munderline: UNDERLINE closedTerm {
 
 moverbrace: OVERBRACE closedTerm {
   $$ = mtex2MML_copy3("<mover>", $2, "<mo>&OverBrace;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+moverbracket: OVERBRACKET closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&#9183;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+overleftarrow: OVERLEFTARROW closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&larr;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+overleftrightarrow: OVERLEFTRIGHTARROW closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&harr;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+overrightarrow: OVERRIGHTARROW closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&rarr;</mo></mover>");
   mtex2MML_free_string($2);
 };
 
@@ -1296,6 +1703,26 @@ vec: VEC closedTerm {
 }
 | WIDEVEC closedTerm {
   $$ = mtex2MML_copy3("<mover>", $2, "<mo>&RightVector;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+acute: ACUTE closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&acute;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+grave: GRAVE closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x60;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+breve: BREVE closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x2d8;</mo></mover>");
+  mtex2MML_free_string($2);
+};
+
+mathring: MATHRING closedTerm {
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#730;</mo></mover>");
   mtex2MML_free_string($2);
 };
 
@@ -1486,236 +1913,140 @@ emptymrow: EMPTYMROW {
   $$ = mtex2MML_copy_string("<mrow/>");
 };
 
-mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV MATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV MATRIX ST rowLinesDefList END tableRowList ENDENV MATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-}
-| BEGINENV MATRIX tableRowList ENDENV MATRIX {
-  $$ = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow>");
+mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
 }
-| BEGINENV GATHERED ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV GATHERED {
-  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow>");
+| BEGINENV GATHERED ARRAYALIGN END tableRowList ENDENV GATHERED {
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" ");
+  char * s2 = mtex2MML_copy3(s1, row_data, ">");
+  $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV GATHERED ST rowLinesDefList END tableRowList ENDENV GATHERED {
-  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"1.0ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV GATHERED tableRowList ENDENV GATHERED {
-  $$ = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" rowspacing=\"1.0ex\">", $3, "</mtable></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV PMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV PMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow><mo>)</mo></mrow>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV PMATRIX ST rowLinesDefList END tableRowList ENDENV PMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow><mo>)</mo></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV PMATRIX tableRowList ENDENV PMATRIX {
-  $$ = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>)</mo></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV BMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV BMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow><mo>]</mo></mrow>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV BMATRIX ST rowLinesDefList END tableRowList ENDENV BMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow><mo>]</mo></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV BMATRIX tableRowList ENDENV BMATRIX {
-  $$ = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>]</mo></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV VMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV VMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV VMATRIX ST rowLinesDefList END tableRowList ENDENV VMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV VMATRIX tableRowList ENDENV VMATRIX {
-  $$ = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV BBMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV BBMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow><mo>}</mo></mrow>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV BBMATRIX ST rowLinesDefList END tableRowList ENDENV BBMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow><mo>}</mo></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV BBMATRIX tableRowList ENDENV BBMATRIX {
-  $$ = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>}</mo></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV VVMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV VVMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV VVMATRIX ST rowLinesDefList END tableRowList ENDENV VVMATRIX {
-  char *s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV VVMATRIX tableRowList ENDENV VVMATRIX {
-  $$ = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV SMALLMATRIX ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV SMALLMATRIX {
-  char *s1 = mtex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow></mstyle>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV SMALLMATRIX ST rowLinesDefList END tableRowList ENDENV SMALLMATRIX {
-  char *s1 = mtex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow></mstyle>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV SMALLMATRIX tableRowList ENDENV SMALLMATRIX {
-  $$ = mtex2MML_copy3("<mstyle scriptlevel=\"2\"><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow></mstyle>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
-}
-| BEGINENV CASES ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV CASES {
-  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char * s2 = mtex2MML_copy3(s1, $6, "\" columnalign=\"left left\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow></mrow>");
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV CASES ST rowLinesDefList END tableRowList ENDENV CASES {
-  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"left left\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow></mrow>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV CASES tableRowList ENDENV CASES {
-  $$ = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\">", $3, "</mtable></mrow></mrow>");
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
   mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
 }
-| BEGINENV ALIGNED ST rowSpacingDefList END rowLinesDefList END tableRowList ENDENV ALIGNED {
-  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" rowspacing=\"", $4, "\" rowlines=\"");
-  char *s2 = mtex2MML_copy3(s1, $6, "\">");
-  $$ = mtex2MML_copy3(s2, $8, "</mtable></mrow>");
+| BEGINENV ALIGNED ARRAYALIGN END tableRowList ENDENV ALIGNED {
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ");
+  char * s2 = mtex2MML_copy3(s1, row_data, ">");
+  $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
+  mtex2MML_free_string(row_data);
 }
-| BEGINENV ALIGNED ST rowLinesDefList END tableRowList ENDENV ALIGNED {
-  char *s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\">");
-  $$ = mtex2MML_copy3(s1, $6, "</mtable></mrow>");
+| BEGINENV ALIGNED tableRowList ENDENV ALIGNED {
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+  mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNEDAT ALIGNATVALUE END tableRowList ENDENV ALIGNEDAT {
+  const char *row_data = convert_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+  mtex2MML_free_string($5);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($5);
-  char *column_align = remove_excess_pipe_chars($5);
+  const char *pipe_chars = vertical_pipe_extract($5);
+  const char *column_align = remove_excess_pipe_chars($5);
+  const char *row_data = convert_row_data(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" columnalign=\"");
-  char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
-  char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s3, $7, "</mtable>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string(s3);
-  mtex2MML_free_string($3);
-  mtex2MML_free_string($5);
-  mtex2MML_free_string($7);
-}
-| BEGINENV ARRAY ARRAYALIGN ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($7);
-  char *column_align = remove_excess_pipe_chars($7);
-
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" align=\"", $3, "\" rowlines=\"");
-  char * s2 = mtex2MML_copy3(s1, $5, "\" columnalign=\"");
+  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" ");
+  char * s2 = mtex2MML_copy3(s1, row_data, " columnalign=\"");
   char * s3 = mtex2MML_copy3(s2, column_align, "\" ");
   char * s4 = mtex2MML_copy3(s3, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s4, $9, "</mtable>");
+  $$ = mtex2MML_copy3(s4, $7, "</mtable>");
+
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string(s3);
@@ -1723,86 +2054,27 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string($7);
-  mtex2MML_free_string($9);
-}
-| BEGINENV ARRAY ARRAYALIGN ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($9);
-  char *column_align = remove_excess_pipe_chars($9);
-
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" rowspacing=\"");
-  char * s2 = mtex2MML_copy3(s1, $5, "\" rowlines=\"");
-  char * s3 = mtex2MML_copy3(s2, $7, "\" columnalign=\"");
-  char * s4 = mtex2MML_copy3(s3, column_align, "\" ");
-  char * s5 = mtex2MML_copy3(s4, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s5, $11, "</mtable>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string(s3);
-  mtex2MML_free_string(s4);
-  mtex2MML_free_string(s5);
-  mtex2MML_free_string($3);
-  mtex2MML_free_string($7);
-  mtex2MML_free_string($9);
-  mtex2MML_free_string($11);
-}
-| BEGINENV ARRAY ST rowSpacingDefList END rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($8);
-  char *column_align = remove_excess_pipe_chars($8);
-
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" rowlines=\"");
-  char * s2 = mtex2MML_copy3(s1, $6,"\" columnalign=\"");
-  char * s3 = mtex2MML_copy3(s2, column_align, "\" ");
-  char * s4 = mtex2MML_copy3(s3, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s4, $10, "</mtable>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string(s3);
-  mtex2MML_free_string(s4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-  mtex2MML_free_string($10);
-}
-| BEGINENV ARRAY ST rowSpacingDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($6);
-  char *column_align = remove_excess_pipe_chars($6);
-
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"", $4, "\" columnalign=\"");
-  char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
-  char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s3, $8, "</mtable>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string(s3);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
-}
-| BEGINENV ARRAY ST rowLinesDefList END columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($6);
-  char *column_align = remove_excess_pipe_chars($6);
-
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" rowlines=\"", $4, "\" columnalign=\"");
-  char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
-  char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s3, $8, "</mtable>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
-  mtex2MML_free_string(s3);
-  mtex2MML_free_string($4);
-  mtex2MML_free_string($6);
-  mtex2MML_free_string($8);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
 }
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
-  char *pipe_chars = vertical_pipe_extract($4);
-  char *column_align = remove_excess_pipe_chars($4);
+  const char *pipe_chars = vertical_pipe_extract($4);
+  const char *column_align = remove_excess_pipe_chars($4);
+  const char *row_data = convert_row_data(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" rowspacing=\"0.5ex\" columnalign=\"", column_align, "\" ");
-  char * s2 = mtex2MML_copy3(s1, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s2, $6, "</mtable>");
+  char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" ", row_data, " columnalign=\"");
+  char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
+  char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
+  $$ = mtex2MML_copy3(s3, $6, "</mtable>");
+
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
+  mtex2MML_free_string(pipe_chars);
+  mtex2MML_free_string(column_align);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV SVG XMLSTRING ENDSVG {
   $$ = mtex2MML_copy3("<semantics><annotation-xml encoding=\"SVG1.1\">", $3, "</annotation-xml></semantics>");
@@ -1810,26 +2082,6 @@ mathenv: BEGINENV MATRIX ST rowSpacingDefList END rowLinesDefList END tableRowLi
 }
 | BEGINENV SVG ENDSVG {
   $$ = mtex2MML_copy_string(" ");
-};
-
-rowSpacingDefList: rowSpacingDefList ROWSPACINGDEF {
-  $$ = mtex2MML_copy3($1, " ", $2);
-  mtex2MML_free_string($1);
-  mtex2MML_free_string($2);
-}
-| ROWSPACINGDEF {
-  $$ = mtex2MML_copy_string($1);
-  mtex2MML_free_string($1);
-};
-
-rowLinesDefList: rowLinesDefList ROWLINESDEF {
-  $$ = mtex2MML_copy3($1, " ", $2);
-  mtex2MML_free_string($1);
-  mtex2MML_free_string($2);
-}
-| ROWLINESDEF {
-  $$ = mtex2MML_copy_string($1);
-  mtex2MML_free_string($1);
 };
 
 columnAlignList: columnAlignList COLUMNALIGN {
@@ -2072,8 +2324,11 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
-const char *format_additions(const char *string) {
-  return env_replacements(string);
+const char *format_additions(const char *buffer) {
+  if (colors == NULL)
+    create_css_colors(&colors);
+
+  env_replacements(&environment_data_stack, buffer);
 }
 
 char * mtex2MML_parse (const char * buffer, unsigned long length)
@@ -2082,8 +2337,8 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
   int result;
 
-  const char *replaced_buffer = format_additions(buffer);
-  mtex2MML_setup (replaced_buffer, strlen(replaced_buffer));
+  format_additions(buffer);
+  mtex2MML_setup (buffer, length);
   mtex2MML_restart ();
 
   result = mtex2MML_yyparse (&mathml);
@@ -2099,8 +2354,8 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
 int mtex2MML_filter (const char * buffer, unsigned long length)
 {
-  const char *replaced_buffer = format_additions(buffer);
-  mtex2MML_setup (replaced_buffer, strlen(replaced_buffer));
+  format_additions(buffer);
+  mtex2MML_setup (buffer, length);
   mtex2MML_restart ();
 
   return mtex2MML_yyparse (0);

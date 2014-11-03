@@ -1,0 +1,8 @@
+$
+      \begin{equation}
+      \leqalignno{
+      a = b \\
+      c = d
+      }
+      \end{equation}
+$
