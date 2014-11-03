@@ -55,7 +55,6 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
     if (strstr(line, until) != NULL) {
       while (utarray_len(array_stack) > 0) {
         last_stack_item = (char **)utarray_back(array_stack);
-        utarray_pop_back(array_stack);
 
         attr_rowlines_len = strlen(attr_rowlines);
         at_top = strstr(*last_stack_item, from);
@@ -103,6 +102,8 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
           }
         }
 
+        // make sure to pop at the end here; it messes with some references in Travis/Ubuntu for some reason
+        utarray_pop_back(array_stack);
         // we've reached the top, so stop.
         if (at_top != NULL) {
           break;
