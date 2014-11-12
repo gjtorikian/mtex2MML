@@ -25,4 +25,15 @@ class Mtex2MMLMaliciousnessTest < MiniTest::Test
       end
     end
   end
+
+  def test_unknown_command
+    text = '$\not__thisisnotreal$'
+    # doing this in a fork because otherwise it really screws up the test runner
+    p = Proc.new { @mtex.filter(text) }
+    fork do
+      assert_raises Mtex2MML::Error do
+        p.call
+      end
+    end
+  end
 end
