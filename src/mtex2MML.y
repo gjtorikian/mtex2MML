@@ -477,6 +477,14 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
 }
+| mib LIMITS SUB closedTerm {
+  char * s1 = mtex2MML_copy3("<munder>", $1, " ");
+  $$ = mtex2MML_copy3(s1, $4, "</munder>");
+  mtex2MML_free_string(s1);
+
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+}
 | closedTerm SUB closedTerm SUP closedTerm {
   char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
   char * s2 = mtex2MML_copy3($3, " ", $5);
