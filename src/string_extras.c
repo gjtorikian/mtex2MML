@@ -56,7 +56,7 @@ char *dupe_string(const char * str)
 {
   int len = strlen(str) + 1;
   char *buf = malloc(len);
-  if (buf) memcpy(buf, str, len);
+  if (buf) { memcpy(buf, str, len); }
   return buf;
 }
 
@@ -64,8 +64,8 @@ char *dupe_string_n(const char *s, size_t n)
 {
   char* buf = malloc(n+1);
   if (buf) {
-      strncpy(buf, s, n);
-      buf[n] = '\0';
+    strncpy(buf, s, n);
+    buf[n] = '\0';
   }
   return buf;
 }

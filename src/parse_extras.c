@@ -6,16 +6,18 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-void intchar_copy(void *_dst, const void *_src) {
+void intchar_copy(void *_dst, const void *_src)
+{
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
 }
 
-void intchar_dtor(void *_elt) {
+void intchar_dtor(void *_elt)
+{
   envdata_t *elt = (envdata_t*)_elt;
-  if (elt->rowspacing) free(elt->rowspacing);
-  if (elt->rowlines) free(elt->rowlines);
+  if (elt->rowspacing) { free(elt->rowspacing); }
+  if (elt->rowlines) { free(elt->rowlines); }
 }
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, intchar_copy, intchar_dtor};
@@ -35,7 +37,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
                *em_pattern_begin = "\\[", *em_pattern_end = "]",
-               *is_smallmatrix = NULL, *is_gathered = NULL;
+                *is_smallmatrix = NULL, *is_gathered = NULL;
 
   int attr_rowlines_len = 0, em_offset = 0;
 
@@ -92,12 +94,11 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
           } else {
             if (strstr(*last_stack_item, "\\begin{smallmatrix}") != NULL) {
               em_str = "0.2em ";
-            }
-            else if (strstr(*last_stack_item, "\\begin{gathered}") != NULL) {
+            } else if (strstr(*last_stack_item, "\\begin{gathered}") != NULL) {
               em_str = "1.0ex ";
-            }
-            else
+            } else {
               em_str = "0.5ex ";
+            }
             utarray_push_back(row_spacing_stack, &em_str);
           }
         }
@@ -131,25 +132,26 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
         utstring_new(s);
         char **p=NULL;
         while ( (p=(char**)utarray_prev(row_spacing_stack,p))) {
-          if (is_smallmatrix && strcmp(*p, "0.5ex ") == 0)
+          if (is_smallmatrix && strcmp(*p, "0.5ex ") == 0) {
             utstring_printf(s, "%s", "0.2em ");
-          else if (is_gathered && strcmp(*p, "0.5ex ") == 0)
+          } else if (is_gathered && strcmp(*p, "0.5ex ") == 0) {
             utstring_printf(s, "%s", "1.0ex ");
-          else
+          } else {
             utstring_printf(s, "%s", *p);
+          }
         }
 
         attr_rowspacing = utstring_body(s);
         if (strlen(attr_rowspacing) > 0) {
           remove_last_char(attr_rowspacing);
-        }
-        else {
-          if (is_smallmatrix != NULL)
+        } else {
+          if (is_smallmatrix != NULL) {
             attr_rowspacing = "0.2em";
-          else if (is_gathered != NULL)
+          } else if (is_gathered != NULL) {
             attr_rowspacing = "1.0ex";
-          else
+          } else {
             attr_rowspacing = "0.5ex";
+          }
         }
 
         row_data.rowspacing = attr_rowspacing;
@@ -245,7 +247,7 @@ const char *convert_row_data(UT_array **environment_data_stack)
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
 
   char *row_spacing_data = row_data_elem->rowspacing,
-       *row_lines_data = row_data_elem->rowlines, c;
+        *row_lines_data = row_data_elem->rowlines, c;
 
   UT_string *row_lines_attr, *row_spacing_attr;
   int i = 0, len = strlen(row_lines_data);
@@ -260,11 +262,9 @@ const char *convert_row_data(UT_array **environment_data_stack)
     c = row_lines_data[i];
     if (c == '0') {
       utstring_printf(row_lines_attr, "none ");
-    }
-    else if (c == 's') {
+    } else if (c == 's') {
       utstring_printf(row_lines_attr, "solid ");
-    }
-    else if (c == 'd') {
+    } else if (c == 'd') {
       utstring_printf(row_lines_attr, "dashed ");
     }
   }
