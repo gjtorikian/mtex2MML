@@ -31,42 +31,6 @@ void remove_first_char(char* str)
   memmove(str, str + 1, len);
 }
 
-void insert_substring(char **dest, char *ins, size_t location)
-{
-  size_t origsize = 0;
-  size_t resize = 0;
-  size_t inssize = 0;
-  size_t destsize = strlen(&dest) + 1;
-
-  if (!dest || !ins) {
-    return;  // invalid parameter
-  }
-
-  if (strlen(ins) == 0) {
-    return;  // invalid parameter
-  }
-
-  origsize = strlen(*dest);
-  inssize = strlen(ins);
-  resize = strlen(*dest) + inssize + 1; // 1 for the null terminator
-
-  if (location > origsize) {
-    return;  // invalid location, out of original string
-  }
-
-  // resize string to accommodate inserted string if necessary
-  if (destsize < resize) {
-    *dest = (char*)realloc(*dest, resize);
-  }
-
-  // move string to make room for insertion
-  memmove(&(*dest)[location+inssize], &(*dest)[location], origsize - location);
-  (*dest)[origsize + inssize] = '\0'; // null terminate string
-
-  // insert string
-  memcpy(&(*dest)[location], ins, inssize);
-}
-
 void strrev(char *str)
 {
   char temp, *end_ptr;
