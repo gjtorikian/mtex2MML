@@ -2066,6 +2066,7 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   mtex2MML_free_string($7);
   mtex2MML_free_string(pipe_chars);
   mtex2MML_free_string(column_align);
+  mtex2MML_free_string(row_data);
 }
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
   const char *pipe_chars = vertical_pipe_extract($4);
@@ -2352,6 +2353,15 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
   mtex2MML_restart ();
 
   result = mtex2MML_yyparse (&mathml);
+
+  utarray_free(environment_data_stack);
+
+  struct css_colors *c = NULL, *tmp;
+
+  HASH_ITER(hh, colors, c, tmp) {
+    HASH_DEL(colors, c);
+    free(c);
+  }
 
   if (result && mathml) /* shouldn't happen? */
     {

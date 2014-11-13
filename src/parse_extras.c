@@ -169,6 +169,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   }
 
   utarray_free(row_spacing_stack);
+  utarray_free(array_stack);
 }
 
 const char *vertical_pipe_extract(const char *string)
