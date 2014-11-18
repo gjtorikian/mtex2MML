@@ -26,7 +26,7 @@ struct css_colors {
   UT_hash_handle hh;         /* makes this structure hashable */
 };
 
-// Move various symbols not easily supported inline with the `\begin` line
+// Move various symbols not easily supported inline within the `\begin` line
 // This is so that the Bison parser can properly act on these. For example,
 // `\hline`, `\hlinedash`, or `\\[2ex]` declerations.
 //
@@ -37,20 +37,20 @@ struct css_colors {
 //
 // \begin{array}{c:c}
 //   \begin{array}{c|cclc}
-//     \text{min} & 0 & 1 & 2 & 3\\\\
+//     \text{min} & 0 & 1 & 2 & 3\\
 //     \hline
-//     0 & 0 & 0 & 0 & 0\\\\
-//     1 & 0 & 1 & 1 & 1\\\\
-//     2 & 0 & 1 & 2 & 2\\\\
+//     0 & 0 & 0 & 0 & 0\\
+//     1 & 0 & 1 & 1 & 1\\
+//     2 & 0 & 1 & 2 & 2\\
 //     3 & 0 & 1 & 2 & 3
 //   \end{array}
 // &
 //   \begin{array}{c|cccl}
-//     \text{max}&0&1&2&3\\\\
+//     \text{max}&0&1&2&3\\
 //     \hline
-//     0 & 0 & 1 & 2 & 3\\\\
-//     1 & 1 & 1 & 2 & 3\\\\
-//     2 & 2 & 2 & 2 & 3\\\\
+//     0 & 0 & 1 & 2 & 3\\
+//     1 & 1 & 1 & 2 & 3\\
+//     2 & 2 & 2 & 2 & 3\\
 //     3 & 3 & 3 & 3 & 3
 //   \end{array}
 // \end{array}
@@ -61,7 +61,7 @@ struct css_colors {
 // the symbols encountered while popping lines off.
 void env_replacements(UT_array **environment_data_stack, const char *environment);
 
-// determines the column border arrangement from the array environment definition
+// determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);
 
 // removes placeholder pipe characters from columnalign
