@@ -6,6 +6,7 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
+// XXX: I would probably name this envdata_copy (same for below)
 void intchar_copy(void *_dst, const void *_src)
 {
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
@@ -30,6 +31,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   UT_array *row_spacing_stack;
 
   char *tok = NULL, *at_top = NULL;
+  // XXX: It doesn't look like `dupe_str` is freed?
   char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
   char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "", **last_stack_item;
@@ -44,6 +46,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   // if not an environment, don't bother going on
   if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
     free(dupe_str);
+    // XXX: Should there be a return here?
   }
 
   // set up the array stack
@@ -71,6 +74,8 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
           if (attr_rowlines_len > 0) {
             remove_last_char(attr_rowlines);
           }
+          // XXX: You're leaking attr_rowlines when you do this (except the first time, 
+          // since its initial value isn't malloc()d.
           attr_rowlines = join(attr_rowlines, "s");
         } else if (strstr(*last_stack_item, hdashline) != NULL) {
           if (attr_rowlines_len > 0) {
@@ -86,7 +91,9 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
             temp = tok + 2;
             if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
               em_offset = (int)(tok - temp);
+              // XXX: This value of em_str is unused and leaked
               em_str = malloc(em_offset + 1);
+              // XXX: The result of dupe_string_n is leaked
               em_str = join(dupe_string_n(temp, em_offset), " ");
               utarray_push_back(row_spacing_stack, &em_str);
               free(em_str);
@@ -117,6 +124,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
       // TODO: we are skipping equation environments
       if ((attr_rowlines_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
+      	// XXX: I would make this block into a function.
         // we cut the last char because we can skip the first row
         remove_last_char(attr_rowlines);
 
@@ -162,6 +170,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       }
 
       utarray_clear(row_spacing_stack);
+      // XXX: This is potentially leaking attr_rowlines
       attr_rowlines = "";
       attr_rowspacing = "";
       attr_rowlines_len = 0;
@@ -181,6 +190,7 @@ const char *vertical_pipe_extract(const char *string)
   int i = 0;
 
   if (strncmp(orig, "s", 1) == 0) {
+  	// XXX: Did you mean to copy these?
     columnlines = "frame=\"solid\" columnlines=\"";
     remove_first_char(orig);
   } else if (strncmp(orig, "d", 1) == 0) {
@@ -195,6 +205,7 @@ const char *vertical_pipe_extract(const char *string)
   while (token != NULL) {
     if (strncmp(token, "s", 1) == 0) {
       previous_column = "s";
+      // XXX: Same memory issue with using join here
       columnlines = join(columnlines, "solid ");
     } else if (strncmp(token, "d", 1) == 0) {
       previous_column = "d";
@@ -230,6 +241,7 @@ const char *vertical_pipe_extract(const char *string)
 const char *remove_excess_pipe_chars(const char *string)
 {
   char *dup = str_replace(string, "s", "");
+  // XXX: dup is leaked here
   dup = str_replace(dup, "d", "");
 
   return dup;
@@ -273,6 +285,8 @@ const char *convert_row_data(UT_array **environment_data_stack)
   char *row_spacing = utstring_body(row_spacing_attr);
 
   // this is an empty space
+  // XXX: You're leaking a bunch of things here. You should be able to build this more 
+  // easily with the UT_string instead of using join.
   remove_last_char(row_lines);
   row_lines = join(row_lines, "\"");
   row_spacing = join(join(row_spacing, row_spacing_data), "\" ");

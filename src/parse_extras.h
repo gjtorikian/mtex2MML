@@ -59,6 +59,7 @@ struct css_colors {
 // is detected, it starts popping off the stack until it reaches the corresponding
 // \begin. It then modifies that stack with attribute strings, an arrangement of the
 // the symbols encountered while popping lines off.
+// XXX: This should be marked as extern
 void env_replacements(UT_array **environment_data_stack, const char *environment);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
