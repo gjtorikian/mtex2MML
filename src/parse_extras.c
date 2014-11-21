@@ -26,7 +26,6 @@ UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 void env_replacements(UT_array **environment_data_stack, const char *environment)
 {
   UT_array *array_stack;
-  envdata_t row_data;
   UT_array *row_spacing_stack;
 
   char *tok = NULL, *at_top = NULL;
@@ -124,48 +123,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       // TODO: we are skipping equation environments
       if ((attr_rowlines_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
       	// XXX: I would make this block into a function.
-        // we cut the last char because we can skip the first row
-        remove_last_char(attr_rowlines);
-
-        // we reverse the string, because we're going backwards
-        strrev(attr_rowlines);
-
-        // empty rowlines should be reset
-        if (strlen(attr_rowlines) == 0) {
-          attr_rowlines = join(attr_rowlines, "0");
-        }
-
-        UT_string *s;
-        utstring_new(s);
-        char **p=NULL;
-        while ( (p=(char**)utarray_prev(row_spacing_stack,p))) {
-          if (is_smallmatrix && strcmp(*p, "0.5ex ") == 0) {
-            utstring_printf(s, "%s", "0.2em ");
-          } else if (is_gathered && strcmp(*p, "0.5ex ") == 0) {
-            utstring_printf(s, "%s", "1.0ex ");
-          } else {
-            utstring_printf(s, "%s", *p);
-          }
-        }
-
-        attr_rowspacing = utstring_body(s);
-        if (strlen(attr_rowspacing) > 0) {
-          remove_last_char(attr_rowspacing);
-        } else {
-          if (is_smallmatrix != NULL) {
-            attr_rowspacing = "0.2em";
-          } else if (is_gathered != NULL) {
-            attr_rowspacing = "1.0ex";
-          } else {
-            attr_rowspacing = "0.5ex";
-          }
-        }
-
-        row_data.rowspacing = attr_rowspacing;
-        row_data.rowlines= attr_rowlines;
-
-        utarray_push_back(*environment_data_stack, &row_data);
-        utstring_free(s);
+        perform_replacement(environment_data_stack, attr_rowlines, attr_rowspacing, is_smallmatrix, is_gathered, row_spacing_stack);
       }
 
       utarray_clear(row_spacing_stack);
@@ -180,6 +138,54 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   utarray_free(row_spacing_stack);
   utarray_free(array_stack);
+}
+
+void perform_replacement(UT_array **environment_data_stack, char *attr_rowlines, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
+  envdata_t row_data;
+
+  // we cut the last char because we can skip the first row
+  remove_last_char(attr_rowlines);
+
+  // we reverse the string, because we're going backwards
+  strrev(attr_rowlines);
+
+  // empty rowlines should be reset
+  if (strlen(attr_rowlines) == 0) {
+    attr_rowlines = join(attr_rowlines, "0");
+  }
+
+  // given the row_spacing values, construct an attribute list (separated by spaces)
+  UT_string *s;
+  utstring_new(s);
+  char **p=NULL;
+  while ( (p=(char**)utarray_prev(row_spacing_stack,p))) {
+    if (is_smallmatrix && strcmp(*p, "0.5ex ") == 0) {
+      utstring_printf(s, "%s", "0.2em ");
+    } else if (is_gathered && strcmp(*p, "0.5ex ") == 0) {
+      utstring_printf(s, "%s", "1.0ex ");
+    } else {
+      utstring_printf(s, "%s", *p);
+    }
+  }
+
+  attr_rowspacing = utstring_body(s);
+  if (strlen(attr_rowspacing) > 0) {
+    remove_last_char(attr_rowspacing); // remove the final space
+  } else {
+    if (is_smallmatrix != NULL) {
+      attr_rowspacing = "0.2em";
+    } else if (is_gathered != NULL) {
+      attr_rowspacing = "1.0ex";
+    } else {
+      attr_rowspacing = "0.5ex";
+    }
+  }
+
+  row_data.rowspacing = attr_rowspacing;
+  row_data.rowlines= attr_rowlines;
+
+  utarray_push_back(*environment_data_stack, &row_data);
+  utstring_free(s);
 }
 
 const char *vertical_pipe_extract(const char *string)
