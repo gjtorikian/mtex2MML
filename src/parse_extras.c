@@ -27,12 +27,14 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 {
   UT_array *array_stack;
   UT_array *row_spacing_stack;
+  UT_array *attr_rowlines;
 
   char *tok = NULL, *at_top = NULL;
 
   char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
-  char *attr_rowlines = "", *attr_rowspacing = "", *temp = "", **last_stack_item;
+  char *attr_rowspacing = "", *temp = "", **last_stack_item;
+  char *a;
   UT_string *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
@@ -51,6 +53,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_new(array_stack, &ut_str_icd);
   utarray_new(*environment_data_stack, &envdata_icd);
   utarray_new(row_spacing_stack, &ut_str_icd);
+  utarray_new(attr_rowlines, &ut_str_icd);
 
   while (line != NULL) {
     utarray_push_back(array_stack, &line);
@@ -59,7 +62,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       while (utarray_len(array_stack) > 0) {
         last_stack_item = (char **)utarray_back(array_stack);
 
-        attr_rowlines_len = strlen(attr_rowlines);
+        attr_rowlines_len = utarray_len(attr_rowlines);
         at_top = strstr(*last_stack_item, from);
 
         // we've reached the top, but there looks like there might be some data
@@ -70,18 +73,19 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
         // looking for a line match
         if (strstr(*last_stack_item, hline) != NULL) {
           if (attr_rowlines_len > 0) {
-            remove_last_char(attr_rowlines);
+            utarray_pop_back(attr_rowlines);
           }
-          // XXX: You're leaking attr_rowlines when you do this (except the first time,
-          // since its initial value isn't malloc()d.
-          attr_rowlines = join(attr_rowlines, "s");
+          a = "solid";
+          utarray_push_back(attr_rowlines, &a);
         } else if (strstr(*last_stack_item, hdashline) != NULL) {
           if (attr_rowlines_len > 0) {
-            remove_last_char(attr_rowlines);
+            utarray_pop_back(attr_rowlines);
           }
-          attr_rowlines = join(attr_rowlines, "d");
+          a = "dashed";
+          utarray_push_back(attr_rowlines, &a);
         } else {
-          attr_rowlines = join(attr_rowlines, "0");
+          a = "none";
+          utarray_push_back(attr_rowlines, &a);
         }
 
         if (strstr(*last_stack_item, line_separator) != NULL) {
@@ -127,8 +131,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       }
 
       utarray_clear(row_spacing_stack);
-      // XXX: This is potentially leaking attr_rowlines
-      attr_rowlines = "";
+      utarray_clear(attr_rowlines);
       attr_rowspacing = "";
       attr_rowlines_len = 0;
     }
@@ -140,18 +143,32 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_free(array_stack);
 }
 
-void perform_replacement(UT_array **environment_data_stack, char *attr_rowlines, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
+void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowlines, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
+  char *a, *rowlines;
   envdata_t row_data;
 
-  // we cut the last char because we can skip the first row
-  remove_last_char(attr_rowlines);
-
-  // we reverse the string, because we're going backwards
-  strrev(attr_rowlines);
+  // we cut the last char because we can always skip the first row
+  utarray_pop_back(attr_rowlines);
 
   // empty rowlines should be reset
-  if (strlen(attr_rowlines) == 0) {
-    attr_rowlines = join(attr_rowlines, "0");
+  if (utarray_len(attr_rowlines) == 0) {
+    a = "none";
+    utarray_push_back(attr_rowlines, &a);
+  }
+
+  // given the row_attribute values, construct an attribute list (separated by spaces)
+  UT_string *l;
+  utstring_new(l);
+  char **o=NULL;
+  a = "rowlines=\"";
+  utstring_printf(l, "%s", a);
+  while ( (o=(char**)utarray_prev(attr_rowlines,o))) {
+    utstring_printf(l, "%s ", *o);
+  }
+
+  rowlines = utstring_body(l);
+  if (strlen(rowlines) > 0) {
+    remove_last_char(rowlines); // remove the final space
   }
 
   // given the row_spacing values, construct an attribute list (separated by spaces)
@@ -182,7 +199,7 @@ void perform_replacement(UT_array **environment_data_stack, char *attr_rowlines,
   }
 
   row_data.rowspacing = attr_rowspacing;
-  row_data.rowlines= attr_rowlines;
+  row_data.rowlines = rowlines;
 
   utarray_push_back(*environment_data_stack, &row_data);
   utstring_free(s);
@@ -260,45 +277,28 @@ const char *convert_row_data(UT_array **environment_data_stack)
     strcpy(c, s);
     return c;
   }
-
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
 
   char *row_spacing_data = row_data_elem->rowspacing,
-        *row_lines_data = row_data_elem->rowlines, c;
+        *row_lines = row_data_elem->rowlines;
 
-  UT_string *row_lines_attr, *row_spacing_attr;
-  int i = 0, len = strlen(row_lines_data);
+  UT_string *row_spacing_attr;
 
-  utstring_new(row_lines_attr);
   utstring_new(row_spacing_attr);
 
-  utstring_printf(row_lines_attr, "rowlines=\"");
   utstring_printf(row_spacing_attr, "rowspacing=\"");
 
-  for (i = 0; i < len; i++) {
-    c = row_lines_data[i];
-    if (c == '0') {
-      utstring_printf(row_lines_attr, "none ");
-    } else if (c == 's') {
-      utstring_printf(row_lines_attr, "solid ");
-    } else if (c == 'd') {
-      utstring_printf(row_lines_attr, "dashed ");
-    }
-  }
-
-  char *row_lines = utstring_body(row_lines_attr);
   char *row_spacing = utstring_body(row_spacing_attr);
 
   // this is an empty space
   // XXX: You're leaking a bunch of things here. You should be able to build this more
   // easily with the UT_string instead of using join.
-  remove_last_char(row_lines);
+  // remove_last_char(row_lines);
   row_lines = join(row_lines, "\"");
   row_spacing = join(join(row_spacing, row_spacing_data), "\" ");
 
   utarray_erase(*environment_data_stack, 0, 1);
   utstring_free(row_spacing_attr);
-  utstring_free(row_lines_attr);
 
   return join(row_spacing, row_lines);
 }
