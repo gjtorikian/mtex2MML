@@ -73,7 +73,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
           if (attr_rowlines_len > 0) {
             remove_last_char(attr_rowlines);
           }
-          // XXX: You're leaking attr_rowlines when you do this (except the first time, 
+          // XXX: You're leaking attr_rowlines when you do this (except the first time,
           // since its initial value isn't malloc()d.
           attr_rowlines = join(attr_rowlines, "s");
         } else if (strstr(*last_stack_item, hdashline) != NULL) {
@@ -284,7 +284,7 @@ const char *convert_row_data(UT_array **environment_data_stack)
   char *row_spacing = utstring_body(row_spacing_attr);
 
   // this is an empty space
-  // XXX: You're leaking a bunch of things here. You should be able to build this more 
+  // XXX: You're leaking a bunch of things here. You should be able to build this more
   // easily with the UT_string instead of using join.
   remove_last_char(row_lines);
   row_lines = join(row_lines, "\"");
