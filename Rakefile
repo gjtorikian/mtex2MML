@@ -11,6 +11,12 @@ task :default => [:compile, :test]
 require 'rake/clean'
 require 'fileutils'
 
+Rake::Task["clean"].enhance do
+  Dir.chdir("src/") do
+    sh "make clean"
+  end
+end
+
 CLEAN.include('ext/**/*{.o,.log,.so,.bundle}')
 CLEAN.include('ext/**/Makefile')
 CLOBBER.include('lib/*{.so,.bundle}')
