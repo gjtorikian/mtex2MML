@@ -30,11 +30,11 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   UT_array *row_spacing_stack;
 
   char *tok = NULL, *at_top = NULL;
-  // XXX: It doesn't look like `dupe_str` is freed?
+
   char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
-  char *attr_rowlines = "", *attr_rowspacing = "", *em_str, *temp = "", **last_stack_item;
-
+  char *attr_rowlines = "", *attr_rowspacing = "", *temp = "", **last_stack_item;
+  UT_string *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
                *em_pattern_begin = "\\[", *em_pattern_end = "]",
@@ -90,12 +90,12 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
             temp = tok + 2;
             if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
               em_offset = (int)(tok - temp);
-              // XXX: This value of em_str is unused and leaked
-              em_str = malloc(em_offset + 1);
-              // XXX: The result of dupe_string_n is leaked
-              em_str = join(dupe_string_n(temp, em_offset), " ");
-              utarray_push_back(row_spacing_stack, &em_str);
-              free(em_str);
+              char *s = dupe_string_n(temp, em_offset);
+              utstring_new(em_str);
+              utstring_printf(em_str, "%s ", s);
+              utarray_push_back(row_spacing_stack, &utstring_body(em_str));
+              utstring_free(em_str);
+              free(s);
             }
           } else {
             if (strstr(*last_stack_item, "\\begin{smallmatrix}") != NULL) {
