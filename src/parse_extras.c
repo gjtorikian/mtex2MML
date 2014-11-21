@@ -6,22 +6,21 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-// XXX: I would probably name this envdata_copy (same for below)
-void intchar_copy(void *_dst, const void *_src)
+void envdata_copy(void *_dst, const void *_src)
 {
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
 }
 
-void intchar_dtor(void *_elt)
+void envdata_dtor(void *_elt)
 {
   envdata_t *elt = (envdata_t*)_elt;
   if (elt->rowspacing) { free(elt->rowspacing); }
   if (elt->rowlines) { free(elt->rowlines); }
 }
 
-UT_icd envdata_icd = {sizeof(envdata_t), NULL, intchar_copy, intchar_dtor};
+UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
 
 void env_replacements(UT_array **environment_data_stack, const char *environment)
