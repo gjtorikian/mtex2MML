@@ -71,7 +71,7 @@ extern const char *vertical_pipe_extract(const char *string);
 extern const char *remove_excess_pipe_chars(const char *string);
 
 // return the proper rowlines information
-extern const char *convert_row_data(UT_array **environment_data_stack);
+extern const char *combine_row_data(UT_array **environment_data_stack);
 
 #ifdef __cplusplus
 }

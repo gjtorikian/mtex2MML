@@ -22,7 +22,6 @@ void envdata_dtor(void *_elt)
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
-
 void env_replacements(UT_array **environment_data_stack, const char *environment)
 {
   UT_array *array_stack;
@@ -276,8 +275,9 @@ const char *remove_excess_pipe_chars(const char *string)
   return dup;
 }
 
-const char *convert_row_data(UT_array **environment_data_stack)
+const char *combine_row_data(UT_array **environment_data_stack)
 {
+  // if no information was provided, give a standard sizing
   if (utarray_len(*environment_data_stack) == 0) {
     const char* s = "rowspacing=\"0.5ex\" rowlines=\"none\"";
     char* c = (char*)malloc(strlen(s) + 1);
@@ -287,25 +287,17 @@ const char *convert_row_data(UT_array **environment_data_stack)
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
 
   char *row_spacing_data = row_data_elem->rowspacing,
-        *row_lines = row_data_elem->rowlines;
+        *row_lines_data = row_data_elem->rowlines,
+        *row_attr;
 
-  UT_string *row_spacing_attr;
+  UT_string *row_attr_data;
+  utstring_new(row_attr_data);
 
-  utstring_new(row_spacing_attr);
+  // combine the row spacing and row lines data
+  utstring_printf(row_attr_data, "%s%s\" %s\"", "rowspacing=\"", row_spacing_data, row_lines_data);
 
-  utstring_printf(row_spacing_attr, "rowspacing=\"");
-
-  char *row_spacing = utstring_body(row_spacing_attr);
-
-  // this is an empty space
-  // XXX: You're leaking a bunch of things here. You should be able to build this more
-  // easily with the UT_string instead of using join.
-  // remove_last_char(row_lines);
-  row_lines = join(row_lines, "\"");
-  row_spacing = join(join(row_spacing, row_spacing_data), "\" ");
-
+  row_attr = utstring_body(row_attr_data);
   utarray_erase(*environment_data_stack, 0, 1);
-  utstring_free(row_spacing_attr);
 
-  return join(row_spacing, row_lines);
+  return row_attr;
 }
