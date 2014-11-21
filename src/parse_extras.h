@@ -62,7 +62,7 @@ struct css_colors {
 // XXX: This should be marked as extern
 void env_replacements(UT_array **environment_data_stack, const char *environment);
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowlines, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack);
+void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);

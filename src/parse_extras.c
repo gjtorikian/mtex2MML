@@ -27,7 +27,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 {
   UT_array *array_stack;
   UT_array *row_spacing_stack;
-  UT_array *attr_rowlines;
+  UT_array *rowlines_stack;
 
   char *tok = NULL, *at_top = NULL;
 
@@ -41,7 +41,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
                *em_pattern_begin = "\\[", *em_pattern_end = "]",
                 *is_smallmatrix = NULL, *is_gathered = NULL;
 
-  int attr_rowlines_len = 0, em_offset = 0;
+  int rowlines_stack_len = 0, em_offset = 0;
 
   // if not an environment, don't bother going on
   if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
@@ -53,7 +53,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_new(array_stack, &ut_str_icd);
   utarray_new(*environment_data_stack, &envdata_icd);
   utarray_new(row_spacing_stack, &ut_str_icd);
-  utarray_new(attr_rowlines, &ut_str_icd);
+  utarray_new(rowlines_stack, &ut_str_icd);
 
   while (line != NULL) {
     utarray_push_back(array_stack, &line);
@@ -62,7 +62,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       while (utarray_len(array_stack) > 0) {
         last_stack_item = (char **)utarray_back(array_stack);
 
-        attr_rowlines_len = utarray_len(attr_rowlines);
+        rowlines_stack_len = utarray_len(rowlines_stack);
         at_top = strstr(*last_stack_item, from);
 
         // we've reached the top, but there looks like there might be some data
@@ -72,20 +72,20 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
         // looking for a line match
         if (strstr(*last_stack_item, hline) != NULL) {
-          if (attr_rowlines_len > 0) {
-            utarray_pop_back(attr_rowlines);
+          if (rowlines_stack_len > 0) {
+            utarray_pop_back(rowlines_stack);
           }
           a = "solid";
-          utarray_push_back(attr_rowlines, &a);
+          utarray_push_back(rowlines_stack, &a);
         } else if (strstr(*last_stack_item, hdashline) != NULL) {
-          if (attr_rowlines_len > 0) {
-            utarray_pop_back(attr_rowlines);
+          if (rowlines_stack_len > 0) {
+            utarray_pop_back(rowlines_stack);
           }
           a = "dashed";
-          utarray_push_back(attr_rowlines, &a);
+          utarray_push_back(rowlines_stack, &a);
         } else {
           a = "none";
-          utarray_push_back(attr_rowlines, &a);
+          utarray_push_back(rowlines_stack, &a);
         }
 
         if (strstr(*last_stack_item, line_separator) != NULL) {
@@ -125,15 +125,15 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       }
 
       // TODO: we are skipping equation environments
-      if ((attr_rowlines_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
+      if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
       	// XXX: I would make this block into a function.
-        perform_replacement(environment_data_stack, attr_rowlines, attr_rowspacing, is_smallmatrix, is_gathered, row_spacing_stack);
+        perform_replacement(environment_data_stack, rowlines_stack, attr_rowspacing, is_smallmatrix, is_gathered, row_spacing_stack);
       }
 
       utarray_clear(row_spacing_stack);
-      utarray_clear(attr_rowlines);
+      utarray_clear(rowlines_stack);
       attr_rowspacing = "";
-      attr_rowlines_len = 0;
+      rowlines_stack_len = 0;
     }
 
     line = strtok(NULL, "\n");
@@ -141,21 +141,21 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   utarray_free(row_spacing_stack);
   utarray_free(array_stack);
-  utarray_free(attr_rowlines);
+  utarray_free(rowlines_stack);
 }
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowlines, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
-  int i = 1, attr_rowlines_size = utarray_len(attr_rowlines);
-  char *a, *rowlines;
+void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
+  int i = 1, rowlines_stack_size = utarray_len(rowlines_stack);
+  char *a, *attr_rowlines;
   envdata_t row_data;
 
   // we cut the last char because we can always skip the first row
-  utarray_pop_back(attr_rowlines);
+  utarray_pop_back(rowlines_stack);
 
   // empty rowlines should be reset
-  if (utarray_len(attr_rowlines) == 0) {
+  if (utarray_len(rowlines_stack) == 0) {
     a = "none";
-    utarray_push_back(attr_rowlines, &a);
+    utarray_push_back(rowlines_stack, &a);
   }
 
   // given the row_attribute values, construct an attribute list (separated by spaces)
@@ -164,8 +164,8 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowli
   char **o=NULL;
   a = "rowlines=\"";
   utstring_printf(l, "%s", a);
-  while ( (o=(char**)utarray_prev(attr_rowlines,o))) {
-    if (i >= attr_rowlines_size - 1) {
+  while ( (o=(char**)utarray_prev(rowlines_stack,o))) {
+    if (i >= rowlines_stack_size - 1) {
       utstring_printf(l, "%s", *o);
     }
     else {
@@ -176,7 +176,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowli
 
   // a = "\"";
   // utstring_printf(l, "%s", a);
-  rowlines = utstring_body(l);
+  attr_rowlines = utstring_body(l);
 
   // given the row_spacing values, construct an attribute list (separated by spaces)
   UT_string *s;
@@ -206,7 +206,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowli
   }
 
   row_data.rowspacing = attr_rowspacing;
-  row_data.rowlines = rowlines;
+  row_data.rowlines = attr_rowlines;
 
   utarray_push_back(*environment_data_stack, &row_data);
   utstring_free(s);
