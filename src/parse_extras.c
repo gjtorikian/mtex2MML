@@ -141,9 +141,11 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   utarray_free(row_spacing_stack);
   utarray_free(array_stack);
+  utarray_free(attr_rowlines);
 }
 
 void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowlines, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
+  int i = 1, attr_rowlines_size = utarray_len(attr_rowlines);
   char *a, *rowlines;
   envdata_t row_data;
 
@@ -163,13 +165,18 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *attr_rowli
   a = "rowlines=\"";
   utstring_printf(l, "%s", a);
   while ( (o=(char**)utarray_prev(attr_rowlines,o))) {
-    utstring_printf(l, "%s ", *o);
+    if (i >= attr_rowlines_size - 1) {
+      utstring_printf(l, "%s", *o);
+    }
+    else {
+      utstring_printf(l, "%s ", *o);
+      i++;
+    }
   }
 
+  // a = "\"";
+  // utstring_printf(l, "%s", a);
   rowlines = utstring_body(l);
-  if (strlen(rowlines) > 0) {
-    remove_last_char(rowlines); // remove the final space
-  }
 
   // given the row_spacing values, construct an attribute list (separated by spaces)
   UT_string *s;
