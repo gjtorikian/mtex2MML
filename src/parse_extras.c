@@ -213,35 +213,45 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
 const char *vertical_pipe_extract(const char *string)
 {
   char *orig = dupe_string(string);
-  char *columnlines = malloc(30), *previous_column = "";
-  int i = 0;
+  UT_string *columnlines, *border;
+  char *previous_column = "", *attr_columnlines;
+  int i = 0, append_space = 0;
 
+  utstring_new(columnlines);
+  utstring_new(border);
+
+  // the first character (if it exists) determines the frame border
   if (strncmp(orig, "s", 1) == 0) {
-  	// XXX: Did you mean to copy these?
-    columnlines = "frame=\"solid\" columnlines=\"";
+    utstring_printf(columnlines, "%s", "frame=\"solid\" columnlines=\"");
     remove_first_char(orig);
   } else if (strncmp(orig, "d", 1) == 0) {
-    columnlines = "frame=\"dashed\" columnlines=\"";
+    utstring_printf(columnlines, "%s", "frame=\"dashed\" columnlines=\"");
     remove_first_char(orig);
   } else {
-    columnlines = "columnlines=\"";
+    utstring_printf(columnlines, "%s", "columnlines=\"");
   }
 
   char *token = strtok(orig, " ");
 
   while (token != NULL) {
+    append_space = utstring_len(border) > 1;
     if (strncmp(token, "s", 1) == 0) {
       previous_column = "s";
-      // XXX: Same memory issue with using join here
-      columnlines = join(columnlines, "solid ");
+      if (append_space)
+        utstring_printf(border, "%s", " ");
+      utstring_printf(border, "%s", "solid");
     } else if (strncmp(token, "d", 1) == 0) {
       previous_column = "d";
-      columnlines = join(columnlines, "dashed ");
+      if (append_space)
+        utstring_printf(border, "%s", " ");
+        utstring_printf(border, "%s", "dashed");
     } else {
       if (i >= 1) { // we must skip the first blank col
         // only if there is no previous border should a border be considered, eg. "cc", not "c|c"
         if (strncmp(previous_column, "s", 1) != 0 && strncmp(previous_column, "d", 1) != 0) {
-          columnlines = join(columnlines, "none ");
+          if (append_space)
+            utstring_printf(border, "%s", " ");
+          utstring_printf(border, "%s", "none");
         }
         previous_column = "0";
       }
@@ -251,18 +261,18 @@ const char *vertical_pipe_extract(const char *string)
     token = strtok(NULL, " ");
   }
 
-  // an empty string here angers Lasem
-  if (strncmp(columnlines, "columnlines=\"\0", 14) == 0) {
-    columnlines = join("columnlines=\"none", "");
-  }
-  // an empty space at the end also angers Lasem
-  else {
-    remove_last_char(columnlines);
+  utstring_concat(columnlines, border);
+
+  // an empty string here angers Lasem, so let's remember to add 'none'
+  if (utstring_len(columnlines) == strlen("columnlines=\"")) {
+    utstring_printf(columnlines, "%s", "none");
   }
 
+  attr_columnlines = utstring_body(columnlines);
   free(orig);
+  utstring_free(border);
 
-  return columnlines;
+  return attr_columnlines;
 }
 
 const char *remove_excess_pipe_chars(const char *string)
