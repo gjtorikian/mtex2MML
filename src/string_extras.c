@@ -6,8 +6,6 @@
 void remove_last_char(char* str)
 {
   size_t len = strlen(str);
-  // XXX: This memmove isn't really doing anything since the source and destination are
-  // the same.
   memmove(str, str, len-1);
   str[len-1] = 0;
 }
