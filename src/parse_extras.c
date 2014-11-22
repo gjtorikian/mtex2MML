@@ -33,8 +33,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
   char *attr_rowspacing = "", *temp = "", **last_stack_item;
-  char *a;
-  UT_string *em_str;
+  char *a, *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
                *em_pattern_begin = "\\[", *em_pattern_end = "]",
@@ -93,19 +92,16 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
             if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
               em_offset = (int)(tok - temp);
               char *s = dupe_string_n(temp, em_offset);
-              utstring_new(em_str);
-              utstring_printf(em_str, "%s ", s);
-              utarray_push_back(row_spacing_stack, &utstring_body(em_str));
-              utstring_free(em_str);
+              utarray_push_back(row_spacing_stack, &s);
               free(s);
             }
           } else {
             if (strstr(*last_stack_item, "\\begin{smallmatrix}") != NULL) {
-              em_str = "0.2em ";
+              em_str = "0.2em";
             } else if (strstr(*last_stack_item, "\\begin{gathered}") != NULL) {
-              em_str = "1.0ex ";
+              em_str = "1.0ex";
             } else {
-              em_str = "0.5ex ";
+              em_str = "0.5ex";
             }
             utarray_push_back(row_spacing_stack, &em_str);
           }
@@ -181,12 +177,12 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   utstring_new(s);
   char **p=NULL;
   while ( (p=(char**)utarray_prev(row_spacing_stack,p))) {
-    if (is_smallmatrix && strcmp(*p, "0.5ex ") == 0) {
-      utstring_printf(s, "%s", "0.2em ");
-    } else if (is_gathered && strcmp(*p, "0.5ex ") == 0) {
-      utstring_printf(s, "%s", "1.0ex ");
+    if (is_smallmatrix && strcmp(*p, "0.5ex") == 0) {
+      utstring_printf(s, "%s ", "0.2em");
+    } else if (is_gathered && strcmp(*p, "0.5ex") == 0) {
+      utstring_printf(s, "%s ", "1.0ex");
     } else {
-      utstring_printf(s, "%s", *p);
+      utstring_printf(s, "%s ", *p);
     }
   }
 
