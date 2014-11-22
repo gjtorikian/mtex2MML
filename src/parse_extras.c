@@ -125,7 +125,6 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
       // TODO: we are skipping equation environments
       if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
-      	// XXX: I would make this block into a function.
         perform_replacement(environment_data_stack, rowlines_stack, attr_rowspacing, is_smallmatrix, is_gathered, row_spacing_stack);
       }
 
@@ -143,7 +142,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_free(rowlines_stack);
 }
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, char *attr_rowspacing, char *is_smallmatrix, char *is_gathered, UT_array *row_spacing_stack) {
+void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, char *attr_rowspacing, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack) {
   int i = 1, rowlines_stack_size = utarray_len(rowlines_stack);
   char *a, *attr_rowlines;
   envdata_t row_data;
