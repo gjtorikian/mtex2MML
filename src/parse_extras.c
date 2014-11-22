@@ -168,8 +168,6 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
     }
   }
 
-  // a = "\"";
-  // utstring_printf(l, "%s", a);
   attr_rowlines = utstring_body(l);
 
   // given the row_spacing values, construct an attribute list (separated by spaces)
@@ -210,8 +208,8 @@ const char *vertical_pipe_extract(const char *string)
 {
   char *dupe = dupe_string(string);
   UT_string *columnlines, *border;
-  char *previous_column = "", *attr_columnlines;
-  int i = 0, append_space = 0;
+  char *previous_column = "", *attr_columnlines, *attr_border;
+  int i = 0;
 
   utstring_new(columnlines);
   utstring_new(border);
@@ -230,24 +228,17 @@ const char *vertical_pipe_extract(const char *string)
   char *token = strtok(dupe, " ");
 
   while (token != NULL) {
-    append_space = utstring_len(border) > 1;
     if (strncmp(token, "s", 1) == 0) {
       previous_column = "s";
-      if (append_space)
-        utstring_printf(border, "%s", " ");
-      utstring_printf(border, "%s", "solid");
+      utstring_printf(border, "%s ", "solid");
     } else if (strncmp(token, "d", 1) == 0) {
       previous_column = "d";
-      if (append_space)
-        utstring_printf(border, "%s", " ");
-        utstring_printf(border, "%s", "dashed");
+        utstring_printf(border, "%s ", "dashed");
     } else {
       if (i >= 1) { // we must skip the first blank col
         // only if there is no previous border should a border be considered, eg. "cc", not "c|c"
         if (strncmp(previous_column, "s", 1) != 0 && strncmp(previous_column, "d", 1) != 0) {
-          if (append_space)
-            utstring_printf(border, "%s", " ");
-          utstring_printf(border, "%s", "none");
+          utstring_printf(border, "%s ", "none");
         }
         previous_column = "0";
       }
@@ -257,7 +248,11 @@ const char *vertical_pipe_extract(const char *string)
     token = strtok(NULL, " ");
   }
 
-  utstring_concat(columnlines, border);
+  attr_border = utstring_body(border);
+  if (strlen(attr_border) > 0) {
+    remove_last_char(attr_border); // remove the final space
+  }
+  utstring_printf(columnlines, "%s", attr_border);
 
   // an empty string here angers Lasem, so let's remember to add 'none'
   if (utstring_len(columnlines) == strlen("columnlines=\"")) {
