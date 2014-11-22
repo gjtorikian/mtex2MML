@@ -41,15 +41,16 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   int rowlines_stack_len = 0, em_offset = 0;
 
+  utarray_new(*environment_data_stack, &envdata_icd);
+
   // if not an environment, don't bother going on
   if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
     free(dupe_str);
-    // XXX: Should there be a return here?
+    return;
   }
 
   // set up the array stack
   utarray_new(array_stack, &ut_str_icd);
-  utarray_new(*environment_data_stack, &envdata_icd);
   utarray_new(row_spacing_stack, &ut_str_icd);
   utarray_new(rowlines_stack, &ut_str_icd);
 
