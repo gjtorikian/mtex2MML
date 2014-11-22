@@ -3,7 +3,6 @@
 
 #include "deps/uthash/uthash.h"
 #include "deps/uthash/utarray.h"
-#include "deps/str-replace/str-replace.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,16 +58,19 @@ struct css_colors {
 // is detected, it starts popping off the stack until it reaches the corresponding
 // \begin. It then modifies that stack with attribute strings, an arrangement of the
 // the symbols encountered while popping lines off.
-void env_replacements(UT_array **environment_data_stack, const char *environment);
+extern void env_replacements(UT_array **environment_data_stack, const char *environment);
+
+extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);
 
-// removes placeholder pipe characters from columnalign
+// removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--
+// we need to remove the "s" and "d" characters
 extern const char *remove_excess_pipe_chars(const char *string);
 
 // return the proper rowlines information
-extern const char *convert_row_data(UT_array **environment_data_stack);
+extern const char *combine_row_data(UT_array **environment_data_stack);
 
 #ifdef __cplusplus
 }

@@ -1924,16 +1924,15 @@ emptymrow: EMPTYMROW {
 };
 
 mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV GATHERED ARRAYALIGN END tableRowList ENDENV GATHERED {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
@@ -1942,82 +1941,73 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV GATHERED tableRowList ENDENV GATHERED {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV PMATRIX tableRowList ENDENV PMATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV BMATRIX tableRowList ENDENV BMATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV VMATRIX tableRowList ENDENV VMATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV BBMATRIX tableRowList ENDENV BBMATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV VVMATRIX tableRowList ENDENV VVMATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV SMALLMATRIX tableRowList ENDENV SMALLMATRIX {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV CASES tableRowList ENDENV CASES {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNED ARRAYALIGN END tableRowList ENDENV ALIGNED {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
@@ -2026,30 +2016,27 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNED tableRowList ENDENV ALIGNED {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNEDAT ALIGNATVALUE END tableRowList ENDENV ALIGNEDAT {
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
   const char *pipe_chars = vertical_pipe_extract($5);
   const char *column_align = remove_excess_pipe_chars($5);
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, " columnalign=\"");
@@ -2066,12 +2053,11 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   mtex2MML_free_string($7);
   mtex2MML_free_string(pipe_chars);
   mtex2MML_free_string(column_align);
-  mtex2MML_free_string(row_data);
 }
 | BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
-  const char *pipe_chars = vertical_pipe_extract($4);
-  const char *column_align = remove_excess_pipe_chars($4);
-  const char *row_data = convert_row_data(&environment_data_stack);
+  char *pipe_chars = vertical_pipe_extract($4);
+  char *column_align = remove_excess_pipe_chars($4);
+  char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" ", row_data, " columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
@@ -2083,9 +2069,8 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   mtex2MML_free_string(s3);
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
-  mtex2MML_free_string(pipe_chars);
-  mtex2MML_free_string(column_align);
-  mtex2MML_free_string(row_data);
+  // mtex2MML_free_string(pipe_chars);
+  // mtex2MML_free_string(column_align);
 }
 | BEGINENV SVG XMLSTRING ENDSVG {
   $$ = mtex2MML_copy3("<semantics><annotation-xml encoding=\"SVG1.1\">", $3, "</annotation-xml></semantics>");
