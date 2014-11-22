@@ -15,9 +15,6 @@ extern void remove_last_char(char* str);
 // Remove the first character in a string
 extern void remove_first_char(char* str);
 
-// Reverse the substring
-extern void strrev(char *str);
-
 // Duplicates an immutable string
 extern char * dupe_string(const char * str);
 

@@ -18,27 +18,6 @@ void remove_first_char(char* str)
   memmove(str, str + 1, len);
 }
 
-void strrev(char *str)
-{
-  char temp, *end_ptr;
-
-  /* If str is NULL or empty, do nothing */
-  if (str == NULL || !(*str) ) {
-    return;
-  }
-
-  end_ptr = str + strlen(str) - 1;
-
-  /* Swap the chars */
-  while (end_ptr > str) {
-    temp = *str;
-    *str = *end_ptr;
-    *end_ptr = temp;
-    str++;
-    end_ptr--;
-  }
-}
-
 char *dupe_string(const char * str)
 {
   int len = strlen(str) + 1;
