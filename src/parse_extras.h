@@ -59,10 +59,9 @@ struct css_colors {
 // is detected, it starts popping off the stack until it reaches the corresponding
 // \begin. It then modifies that stack with attribute strings, an arrangement of the
 // the symbols encountered while popping lines off.
-// XXX: This should be marked as extern
-void env_replacements(UT_array **environment_data_stack, const char *environment);
+extern void env_replacements(UT_array **environment_data_stack, const char *environment);
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, char *attr_rowspacing, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack);
+extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, char *attr_rowspacing, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);
