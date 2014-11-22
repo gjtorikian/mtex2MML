@@ -66,7 +66,8 @@ extern void perform_replacement(UT_array **environment_data_stack, UT_array *row
 // determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);
 
-// removes placeholder pipe characters from columnalign
+// removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--
+// we need to remove the "s" and "d" characters
 extern const char *remove_excess_pipe_chars(const char *string);
 
 // return the proper rowlines information
