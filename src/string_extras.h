@@ -10,10 +10,6 @@
 extern "C" {
 #endif
 
-// Join two strings together
-// fuck strncpy
-extern char *join(char* s1, char* s2);
-
 // Remove the final character in a string
 extern void remove_last_char(char* str);
 
