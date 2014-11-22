@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "deps/str-replace/str-replace.h"
 #include "parse_extras.h"
 #include "string_extras.h"
 
@@ -209,7 +208,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
 
 const char *vertical_pipe_extract(const char *string)
 {
-  char *orig = dupe_string(string);
+  char *dupe = dupe_string(string);
   UT_string *columnlines, *border;
   char *previous_column = "", *attr_columnlines;
   int i = 0, append_space = 0;
@@ -218,17 +217,17 @@ const char *vertical_pipe_extract(const char *string)
   utstring_new(border);
 
   // the first character (if it exists) determines the frame border
-  if (strncmp(orig, "s", 1) == 0) {
+  if (strncmp(dupe, "s", 1) == 0) {
     utstring_printf(columnlines, "%s", "frame=\"solid\" columnlines=\"");
-    remove_first_char(orig);
-  } else if (strncmp(orig, "d", 1) == 0) {
+    remove_first_char(dupe);
+  } else if (strncmp(dupe, "d", 1) == 0) {
     utstring_printf(columnlines, "%s", "frame=\"dashed\" columnlines=\"");
-    remove_first_char(orig);
+    remove_first_char(dupe);
   } else {
     utstring_printf(columnlines, "%s", "columnlines=\"");
   }
 
-  char *token = strtok(orig, " ");
+  char *token = strtok(dupe, " ");
 
   while (token != NULL) {
     append_space = utstring_len(border) > 1;
@@ -266,7 +265,7 @@ const char *vertical_pipe_extract(const char *string)
   }
 
   attr_columnlines = utstring_body(columnlines);
-  free(orig);
+  free(dupe);
   utstring_free(border);
 
   return attr_columnlines;
@@ -274,11 +273,28 @@ const char *vertical_pipe_extract(const char *string)
 
 const char *remove_excess_pipe_chars(const char *string)
 {
-  char *dup = str_replace(string, "s", "");
-  // XXX: dup is leaked here
-  dup = str_replace(dup, "d", "");
+  UT_string *columnalign;
+  utstring_new(columnalign);
 
-  return dup;
+  char *dupe = dupe_string(string);
+  char *token = strtok(dupe, " ");
+  char *attr_columnalign;
+
+  while (token != NULL) {
+    if (strncmp(token, "s", 1) != 0 && strncmp(token, "d", 1) != 0) {
+      utstring_printf(columnalign, "%s ", token);
+    }
+    token = strtok(NULL, " ");
+  }
+
+  attr_columnalign = utstring_body(columnalign);
+  free(dupe);
+
+  if (strlen(attr_columnalign) > 0) {
+    remove_last_char(attr_columnalign); // remove the final space
+  }
+
+  return attr_columnalign;
 }
 
 const char *combine_row_data(UT_array **environment_data_stack)

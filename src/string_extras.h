@@ -4,7 +4,6 @@
 #define STRING_EXTRAS_H
 
 #include "deps/uthash/utstring.h"
-#include "deps/str-replace/str-replace.h"
 
 #ifdef __cplusplus
 extern "C" {

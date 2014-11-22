@@ -3,7 +3,6 @@
 
 #include "deps/uthash/uthash.h"
 #include "deps/uthash/utarray.h"
-#include "deps/str-replace/str-replace.h"
 
 #ifdef __cplusplus
 extern "C" {
