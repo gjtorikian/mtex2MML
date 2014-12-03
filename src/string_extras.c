@@ -6,7 +6,9 @@
 void remove_last_char(char* str)
 {
   size_t len = strlen(str);
+  // XXX: You can remove this memmove. The line below it is enough to shorten the string.
   memmove(str, str, len-1);
+  // XXX: Can you change this rvalue to '\0' for the sake of clarity?
   str[len-1] = 0;
 }
 

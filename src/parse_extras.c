@@ -29,6 +29,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   char *tok = NULL, *at_top = NULL;
 
+  // XXX: dupe_str isn't freed if there's an environment
   char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
   char *temp = "", **last_stack_item;
@@ -40,6 +41,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   int rowlines_stack_len = 0, em_offset = 0;
 
+  // XXX: Should this happen after the early return (next statement)?
   utarray_new(*environment_data_stack, &envdata_icd);
 
   // if not an environment, don't bother going on
@@ -318,5 +320,8 @@ const char *combine_row_data(UT_array **environment_data_stack)
   row_attr = utstring_body(row_attr_data);
   utarray_erase(*environment_data_stack, 0, 1);
 
+  // XXX: Should you be duplicating this and freeing row_attr_data? In the early return,
+  // you're returning a malloc()'d string, so the caller will have to free it. Here, it's
+  // owned by row_attr_data.
   return row_attr;
 }
