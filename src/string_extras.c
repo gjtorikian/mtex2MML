@@ -25,7 +25,7 @@ char *dupe_string(const char * str)
 
 char *dupe_string_n(const char *s, size_t n)
 {
-  char* buf = malloc(n+1);
+  char* buf = malloc(n + 1);
   if (buf) {
     strncpy(buf, s, n);
     buf[n] = '\0';

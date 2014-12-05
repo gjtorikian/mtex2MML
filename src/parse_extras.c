@@ -317,11 +317,8 @@ const char *combine_row_data(UT_array **environment_data_stack)
   // combine the row spacing and row lines data
   utstring_printf(row_attr_data, "%s%s\" %s\"", "rowspacing=\"", row_spacing_data, row_lines_data);
 
-  row_attr = utstring_body(row_attr_data);
+  row_attr = dupe_string(utstring_body(row_attr_data));
   utarray_erase(*environment_data_stack, 0, 1);
 
-  // XXX: Should you be duplicating this and freeing row_attr_data? In the early return,
-  // you're returning a malloc()'d string, so the caller will have to free it. Here, it's
-  // owned by row_attr_data.
   return row_attr;
 }
