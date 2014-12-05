@@ -29,8 +29,8 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   char *tok = NULL, *at_top = NULL;
 
-  char *dupe_str = dupe_string(environment);
-  char *line = strtok(dupe_str, "\n");
+  char *dupe_environment = dupe_string(environment);
+  char *line = strtok(dupe_environment, "\n");
   char *temp = "", **last_stack_item;
   char *a, *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
@@ -45,7 +45,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   // if not an environment, don't bother going on
   if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
-    free(dupe_str);
+    free(dupe_environment);
     return;
   }
 
@@ -141,7 +141,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_free(array_stack);
   utarray_free(row_spacing_stack);
   utarray_free(rowlines_stack);
-  free(dupe_str);
+  free(dupe_environment);
 }
 
 void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack)
