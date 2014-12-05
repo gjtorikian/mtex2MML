@@ -29,7 +29,6 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   char *tok = NULL, *at_top = NULL;
 
-  // XXX: dupe_str isn't freed if there's an environment
   char *dupe_str = dupe_string(environment);
   char *line = strtok(dupe_str, "\n");
   char *temp = "", **last_stack_item;
@@ -142,6 +141,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_free(array_stack);
   utarray_free(row_spacing_stack);
   utarray_free(rowlines_stack);
+  free(dupe_str);
 }
 
 void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack)
