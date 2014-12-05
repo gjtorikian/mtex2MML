@@ -2335,7 +2335,25 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
+void envdata_copy(void *_dst, const void *_src)
+{
+  envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
+  dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
+  dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
+}
+
+void envdata_dtor(void *_elt)
+{
+  envdata_t *elt = (envdata_t*)_elt;
+  if (elt->rowspacing) { free(elt->rowspacing); }
+  if (elt->rowlines) { free(elt->rowlines); }
+}
+
+UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
+
 const char *format_additions(const char *buffer) {
+  utarray_new(environment_data_stack, &envdata_icd);
+
   if (colors == NULL)
     create_css_colors(&colors);
 

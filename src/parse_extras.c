@@ -5,22 +5,6 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-void envdata_copy(void *_dst, const void *_src)
-{
-  envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
-  dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
-  dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
-}
-
-void envdata_dtor(void *_elt)
-{
-  envdata_t *elt = (envdata_t*)_elt;
-  if (elt->rowspacing) { free(elt->rowspacing); }
-  if (elt->rowlines) { free(elt->rowlines); }
-}
-
-UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
-
 void env_replacements(UT_array **environment_data_stack, const char *environment)
 {
   UT_array *array_stack;
@@ -29,8 +13,6 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   char *tok = NULL, *at_top = NULL;
 
-  char *dupe_environment = dupe_string(environment);
-  char *line = strtok(dupe_environment, "\n");
   char *temp = "", **last_stack_item;
   char *a, *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
@@ -40,14 +22,13 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   int rowlines_stack_len = 0, em_offset = 0;
 
-  // XXX: Should this happen after the early return (next statement)?
-  utarray_new(*environment_data_stack, &envdata_icd);
-
   // if not an environment, don't bother going on
   if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
-    free(dupe_environment);
     return;
   }
+
+  char *dupe_environment = dupe_string(environment);
+  char *line = strtok(dupe_environment, "\n");
 
   // set up the array stack
   utarray_new(array_stack, &ut_str_icd);
