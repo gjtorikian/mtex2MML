@@ -5,22 +5,6 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-void envdata_copy(void *_dst, const void *_src)
-{
-  envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
-  dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
-  dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
-}
-
-void envdata_dtor(void *_elt)
-{
-  envdata_t *elt = (envdata_t*)_elt;
-  if (elt->rowspacing) { free(elt->rowspacing); }
-  if (elt->rowlines) { free(elt->rowlines); }
-}
-
-UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
-
 void env_replacements(UT_array **environment_data_stack, const char *environment)
 {
   UT_array *array_stack;
@@ -29,8 +13,6 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   char *tok = NULL, *at_top = NULL;
 
-  char *dupe_str = dupe_string(environment);
-  char *line = strtok(dupe_str, "\n");
   char *temp = "", **last_stack_item;
   char *a, *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
@@ -40,13 +22,13 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
   int rowlines_stack_len = 0, em_offset = 0;
 
-  utarray_new(*environment_data_stack, &envdata_icd);
-
   // if not an environment, don't bother going on
   if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
-    free(dupe_str);
     return;
   }
+
+  char *dupe_environment = dupe_string(environment);
+  char *line = strtok(dupe_environment, "\n");
 
   // set up the array stack
   utarray_new(array_stack, &ut_str_icd);
@@ -140,6 +122,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   utarray_free(array_stack);
   utarray_free(row_spacing_stack);
   utarray_free(rowlines_stack);
+  free(dupe_environment);
 }
 
 void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack)
@@ -315,7 +298,7 @@ const char *combine_row_data(UT_array **environment_data_stack)
   // combine the row spacing and row lines data
   utstring_printf(row_attr_data, "%s%s\" %s\"", "rowspacing=\"", row_spacing_data, row_lines_data);
 
-  row_attr = utstring_body(row_attr_data);
+  row_attr = dupe_string(utstring_body(row_attr_data));
   utarray_erase(*environment_data_stack, 0, 1);
 
   return row_attr;

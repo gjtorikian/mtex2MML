@@ -6,8 +6,7 @@
 void remove_last_char(char* str)
 {
   size_t len = strlen(str);
-  memmove(str, str, len-1);
-  str[len-1] = 0;
+  str[len - 1] = '\0';
 }
 
 void remove_first_char(char* str)
@@ -26,7 +25,7 @@ char *dupe_string(const char * str)
 
 char *dupe_string_n(const char *s, size_t n)
 {
-  char* buf = malloc(n+1);
+  char* buf = malloc(n + 1);
   if (buf) {
     strncpy(buf, s, n);
     buf[n] = '\0';
