@@ -2019,7 +2019,7 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 | BEGINENV ALIGNED ARRAYALIGN END tableRowList ENDENV ALIGNED {
   char *row_data = combine_row_data(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ");
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
   $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
   mtex2MML_free_string($3);
@@ -2031,7 +2031,7 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 | BEGINENV ALIGNED tableRowList ENDENV ALIGNED {
   char *row_data = combine_row_data(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
