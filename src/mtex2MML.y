@@ -1169,7 +1169,7 @@ boxed: BOXED closedTerm {
 };
 
 fbox: FBOX closedTerm {
-  $$ = mtex2MML_copy3("<menclose notation=\"box\"><mtext>", $2, "</mtex></menclose>");
+  $$ = mtex2MML_copy3("<menclose notation=\"box\"><mtext>", $2, "</mtext></menclose>");
   mtex2MML_free_string($2);
 };
 
