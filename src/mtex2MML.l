@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN BOX VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -1060,7 +1060,7 @@ int mtex2MML_displaymode = 0;
 
 "\\cancelto"       {return CANCELEDTO;}
 
-"\\boxed"       {return BOXED;}
+"\\boxed"       {BEGIN(BOX); return BOXED;}
 
 "\\fbox"        {return FBOX;}
 "\\hbox"        {return HBOX;}
@@ -1323,6 +1323,12 @@ int mtex2MML_displaymode = 0;
 
 <VERBTEXT>{
 .         { if (yytext[0] != mtex2MML_verbdelim) { mtex2MML_str=mtex2MML_copy2(mtex2MML_str, yytext); } else { yylval=mtex2MML_str; BEGIN(MATH); return VERBSTRING; } }
+}
+
+<BOX>{
+\{[^\}]*?\}  {yylval=mtex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != mtex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return BOXSTRING;}
+.            {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return BOXSTRING;}
+[\t\n\r ]+       ;
 }
 
 <INT1>{
