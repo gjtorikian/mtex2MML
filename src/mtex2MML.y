@@ -1090,7 +1090,7 @@ textstring: TEXTBOX TEXTSTRING {
 };
 
 verbstring: VERBBOX VERBSTRING {
-  $$ = mtex2MML_copy3("<mstyle mathvariant=\"monospace\">", $2, "</mstyle>");
+  $$ = mtex2MML_copy3("<mstyle mathvariant=\"monospace\"><mtext>", $2, "</mtext></mstyle>");
   mtex2MML_free_string($2);
 };
 
