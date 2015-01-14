@@ -31,6 +31,7 @@ int mtex2MML_variant_start = 0;
 # define mtex2MML_eqn_bufsize 131072
 char mtex2MML_eqn_src[mtex2MML_eqn_bufsize];
 char * mtex2MML_eqn_end = mtex2MML_eqn_src;
+char mtex2MML_verbdelim;
 
 int mtex2MML_rowposn = 0;
 int mtex2MML_displaymode = 0;
@@ -982,7 +983,7 @@ int mtex2MML_displaymode = 0;
 "\\space"        {BEGIN(INT1); return SPACE;}
 
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
-"\\verb?"         {BEGIN(VERBTEXT); return VERBBOX;}
+"\\verb"[^ ]      {mtex2MML_verbdelim = yytext[yyleng-1]; BEGIN(VERBTEXT); return VERBBOX;}
 
 "\\statusline"    {BEGIN(PLAINTEXT); return STATLINE;}
 "\\tooltip"       {BEGIN(PLAINTEXT); return TOOLTIP;}
@@ -1320,9 +1321,7 @@ int mtex2MML_displaymode = 0;
 }
 
 <VERBTEXT>{
-"?"          {yylval=mtex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != mtex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return END;}
-[^?]+        {yylval=mtex2MML_copy_string(yytext); return VERBSTRING;}
-[\t\n\r ]+       ;
+.         { if (yytext[0] != mtex2MML_verbdelim) { yylval=mtex2MML_copy2(yylval, yytext); } else { if ((yyleng > 1) && (yylval != mtex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return VERBSTRING; } }
 }
 
 <INT1>{

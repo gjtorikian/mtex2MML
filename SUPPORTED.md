@@ -836,7 +836,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\mathsf` (`\sf` and `\textsf`)
 * `\mathtt` (`\tt` and `\texttt`)
 * `\text`
-* `\verb?`
+* `\verb`
 * `\pmb`
 
 ## Spaces
