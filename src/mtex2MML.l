@@ -1140,7 +1140,7 @@ int mtex2MML_displaymode = 0;
 "\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
 "\\mtexnum"       {BEGIN(PLAINTEXT); return MTEXNUM;}
 
-"\\includegraphics"(\[[^\]]*\])?\{[^}]*\}	;
+"\\includegraphics"(\[[^\]]*\])?\{[^}]*\} ;
 
 "\\"[a-zA-Z]+    {yylval=mtex2MML_copy_string(yytext+1); return MOP;}
 
@@ -1355,7 +1355,7 @@ int mtex2MML_displaymode = 0;
 
 void mtex2MML_restart ()
 {
-	BEGIN(INITIAL);
+  BEGIN(INITIAL);
 }
 
 static const char *  s_mtex2MML_buffer = 0;
@@ -1363,48 +1363,48 @@ static unsigned long s_mtex2MML_length = 0;
 
 void mtex2MML_setup (const char * buffer, unsigned long length)
 {
-	yy_flush_buffer( YY_CURRENT_BUFFER );
+  yy_flush_buffer( YY_CURRENT_BUFFER );
 
-	s_mtex2MML_buffer = buffer;
-	s_mtex2MML_length = length;
+  s_mtex2MML_buffer = buffer;
+  s_mtex2MML_length = length;
 }
 
 int mtex2MML_capture_eqn_src()
 {
-	if (YY_START != INITIAL && YY_START != SVGENV)
-		mtex2MML_do_capture_eqn();
+  if (YY_START != INITIAL && YY_START != SVGENV)
+    mtex2MML_do_capture_eqn();
 }
 
 int mtex2MML_do_capture_eqn()
 {
-	if (mtex2MML_eqn_bufsize - (mtex2MML_eqn_end-mtex2MML_eqn_src+yyleng) > 1)
-	{
-		strcpy(mtex2MML_eqn_end, yytext);
-		mtex2MML_eqn_end += yyleng;
-	}
+  if (mtex2MML_eqn_bufsize - (mtex2MML_eqn_end-mtex2MML_eqn_src+yyleng) > 1)
+  {
+    strcpy(mtex2MML_eqn_end, yytext);
+    mtex2MML_eqn_end += yyleng;
+  }
 }
 
 static int s_mtex2MML_read (char * buffer, int max_size)
 {
-	int result = 0;
+  int result = 0;
 
-	if (max_size < s_mtex2MML_length)
-	{
-		result = max_size;
+  if (max_size < s_mtex2MML_length)
+  {
+    result = max_size;
 
-		memcpy (buffer, s_mtex2MML_buffer, max_size);
+    memcpy (buffer, s_mtex2MML_buffer, max_size);
 
-		s_mtex2MML_buffer += max_size;
-		s_mtex2MML_length -= max_size;
-	}
-	else
-	{
-		result = s_mtex2MML_length;
+    s_mtex2MML_buffer += max_size;
+    s_mtex2MML_length -= max_size;
+  }
+  else
+  {
+    result = s_mtex2MML_length;
 
-		memcpy (buffer, s_mtex2MML_buffer, s_mtex2MML_length);
+    memcpy (buffer, s_mtex2MML_buffer, s_mtex2MML_length);
 
-		s_mtex2MML_buffer = 0;
-		s_mtex2MML_length = 0;
-	}
-	return result;
+    s_mtex2MML_buffer = 0;
+    s_mtex2MML_length = 0;
+  }
+  return result;
 }
