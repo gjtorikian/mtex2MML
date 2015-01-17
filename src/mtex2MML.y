@@ -49,10 +49,10 @@ struct css_colors *colors = NULL;
    {
      if (buffer)
        {
-	 if (length)
-	   fwrite (buffer, 1, length, stdout);
-	 else
-	   fputs (buffer, stdout);
+   if (length)
+     fwrite (buffer, 1, length, stdout);
+   else
+     fputs (buffer, stdout);
        }
    }
 
@@ -138,10 +138,10 @@ struct css_colors *colors = NULL;
      char * copy = (char *) malloc(extra + (str ? strlen (str) : 0) + 1);
      if (copy)
        {
-	 if (str)
-	   strcpy(copy, str);
-	 else
-	   copy[0] = 0;
+   if (str)
+     strcpy(copy, str);
+   else
+     copy[0] = 0;
        }
      return copy ? copy : mtex2MML_empty_string;
    }
@@ -158,13 +158,13 @@ struct css_colors *colors = NULL;
 
      if (copy)
        {
-	 if (first)
-	   strcpy(copy, first);
-	 else
-	   copy[0] = 0;
+   if (first)
+     strcpy(copy, first);
+   else
+     copy[0] = 0;
 
-	 if (second) strcat(copy, second);
-	 if ( third) strcat(copy,  third);
+   if (second) strcat(copy, second);
+   if ( third) strcat(copy,  third);
        }
      return copy ? copy : mtex2MML_empty_string;
    }
@@ -199,69 +199,69 @@ struct css_colors *colors = NULL;
 
      while (*ptr1)
        {
-	 switch (*ptr1)
-	   {
-	   case '<':  /* &lt;   */
-	   case '>':  /* &gt;   */
-	     length += 4;
-	     break;
-	   case '&':  /* &amp;  */
-	     length += 5;
-	     break;
-	   case '\'': /* &apos; */
-	   case '"':  /* &quot; */
-	   case '-':  /* &#x2d; */
-	     length += 6;
-	     break;
-	   default:
-	     length += 1;
-	     break;
-	   }
-	 ++ptr1;
+   switch (*ptr1)
+     {
+     case '<':  /* &lt;   */
+     case '>':  /* &gt;   */
+       length += 4;
+       break;
+     case '&':  /* &amp;  */
+       length += 5;
+       break;
+     case '\'': /* &apos; */
+     case '"':  /* &quot; */
+     case '-':  /* &#x2d; */
+       length += 6;
+       break;
+     default:
+       length += 1;
+       break;
+     }
+   ++ptr1;
        }
 
      copy = (char *) malloc (length + 1);
 
      if (copy)
        {
-	 ptr1 = str;
-	 ptr2 = copy;
+   ptr1 = str;
+   ptr2 = copy;
 
-	 while (*ptr1)
-	   {
-	     switch (*ptr1)
-	       {
-	       case '<':
-		 strcpy (ptr2, "&lt;");
-		 ptr2 += 4;
-		 break;
-	       case '>':
-		 strcpy (ptr2, "&gt;");
-		 ptr2 += 4;
-		 break;
-	       case '&':  /* &amp;  */
-		 strcpy (ptr2, "&amp;");
-		 ptr2 += 5;
-		 break;
-	       case '\'': /* &apos; */
-		 strcpy (ptr2, "&apos;");
-		 ptr2 += 6;
-		 break;
-	       case '"':  /* &quot; */
-		 strcpy (ptr2, "&quot;");
-		 ptr2 += 6;
-		 break;
-	       case '-':  /* &#x2d; */
-		 strcpy (ptr2, "&#x2d;");
-		 ptr2 += 6;
-		 break;
-	       default:
-		 *ptr2++ = *ptr1;
-		 break;
-	       }
-	     ++ptr1;
-	   }
-	 *ptr2 = 0;
+   while (*ptr1)
+     {
+       switch (*ptr1)
+         {
+         case '<':
+     strcpy (ptr2, "&lt;");
+     ptr2 += 4;
+     break;
+         case '>':
+     strcpy (ptr2, "&gt;");
+     ptr2 += 4;
+     break;
+         case '&':  /* &amp;  */
+     strcpy (ptr2, "&amp;");
+     ptr2 += 5;
+     break;
+         case '\'': /* &apos; */
+     strcpy (ptr2, "&apos;");
+     ptr2 += 6;
+     break;
+         case '"':  /* &quot; */
+     strcpy (ptr2, "&quot;");
+     ptr2 += 6;
+     break;
+         case '-':  /* &#x2d; */
+     strcpy (ptr2, "&#x2d;");
+     ptr2 += 6;
+     break;
+         default:
+     *ptr2++ = *ptr1;
+     break;
+         }
+       ++ptr1;
+     }
+   *ptr2 = 0;
        }
      return copy ? copy : mtex2MML_empty_string;
    }
@@ -285,7 +285,7 @@ struct css_colors *colors = NULL;
 %}
 
 %left TEXOVER TEXOVERWITHDELIMS TEXATOP TEXATOPWITHDELIMS TEXABOVE TEXABOVEWITHDELIMS
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED BOXSTRING FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
 
 %%
 
@@ -559,6 +559,7 @@ closedTerm: array
 | multi
 | mfrac
 | binom
+| boxed
 | brace
 | brack
 | choose
@@ -618,7 +619,7 @@ closedTerm: array
 | bcanceled
 | xcanceled
 | canceledto
-| boxstring
+| boxed
 | fbox
 | hbox
 | mbox
@@ -1163,8 +1164,8 @@ canceledto: CANCELEDTO closedTerm closedTerm {
   mtex2MML_free_string(s1);
 };
 
-boxstring: BOXED BOXSTRING {
-  $$ = mtex2MML_copy3("<menclose notation=\"box\"><mtext>", $2, "</mtext></menclose>");
+boxed: BOXED closedTerm {
+  $$ = mtex2MML_copy3("<menclose notation=\"box\">", $2, "</menclose>");
   mtex2MML_free_string($2);
 };
 
@@ -2451,9 +2452,9 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
     {
       if (*ptr2 == '$') break;
       if ((*ptr2 == '\\') && (ptr2 + 1 < end))
-	{
-	  if (*(ptr2+1) == '[') break;
-	}
+  {
+    if (*(ptr2+1) == '[') break;
+  }
       ++ptr2;
     }
   if (mtex2MML_write && ptr2 > ptr1)
@@ -2467,20 +2468,20 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
   if (ptr2 + 1 < end)
     {
       if ((*ptr2 == '\\') && (*(ptr2+1) == '['))
-	{
-	  type = MTEX_DELIMITER_SQUARE;
-	  ptr2 += 2;
-	}
+  {
+    type = MTEX_DELIMITER_SQUARE;
+    ptr2 += 2;
+  }
       else if ((*ptr2 == '$') && (*(ptr2+1) == '$'))
-	{
-	  type = MTEX_DELIMITER_DOUBLE;
-	  ptr2 += 2;
-	}
+  {
+    type = MTEX_DELIMITER_DOUBLE;
+    ptr2 += 2;
+  }
       else
-	{
-	  type = MTEX_DELIMITER_DOLLAR;
-	  ptr2 += 2;
-	}
+  {
+    type = MTEX_DELIMITER_DOLLAR;
+    ptr2 += 2;
+  }
     }
   else goto _finish;
 
@@ -2490,84 +2491,84 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
   while (ptr2 < end)
     {
       switch (*ptr2)
-	{
-	case '<':
-	case '>':
-	  if (forbid_markup == 1) skip = 1;
-	  break;
+  {
+  case '<':
+  case '>':
+    if (forbid_markup == 1) skip = 1;
+    break;
 
-	case '\\':
-	  if (ptr2 + 1 < end)
-	    {
-	      if (*(ptr2 + 1) == '[')
-		{
-		  skip = 1;
-		}
-	      else if (*(ptr2 + 1) == ']')
-		{
-		  if (type == MTEX_DELIMITER_SQUARE)
-		    {
-		      ptr2 += 2;
-		      match = 1;
-		    }
-		  else
-		    {
-		      skip = 1;
-		    }
-		}
-	    }
-	  break;
+  case '\\':
+    if (ptr2 + 1 < end)
+      {
+        if (*(ptr2 + 1) == '[')
+    {
+      skip = 1;
+    }
+        else if (*(ptr2 + 1) == ']')
+    {
+      if (type == MTEX_DELIMITER_SQUARE)
+        {
+          ptr2 += 2;
+          match = 1;
+        }
+      else
+        {
+          skip = 1;
+        }
+    }
+      }
+    break;
 
-	case '$':
-	  if (type == MTEX_DELIMITER_SQUARE)
-	    {
-	      skip = 1;
-	    }
-	  else if (ptr2 + 1 < end)
-	    {
-	      if (*(ptr2 + 1) == '$')
-		{
-		  if (type == MTEX_DELIMITER_DOLLAR)
-		    {
-		      ptr2++;
-		      match = 1;
-		    }
-		  else
-		    {
-		      ptr2 += 2;
-		      match = 1;
-		    }
-		}
-	      else
-		{
-		  if (type == MTEX_DELIMITER_DOLLAR)
-		    {
-		      ptr2++;
-		      match = 1;
-		    }
-		  else
-		    {
-		      skip = 1;
-		    }
-		}
-	    }
-	  else
-	    {
-	      if (type == MTEX_DELIMITER_DOLLAR)
-		{
-		  ptr2++;
-		  match = 1;
-		}
-	      else
-		{
-		  skip = 1;
-		}
-	    }
-	  break;
+  case '$':
+    if (type == MTEX_DELIMITER_SQUARE)
+      {
+        skip = 1;
+      }
+    else if (ptr2 + 1 < end)
+      {
+        if (*(ptr2 + 1) == '$')
+    {
+      if (type == MTEX_DELIMITER_DOLLAR)
+        {
+          ptr2++;
+          match = 1;
+        }
+      else
+        {
+          ptr2 += 2;
+          match = 1;
+        }
+    }
+        else
+    {
+      if (type == MTEX_DELIMITER_DOLLAR)
+        {
+          ptr2++;
+          match = 1;
+        }
+      else
+        {
+          skip = 1;
+        }
+    }
+      }
+    else
+      {
+        if (type == MTEX_DELIMITER_DOLLAR)
+    {
+      ptr2++;
+      match = 1;
+    }
+        else
+    {
+      skip = 1;
+    }
+      }
+    break;
 
-	default:
-	  break;
-	}
+  default:
+    break;
+  }
       if (skip || match) break;
 
       ++ptr2;
@@ -2575,17 +2576,17 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
   if (skip)
     {
       if (type == MTEX_DELIMITER_DOLLAR)
-	{
-	  if (mtex2MML_write)
-	    (*mtex2MML_write) (ptr1, 1);
-	  ptr1++;
-	}
+  {
+    if (mtex2MML_write)
+      (*mtex2MML_write) (ptr1, 1);
+    ptr1++;
+  }
       else
-	{
-	  if (mtex2MML_write)
-	    (*mtex2MML_write) (ptr1, 2);
-	  ptr1 += 2;
-	}
+  {
+    if (mtex2MML_write)
+      (*mtex2MML_write) (ptr1, 2);
+    ptr1 += 2;
+  }
       goto _until_math;
     }
   if (match)
@@ -2593,26 +2594,26 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
       mathml = mtex2MML_parse (ptr1, ptr2 - ptr1);
 
       if (mathml)
-	{
-	  if (mtex2MML_write_mathml)
-	    (*mtex2MML_write_mathml) (mathml);
-	  mtex2MML_free_string (mathml);
-	  mathml = 0;
-	}
+  {
+    if (mtex2MML_write_mathml)
+      (*mtex2MML_write_mathml) (mathml);
+    mtex2MML_free_string (mathml);
+    mathml = 0;
+  }
       else
-	{
-	  ++result;
-	  if (mtex2MML_write)
-	    {
-	      if (type == MTEX_DELIMITER_DOLLAR)
-		(*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><merror><mtext>", 0);
-	      else
-		(*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><merror><mtext>", 0);
+  {
+    ++result;
+    if (mtex2MML_write)
+      {
+        if (type == MTEX_DELIMITER_DOLLAR)
+    (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><merror><mtext>", 0);
+        else
+    (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><merror><mtext>", 0);
 
-	      (*mtex2MML_write) (mtex2MML_last_error, 0);
-	      (*mtex2MML_write) ("</mtext></merror></math>", 0);
-	    }
-	}
+        (*mtex2MML_write) (mtex2MML_last_error, 0);
+        (*mtex2MML_write) ("</mtext></merror></math>", 0);
+      }
+  }
       ptr1 = ptr2;
 
       goto _until_math;

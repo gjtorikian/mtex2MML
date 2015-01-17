@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN BOX VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -1060,7 +1060,7 @@ int mtex2MML_displaymode = 0;
 
 "\\cancelto"       {return CANCELEDTO;}
 
-"\\boxed"       {BEGIN(BOX); return BOXED;}
+"\\boxed"       {return BOXED;}
 
 "\\fbox"        {return FBOX;}
 "\\hbox"        {return HBOX;}
@@ -1140,7 +1140,7 @@ int mtex2MML_displaymode = 0;
 "\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
 "\\mtexnum"       {BEGIN(PLAINTEXT); return MTEXNUM;}
 
-"\\includegraphics"(\[[^\]]*\])?\{[^}]*\}	;
+"\\includegraphics"(\[[^\]]*\])?\{[^}]*\} ;
 
 "\\"[a-zA-Z]+    {yylval=mtex2MML_copy_string(yytext+1); return MOP;}
 
@@ -1325,12 +1325,6 @@ int mtex2MML_displaymode = 0;
 .         { if (yytext[0] != mtex2MML_verbdelim) { mtex2MML_str=mtex2MML_copy2(mtex2MML_str, yytext); } else { yylval=mtex2MML_str; BEGIN(MATH); return VERBSTRING; } }
 }
 
-<BOX>{
-\{[^\}]*?\}  {yylval=mtex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != mtex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return BOXSTRING;}
-.            {yylval=mtex2MML_copy_string(yytext); if (mtex2MML_variant_start == 0) BEGIN(MATH); return BOXSTRING;}
-[\t\n\r ]+       ;
-}
-
 <INT1>{
 "\{"      {return ST;}
 "\}"      {BEGIN(INT2); return END;}
@@ -1361,7 +1355,7 @@ int mtex2MML_displaymode = 0;
 
 void mtex2MML_restart ()
 {
-	BEGIN(INITIAL);
+  BEGIN(INITIAL);
 }
 
 static const char *  s_mtex2MML_buffer = 0;
@@ -1369,48 +1363,48 @@ static unsigned long s_mtex2MML_length = 0;
 
 void mtex2MML_setup (const char * buffer, unsigned long length)
 {
-	yy_flush_buffer( YY_CURRENT_BUFFER );
+  yy_flush_buffer( YY_CURRENT_BUFFER );
 
-	s_mtex2MML_buffer = buffer;
-	s_mtex2MML_length = length;
+  s_mtex2MML_buffer = buffer;
+  s_mtex2MML_length = length;
 }
 
 int mtex2MML_capture_eqn_src()
 {
-	if (YY_START != INITIAL && YY_START != SVGENV)
-		mtex2MML_do_capture_eqn();
+  if (YY_START != INITIAL && YY_START != SVGENV)
+    mtex2MML_do_capture_eqn();
 }
 
 int mtex2MML_do_capture_eqn()
 {
-	if (mtex2MML_eqn_bufsize - (mtex2MML_eqn_end-mtex2MML_eqn_src+yyleng) > 1)
-	{
-		strcpy(mtex2MML_eqn_end, yytext);
-		mtex2MML_eqn_end += yyleng;
-	}
+  if (mtex2MML_eqn_bufsize - (mtex2MML_eqn_end-mtex2MML_eqn_src+yyleng) > 1)
+  {
+    strcpy(mtex2MML_eqn_end, yytext);
+    mtex2MML_eqn_end += yyleng;
+  }
 }
 
 static int s_mtex2MML_read (char * buffer, int max_size)
 {
-	int result = 0;
+  int result = 0;
 
-	if (max_size < s_mtex2MML_length)
-	{
-		result = max_size;
+  if (max_size < s_mtex2MML_length)
+  {
+    result = max_size;
 
-		memcpy (buffer, s_mtex2MML_buffer, max_size);
+    memcpy (buffer, s_mtex2MML_buffer, max_size);
 
-		s_mtex2MML_buffer += max_size;
-		s_mtex2MML_length -= max_size;
-	}
-	else
-	{
-		result = s_mtex2MML_length;
+    s_mtex2MML_buffer += max_size;
+    s_mtex2MML_length -= max_size;
+  }
+  else
+  {
+    result = s_mtex2MML_length;
 
-		memcpy (buffer, s_mtex2MML_buffer, s_mtex2MML_length);
+    memcpy (buffer, s_mtex2MML_buffer, s_mtex2MML_length);
 
-		s_mtex2MML_buffer = 0;
-		s_mtex2MML_length = 0;
-	}
-	return result;
+    s_mtex2MML_buffer = 0;
+    s_mtex2MML_length = 0;
+  }
+  return result;
 }
