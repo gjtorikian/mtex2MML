@@ -1,3 +1,5 @@
+%parse-param {char **ret_str}
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -35,7 +37,7 @@ struct css_colors *colors = NULL;
 
  void (*mtex2MML_error) (const char * msg) = mtex2MML_default_error;
 
- static void yyerror (char * s)
+ static void yyerror (char **ret_str, char * s)
    {
      char * msg = mtex2MML_copy3 (s, " at token ", yytext);
      if (mtex2MML_error)
