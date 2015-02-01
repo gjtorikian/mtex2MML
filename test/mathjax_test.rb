@@ -12,7 +12,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
   done_count = Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.tex'].length
   skipped_count = Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.xtex'].length
 
-  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.tex'].each do |tex|
+  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/alignat-1a.tex'].each do |tex|
     define_method "test_#{tex}" do
       tex_contents = File.read(tex)
       outfile = tex.sub(MATHJAX_TEST_TEX_DIR + File::SEPARATOR, '').sub('.tex', '-ref.html')
@@ -20,7 +20,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
       expected = File.read(outfile)
       actual = @mtex.filter(tex_contents)
 
-      # write_to_test_file(actual) if tex =~ /verb-2.tex$/
+      write_to_test_file(actual)
       assert_equal(actual.strip, expected.strip)
     end
   end

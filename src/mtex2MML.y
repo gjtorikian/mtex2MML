@@ -18,8 +18,8 @@ struct css_colors *colors = NULL;
 /* set max nesting. utterly arbitrary number determined from http://git.io/FlWHfw */
 #define YYMAXDEPTH 430
 
-// #define YYDEBUG 1
-// yydebug = 1;
+#define YYDEBUG 1
+yydebug = 1;
 
 #define yytext mtex2MML_yytext
 
@@ -2037,6 +2037,15 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNAT ALIGNATVALUE END tableRowList ENDENV ALIGNAT {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+  mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
 }
