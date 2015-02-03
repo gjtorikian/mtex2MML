@@ -18,8 +18,8 @@ struct css_colors *colors = NULL;
 /* set max nesting. utterly arbitrary number determined from http://git.io/FlWHfw */
 #define YYMAXDEPTH 430
 
-#define YYDEBUG 1
-yydebug = 1;
+// #define YYDEBUG 1
+// yydebug = 1;
 
 #define yytext mtex2MML_yytext
 
@@ -525,8 +525,16 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($3);
 }
 | closedTerm SUP closedTerm {
-  char * s1 = mtex2MML_copy3("<msup>", $1, " ");
-  $$ = mtex2MML_copy3(s1, $3, "</msup>");
+  char * s1;
+  // TODO: special casing--multiple chars in should be split, eg, <mi>adas</mi>
+  if(strstr($3, "<mi>") != NULL) {
+    s1 = mtex2MML_copy3("<msup>", $1, " <mstyle mathvariant=\"italic\">");
+    $$ = mtex2MML_copy3(s1, $3, "</mstyle></msup>");
+  }
+  else {
+    s1 = mtex2MML_copy3("<msup>", $1, " ");
+    $$ = mtex2MML_copy3(s1, $3, "</msup>");
+  }
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
@@ -1377,11 +1385,11 @@ phantom: PHANTOM closedTerm {
 };
 
 tex: TEXSYMBOL {
-  $$ = mtex2MML_copy_string("<mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+  $$ = mtex2MML_copy_string("<mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
 };
 
 latex: LATEXSYMBOL {
-  $$ = mtex2MML_copy_string("<mi>L</mi><mspace width=\"-.325em\"></mspace><mpadded height=\"+.21em\" depth=\"-.21em\" voffset=\"+.21em\"><mrow class=\"MJX-TeXAtom-ORD\"><mstyle scriptlevel=\"1\" displaystyle=\"false\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>A</mi></mrow></mstyle></mrow></mpadded><mspace width=\"-.17em\"></mspace><mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+  $$ = mtex2MML_copy_string("<mi>L</mi><mspace width=\"-.325em\"></mspace><mpadded height=\"+.21em\" depth=\"-.21em\" voffset=\"+.21em\"><mrow><mstyle scriptlevel=\"1\" displaystyle=\"false\"><mrow><mi>A</mi></mrow></mstyle></mrow></mpadded><mspace width=\"-.17em\"></mspace><mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
 };
 
 href: HREF TEXTSTRING closedTerm {

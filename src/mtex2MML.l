@@ -1072,6 +1072,9 @@ int mtex2MML_displaymode = 0;
 "\\begin\{equation\}" |
 "\\end\{equation\}"   { /* Ignore */ }
 
+"\\begin\{equation*\}" |
+"\\end\{equation*\}"   { /* Ignore */ }
+
 "\\begin"        {mtex2MML_env_start = 1; BEGIN(MATHENV); return BEGINENV;}
 "\\end"          {BEGIN(MATHENV); return ENDENV;}
 
