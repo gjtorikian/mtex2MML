@@ -22,6 +22,7 @@ where `env` is one of
 * `alignedat`
 * `gather`
 * `gathered`
+* `equation`
 * `split`
 * `array`
 * `svg`
