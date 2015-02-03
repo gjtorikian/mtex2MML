@@ -10,7 +10,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
   MATHJAX_TEST_OUT_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-out')
 
   done_count = Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.tex'].length
-  skipped_count = Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.xtex'].length
+  skipped_files = Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.{no_tex,xtex}']
 
   Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/alignat-1a.tex'].each do |tex|
     define_method "test_#{tex}" do
@@ -25,10 +25,11 @@ class MTex2MMLMathJaxTest < MiniTest::Test
     end
   end
 
+  skipped_count = skipped_files.count
   if skipped_count > 0
     total = (done_count + skipped_count).to_f
     coverage = done_count.fdiv(total) * 100
-    skipped_files = Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.xtex'].join("\n * ")
+    skipped_files = skipped_files.join("\n * ")
     puts "\n\nSkipping the following MathJax tests:\n\n * #{skipped_files}"
     puts "\n\n*** You did #{done_count} and skipped #{skipped_count}: #{coverage.round(2)}% coverage ***\n\n"
   end
