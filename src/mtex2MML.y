@@ -1172,7 +1172,7 @@ moveleft: MOVELEFT MROWOPEN PXSTRING MROWCLOSE closedTerm {
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
 }
-| moveleft: MOVELEFT PXSTRING closedTerm {
+| MOVELEFT PXSTRING closedTerm {
   char * s1 = mtex2MML_copy3("<mspace width=\"-", $2, "\"/>");
   char * s2 = mtex2MML_copy3(s1, $3, "<mspace width=\"");
   $$        = mtex2MML_copy3(s2, $2, "\"/>");
@@ -1193,7 +1193,7 @@ moveright: MOVERIGHT MROWOPEN PXSTRING MROWCLOSE closedTerm {
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
 }
-| moveright: MOVERIGHT PXSTRING closedTerm {
+| MOVERIGHT PXSTRING closedTerm {
   char * s1 = mtex2MML_copy3("<mspace width=\"", $2, "\"/>");
   char * s2 = mtex2MML_copy3(s1, $3, "<mspace width=\"-");
   $$        = mtex2MML_copy3(s2, $2, "\"/>");
