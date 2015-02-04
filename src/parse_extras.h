@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-typedef enum {TOPENCLOSE = 1} encaseType;
+typedef enum {NONE = 0, TOPENCLOSE} encaseType;
 
 typedef struct {
   char *rowspacing;

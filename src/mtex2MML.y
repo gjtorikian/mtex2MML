@@ -26,7 +26,7 @@ struct css_colors *colors = NULL;
 
  UT_array *environment_data_stack;
 
- encaseType * encase;
+ encaseType * encase = NONE;
 
  extern int yylex ();
 
@@ -2024,6 +2024,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2034,6 +2038,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
   $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
@@ -2045,6 +2053,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2054,6 +2066,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2063,6 +2079,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2072,6 +2092,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2081,6 +2105,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2090,6 +2118,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2099,6 +2131,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2108,6 +2144,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2118,6 +2158,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
   $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
@@ -2129,6 +2173,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2138,6 +2186,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2147,6 +2199,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2161,6 +2217,9 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s3 = mtex2MML_copy3(s2, column_align, "\" ");
   char * s4 = mtex2MML_copy3(s3, pipe_chars, "\">");
   $$ = mtex2MML_copy3(s4, $7, "</mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2181,12 +2240,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" ", row_data, " columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
   char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
-  char * s4 = mtex2MML_copy3(s3, $6, "</mtable>");
+  $$ = mtex2MML_copy3(s3, $6, "</mtable>");
 
   if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", s4, "</menclose>");
-  else
-    $$ = s4;
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2467,6 +2524,7 @@ const char *format_additions(const char *buffer) {
   if (colors == NULL)
     create_css_colors(&colors);
 
+  encase = NONE;
   env_replacements(&environment_data_stack, &encase, buffer);
 }
 
