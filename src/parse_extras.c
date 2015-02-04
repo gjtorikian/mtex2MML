@@ -107,7 +107,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
       }
 
       // TODO: we are skipping equation environments
-      if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
+      if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
         perform_replacement(environment_data_stack, rowlines_stack, is_smallmatrix, is_gathered, row_spacing_stack);
       }
 

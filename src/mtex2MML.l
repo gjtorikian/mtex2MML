@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS ENCLOSEOPTS ENCLOSEATTRPARSE ENCLOSETEXTPARSE SPACEWIDTH SPACEHEIGHT SPACEDEPTH HSPACEARG TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST LOWERATTR PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS ENCLOSEOPTS ENCLOSEATTRPARSE ENCLOSETEXTPARSE SPACEWIDTH SPACEHEIGHT SPACEDEPTH HSPACEARG TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -1018,6 +1018,8 @@ int mtex2MML_displaymode = 0;
 
 "\\scriptscriptsize"     {return SCSCSIZE;}
 
+"\\lower"     {BEGIN(LOWERATTR); return LOWER;}
+
 "\\it"         |
 "\\textit"     |
 "\\mathit"       {return ITALICS;}
@@ -1418,6 +1420,14 @@ int mtex2MML_displaymode = 0;
 "\{"      { return ST;}
 [0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
 "\}"      {BEGIN(MATH); return ST;}
+[\t\n\r ]+       ;
+}
+
+<LOWERATTR>{
+"\{"      { }
+"\}"      { }
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
+[a-zA-Z]+\}? { if (yytext[yyleng - 1] == '}') remove_last_char(yytext); yylval=mtex2MML_copy_string(yytext); BEGIN(MATH); return LOWERSTRING; }
 [\t\n\r ]+       ;
 }
 

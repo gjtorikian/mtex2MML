@@ -841,6 +841,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\text`
 * `\verb`
 * `\pmb`
+* `\lower`
 
 ## Spaces
 
