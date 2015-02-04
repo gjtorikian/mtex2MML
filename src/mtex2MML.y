@@ -530,14 +530,14 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
 | closedTerm SUP closedTerm {
   char * s1;
   // TODO: special casing--multiple chars in should be split, eg, <mi>adas</mi>
-  if(strstr($3, "<mi>") != NULL) {
-    s1 = mtex2MML_copy3("<msup>", $1, " <mstyle mathvariant=\"italic\">");
-    $$ = mtex2MML_copy3(s1, $3, "</mstyle></msup>");
-  }
-  else {
+  // if(strstr($3, "<mi>") != NULL) {
+  //   s1 = mtex2MML_copy3("<msup>", $1, " <mstyle mathvariant=\"italic\">");
+  //   $$ = mtex2MML_copy3(s1, $3, "</mstyle></msup>");
+  // }
+  // else {
     s1 = mtex2MML_copy3("<msup>", $1, " ");
     $$ = mtex2MML_copy3(s1, $3, "</msup>");
-  }
+  // }
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
@@ -577,7 +577,6 @@ closedTerm: array
 | mfrac
 | enclose
 | binom
-| boxed
 | brace
 | brack
 | choose
@@ -1150,11 +1149,22 @@ scriptscriptsize: SCSCSIZE compoundTermList {
   mtex2MML_free_string($2);
 };
 
-lower: LOWER PXSTRING LOWERSTRING {
+lower: LOWER MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded height=\"-", $3, "\" depth=\"+");
+  char * s2 = mtex2MML_copy3(s1, $3, "\" voffset=\"-");
+  char * s3 = mtex2MML_copy3(s2, $3, "\">");
+  $$ = mtex2MML_copy3(s3, $5, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| LOWER PXSTRING closedTerm {
   char * s1 = mtex2MML_copy3("<mpadded height=\"-", $2, "\" depth=\"+");
   char * s2 = mtex2MML_copy3(s1, $2, "\" voffset=\"-");
-  char * s3 = mtex2MML_copy3(s2, $2, "\"><mstyle mathvariant=\"italic\">");
-  $$ = mtex2MML_copy3(s3, $3, "</mstyle></mpadded>");
+  char * s3 = mtex2MML_copy3(s2, $2, "\">");
+  $$ = mtex2MML_copy3(s3, $3, "</mpadded>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string(s3);
@@ -1204,11 +1214,22 @@ moveright: MOVERIGHT MROWOPEN PXSTRING MROWCLOSE closedTerm {
   mtex2MML_free_string($3);
 };
 
-raise: RAISE PXSTRING RAISESTRING {
+raise: RAISE MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded height=\"+", $3, "\" depth=\"-");
+  char * s2 = mtex2MML_copy3(s1, $3, "\" voffset=\"+");
+  char * s3 = mtex2MML_copy3(s2, $3, "\">");
+  $$ = mtex2MML_copy3(s3, $5, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| RAISE PXSTRING closedTerm {
   char * s1 = mtex2MML_copy3("<mpadded height=\"+", $2, "\" depth=\"-");
   char * s2 = mtex2MML_copy3(s1, $2, "\" voffset=\"+");
-  char * s3 = mtex2MML_copy3(s2, $2, "\"><mstyle mathvariant=\"italic\">");
-  $$ = mtex2MML_copy3(s3, $3, "</mstyle></mpadded>");
+  char * s3 = mtex2MML_copy3(s2, $2, "\">");
+  $$ = mtex2MML_copy3(s3, $3, "</mpadded>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string(s3);
@@ -1477,10 +1498,14 @@ enspace: ENSPACE {
   $$ = mtex2MML_copy_string("<mspace width=\".5em\"/>");
 };
 
-hspace: HSPACE ST PXSTRING ST {
+hspace: HSPACE MROWOPEN PXSTRING MROWCLOSE {
   $$ = mtex2MML_copy3("<mspace width=\"", $3, "\"/>");
   mtex2MML_free_string($3);
 }
+| HSPACE PXSTRING {
+  $$ = mtex2MML_copy3("<mspace width=\"", $2, "\"/>");
+  mtex2MML_free_string($2);
+};
 
 spacecube: SPACECUBE ST PXSTRING ST ST PXSTRING ST ST PXSTRING ST {
   char * s1 = mtex2MML_copy3("<mspace width=\"", $3, "\" height=\"");
@@ -1491,7 +1516,8 @@ spacecube: SPACECUBE ST PXSTRING ST ST PXSTRING ST ST PXSTRING ST {
   mtex2MML_free_string($3);
   mtex2MML_free_string($6);
   mtex2MML_free_string($9);
-}
+};
+
 quad: QUAD {
   $$ = mtex2MML_copy_string("<mspace width=\"1em\"/>");
 };
