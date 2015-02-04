@@ -5,7 +5,7 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-void env_replacements(UT_array **environment_data_stack, const char *environment)
+void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
 {
   UT_array *array_stack;
   UT_array *row_spacing_stack;
@@ -47,6 +47,10 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
 
         // we've reached the top, but there looks like there might be some data
         if (at_top != NULL && strstr(*last_stack_item, line_separator) == NULL) {
+          if (strstr(*last_stack_item, hline) != NULL || strstr(*last_stack_item, hdashline) != NULL) {
+            *encase = TOPENCLOSE;
+          }
+
           break;
         }
 
@@ -106,7 +110,6 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
         is_gathered = strstr(at_top, "\\begin{gathered}");
       }
 
-      // TODO: we are skipping equation environments
       if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
         perform_replacement(environment_data_stack, rowlines_stack, is_smallmatrix, is_gathered, row_spacing_stack);
       }

@@ -26,6 +26,8 @@ struct css_colors *colors = NULL;
 
  UT_array *environment_data_stack;
 
+ encaseType * encase;
+
  extern int yylex ();
 
  extern char * yytext;
@@ -2179,7 +2181,12 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" ", row_data, " columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
   char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s3, $6, "</mtable>");
+  char * s4 = mtex2MML_copy3(s3, $6, "</mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", s4, "</menclose>");
+  else
+    $$ = s4;
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2460,7 +2467,7 @@ const char *format_additions(const char *buffer) {
   if (colors == NULL)
     create_css_colors(&colors);
 
-  env_replacements(&environment_data_stack, buffer);
+  env_replacements(&environment_data_stack, &encase, buffer);
 }
 
 char * mtex2MML_parse (const char * buffer, unsigned long length)

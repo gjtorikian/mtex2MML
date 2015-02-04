@@ -19,8 +19,9 @@ class MTex2MMLMathJaxTest < MiniTest::Test
   skipped_files = filter_array Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.xtex']
   incomplete_files = filter_array Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.no_tex']
 
-  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/array-2.tex'].each do |tex|
+  Dir['test/fixtures/MathJax/LaTeXToMathML-tex/**/*.tex'].each do |tex|
     define_method "test_#{tex}" do
+      puts tex
       tex_contents = File.read(tex)
       outfile = tex.sub(MATHJAX_TEST_TEX_DIR + File::SEPARATOR, '').sub('.tex', '-ref.html')
       outfile = File.join(MATHJAX_TEST_OUT_DIR, outfile)
