@@ -1018,6 +1018,10 @@ int mtex2MML_displaymode = 0;
 
 "\\scriptscriptsize"     {return SCSCSIZE;}
 
+"\\moveleft"     {return MOVELEFT;}
+
+"\\moveright"     {return MOVERIGHT;}
+
 "\\raise"     {BEGIN(RAISEATTR); return RAISE;}
 
 "\\lower"     {BEGIN(LOWERATTR); return LOWER;}
@@ -1154,6 +1158,7 @@ int mtex2MML_displaymode = 0;
 "\\space" |
 "\\nobreakspace" { yylval=mtex2MML_copy_string("&#xA0;"); return MTEXT; }
 
+"\\mathstrut"   {return MATHSTRUT;}
 "\\phantom"     {return PHANTOM;}
 "\\vphantom"    {return VPHANTOM;}
 "\\hphantom"    {return HPHANTOM;}
