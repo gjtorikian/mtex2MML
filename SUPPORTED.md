@@ -829,6 +829,15 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\textsize`
 * `\scriptsize` (`\scriptstyle`)
 * `\scriptscriptsize` (`\scriptscriptstyle`)
+* `\oldstyle`
+* `\tiny`
+* `\small`
+* `\normalsize`
+* `\large`
+* `\Large`
+* `\LARGE`
+* `\huge`
+* `\Huge`
 * `\mathit` (`\it` and `\textit`)
 * `\mathbf` (`\boldsymbol`, `\bf`, `\textbf`)
 * `\mathrm` (`\rm` and `\textrm`)

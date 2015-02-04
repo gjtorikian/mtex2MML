@@ -1021,6 +1021,15 @@ int mtex2MML_displaymode = 0;
 "\\scriptscriptstyle" |
 "\\scriptscriptsize"     {return SCSCSIZE;}
 
+"\\tiny" { return TINY; }
+"\\small" { return SMALL; }
+"\\normalsize" { return NORMALSIZE; }
+"\\large" { return LARGE; }
+"\\Large" { return LLARGE; }
+"\\LARGE" { return LLLARGE; }
+"\\huge" { return HUGE; }
+"\\Huge" { return HHUGE; }
+
 "\\oldstyle"     {return OLDSTYLE;}
 
 "\\moveleft"     {return MOVELEFT;}
@@ -1096,6 +1105,8 @@ int mtex2MML_displaymode = 0;
 "\\end"          {BEGIN(MATHENV); return ENDENV;}
 
 "\\substack"     {return SUBSTACK;}
+
+"\\cases"        {return CASES;}
 
 "\\array"        {return ARRAY;}
 
