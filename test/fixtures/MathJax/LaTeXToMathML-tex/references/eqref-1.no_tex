@@ -1,2 +1,7 @@
- \eqref{a} \)
+$$
+\begin{equation} \label{a} a \end{equation}
+$$
+
+$$
+  \eqref{a}
 $$

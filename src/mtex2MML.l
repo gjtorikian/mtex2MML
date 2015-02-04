@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS ENCLOSEOPTS ENCLOSEATTRPARSE ENCLOSETEXTPARSE SPACEWIDTH SPACEHEIGHT SPACEDEPTH HSPACEARG TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -132,6 +132,10 @@ int mtex2MML_displaymode = 0;
 
 ")"   {yylval=mtex2MML_copy_string(yytext); return RIGHTDELIM;}
 "]"   {if(mtex2MML_inoptarg[mtex2MML_optarg_ind]==1 && mtex2MML_optarg_ind > 0) {mtex2MML_inoptarg[mtex2MML_optarg_ind]=0; mtex2MML_optarg_ind--; return OPTARGCLOSE;} else {yylval=mtex2MML_copy_string(yytext); return RIGHTDELIM;}}
+
+"\\"            {yylval=mtex2MML_copy_string("&#xA0;"); return MTEXT;}
+
+"\\_"             {yylval=mtex2MML_copy_string("_"); return MI;}
 
 "\\lbrace" |
 "\\{"           {yylval=mtex2MML_copy_string("{"); return LEFTDELIM;}
@@ -981,8 +985,6 @@ int mtex2MML_displaymode = 0;
 "\\root"         {return ROOT;}
 "\\of"           {/* Ignore */}
 
-"\\space"        {BEGIN(INT1); return SPACE;}
-
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
 "\\verb"[^ ]      {mtex2MML_verbdelim = yytext[yyleng-1]; mtex2MML_str = NULL; BEGIN(VERBTEXT); return VERBBOX;}
 
@@ -1066,6 +1068,8 @@ int mtex2MML_displaymode = 0;
 "\\hbox"        {return HBOX;}
 "\\mbox"        {return MBOX;}
 
+"\\enclose"     {BEGIN(ENCLOSEOPTS); return ENCLOSE;}
+
 "\\cal"         |
 "\\mathcal"     {BEGIN(CALLIGRAPHIC); return CAL;}
 
@@ -1117,6 +1121,7 @@ int mtex2MML_displaymode = 0;
 "\\thinspace"   {return THINSPACE;}
 
 "\\:" |
+"\\>" |
 "\\medspace"    {return MEDSPACE;}
 
 "\\;" |
@@ -1133,6 +1138,18 @@ int mtex2MML_displaymode = 0;
 
 "\\negthickspace" {return NEGTHICKSPACE;}
 
+"\\enspace"     { return ENSPACE; }
+
+"\\hskip"  |
+"\\hspace" |
+"\\mspace" |
+"\\kern"   |
+"\\mkern"  |
+"\\mskip"       { BEGIN(HSPACEARG); return HSPACE; }
+
+"\\space" |
+"\\nobreakspace" { yylval=mtex2MML_copy_string("&#xA0;"); return MTEXT; }
+
 "\\phantom"     {return PHANTOM;}
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
@@ -1142,6 +1159,8 @@ int mtex2MML_displaymode = 0;
 "\\mathbin"       {BEGIN(PLAINTEXT); return MATHBIN;}
 "\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
 "\\mtexnum"       {BEGIN(PLAINTEXT); return MTEXNUM;}
+
+"\\Space"      { BEGIN(SPACEWIDTH); return SPACECUBE; }
 
 "\\includegraphics"(\[[^\]]*\])?\{[^}]*\} ;
 
@@ -1352,7 +1371,53 @@ int mtex2MML_displaymode = 0;
 .         {return yytext[0];}
 }
 
+<ENCLOSEOPTS>{
+"\}\{"      {BEGIN(ENCLOSETEXTPARSE); return ST;}
+"\}\["      {BEGIN(ENCLOSEATTRPARSE); return ST;}
+"\{"       {return ST;}
+[a-zA-Z,]+  {yylval=mtex2MML_copy_string(yytext); return ENCLOSENOTATION;}
+[\t\n\r ]+       ;
+}
 
+<ENCLOSEATTRPARSE>{
+"\]\{"       {BEGIN(ENCLOSETEXTPARSE); return ST;}
+[a-zA-Z,=0-9]+  {yylval=mtex2MML_copy_string(yytext); return ENCLOSEATTR;}
+[\t\n\r ]+       ;
+}
+
+<ENCLOSETEXTPARSE>{
+"\}"      {BEGIN(MATH); return ST;}
+[a-zA-Z]+  {yylval=mtex2MML_copy_string(yytext); return ENCLOSETEXT;}
+[\t\n\r ]+       ;
+}
+
+<HSPACEARG>{
+"\{"      { return ST;}
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
+"\}"      {BEGIN(MATH); return ST;}
+[\t\n\r ]+       ;
+}
+
+<SPACEWIDTH>{
+"\{"      { return ST;}
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
+"\}"      {BEGIN(SPACEHEIGHT); return ST;}
+[\t\n\r ]+       ;
+}
+
+<SPACEHEIGHT>{
+"\{"      { return ST;}
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
+"\}"      {BEGIN(SPACEDEPTH); return ST;}
+[\t\n\r ]+       ;
+}
+
+<SPACEDEPTH>{
+"\{"      { return ST;}
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
+"\}"      {BEGIN(MATH); return ST;}
+[\t\n\r ]+       ;
+}
 
 %%
 

@@ -429,6 +429,8 @@ The set of extensible arrows is:
 * `\lVert`
 * `\rVert`
 * `/`
+* `\#`
+* `_`
 
 In TeX, delimiters are non-stretchy, by default. Stretchy delimiters are obtained with `\left<delim>` and `\right<delim>`. Each `\left<delim>` must be matched with a corresponding `\right<delim>`. If you don't want a visible matching delimiter, you can match with the invisible delimiters
 * `\left.` and `\right.` .
@@ -771,7 +773,7 @@ In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/T
 * `\Re`
 * `\wp`
 * `\infty` (`\infinity`)
-* `\emptyset` (`\varnothing)
+* `\emptyset` (`\varnothing`)
 * `\TeX`
 * `\LaTeX`
 
@@ -842,8 +844,13 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 
 ## Spaces
 
+* `\`
+* `\!`
+* `\$`
+* `\%`
+* `\&`
 * `\,` (`\thinspace`)
-* `\:` (`\medspace`)
+* `\:` (`\>` and `\medspace`)
 * `\;` (`\thickspace`)
 * `\quad`
 * `\qquad`
@@ -854,7 +861,12 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\mathrlap` (`\rlap`)
 * `\mathllap` (`\llap`)
 * `\mathclap` (`\clap`)
-* `\space` (Taken from [WebTeX](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec8.html#ARBSIZE "\space in the WebTeX Manual"))
+* `\space`
+* `\enspace`
+* `\hspace`
+* `\mspace`
+* `\nobreakspace`
+* `\Space`
 
 ## Accents
 
@@ -881,6 +893,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\fbox`
 * `\hbox`
 * `\mbox`
+* `\enclose`
 * `\acute`
 * `\grave`
 * `\breve`
