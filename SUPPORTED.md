@@ -858,6 +858,8 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\negmedspace`
 * `\negthickspace`
 * `\phantom`
+* `\vphantom`
+* `\hphantom`
 * `\mathrlap` (`\rlap`)
 * `\mathllap` (`\llap`)
 * `\mathclap` (`\clap`)

@@ -1151,6 +1151,8 @@ int mtex2MML_displaymode = 0;
 "\\nobreakspace" { yylval=mtex2MML_copy_string("&#xA0;"); return MTEXT; }
 
 "\\phantom"     {return PHANTOM;}
+"\\vphantom"    {return VPHANTOM;}
+"\\hphantom"    {return HPHANTOM;}
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
 
