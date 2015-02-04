@@ -827,8 +827,8 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\displaystyle`
 * `\textstyle`
 * `\textsize`
-* `\scriptsize`
-* `\scriptscriptsize`
+* `\scriptsize` (`\scriptstyle`)
+* `\scriptscriptsize` (`\scriptscriptstyle`)
 * `\mathit` (`\it` and `\textit`)
 * `\mathbf` (`\boldsymbol`, `\bf`, `\textbf`)
 * `\mathrm` (`\rm` and `\textrm`)
@@ -845,6 +845,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\raise`
 * `\moveleft`
 * `\moveright`
+* `\smash`
 
 ## Spaces
 
@@ -876,6 +877,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\hskip`
 * `\mskip`
 * `\mathstrut`
+* `\strut`
 * `\nobreakspace`
 * `\Space`
 

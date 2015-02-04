@@ -1014,9 +1014,13 @@ int mtex2MML_displaymode = 0;
 
 "\\textsize"     {return TEXTSIZE;}
 
+"\\scriptstyle" |
 "\\scriptsize"     {return SCSIZE;}
 
+"\\scriptscriptstyle" |
 "\\scriptscriptsize"     {return SCSCSIZE;}
+
+"\\oldstyle"     {return OLDSTYLE;}
 
 "\\moveleft"     {return MOVELEFT;}
 
@@ -1158,10 +1162,14 @@ int mtex2MML_displaymode = 0;
 "\\space" |
 "\\nobreakspace" { yylval=mtex2MML_copy_string("&#xA0;"); return MTEXT; }
 
+"\\strut"   {return STRUT;}
 "\\mathstrut"   {return MATHSTRUT;}
+
 "\\phantom"     {return PHANTOM;}
 "\\vphantom"    {return VPHANTOM;}
 "\\hphantom"    {return HPHANTOM;}
+
+"\\smash"       {return SMASH;}
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
 
