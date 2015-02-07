@@ -1185,8 +1185,9 @@ int mtex2MML_displaymode = 0;
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
 
-"\\operatorname"  {BEGIN(PLAINTEXT); return OPERATORNAME;}
-"\\mathop"        {BEGIN(PLAINTEXT); return MATHOP;}
+"\\operatorname"  {return OPERATORNAME;}
+"\\mathop"        {return MATHOP;}
+
 "\\mathbin"       {BEGIN(PLAINTEXT); return MATHBIN;}
 "\\mathinner"     {BEGIN(PLAINTEXT); return MATHINNER;}
 "\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}

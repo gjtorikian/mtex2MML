@@ -369,6 +369,37 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
 }
+| MATHOP closedTerm SUB closedTerm SUP closedTerm {
+  char * s1 = mtex2MML_copy3("<munderover><mrow>", $2, "</mrow>");
+  char * s2 = mtex2MML_copy3(s1, $4, $6);
+  $$ = mtex2MML_copy2(s2, "</munderover>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+}
+| OPERATORNAME closedTerm closedTerm {
+  char * s1 = mtex2MML_copy3("<mi>", $2, "</mi>");
+  $$ = mtex2MML_copy2(s1, $3);
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+}
+| OPERATORNAME closedTerm SUB closedTerm SUP closedTerm closedTerm {
+  char *s1 = mtex2MML_copy3("<msubsup><mi>", $2, "</mi>");
+  char *s2 = mtex2MML_copy3(s1, $4, $6);
+  $$ = mtex2MML_copy3(s2, "</msubsup><mo>&#x2061;</mo>", $7);
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+  mtex2MML_free_string($7);
+}
 | mob SUB closedTerm {
   if (mtex2MML_displaymode == 1) {
     char * s1 = mtex2MML_copy3("<munder>", $1, " ");
@@ -528,16 +559,8 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($3);
 }
 | closedTerm SUP closedTerm {
-  char * s1;
-  // TODO: special casing--multiple chars in should be split, eg, <mi>adas</mi>
-  // if(strstr($3, "<mi>") != NULL) {
-  //   s1 = mtex2MML_copy3("<msup>", $1, " <mstyle mathvariant=\"italic\">");
-  //   $$ = mtex2MML_copy3(s1, $3, "</mstyle></msup>");
-  // }
-  // else {
-    s1 = mtex2MML_copy3("<msup>", $1, " ");
-    $$ = mtex2MML_copy3(s1, $3, "</msup>");
-  // }
+  char * s1 = mtex2MML_copy3("<msup>", $1, " ");
+  $$ = mtex2MML_copy3(s1, $3, "</msup>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
@@ -1002,16 +1025,6 @@ mo: mob
   mtex2MML_rowposn = 2;
   $$ = mtex2MML_copy3("<mo lspace=\"verythinmathspace\">", $1, "</mo>");
   mtex2MML_free_string($1);
-}
-| OPERATORNAME TEXTSTRING {
-  mtex2MML_rowposn = 2;
-  $$ = mtex2MML_copy3("<mo lspace=\"0em\" rspace=\"thinmathspace\">", $2, "</mo>");
-  mtex2MML_free_string($2);
-}
-| MATHOP TEXTSTRING {
-  mtex2MML_rowposn = 2;
-  $$ = mtex2MML_copy3("<mo lspace=\"thinmathspace\" rspace=\"thinmathspace\">", $2, "</mo>");
-  mtex2MML_free_string($2);
 }
 | MATHBIN TEXTSTRING {
   mtex2MML_rowposn = 2;
