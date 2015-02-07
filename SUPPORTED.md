@@ -954,6 +954,7 @@ While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produ
 * `\mathop`
 * `\mathbin`
 * `\mathrel`
+* `\mathinner`
 * `\mathraisebox` (`\mathraisebox{voffset}[height][depth]{content}` works just like `\raisebox`)
 
 As in LaTeX, `\sqrt` accepts an optional argument, so that `\sqrt[3]{n+1}` is equivalent to `\root{3}{n+1}`.

@@ -1067,8 +1067,8 @@ int mtex2MML_displaymode = 0;
 "\\Bbb"        |
 "\\mathbb"       {BEGIN(BBOLD); return BB;}
 
-"\\frak"         {BEGIN(FRAKTUR); return FRAK;}
-"\\mathfrak" |
+"\\frak"       |
+"\\mathfrak"   |
 "\\mathfr"       {BEGIN(FRAKTUR); return FRAK;}
 
 "\\pmb"         {BEGIN(PMBSTRING); return PMB;}
@@ -1188,6 +1188,7 @@ int mtex2MML_displaymode = 0;
 "\\operatorname"  {BEGIN(PLAINTEXT); return OPERATORNAME;}
 "\\mathop"        {BEGIN(PLAINTEXT); return MATHOP;}
 "\\mathbin"       {BEGIN(PLAINTEXT); return MATHBIN;}
+"\\mathinner"     {BEGIN(PLAINTEXT); return MATHINNER;}
 "\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
 "\\mtexnum"       {BEGIN(PLAINTEXT); return MTEXNUM;}
 
