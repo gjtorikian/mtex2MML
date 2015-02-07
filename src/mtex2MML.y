@@ -1558,27 +1558,27 @@ calletter: CALCHAR {
 };
 
 thinspace: THINSPACE {
-  $$ = mtex2MML_copy_string("<mspace width=\"thinmathspace\"/>");
+  $$ = mtex2MML_copy_string("<mspace width=\"thinmathspace\"></mspace>");
 };
 
 medspace: MEDSPACE {
-  $$ = mtex2MML_copy_string("<mspace width=\"mediummathspace\"/>");
+  $$ = mtex2MML_copy_string("<mspace width=\"mediummathspace\"></mspace>");
 };
 
 thickspace: THICKSPACE {
-  $$ = mtex2MML_copy_string("<mspace width=\"thickmathspace\"/>");
+  $$ = mtex2MML_copy_string("<mspace width=\"thickmathspace\"></mspace>");
 };
 
 enspace: ENSPACE {
-  $$ = mtex2MML_copy_string("<mspace width=\".5em\"/>");
+  $$ = mtex2MML_copy_string("<mspace width=\".5em\"></mspace>");
 };
 
 hspace: HSPACE MROWOPEN PXSTRING MROWCLOSE {
-  $$ = mtex2MML_copy3("<mspace width=\"", $3, "\"/>");
+  $$ = mtex2MML_copy3("<mspace width=\"", $3, "\"></mspace>");
   mtex2MML_free_string($3);
 }
 | HSPACE PXSTRING {
-  $$ = mtex2MML_copy3("<mspace width=\"", $2, "\"/>");
+  $$ = mtex2MML_copy3("<mspace width=\"", $2, "\"></mspace>");
   mtex2MML_free_string($2);
 };
 
@@ -1614,7 +1614,7 @@ negthickspace: NEGTHICKSPACE {
 };
 
 strut: STRUT {
-  $$ = mtex2MML_copy_string("<mpadded width=\"0\" height=\"8.6pt\" depth=\"3pt\"><mrow /></mpadded>");
+  $$ = mtex2MML_copy_string("<mpadded width=\"0\" height=\"8.6pt\" depth=\"3pt\"><mrow></mrow></mpadded>");
 };
 
 mathstrut: MATHSTRUT {
