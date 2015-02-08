@@ -1247,7 +1247,6 @@ int mtex2MML_displaymode = 0;
 "\{Vmatrix\}" {BEGIN(MATH); return VVMATRIX;}
 "\{smallmatrix\}" {BEGIN(MATH); return SMALLMATRIX;}
 "\{cases\}" {BEGIN(MATH); return CASES;}
-"\{cases*\}" {BEGIN(MATH); return CASES;}
 "\{aligned\}[" {BEGIN(ENVOPTIONS); return ALIGNED;}
 "\{aligned\}" {BEGIN(MATH); return ALIGNED;}
 "\{align\}" {BEGIN(MATH); return ALIGNENV;}
@@ -1261,7 +1260,6 @@ int mtex2MML_displaymode = 0;
 "\{gathered\}" {BEGIN(MATH); return GATHERED;}
 "\{split\}" {BEGIN(MATH); return ALIGNED;}
 "\{array\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
-"\{array*\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{svg\}" {mtex2MML_env_start = 0; BEGIN(SVGENV); return SVG;}
 }
 
