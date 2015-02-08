@@ -2822,6 +2822,12 @@ const char *format_additions(const char *buffer) {
   env_replacements(&environment_data_stack, &encase, buffer);
 }
 
+char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start)
+{
+  global_label = global_start;
+  return mtex2MML_parse(buffer, length);
+}
+
 char * mtex2MML_parse (const char * buffer, unsigned long length)
 {
   char * mathml = 0;

@@ -29,9 +29,11 @@ There are two main differences between mtex and TeX:
 
 This library exposes the following methods:
 
-* `mtex2MML_html_filter(str)`: Converts all `$..$` / `$$..$$` TeX equations in `str` to MathML, passing the rest of the string unmodified. Returns the converted string.
+* `mtex2MML_filter(str, strlen)`: Converts all `$..$` / `$$..$$` TeX equations in `str` to MathML. Returns just the MathML equation(s), as a string.
 
-* `mtex2MML_filter(str)`: Converts all `$..$` / `$$..$$` TeX equations in `str` to MathML. Returns just the MathML equation(s), as a string.
+* `mtex2MML_global_parse(str, strlen, global_start)`: The same as `mtex2MML_filter`, but allows you to provide a starting integer for equation numbering.
+
+* `mtex2MML_html_filter(str, strlen)`: Converts all `$..$` / `$$..$$` TeX equations in `str` to MathML, passing the rest of the string unmodified. Returns the converted string.
 
 ## What's supported?
 
