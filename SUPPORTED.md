@@ -19,15 +19,21 @@ where `env` is one of
 * `cases`
 * `aligned`
 * `align`
+* `align*`
+* `alignat`
+* `alignat*`
 * `alignedat`
+* `alignedat*`
 * `gather`
+* `gather*`
 * `gathered`
 * `equation`
+* `equation*`
+* `eqalign`
+* `eqalignno`
 * `split`
 * `array`
 * `svg`
-
-The `*` notation (where applicable) is currently not supported; no equations are numbered.
 
 ### Horizontal lines
 

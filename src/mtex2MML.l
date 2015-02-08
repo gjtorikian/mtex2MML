@@ -1102,6 +1102,10 @@ int mtex2MML_displaymode = 0;
 
 "\\cases"        {return CASES;}
 
+"\\eqalign"      {return EQALIGN;}
+
+"\\eqalignno"      {return EQALIGNNO;}
+
 "\\array"        {return ARRAY;}
 
 "\\arrayopts"    {return ARRAYOPTS;}
