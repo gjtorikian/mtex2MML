@@ -35,6 +35,9 @@ extern void (*mtex2MML_error) (const char * msg);                          /* de
 
 /* Other stuff:
  */
+
+extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start);
+
 extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
 extern void   mtex2MML_restart ();
