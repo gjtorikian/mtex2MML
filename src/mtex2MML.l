@@ -1095,12 +1095,6 @@ int mtex2MML_displaymode = 0;
 "\\cal"         |
 "\\mathcal"     {BEGIN(CALLIGRAPHIC); return CAL;}
 
-"\\begin\{equation\}" |
-"\\end\{equation\}"   { /* Ignore */ }
-
-"\\begin\{equation*\}" |
-"\\end\{equation*\}"   { /* Ignore */ }
-
 "\\begin"        {mtex2MML_env_start = 1; BEGIN(MATHENV); return BEGINENV;}
 "\\end"          {BEGIN(MATHENV); return ENDENV;}
 
@@ -1239,6 +1233,7 @@ int mtex2MML_displaymode = 0;
 }
 
 <MATHENV>{
+"\{equation\}" { BEGIN(MATH); return EQUATION;}
 "\{matrix\}" {BEGIN(MATH); return MATRIX;}
 "\{matrix*\}" {BEGIN(MATH); return MATRIX;}
 "\{pmatrix\}" {BEGIN(MATH); return PMATRIX;}
