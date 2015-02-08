@@ -1022,6 +1022,7 @@ int mtex2MML_displaymode = 0;
 "\\scriptscriptsize"     {return SCSCSIZE;}
 
 "\\tiny" { return TINY; }
+"\\Tiny" { return TTINY; }
 "\\small" { return SMALL; }
 "\\normalsize" { return NORMALSIZE; }
 "\\large" { return LARGE; }
