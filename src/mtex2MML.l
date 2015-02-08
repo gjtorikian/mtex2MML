@@ -1234,40 +1234,28 @@ int mtex2MML_displaymode = 0;
 
 <MATHENV>{
 "\{equation\}" { BEGIN(MATH); return EQUATION;}
+"\{equation*\}" { BEGIN(MATH); return EQUATION_STAR;}
 "\{matrix\}" {BEGIN(MATH); return MATRIX;}
-"\{matrix*\}" {BEGIN(MATH); return MATRIX;}
 "\{pmatrix\}" {BEGIN(MATH); return PMATRIX;}
-"\{pmatrix*\}" {BEGIN(MATH); return PMATRIX;}
 "\{bmatrix\}" {BEGIN(MATH); return BMATRIX;}
-"\{bmatrix*\}" {BEGIN(MATH); return BMATRIX;}
 "\{Bmatrix\}" {BEGIN(MATH); return BBMATRIX;}
-"\{Bmatrix*\}" {BEGIN(MATH); return BBMATRIX;}
 "\{vmatrix\}" {BEGIN(MATH); return VMATRIX;}
-"\{vmatrix*\}" {BEGIN(MATH); return VMATRIX;}
 "\{Vmatrix\}" {BEGIN(MATH); return VVMATRIX;}
-"\{Vmatrix*\}" {BEGIN(MATH); return VVMATRIX;}
 "\{smallmatrix\}" {BEGIN(MATH); return SMALLMATRIX;}
-"\{smallmatrix*\}" {BEGIN(MATH); return SMALLMATRIX;}
 "\{cases\}" {BEGIN(MATH); return CASES;}
 "\{cases*\}" {BEGIN(MATH); return CASES;}
 "\{aligned\}[" {BEGIN(ENVOPTIONS); return ALIGNED;}
-"\{aligned*\}[" {BEGIN(ENVOPTIONS); return ALIGNED;}
 "\{aligned\}" {BEGIN(MATH); return ALIGNED;}
-"\{aligned*\}" {BEGIN(MATH); return ALIGNED;}
-"\{align\}" {BEGIN(MATH); return ALIGNED;}
-"\{align*\}" {BEGIN(MATH); return ALIGNED;}
+"\{align\}" {BEGIN(MATH); return ALIGNENV;}
+"\{align*\}" {BEGIN(MATH); return ALIGNENV_STAR;}
 "\{alignat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
-"\{alignat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
+"\{alignat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT_STAR;}
 "\{alignedat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
-"\{alignedat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
-"\{gather\}" {BEGIN(MATH); return GATHERED;}
-"\{gather*\}" {BEGIN(MATH); return GATHERED;}
+"\{gather\}" {BEGIN(MATH); return GATHER;}
+"\{gather*\}" {BEGIN(MATH); return GATHER_STAR;}
 "\{gathered\}[" {BEGIN(ENVOPTIONS); return GATHERED;}
-"\{gathered*\}[" {BEGIN(ENVOPTIONS); return GATHERED;}
 "\{gathered\}" {BEGIN(MATH); return GATHERED;}
-"\{gathered*\}" {BEGIN(MATH); return GATHERED;}
 "\{split\}" {BEGIN(MATH); return ALIGNED;}
-"\{split*\}" {BEGIN(MATH); return ALIGNED;}
 "\{array\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{array*\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{svg\}" {mtex2MML_env_start = 0; BEGIN(SVGENV); return SVG;}

@@ -4,7 +4,7 @@ MATHJAX_TEST_TEST_DIR = File.join('test', 'fixtures', 'MathJax')
 MATHJAX_TEST_TEX_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-tex')
 MATHJAX_TEST_OUT_DIR = File.join(MATHJAX_TEST_TEST_DIR, 'LaTeXToMathML-out')
 # stuff we just plain won't do
-IGNORED_DIRS = %r(macro|mhchem)
+IGNORED_DIRS = /macro|mhchem/
 
 def filter_array(array)
   array.select { |a| IGNORED_DIRS !~ a }

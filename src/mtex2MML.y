@@ -278,7 +278,10 @@ struct css_colors *colors = NULL;
    char * n = (char *) malloc(256);
    snprintf(n, 256, "%d", global_label);
    global_label++;
-   return n;
+   char *prefix = mtex2MML_copy3("<mtable side=\"right\"><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
+   mtex2MML_free_string(n);
+
+   return prefix;
  }
 
  /* Create a hex character reference string corresponding to code
@@ -300,7 +303,7 @@ struct css_colors *colors = NULL;
 %}
 
 %left TEXOVER TEXOVERWITHDELIMS TEXATOP TEXATOPWITHDELIMS TEXABOVE TEXABOVEWITHDELIMS
-%token CHAR STARTMATH STARTDMATH ENDMATH MTEXT MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MATHINNER MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY SPACECUBE HSPACE MOVELEFT MOVERIGHT RAISE RAISESTRING LOWER LOWERSTRING PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT ENCLOSE ENCLOSENOTATION ENCLOSEATTR ENCLOSETEXT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE OLDSTYLE SCSIZE SCSCSIZE TINY SMALL NORMALSIZE LARGE LLARGE LLLARGE HUGE HHUGE DISPLAY TEXTSTY SCRIPTSCRIPTSTYLE TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE ENSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE STRUT MATHSTRUT SMASH PHANTOM HPHANTOM VPHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV EQUATION MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
+%token CHAR STARTMATH STARTDMATH ENDMATH MTEXT MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MATHINNER MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY SPACECUBE HSPACE MOVELEFT MOVERIGHT RAISE RAISESTRING LOWER LOWERSTRING PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT ENCLOSE ENCLOSENOTATION ENCLOSEATTR ENCLOSETEXT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE OLDSTYLE SCSIZE SCSCSIZE TINY SMALL NORMALSIZE LARGE LLARGE LLLARGE HUGE HHUGE DISPLAY TEXTSTY SCRIPTSCRIPTSTYLE TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE ENSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE STRUT MATHSTRUT SMASH PHANTOM HPHANTOM VPHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV EQUATION EQUATION_STAR MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNENV ALIGNENV_STAR ALIGNAT ALIGNAT_STAR ALIGNEDAT GATHERED GATHER_STAR GATHER SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
 
 %%
 
@@ -2203,12 +2206,15 @@ emptymrow: EMPTYMROW {
 
 mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * n = mtex2MML_global_label();
-  char * s1 = mtex2MML_copy3("<mtable side=\"right\"><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
-  $$ = mtex2MML_copy3(s1, $3, "</mtd></mlabeledtr></mtable>");
+  $$ = mtex2MML_copy3(n, $3, "</mtd></mlabeledtr></mtable>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(n);
-  mtex2MML_free_string(s1);
+}
+| BEGINENV EQUATION_STAR compoundTermList ENDENV EQUATION_STAR {
+  $$ = mtex2MML_copy3("<mtable side=\"right\"><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
+
+  mtex2MML_free_string($3);
 }
 | BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char *row_data = combine_row_data(&environment_data_stack);
@@ -2240,6 +2246,35 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   mtex2MML_free_string(row_data);
 }
 | BEGINENV GATHERED tableRowList ENDENV GATHERED {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV GATHER tableRowList ENDENV GATHER {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $$, "</mtd></mlabeledtr></mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV GATHER_STAR tableRowList ENDENV GATHER_STAR {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
@@ -2372,7 +2407,52 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
 }
+| BEGINENV ALIGNENV tableRowList ENDENV ALIGNENV {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $$, "</mtd></mlabeledtr></mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNENV_STAR tableRowList ENDENV ALIGNENV_STAR {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
 | BEGINENV ALIGNAT ALIGNATVALUE END tableRowList ENDENV ALIGNAT {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $$, "</mtd></mlabeledtr></mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($5);
+  mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNAT_STAR ALIGNATVALUE END tableRowList ENDENV ALIGNAT_STAR {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
@@ -2738,8 +2818,6 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
   utarray_free(environment_data_stack);
 
-  global_label = 0;
-
   struct css_colors *c = NULL, *tmp;
 
   HASH_ITER(hh, colors, c, tmp) {
@@ -2758,6 +2836,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
 int mtex2MML_filter (const char * buffer, unsigned long length)
 {
+  global_label = 1;
   format_additions(buffer);
   mtex2MML_setup (buffer, length);
   mtex2MML_restart ();
