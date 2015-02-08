@@ -32,7 +32,7 @@ struct css_colors *colors = NULL;
 
  extern char * yytext;
 
- extern int global_label = 0;
+ extern int global_label = 1;
 
  static void mtex2MML_default_error (const char * msg)
    {
@@ -2203,12 +2203,12 @@ emptymrow: EMPTYMROW {
 
 mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * n = mtex2MML_global_label();
-  char * s1 = mtex2MML_copy3("<mtable side=\"left\"><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
+  char * s1 = mtex2MML_copy3("<mtable side=\"right\"><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
   $$ = mtex2MML_copy3(s1, $3, "</mtd></mlabeledtr></mtable>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(s1);
   mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
 }
 | BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char *row_data = combine_row_data(&environment_data_stack);
