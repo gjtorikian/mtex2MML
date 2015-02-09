@@ -278,7 +278,7 @@ struct css_colors *colors = NULL;
    char * n = (char *) malloc(256);
    snprintf(n, 256, "%d", global_label);
    global_label++;
-   char *prefix = mtex2MML_copy3("<mtable side=\"right\"><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
+   char *prefix = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
    mtex2MML_free_string(n);
 
    return prefix;
@@ -2220,7 +2220,7 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   mtex2MML_free_string(n);
 }
 | BEGINENV EQUATION_STAR compoundTermList ENDENV EQUATION_STAR {
-  $$ = mtex2MML_copy3("<mtable side=\"right\"><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
+  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
 
   mtex2MML_free_string($3);
 }
