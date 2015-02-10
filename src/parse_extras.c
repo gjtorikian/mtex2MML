@@ -5,7 +5,7 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-void env_replacements(UT_array **environment_data_stack, const char *environment)
+void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
 {
   UT_array *array_stack;
   UT_array *row_spacing_stack;
@@ -17,6 +17,8 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
   char *a, *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
+              *cr_separator = "\\cr",
+              *newline_separator = "\\newline",
                *em_pattern_begin = "\\[", *em_pattern_end = "]",
                 *is_smallmatrix = NULL, *is_gathered = NULL;
 
@@ -46,7 +48,13 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
         at_top = strstr(*last_stack_item, from);
 
         // we've reached the top, but there looks like there might be some data
-        if (at_top != NULL && strstr(*last_stack_item, line_separator) == NULL) {
+        if (at_top != NULL && strstr(*last_stack_item, line_separator) == NULL && \
+           strstr(*last_stack_item, cr_separator) == NULL && \
+           strstr(*last_stack_item, newline_separator) == NULL) {
+          if (strstr(*last_stack_item, hline) != NULL || strstr(*last_stack_item, hdashline) != NULL) {
+            *encase = TOPENCLOSE;
+          }
+
           break;
         }
 
@@ -69,7 +77,9 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
         }
 
         // if there's a line break...
-        if (strstr(*last_stack_item, line_separator) != NULL) {
+        if (strstr(*last_stack_item, line_separator) != NULL || \
+           strstr(*last_stack_item, cr_separator) != NULL || \
+           strstr(*last_stack_item, newline_separator) != NULL) {
           // when an emphasis match, add it...
           if ( (tok = strstr(*last_stack_item, em_pattern_begin)) != NULL) {
             temp = tok + 2; // skip the first part ("\[")
@@ -106,8 +116,7 @@ void env_replacements(UT_array **environment_data_stack, const char *environment
         is_gathered = strstr(at_top, "\\begin{gathered}");
       }
 
-      // TODO: we are skipping equation environments
-      if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack)) && strstr(*last_stack_item, "\\begin{equation}") == NULL) {
+      if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
         perform_replacement(environment_data_stack, rowlines_stack, is_smallmatrix, is_gathered, row_spacing_stack);
       }
 

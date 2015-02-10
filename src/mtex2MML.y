@@ -7,6 +7,7 @@
 
 #include "mtex2MML.h"
 #include "parse_extras.h"
+#include "string_extras.h"
 
 #include "deps/uthash/uthash.h"
 
@@ -25,9 +26,13 @@ struct css_colors *colors = NULL;
 
  UT_array *environment_data_stack;
 
+ encaseType * encase = NONE;
+
  extern int yylex ();
 
  extern char * yytext;
+
+ extern int global_label = 1;
 
  static void mtex2MML_default_error (const char * msg)
    {
@@ -131,7 +136,7 @@ struct css_colors *colors = NULL;
     void (*mtex2MML_write_mathml) (const char * mathml) = mtex2MML_default_write_mathml;
 #endif
 
- char * mtex2MML_empty_string = "";
+ char * mtex2MML_empty_string = (char *) "";
 
  /* Create a copy of a string, adding space for extra chars
   */
@@ -268,6 +273,17 @@ struct css_colors *colors = NULL;
      return copy ? copy : mtex2MML_empty_string;
    }
 
+ /* Returns a string representation of the global_label, and increments the label */
+ char * mtex2MML_global_label() {
+   char * n = (char *) malloc(256);
+   snprintf(n, 256, "%d", global_label);
+   global_label++;
+   char *prefix = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>(", n, ")</mtext></mtd><mtd>");
+   mtex2MML_free_string(n);
+
+   return prefix;
+ }
+
  /* Create a hex character reference string corresponding to code
   */
  char * mtex2MML_character_reference (unsigned long int code)
@@ -287,7 +303,7 @@ struct css_colors *colors = NULL;
 %}
 
 %left TEXOVER TEXOVERWITHDELIMS TEXATOP TEXATOPWITHDELIMS TEXABOVE TEXABOVEWITHDELIMS
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNAT ALIGNEDAT GATHERED SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
+%token CHAR STARTMATH STARTDMATH ENDMATH MTEXT MI MIB MN MO LIMITS NOLIMITS SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL BIGM BBIGM BIGGM BBIGGM FRAC TFRAC DFRAC OPERATORNAME MATHOP MATHBIN MATHREL MATHINNER MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM BRACE BRACK CHOOSE DBINOM UNDER OVER OVERBRACE OVERBRACKET UNDERLINE UNDERBRACE UNDERBRACKET UNDEROVER TENSOR MULTI ALIGNATVALUE ARRAYALIGN COLUMNALIGN ARRAY SPACECUBE HSPACE MOVELEFT MOVERIGHT RAISE RAISESTRING LOWER LOWERSTRING PXSTRING COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS SANS TT ENCLOSE ENCLOSENOTATION ENCLOSEATTR ENCLOSETEXT BOLD BOXED FBOX HBOX MBOX BCANCELED XCANCELED CANCELEDTO NOT SLASHED PMB SCR RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE OLDSTYLE SCSIZE SCSCSIZE TINY TTINY SMALL NORMALSIZE LARGE LLARGE LLLARGE HUGE HHUGE DISPLAY TEXTSTY SCRIPTSCRIPTSTYLE TEXTBOX TEXTSTRING VERBBOX VERBSTRING ACUTE GRAVE BREVE MATHRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE ENSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE NEGMEDSPACE NEGTHICKSPACE STRUT MATHSTRUT SMASH PHANTOM HPHANTOM VPHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE TOGGLESTART TOGGLEEND FGHIGHLIGHT BGHIGHLIGHT COLORBOX SPACE PIXSIZE INTONE INTTWO INTTHREE OVERLEFTARROW OVERLEFTRIGHTARROW OVERRIGHTARROW UNDERLEFTARROW UNDERLEFTRIGHTARROW UNDERRIGHTARROW BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV EQUATION EQUATION_STAR EQALIGN EQALIGNNO MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED ALIGNENV ALIGNENV_STAR ALIGNAT ALIGNAT_STAR ALIGNEDAT GATHERED GATHER_STAR GATHER SUBSTACK BMOD PMOD POD RMCHAR SCRCHAR PMBCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE MTEXNUM RAISEBOX NEG LATEXSYMBOL TEXSYMBOL VARINJLIM VARLIMINF VARLIMSUP VARPROJLIM
 
 %%
 
@@ -365,6 +381,37 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
+}
+| MATHOP closedTerm SUB closedTerm SUP closedTerm {
+  char * s1 = mtex2MML_copy3("<munderover><mrow>", $2, "</mrow>");
+  char * s2 = mtex2MML_copy3(s1, $4, $6);
+  $$ = mtex2MML_copy2(s2, "</munderover>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+}
+| OPERATORNAME closedTerm closedTerm {
+  char * s1 = mtex2MML_copy3("<mi>", $2, "</mi>");
+  $$ = mtex2MML_copy2(s1, $3);
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+}
+| OPERATORNAME closedTerm SUB closedTerm SUP closedTerm closedTerm {
+  char *s1 = mtex2MML_copy3("<msubsup><mi>", $2, "</mi>");
+  char *s2 = mtex2MML_copy3(s1, $4, $6);
+  $$ = mtex2MML_copy3(s2, "</msubsup><mo>&#x2061;</mo>", $7);
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+  mtex2MML_free_string($7);
 }
 | mob SUB closedTerm {
   if (mtex2MML_displaymode == 1) {
@@ -545,9 +592,16 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
 };
 
 closedTerm: array
+| cases
+| eqalign
+| eqalignno
 | unaryminus
 | unaryplus
 | mib
+| mtext {
+  $$ = mtex2MML_copy3("<mtext>", $1, "</mtext>");
+  mtex2MML_free_string($1);
+}
 | mi {
   $$ = mtex2MML_copy3("<mi>", $1, "</mi>");
   mtex2MML_free_string($1);
@@ -560,8 +614,8 @@ closedTerm: array
 | tensor
 | multi
 | mfrac
+| enclose
 | binom
-| boxed
 | brace
 | brack
 | choose
@@ -603,7 +657,21 @@ closedTerm: array
 | textstyle
 | textsize
 | scriptsize
+| tiny
+| ttiny
+| small
+| normalsize
+| large
+| llarge
+| lllarge
+| huge
+| hhuge
 | scriptscriptsize
+| oldstyle
+| moveleft
+| moveright
+| raise
+| lower
 | italics
 | sans
 | mono
@@ -632,12 +700,19 @@ closedTerm: array
 | thinspace
 | medspace
 | thickspace
+| enspace
+| spacecube
 | quad
 | qquad
 | negspace
 | negmedspace
 | negthickspace
+| strut
+| mathstrut
+| smash
 | phantom
+| hphantom
+| vphantom
 | tex
 | latex
 | varinjlim
@@ -652,6 +727,7 @@ closedTerm: array
 | bghighlight
 | colorbox
 | color
+| hspace
 | texover
 | texoverwithdelims
 | texatop
@@ -873,6 +949,8 @@ varprojlm: VARPROJLIM {
 
 mi: MI;
 
+mtext: MTEXT;
+
 mib: MIB {
   mtex2MML_rowposn=2;
   $$ = mtex2MML_copy3("<mi>", $1, "</mi>");
@@ -964,17 +1042,12 @@ mo: mob
   $$ = mtex2MML_copy3("<mo lspace=\"verythinmathspace\">", $1, "</mo>");
   mtex2MML_free_string($1);
 }
-| OPERATORNAME TEXTSTRING {
-  mtex2MML_rowposn = 2;
-  $$ = mtex2MML_copy3("<mo lspace=\"0em\" rspace=\"thinmathspace\">", $2, "</mo>");
-  mtex2MML_free_string($2);
-}
-| MATHOP TEXTSTRING {
-  mtex2MML_rowposn = 2;
-  $$ = mtex2MML_copy3("<mo lspace=\"thinmathspace\" rspace=\"thinmathspace\">", $2, "</mo>");
-  mtex2MML_free_string($2);
-}
 | MATHBIN TEXTSTRING {
+  mtex2MML_rowposn = 2;
+  $$ = mtex2MML_copy3("<mo lspace=\"mediummathspace\" rspace=\"mediummathspace\">", $2, "</mo>");
+  mtex2MML_free_string($2);
+}
+| MATHINNER TEXTSTRING {
   mtex2MML_rowposn = 2;
   $$ = mtex2MML_copy3("<mo lspace=\"mediummathspace\" rspace=\"mediummathspace\">", $2, "</mo>");
   mtex2MML_free_string($2);
@@ -1122,6 +1195,144 @@ scriptscriptsize: SCSCSIZE compoundTermList {
   mtex2MML_free_string($2);
 };
 
+oldstyle: OLDSTYLE compoundTermList {
+  $$ = mtex2MML_copy3("<mi mathvariant=\"normal\">", $2, "</mi>");
+  mtex2MML_free_string($2);
+};
+
+tiny: TINY compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"0.5em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+ttiny: TTINY compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"0.6em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+small: SMALL compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"0.85em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+normalsize: NORMALSIZE compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"1em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+large: LARGE compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"1.2em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+llarge: LLARGE compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"1.44em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+lllarge: LLLARGE compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"1.73em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+huge: HUGE compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"2.07em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+hhuge: HHUGE compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle mathsize=\"2.49em\">", $2, "</mstyle>");
+  mtex2MML_free_string($2);
+};
+
+lower: LOWER MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded height=\"-", $3, "\" depth=\"+");
+  char * s2 = mtex2MML_copy3(s1, $3, "\" voffset=\"-");
+  char * s3 = mtex2MML_copy3(s2, $3, "\">");
+  $$ = mtex2MML_copy3(s3, $5, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| LOWER PXSTRING closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded height=\"-", $2, "\" depth=\"+");
+  char * s2 = mtex2MML_copy3(s1, $2, "\" voffset=\"-");
+  char * s3 = mtex2MML_copy3(s2, $2, "\">");
+  $$ = mtex2MML_copy3(s3, $3, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+};
+
+moveleft: MOVELEFT MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mspace width=\"-", $3, "\"/>");
+  char * s2 = mtex2MML_copy3(s1, $5, "<mspace width=\"");
+  $$        = mtex2MML_copy3(s2, $3, "\"/>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| MOVELEFT PXSTRING closedTerm {
+  char * s1 = mtex2MML_copy3("<mspace width=\"-", $2, "\"/>");
+  char * s2 = mtex2MML_copy3(s1, $3, "<mspace width=\"");
+  $$        = mtex2MML_copy3(s2, $2, "\"/>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+};
+
+moveright: MOVERIGHT MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mspace width=\"", $3, "\"/>");
+  char * s2 = mtex2MML_copy3(s1, $5, "<mspace width=\"-");
+  $$        = mtex2MML_copy3(s2, $3, "\"/>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| MOVERIGHT PXSTRING closedTerm {
+  char * s1 = mtex2MML_copy3("<mspace width=\"", $2, "\"/>");
+  char * s2 = mtex2MML_copy3(s1, $3, "<mspace width=\"-");
+  $$        = mtex2MML_copy3(s2, $2, "\"/>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+};
+
+raise: RAISE MROWOPEN PXSTRING MROWCLOSE closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded height=\"+", $3, "\" depth=\"-");
+  char * s2 = mtex2MML_copy3(s1, $3, "\" voffset=\"+");
+  char * s3 = mtex2MML_copy3(s2, $3, "\">");
+  $$ = mtex2MML_copy3(s3, $5, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| RAISE PXSTRING closedTerm {
+  char * s1 = mtex2MML_copy3("<mpadded height=\"+", $2, "\" depth=\"-");
+  char * s2 = mtex2MML_copy3(s1, $2, "\" voffset=\"+");
+  char * s3 = mtex2MML_copy3(s2, $2, "\">");
+  $$ = mtex2MML_copy3(s3, $3, "</mpadded>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string(s3);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($3);
+};
+
 italics: ITALICS closedTerm {
   $$ = mtex2MML_copy3("<mstyle mathvariant=\"italic\">", $2, "</mstyle>");
   mtex2MML_free_string($2);
@@ -1164,6 +1375,34 @@ canceledto: CANCELEDTO closedTerm closedTerm {
   mtex2MML_free_string($2);
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
+};
+
+enclose: ENCLOSE ST ENCLOSENOTATION ST ENCLOSETEXT ST {
+  char * notation = str_replace($3, ",", " ");
+  char * s1 = mtex2MML_copy3("<menclose notation=\"", notation, "\"><mi>");
+  $$ = mtex2MML_copy3(s1, $5, "</mi></menclose>");
+  mtex2MML_free_string(notation);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+}
+| ENCLOSE ST ENCLOSENOTATION ST ENCLOSEATTR ST ENCLOSETEXT ST {
+  char * notation = str_replace($3, ",", " ");
+  char * attr = str_replace($5, ",", " ");
+  if (strstr(attr, "arrow=1") != NULL) {
+    attr = str_replace($5, "arrow=1", "");
+    notation = mtex2MML_copy2(notation, " updiagonalarrow");
+  }
+  char * s1 = mtex2MML_copy3("<menclose notation=\"", notation, "\" ");
+  char * s2 = mtex2MML_copy3(s1, attr, "><mi>");
+  $$ = mtex2MML_copy3(s2, $7, "</mi></menclose>");
+  mtex2MML_free_string(notation);
+  mtex2MML_free_string(attr);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($5);
+  mtex2MML_free_string($7);
 };
 
 boxed: BOXED closedTerm {
@@ -1351,6 +1590,30 @@ thickspace: THICKSPACE {
   $$ = mtex2MML_copy_string("<mspace width=\"thickmathspace\"/>");
 };
 
+enspace: ENSPACE {
+  $$ = mtex2MML_copy_string("<mspace width=\".5em\"/>");
+};
+
+hspace: HSPACE MROWOPEN PXSTRING MROWCLOSE {
+  $$ = mtex2MML_copy3("<mspace width=\"", $3, "\"/>");
+  mtex2MML_free_string($3);
+}
+| HSPACE PXSTRING {
+  $$ = mtex2MML_copy3("<mspace width=\"", $2, "\"/>");
+  mtex2MML_free_string($2);
+};
+
+spacecube: SPACECUBE ST PXSTRING ST ST PXSTRING ST ST PXSTRING ST {
+  char * s1 = mtex2MML_copy3("<mspace width=\"", $3, "\" height=\"");
+  char * s2 = mtex2MML_copy3(s1, $6, "\" depth=\"");
+  $$ = mtex2MML_copy3(s2, $9, "\"/>");
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($6);
+  mtex2MML_free_string($9);
+};
+
 quad: QUAD {
   $$ = mtex2MML_copy_string("<mspace width=\"1em\"/>");
 };
@@ -1371,17 +1634,40 @@ negthickspace: NEGTHICKSPACE {
   $$ = mtex2MML_copy_string("<mspace width=\"negativethickmathspace\"/>");
 };
 
+strut: STRUT {
+  $$ = mtex2MML_copy_string("<mpadded width=\"0\" height=\"8.6pt\" depth=\"3pt\"><mrow /></mpadded>");
+};
+
+mathstrut: MATHSTRUT {
+  $$ = mtex2MML_copy_string("<mpadded width=\"0\"><mphantom><mo stretchy=\"false\">(</mo></mphantom></mpadded>");
+};
+
+smash: SMASH closedTerm {
+  $$ = mtex2MML_copy3("<mpadded height=\"0\" depth=\"0\">", $2, "</mpadded>");
+  mtex2MML_free_string($2);
+};
+
 phantom: PHANTOM closedTerm {
   $$ = mtex2MML_copy3("<mphantom>", $2, "</mphantom>");
   mtex2MML_free_string($2);
 };
 
+hphantom: HPHANTOM closedTerm {
+  $$ = mtex2MML_copy3("<mpadded height=\"0\" depth=\"0\"><mphantom>", $2, "</mphantom></mpadded>");
+  mtex2MML_free_string($2);
+};
+
+vphantom: VPHANTOM closedTerm {
+  $$ = mtex2MML_copy3("<mpadded width=\"0\"><mphantom>", $2, "</mphantom></mpadded>");
+  mtex2MML_free_string($2);
+};
+
 tex: TEXSYMBOL {
-  $$ = mtex2MML_copy_string("<mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+  $$ = mtex2MML_copy_string("<mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
 };
 
 latex: LATEXSYMBOL {
-  $$ = mtex2MML_copy_string("<mi>L</mi><mspace width=\"-.325em\"></mspace><mpadded height=\"+.21em\" depth=\"-.21em\" voffset=\"+.21em\"><mrow class=\"MJX-TeXAtom-ORD\"><mstyle scriptlevel=\"1\" displaystyle=\"false\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>A</mi></mrow></mstyle></mrow></mpadded><mspace width=\"-.17em\"></mspace><mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow class=\"MJX-TeXAtom-ORD\"><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
+  $$ = mtex2MML_copy_string("<mi>L</mi><mspace width=\"-.325em\"></mspace><mpadded height=\"+.21em\" depth=\"-.21em\" voffset=\"+.21em\"><mrow><mstyle scriptlevel=\"1\" displaystyle=\"false\"><mrow><mi>A</mi></mrow></mstyle></mrow></mpadded><mspace width=\"-.17em\"></mspace><mi>T</mi><mspace width=\"-.14em\"></mspace><mpadded height=\"-.5ex\" depth=\"+.5ex\" voffset=\"-.5ex\"><mrow><mi>E</mi></mrow></mpadded><mspace width=\"-.115em\"></mspace><mi>X</mi>");
 };
 
 href: HREF TEXTSTRING closedTerm {
@@ -1926,11 +2212,27 @@ emptymrow: EMPTYMROW {
   $$ = mtex2MML_copy_string("<mrow/>");
 };
 
-mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
+mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $3, "</mtd></mlabeledtr></mtable>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(n);
+}
+| BEGINENV EQUATION_STAR compoundTermList ENDENV EQUATION_STAR {
+  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
+
+  mtex2MML_free_string($3);
+}
+| BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -1941,6 +2243,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
   $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
@@ -1952,6 +2258,39 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV GATHER tableRowList ENDENV GATHER {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $$, "</mtd></mlabeledtr></mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV GATHER_STAR tableRowList ENDENV GATHER_STAR {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -1961,6 +2300,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -1970,6 +2313,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -1979,6 +2326,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -1988,6 +2339,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -1997,6 +2352,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2006,6 +2365,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2015,6 +2378,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2025,6 +2392,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
   $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
@@ -2036,7 +2407,69 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNENV tableRowList ENDENV ALIGNENV {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $$, "</mtd></mlabeledtr></mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNENV_STAR tableRowList ENDENV ALIGNENV_STAR {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($3);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNAT ALIGNATVALUE END tableRowList ENDENV ALIGNAT {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+  char * n = mtex2MML_global_label();
+  $$ = mtex2MML_copy3(n, $$, "</mtd></mlabeledtr></mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($5);
+  mtex2MML_free_string(n);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(row_data);
+}
+| BEGINENV ALIGNAT_STAR ALIGNATVALUE END tableRowList ENDENV ALIGNAT_STAR {
+  char *row_data = combine_row_data(&environment_data_stack);
+
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
+  mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
 }
@@ -2045,6 +2478,10 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2059,6 +2496,9 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s3 = mtex2MML_copy3(s2, column_align, "\" ");
   char * s4 = mtex2MML_copy3(s3, pipe_chars, "\">");
   $$ = mtex2MML_copy3(s4, $7, "</mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2080,6 +2520,9 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
   char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
   $$ = mtex2MML_copy3(s3, $6, "</mtable>");
+
+  if (encase == TOPENCLOSE)
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2123,6 +2566,21 @@ array: ARRAY MROWOPEN tableRowList MROWCLOSE {
   mtex2MML_free_string(s1);
   mtex2MML_free_string($5);
   mtex2MML_free_string($7);
+};
+
+cases: CASES MROWOPEN tableRowList MROWCLOSE {
+  $$ = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\">", $3, "</mtable></mrow></mrow>");
+  mtex2MML_free_string($3);
+};
+
+eqalign: EQALIGN MROWOPEN tableRowList MROWCLOSE {
+  $$ = mtex2MML_copy3("<mtable columnalign=\"right left\" rowspacing=\".5em\" columnspacing=\"thickmathspace\" displaystyle=\"true\">", $3, "</mtable></mrow></mrow>");
+  mtex2MML_free_string($3);
+};
+
+eqalignno: EQALIGNNO MROWOPEN tableRowList MROWCLOSE {
+  $$ = mtex2MML_copy3("<mtable columnalign=\"right left right\" rowspacing=\".5em\" columnspacing=\"thickmathspace 3em\" displaystyle=\"true\">", $3, "</mtable></mrow></mrow>");
+  mtex2MML_free_string($3);
 };
 
 arrayopts: anarrayopt {
@@ -2360,7 +2818,14 @@ const char *format_additions(const char *buffer) {
   if (colors == NULL)
     create_css_colors(&colors);
 
-  env_replacements(&environment_data_stack, buffer);
+  encase = NONE;
+  env_replacements(&environment_data_stack, &encase, buffer);
+}
+
+char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start)
+{
+  global_label = global_start;
+  return mtex2MML_parse(buffer, length);
 }
 
 char * mtex2MML_parse (const char * buffer, unsigned long length)
@@ -2395,6 +2860,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
 int mtex2MML_filter (const char * buffer, unsigned long length)
 {
+  global_label = 1;
   format_additions(buffer);
   mtex2MML_setup (buffer, length);
   mtex2MML_restart ();

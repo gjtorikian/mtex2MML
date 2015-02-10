@@ -380,6 +380,20 @@ $$
     assert_equal(@mtex.filter(text), fixture_file("env", "split_no_lines"))
   end
 
+  def test_spaces_after_rowsep
+    text = '''
+$$
+f(n) =
+\begin{cases}
+\frac{n}{2},  & \text{if n is even} \\\\ [2ex]
+3n+1, & \text{if n is odd}
+\end{cases}
+$$
+'''
+    write_to_test_file @mtex.filter(text)
+    assert_equal(@mtex.filter(text), fixture_file("env", "spaces_after_rowsep"))
+  end
+
   def test_cases_ex_spacing
     text = '''
 $$

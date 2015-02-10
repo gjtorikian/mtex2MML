@@ -8,6 +8,8 @@
 extern "C" {
 #endif
 
+typedef enum {NONE = 0, TOPENCLOSE} encaseType;
+
 typedef struct {
   char *rowspacing;
   char *rowlines;
@@ -58,7 +60,7 @@ struct css_colors {
 // is detected, it starts popping off the stack until it reaches the corresponding
 // \begin. It then modifies that stack with attribute strings, an arrangement of the
 // the symbols encountered while popping lines off.
-extern void env_replacements(UT_array **environment_data_stack, const char *environment);
+extern void env_replacements(UT_array **environment_data_stack, encaseType *encase, const char *environment);
 
 extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack);
 

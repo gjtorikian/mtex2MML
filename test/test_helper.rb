@@ -3,8 +3,8 @@ require 'mtextomml'
 require 'minitest/autorun'
 require 'minitest/pride'
 
-def fixture_file(dir, fixture)
-  File.read( File.join(File.dirname( __FILE__ ), "fixtures", dir, "#{fixture}.html") ).strip
+def fixture_file(dir, fixture, ext=".html")
+  File.read( File.join(File.dirname( __FILE__ ), "fixtures", dir, "#{fixture}#{ext}") ).strip
 end
 
 def write_to_test_file(converted)

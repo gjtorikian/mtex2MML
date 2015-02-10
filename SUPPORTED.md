@@ -1,5 +1,959 @@
-This list is not just a duplication of commands at <https://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html>. It has been expanded to include additional changes introduced by this library.
+This list represents the complete set of commands supported by mtex2MML.
 
+## Symbols
+
+``` latex
+_
+(
+)
+[
+]
+/
+\
+\,
+\;
+\:
+\!
+\!
+\{
+\}
+\&
+\#
+\%
+\>
+\|
+\|
+\$
+```
+
+## A
+
+``` latex
+\above
+\abovewithdelims
+\acute
+\aleph
+\alpha
+\Alpha
+\amalg
+\And
+\angle
+\approx
+\approxeq
+\arccos
+\arcsin
+\arctan
+\arg
+\arrowvert
+\Arrowvert
+\ast
+\asymp
+\atop
+\atopwithdelims
+```
+
+## B
+
+``` latex
+\backepsilon
+\backprime
+\backsim
+\backsimeq
+\backslash
+\bar
+\barwedge
+\Bbb
+\bcancel
+\because
+\beta
+\Beta
+\beth
+\between
+\bf
+\bgcolor
+\big
+\Big
+\bigcap
+\bigcirc
+\bigcup
+\bigg
+\Bigg
+\biggl
+\Biggl
+\biggm
+\Biggm
+\biggr
+\Biggr
+\biginterleave
+\bigl
+\Bigl
+\bigm
+\Bigm
+\bigodot
+\bigoplus
+\bigotimes
+\bigr
+\Bigr
+\bigsqcap
+\bigsqcup
+\bigstar
+\bigtriangledown
+\bigtriangleup
+\biguplus
+\bigvee
+\bigwedge
+\binom
+\blacklozenge
+\blacksquare
+\blacktriangle
+\blacktriangledown
+\blacktriangleleft
+\blacktriangleright
+\bmod
+\boldsymbol
+\bot
+\bottom
+\bowtie
+\Box
+\boxdot
+\boxed
+\boxminus
+\boxplus
+\boxtimes
+\brace
+\bracevert
+\brack
+\breve
+\bullet
+\bumpeq
+\Bumpeq
+```
+
+## C
+
+``` latex
+\cal
+\cancel
+\canceledto
+\cap
+\Cap
+\cdot
+\cdotp
+\cdots
+\centerdot
+\check
+\checkmark
+\chi
+\choose
+\circ
+\circeq
+\circlearrowleft
+\circlearrowright
+\circledast
+\circledcirc
+\circleddash
+\circledR
+\circledS
+\clap
+\closure
+\clubsuit
+\colon
+\colonapprox
+\Colonapprox
+\coloneq
+\Coloneq
+\coloneqq
+\Coloneqq
+\colonsim
+\Colonsim
+\color
+\colorbox
+\complement
+\cong
+\conint
+\contourintegral
+\coprod
+\coproduct
+\cos
+\cosh
+\cot
+\coth
+\csc
+\cup
+\Cup
+\curlyeqprec
+\curlyeqsucc
+\curlyvee
+\curlywedge
+\curvearrowbotright
+\curvearrowleft
+\curvearrowright
+```
+
+## D
+
+``` latex
+\dagger
+\daleth
+\darr
+\dashleftarrow
+\dashrightarrow
+\dashv
+\dbinom
+\dblcolon
+\ddagger
+\ddddot
+\dddot
+\ddot
+\ddots
+\deg
+\Del
+\delta
+\Delta
+\det
+\dfrac
+\diagdown
+\diagup
+\diamond
+\Diamond
+\diamondsuit
+\digamma
+\dim
+\displaystyle
+\div
+\divideontimes
+\dot
+\doteq
+\doteq
+\doteqdot
+\dotplus
+\dots
+\dotsb
+\dotsc
+\dotsi
+\dotsm
+\dotso
+\doublebarwedge
+\doublecap
+\doublecup
+\doubleintegral
+\downarrow
+\Downarrow
+\downdownarrows
+\downharpoonleft
+\downharpoonright
+\downuparrow
+\duparr
+```
+
+## E
+
+``` latex
+\ell
+\embedsin
+\emptyset
+\enclose
+\enspace
+\epsilon
+\eqcirc
+\eqalign
+\eqalignno
+\eqcolon
+\Eqcolon
+\eqqcolon
+\Eqqcolon
+\eqsim
+\eqslantgtr
+\eqslantless
+\equiv
+\eta
+\Eta
+\eth
+\exists
+\exp
+```
+
+## F
+
+``` latex
+\fallingdotseq
+\fbox
+\Finv
+\flat
+\forall
+\frac
+\frak
+\frown
+```
+
+## G
+
+``` latex
+\Game
+\gamma
+\Gamma
+\gcd
+\ge
+\geq
+\geqq
+\geqslant
+\gets
+\gg
+\ggg
+\gggtr
+\gimel
+\gnapprox
+\gneq
+\gneqq
+\gnsim
+\grave
+\gt
+\gtrapprox
+\gtrdot
+\gtreqless
+\gtreqqless
+\gtrless
+\gtrsim
+\gvertneqq
+```
+
+## H
+
+``` latex
+\hat
+\hbar
+\hbox
+\hdashline
+\heartsuit
+\hline
+\hom
+\hookleftarrow
+\hookrightarrow
+\hphantom
+\hskip
+\hslash
+\hspace
+\huge
+\Huge
+```
+
+## I
+
+``` latex
+\idotsint
+\iff
+\iiiint
+\iiint
+\iint
+\Im
+\imath
+\implies
+\impliedby
+\in
+\inf
+\infinity
+\infty
+\injlim
+\int
+\integral
+\intercal
+\intersection
+\Intersection
+\intop
+\invamp
+\iota
+\Iota
+\it
+```
+
+## J
+
+``` latex
+\jmath
+\Join
+```
+
+## K
+
+``` latex
+\kappa
+\Kappa
+\ker
+\kern
+```
+
+## L
+
+``` latex
+\lambda
+\Lambda
+\land
+\lang
+\langle
+\large
+\Large
+\LARGE
+\LaTeX
+\lbrace
+\lbrack
+\lceil
+\lcorner
+\ldotp
+\ldots
+\le
+\leadsto
+\leftarrow
+\Leftarrow
+\leftarrowtail
+\leftharpoondown
+\leftharpoonup
+\leftleftarrows
+\leftrightarrow
+\Leftrightarrow
+\leftrightarrows
+\leftrightharpoons
+\leftrightsquigarrow
+\leftrightsquigarrow
+\leftsquigarrow
+\leftthreetimes
+\lefttorightarrow
+\leq
+\leqq
+\leqslant
+\lessapprox
+\lessdot
+\lesseqgtr
+\lesseqqgtr
+\lessgtr
+\lesssim
+\lfloor
+\lg
+\lgroup
+\lhd
+\lim
+\liminf
+\limits
+\limsup
+\ll
+\llangle
+\llap
+\llcorner
+\Lleftarrow
+\lll
+\llless
+\lmoustache
+\ln
+\lnapprox
+\lneq
+\lneqq
+\lnot
+\lnsim
+\log
+\longleftarrow
+\Longleftarrow
+\longleftrightarrow
+\Longleftrightarrow
+\longmapsto
+\longrightarrow
+\Longrightarrow
+\looparrowleft
+\looparrowright
+\lower
+\lozenge
+\Lsh
+\lt
+\ltimes
+\lvert
+\lVert
+\lvertneqq
+```
+
+## M
+
+``` latex
+\map
+\mapsto
+\mathbb
+\mathbf
+\mathbin
+\mathcal
+\mathclap
+\mathfr
+\mathfrak
+\mathit
+\mathllap
+\mathop
+\mathraisebox
+\mathrel
+\mathring
+\mathrlap
+\mathrm
+\mathscr
+\mathsf
+\mathstrut
+\mathtt
+\max
+\mbox
+\measuredangle
+\medspace
+\mho
+\mid
+\min
+\minusb
+\mkern
+\mod
+\models
+\moveleft
+\moveright
+\mp
+\mskip
+\mspace
+\mtexnum
+\mu
+\Mu
+\multimap
+\multiscripts
+```
+
+## N
+
+``` latex
+\nabla
+\natural
+\ncong
+\ne
+\nearr
+\neArr
+\nearrow
+\neArrow
+\neg
+\negmedspace
+\negthickspace
+\negthinspace
+\neq
+\nequiv
+\nexists
+\ngeq
+\ngeqq
+\ngeqslant
+\ngtr
+\ni
+\nleftarrow
+\nLeftarrow
+\nleftrightarrow
+\nLeftrightarrow
+\nleq
+\nleqq
+\nleqslant
+\nless
+\nmid
+\nobreakspace
+\nolimits
+\normalsize
+\not
+\notin
+\notni
+\nparallel
+\nprec
+\npreceq
+\nrightarrow
+\nRightarrow
+\nshortmid
+\nshortparallel
+\nsim
+\nsubset
+\nsubseteq
+\nsubseteqq
+\nsucc
+\nsucceq
+\nsupset
+\nsupseteq
+\nsupseteqq
+\ntriangleleft
+\ntrianglelefteq
+\ntriangleright
+\ntrianglerighteq
+\nu
+\Nu
+\nvdash
+\nvDash
+\nVdash
+\nVDash
+\nwarr
+\nwArr
+\nwarrow
+\nwArrow
+```
+
+## O
+
+``` latex
+\odash
+\odot
+\oint
+\oldstyle
+\omega
+\Omega
+\omicron
+\ominus
+\operatorname
+\oplus
+\Oplus
+\oslash
+\otimes
+\Otimes
+\over
+\overbrace
+\overbracket
+\overleftarrow
+\overleftrightarrow
+\overline
+\overrightarrow
+\overset
+\overwithdelims
+\owns
+```
+
+## P
+
+``` latex
+\parallel
+\parr
+\partial
+\perp
+\Perp
+\phantom
+\phi
+\Phi
+\pi
+\Pi
+\pitchfork
+\plusb
+\pm
+\pmb
+\pmod
+\pod
+\Pr
+\prec
+\precapprox
+\preccurlyeq
+\preceq
+\precnapprox
+\precneqq
+\precnsim
+\precsim
+\prime
+\prod
+\product
+\projlim
+\propto
+\psi
+\Psi
+```
+
+## Q
+
+``` latex
+\qed
+\qquad
+\quad
+\quadrupleintegral
+```
+
+## R
+
+``` latex
+\raise
+\rang
+\rangle
+\rbrace
+\rbrack
+\rceil
+\Re
+\restriction
+\rfloor
+\rgroup
+\rhd
+\rho
+\Rho
+\rightarrow
+\Rightarrow
+\rightarrowtail
+\rightharpoondown
+\rightharpoonup
+\rightleftarrows
+\rightleftharpoons
+\rightrightarrows
+\rightsquigarrow
+\rightthreetimes
+\righttoleftarrow
+\risingdotseq
+\rlap
+\rm
+\rmoustache
+\root
+\rrangle
+\Rrightarrow
+\Rsh
+\rtimes
+\rvert
+\rVert
+```
+
+## S
+
+``` latex
+\scr
+\scriptscriptsize
+\scriptscriptstyle
+\scriptsize
+\scriptstyle
+\searr
+\seArr
+\searrow
+\seArrow
+\sec
+\setminus
+\sf
+\sharp
+\shortmid
+\shortparallel
+\sigma
+\Sigma
+\sim
+\simeq
+\sin
+\sinh
+\slash
+\small
+\smallfrown
+\smallint
+\smallsetminus
+\smallsmile
+\smash
+\smile
+\space
+\Space
+\spadesuit
+\sphericalangle
+\sqcap
+\sqcup
+\sqrt
+\sqsubset
+\sqsubseteq
+\sqsupset
+\sqsupseteq
+\square
+\sslash
+\stackrel
+\star
+\strut
+\subset
+\Subset
+\subseteq
+\subseteqq
+\subsetneq
+\subsetneqq
+\substack
+\succ
+\succapprox
+\succcurlyeq
+\succeq
+\succnapprox
+\succneqq
+\succnsim
+\succsim
+\sum
+\sup
+\supset
+\Supset
+\supseteq
+\supseteqq
+\supsetneq
+\supsetneqq
+\surd
+\swarr
+\swArr
+\swarrow
+\swArrow
+```
+
+## T
+
+``` latex
+\tan
+\tanh
+\tau
+\Tau
+\tbinom
+\tensor
+\TeX
+\text
+\textbf
+\textit
+\textrm
+\textsf
+\textsize
+\textstyle
+\texttt
+\tfrac
+\therefore
+\theta
+\Theta
+\thickapprox
+\thicksim
+\thickspace
+\thinspace
+\tilde
+\times
+\timesb
+\tiny
+\to
+\top
+\triangle
+\triangledown
+\triangleleft
+\trianglelefteq
+\triangleq
+\triangleright
+\trianglerighteq
+\tripleintegral
+\tt
+\twoheadleftarrow
+\twoheadrightarrow
+```
+
+## U
+
+``` latex
+\udots
+\ulcorner
+\underbrace
+\underbracket
+\underleftarrow
+\underleftrightarrow
+\underline
+\underoverset (such as `\underoverset{subscript}{superscript}{symbol}`)
+\underrightarrow
+\underset
+\union
+\Union
+\unlhd
+\unrhd
+\uparr
+\uparrow
+\Uparrow
+\updarr
+\updownarrow
+\upharpoonleft
+\upharpoonright
+\uplus
+\Upsi
+\upsilon
+\Upsilon
+\upuparrows
+\urcorner
+```
+
+## V
+
+``` latex
+\varDelta
+\varepsilon
+\varGamma
+\varinjlim
+\varkappa
+\varLambda
+\varliminf
+\varlimsup
+\varnothing
+\varOmega
+\varphi
+\varPhi
+\varpi
+\varPi
+\varprojlim
+\varpropto
+\varPsi
+\varrho
+\varsigma
+\varSigma
+\varsubsetneq
+\varsubsetneqq
+\varsupsetneq
+\varsupsetneqq
+\vartheta
+\varTheta
+\vartriangle
+\vartriangleleft
+\vartriangleright
+\varUpsilon
+\varXi
+\Vbar
+\vdash
+\vDash
+\Vdash
+\VDash
+\vdots
+\vec
+\vee
+\Vee
+\veebar
+\verb
+\vert
+\Vert
+\vphantom
+\Vvdash
+```
+
+## W
+
+``` latex
+\wedge
+\Wedge
+\widebar
+\widecheck
+\widehat
+\widetilde
+\widevec
+\wp
+\wr
+```
+
+## X
+
+``` latex
+\xcancel
+\xhookleftarrow
+\xhookrightarrow
+\xi
+\Xi
+\xleftarrow
+\xLeftarrow
+\xleftrightarrow
+\xLeftrightarrow
+\xleftrightharpoons
+\xlongequal
+\xrightarrow
+\xRightarrow
+\xrightleftharpoons
+\xtofrom
+\xtwoheadleftarrow
+\xtwoheadrightarrow
+```
+
+## Y
+
+``` latex
+\yen
+```
+
+## Z
+
+``` latex
+\zeta
+\Zeta
+```
 
 ## Environments
 
@@ -9,40 +963,38 @@ This list is not just a duplication of commands at <https://golem.ph.utexas.edu/
 
 where `env` is one of
 
-* `matrix`
-* `pmatrix`
-* `bmatrix`
-* `Bmatrix`
-* `vmatrix`
-* `Vmatrix`
-* `smallmatrix`
-* `cases`
-* `aligned`
-* `align`
-* `alignedat`
-* `gather`
-* `gathered`
-* `split`
-* `array`
-* `svg`
-
-The `*` notation (where applicable) is currently not supported; no equations are numbered.
-
-### Horizontal lines
-
-You can type `\hline` or `\hlinedash` to insert a horizontal line or dashed horizontal line, respectively. For example:
-
 ``` latex
-\begin{array}{cccc}
-1 & 2 & 3 & 4\\
-\hdashline
-4 & 5 & 6 & 7\\
-\hdash
-7 & 8 & 9 & 10
-\end{array}
-```
+align
+align*
+alignat
+alignat*
+aligned
+alignedat
+array
 
-`\cr` is also supported as a linebreak option.
+bmatrix
+Bmatrix
+
+cases
+
+equation
+equation*
+
+gather
+gather*
+gathered
+
+matrix
+
+pmatrix
+
+smallmatrix
+split
+svg
+
+vmatrix
+Vmatrix
+```
 
 ### The `array` Environment
 
@@ -82,7 +1034,7 @@ is precisely equivalent to
 
 except that you don't have to explicitly state the number of columns.
 
-#### Column separators
+### Column separators
 
 While defining columns, you can use `|` to indicate an unbroken vertical line, and `:` to indicate a dashed line. For example:
 
@@ -170,757 +1122,6 @@ The `\array{}` command allows much finer control over the layout of arrays than 
    </dl>
  </dd>
 </dl>
-
-## Greek Letters
-
-* `\alpha`
-* `\beta`
-* `\gamma`
-* `\delta`
-* `\epsilon`
-* `\backepsilon`
-* `\varepsilon`
-* `\zeta`
-* `\eta`
-* `\theta`
-* `\vartheta`
-* `\iota`
-* `\kappa`
-* `\varkappa`
-* `\lambda`
-* `\mu`
-* `\nu`
-* `\xi`
-* `\omicron`
-* `\pi`
-* `\varpi`
-* `\rho`
-* `\varrho`
-* `\sigma`
-* `\varsigma`
-* `\tau`
-* `\upsilon`
-* `\phi`
-* `\varphi`
-* `\chi`
-* `\psi`
-* `\omega`
-* `\Alpha`
-* `\Beta`
-* `\Gamma`
-* `\Delta`
-* `\Zeta`
-* `\Eta`
-* `\Theta`
-* `\Iota`
-* `\Kappa`
-* `\Lambda`
-* `\Mu`
-* `\Nu`
-* `\Xi`
-* `\Pi`
-* `\Rho`
-* `\Sigma`
-* `\Tau`
-* `\Upsilon` (`\Upsi`)
-* `\Phi`
-* `\Psi`
-* `\Omega`
-* `\digamma`
-* `\mho`
-* `\varDelta`
-* `\varGamma`
-* `\varLambda`
-* `\varOmega`
-* `\varPhi`
-* `\varPi`
-* `\varPsi`
-* `\varSigma`
-* `\varTheta`
-* `\varUpsilon`
-* `\varXi`
-
-## Log-like Symbols
-
-* `\arccos`
-* `\arcsin`
-* `\arctan`
-* `\arg`
-* `\cos`
-* `\cosh`
-* `\cot`
-* `\coth`
-* `\csc`
-* `\deg`
-* `\det`
-* `\dim`
-* `\exp`
-* `\gcd`
-* `\inf`
-* `\hom`
-* `\ker`
-* `\lg`
-* `\lim`
-* `\liminf`
-* `\nolimits`
-* `\limits`
-* `\limsup`
-* `\injlim`
-* `\projlim`
-* `\varinjlim`
-* `\varliminf`
-* `\varlimsup`
-* `\varprojlim`
-* `\ln`
-* `\log`
-* `\max`
-* `\min`
-* `\mod`
-* `\bmod`
-* `\pmod`
-* `\pod`
-* `\Pr`
-* `\sec`
-* `\sin`
-* `\sinh`
-* `\sup`
-* `\tan`
-* `\tanh`
-
-## Arrows
-
-* `\rightarrow` (`\to`)
-* `\leadsto`
-* `\longrightarrow`
-* `\Longrightarrow`
-* `\Rightarrow` (`\implies`)
-* `\hookrightarrow` (`\embedsin`)
-* `\mapsto` (`\\map`)
-* `\leftarrow`
-* `\gets`
-* `\longleftarrow`
-* `\Longleftarrow`
-* `\longmapsto`
-* `\Leftarrow` (`\\impliedby`)
-* `\hookleftarrow`
-* `\leftrightarrow`
-* `\Leftrightarrow`
-* `\Longleftrightarrow` (`\iff`)
-* `\longleftrightarrow`
-* `\nearrow` (`\nearr`)
-* `\nwarrow` (`\nwarr`)
-* `\searrow` (`\searr`)
-* `\swarrow` (`\swarr`)
-* `\neArrow` (`\neArr`)
-* `\nwArrow` (`\nwArr`)
-* `\seArrow` (`\seArr`)
-* `\swArrow` (`\swArr`)
-* `\darr`
-* `\Downarrow`
-* `\Arrowvert`
-* `\arrowvert`
-* `\uparr`
-* `\Uparrow`
-* `\downuparrow` (`\duparr` and `\updarr`)
-* `\leftsquigarrow`
-* `\rightsquigarrow`
-* `\leftrightsquigarrow`
-* `\upuparrows`
-* `\rightleftarrows`
-* `\rightrightarrows`
-* `\dashleftarrow`
-* `\dashrightarrow`
-* `\curvearrowleft`
-* `\curvearrowbotright`
-* `\downdownarrows`
-* `\leftleftarrows`
-* `\leftrightarrows`
-* `\righttoleftarrow`
-* `\lefttorightarrow`
-* `\circlearrowleft`
-* `\circlearrowright`
-* `\curvearrowright`
-* `\leftarrowtail`
-* `\rightarrowtail`
-* `\leftrightsquigarrow`
-* `\Lleftarrow`
-* `\Rrightarrow`
-* `\looparrowleft`
-* `\looparrowright`
-* `\Lsh`
-* `\Rsh`
-* `\twoheadleftarrow`
-* `\twoheadrightarrow`
-* `\nLeftarrow`
-* `\nleftarrow`
-* `\nLeftrightarrow`
-* `\nleftrightarrow`
-* `\nRightarrow`
-* `\nrightarrow`
-* `\leftharpoonup`
-* `\leftharpoondown`
-* `\rightharpoonup`
-* `\rightharpoondown`
-* `\downharpoonleft`
-* `\downharpoonright`
-* `\leftrightharpoons`
-* `\rightleftharpoons`
-* `\upharpoonleft`
-* `\upharpoonright`
-* `\overleftarrow`
-* `\overleftrightarrow`
-* `\overrightarrow`
-* `\underleftarrow`
-* `\underleftrightarrow`
-* `\underrightarrow`
-
-### Extensible Arrows
-
-While you can always put a superscript on an arrow, using `\overset{u}{\rightarrow}` (or both a subscript and a superscript, using `\underoverset{d}{u}{\rightarrow}`), these don't quite work right when exported to LaTeX (the arrows don't stretch). For LaTeX compatibility, one can use * `\xrightarrow{u}` and `\xrightarrow[d]{u}` respectively.
-
-The set of extensible arrows is:
-
-* `\xrightarrow`
-* `\xleftarrow`
-* `\xleftrightarrow`
-* `\xLeftarrow`
-* `\xRightarrow`
-* `\xLeftrightarrow`
-* `\xleftrightharpoons`
-* `\xrightleftharpoons`
-* `\xhookleftarrow`
-* `\xhookrightarrow`
-* `\xtwoheadrightarrow`
-* `\xtwoheadleftarrow`
-* `\xlongequal`
-* `\xtofrom`
-
-## Delimiters
-
-* `(`
-* `)`
-* `[`
-* `]`
-* `\bracevert`
-* `\langle` (`\lang`)
-* `\rangle` (`\rang`)
-* `\llangle`
-* `\lgroup`
-* `\rrangle`
-* `\rgroup`
-* `\lbrace` (`\{`)
-* `\rbrace` (`\}`)
-* `\lbrack`
-* `\rbrack`
-* `\lceil`
-* `\rceil`
-* `\lmoustache`
-* `\rmoustache`
-* `\lfloor`
-* `\rfloor`
-* `\uparrow`
-* `\downarrow`
-* `\updownarrow`
-* `\vert` (`\|`)
-* `\Vert` (`\|`)
-* `\lvert`
-* `\rvert`
-* `\lVert`
-* `\rVert`
-* `/`
-
-In TeX, delimiters are non-stretchy, by default. Stretchy delimiters are obtained with `\left<delim>` and `\right<delim>`. Each `\left<delim>` must be matched with a corresponding `\right<delim>`. If you don't want a visible matching delimiter, you can match with the invisible delimiters
-* `\left.` and `\right.` .
-
-Fixed-size large delimiters are generated with the modifiers:
-
-* `\big`
-* `\Big`
-* `\bigg`
-* `\Bigg`
-* `\bigl`
-* `\Bigl`
-* `\biggl`
-* `\Biggl`
-* `\bigr`
-* `\Bigr`
-* `\biggr`
-* `\Biggr`
-* `\bigm`
-* `\Bigm`
-* `\biggm`
-* `\Biggm`
-
-For example
-* `\Biggr)` generates a very large (3 * normal size) right parenthesis; `\bigl\vert` generates a large (1.2 * natural size) left vertical bar.
-
-## Operators
-
-* `\And`
-* `\amalg`
-* `\angle`
-* `\measuredangle`
-* `\sphericalangle`
-* `\approx`
-* `\approxeq`
-* `\thickapprox`
-* `\ast`
-* `\asymp`
-* `\backslash`
-* `\because`
-* `\between`
-* `\bottom` (`\bot`)
-* `\boxminus` (`\minusb`)
-* `\boxplus` (`\plusb`)
-* `\boxtimes` (`\timesb`)
-* `\boxdot`
-* `\bowtie`
-* `\bullet`
-* `\cap` (`\intersection`)
-* `\cup` (`\union`)
-* `\Cap`
-* `\checkmark`
-* `\Cup`
-* `\circledast`
-* `\circledcirc`
-* `\circledR`
-* `\circledS`
-* `\clubsuit`
-* `\complement`
-* `\curlyvee`
-* `\curlywedge`
-* `\diagdown`
-* `\diagup`
-* `\diamondsuit`
-* `\divideontimes`
-* `\doublecap`
-* `\doublecup`
-* `\dotplus`
-* `\doteq`
-* `\heartsuit`
-* `\spadesuit`
-* `\circ`
-* `\bigcirc`
-* `\cong`
-* `\ncong`
-* `\dagger`
-* `\ddagger`
-* `\dashv`
-* `\Vdash`
-* `\vDash`
-* `\nvDash`
-* `\VDash`
-* `\nVDash`
-* `\vdash`
-* `\nvdash`
-* `\Vvdash`
-* `\Diamond`
-* `\diamond`
-* `\div`
-* `\equiv`
-* `\nequiv`
-* `\eqcirc`
-* `\eqsim`
-* `\Finv`
-* `\Game`
-* `\neq` (`\ne`)
-* `\Bumpeq`
-* `\bumpeq`
-* `\circeq`
-* `\doteq`
-* `\doteqdot`
-* `\fallingdotseq`
-* `\risingdotseq`
-* `\exists`
-* `\nexists`
-* `\flat`
-* `\forall`
-* `\frown`
-* `\smallfrown`
-* `\intop`
-* `\gt`
-* `\ngtr`
-* `\hslash`
-* `\gg`
-* `\ggg`
-* `\gggtr`
-* `\geq` (`\ge`)
-* `\ngeq`
-* `\geqq`
-* `\ngeqq`
-* `\geqslant`
-* `\ngeqslant`
-* `\eqslantgtr`
-* `\gneq`
-* `\gneqq`
-* `\gnapprox`
-* `\gnsim`
-* `\gtrapprox`
-* `\gtrsim`
-* `\gtrdot`
-* `\gtreqless`
-* `\gtreqqless`
-* `\gtrless`
-* `\gvertneqq`
-* `\in`
-* `\notin`
-* `\ni`
-* `\notni`
-* `\intercal`
-* `\invamp` (`\parr`)
-* `\lhd`
-* `\unlhd`
-* `\leftthreetimes`
-* `\rightthreetimes`
-* `\lt`
-* `\nless`
-* `\land`
-* `\ll`
-* `\lll`
-* `\leq` (`\le`)
-* `llless`
-* `lmoustache`
-* `lnot`
-* `\nleq`
-* `\leqq`
-* `\nleqq`
-* `\leqslant`
-* `\nleqslant`
-* `\eqslantless`
-* `\lessapprox`
-* `\lessdot`
-* `\lesseqgtr`
-* `\lesseqqgtr`
-* `\lessgtr`
-* `\lesssim`
-* `\lnapprox`
-* `\lneq`
-* `\lneqq`
-* `\lnsim`
-* `\ltimes`
-* `\lvertneqq`
-* `\lozenge`
-* `\blacklozenge`
-* `\mid` (`\shortmid`)
-* `\nmid`
-* `\nshortmid`
-* `\models`
-* `\multimap`
-* `\nabla` (`\Del`)
-* `\natural`
-* `\not`
-* `\neg`
-* `\odot`
-* `\odash` (`\circleddash`)
-* `\otimes`
-* `\oplus`
-* `\ominus`
-* `\oslash`
-* `\parallel`
-* `\nparallel`
-* `\shortparallel`
-* `\nshortparallel`
-* `\partial`
-* `\Perp` (`\Vbar`)
-* `\perp`
-* `\pitchfork`
-* `\pm`
-* `\mp`
-* `\prec`
-* `\nprec`
-* `\precapprox`
-* `\precnapprox`
-* `\preceq`
-* `\npreceq`
-* `\preccurlyeq`
-* `\curlyeqprec`
-* `\precsim`
-* `\precnsim`
-* `\prime`
-* `\backprime`
-* `\propto`
-* `\varpropto`
-* `\rhd`
-* `\unrhd`
-* `\ulcorner`
-* `\urcorner`
-* `\rtimes`
-* `\setminus`
-* `\smallsetminus`
-* `\sharp`
-* `\sim`
-* `\nsim`
-* `\backsim`
-* `\simeq`
-* `\backsimeq`
-* `\thicksim`
-* `\surd`
-* `\smile`
-* `\smallsmile`
-* `\sslash`
-* `\subset`
-* `\nsubset`
-* `\subseteq`
-* `\nsubseteq`
-* `\subseteqq`
-* `\nsubseteqq`
-* `\subsetneq`
-* `\subsetneqq`
-* `\varsubsetneq`
-* `\varsubsetneqq`
-* `\Subset`
-* `\succ`
-* `\nsucc`
-* `\succeq`
-* `\nsucceq`
-* `\succapprox`
-* `\succnapprox`
-* `\succcurlyeq`
-* `\succneqq`
-* `\curlyeqsucc`
-* `\succsim`
-* `\succnsim`
-* `\supset`
-* `\nsupset`
-* `\supseteq`
-* `\nsupseteq`
-* `\supseteqq`
-* `\supsetneq`
-* `\supsetneqq`
-* `\varsupsetneq`
-* `\varsupsetneqq`
-* `\Supset`
-* `\square` (`\Box`)
-* `\blacksquare` (`\qed`)
-* `\sqcup`
-* `\sqcap`
-* `\sqsubset`
-* `\sqsubseteq`
-* `\sqsupset`
-* `\sqsupseteq`
-* `\Join`
-* `\nsupseteqq`
-* `\nVdash`
-* `\owns`
-* `\precneqq`
-* `\restriction`
-* `\lcorner`
-* `\llcorner`
-* `\star`
-* `\bigstar`
-* `\therefore`
-* `\times`
-* `\top`
-* `\triangle`
-* `\triangledown`
-* `\triangleleft`
-* `\triangleright`
-* `\blacktriangle`
-* `\blacktriangledown`
-* `\bigtriangleup`
-* `\bigtriangledown`
-* `\blacktriangleleft`
-* `\blacktriangleright`
-* `\ntriangleleft`
-* `\ntriangleright`
-* `\ntrianglelefteq`
-* `\ntrianglerighteq`
-* `\trianglelefteq`
-* `\trianglerighteq`
-* `\triangleq`
-* `\vartriangle`
-* `\vartriangleleft`
-* `\vartriangleright`
-* `\uplus`
-* `\vee`
-* `\veebar`
-* `\wedge`
-* `\barwedge`
-* `\doublebarwedge`
-* `\wr`
-* `\coloneqq`
-* `\Coloneqq`
-* `\coloneq`
-* `\Coloneq`
-* `\eqqcolon`
-* `\Eqqcolon`
-* `\eqcolon`
-* `\Eqcolon`
-* `\colonapprox`
-* `\Colonapprox`
-* `\colonsim`
-* `\Colonsim`
-* `\dblcolon`
-* `\yen`
-
-In keeping with AMSLaTeX, rather than [MathML's conventions](http://www.w3.org/TR/2003/REC-MathML2-20031021/byalpha.html), `\smallsetminus` (U+FE68) is designated as a small (non-stretchy) reverse solidus, `\backslash` is a reverse solidus (U+05C), and `\setminus` (∖ = U+2216) is stretchy.
-
-## Symbols
-
-* `\aleph`
-* `\beth`
-* `\gimel`
-* `\daleth`
-* `\ell`
-* `\hbar`
-* `\Im`
-* `\imath`
-* `\jmath`
-* `\eth`
-* `\Re`
-* `\wp`
-* `\infty` (`\infinity`)
-* `\emptyset` (`\varnothing)
-* `\TeX`
-* `\LaTeX`
-
-## Dots
-
-* `\cdot`
-* `\cdotp`
-* `\centerdot`
-* `\dots`
-* `\dotsb`
-* `\dotsc`
-* `\dotsi`
-* `\dotsm`
-* `\dotso`
-* `\ldots`
-* `\ldotp`
-* `\cdots`
-* `\ddots`
-* `\udots`
-* `\vdots`
-* `\colon`
-
-While ":" is allowed in math mode, it doesn't (either in LaTeX or in mtex) produce the desired spacing for text like f:A→B. Use `\colon` instead.
-
-## Large Math Operators and Integrals
-
-* `\bigcup` (`\Union`)
-* `\bigcap` (`\Intersection`)
-* `\bigodot`
-* `\bigoplus` (`\Oplus`)
-* `\bigotimes` (`\Otimes`)
-* `\bigsqcup`
-* `\bigsqcap`
-* `\biginterleave`
-* `\biguplus`
-* `\bigwedge` (`\Wedge`)
-* `\bigvee` (`\Vee`)
-* `\coprod` (`\coproduct`)
-* `\prod` (`\product`)
-* `\sum`
-* `\smallint`
-* `\int` (`\integral`)
-* `\iint` (`\doubleintegral`)
-* `\iiint` (`\tripleintegral`)
-* `\iiiint` (`\quadrupleintegral`)
-* `\idotsint`
-* `\oint` (`\conint\` and `\contourintegral`)
-
-## Sizes and Styles
-
-* `\displaystyle`
-* `\textstyle`
-* `\textsize`
-* `\scriptsize`
-* `\scriptscriptsize`
-* `\mathit` (`\it` and `\textit`)
-* `\mathbf` (`\boldsymbol`, `\bf`, `\textbf`)
-* `\mathrm` (`\rm` and `\textrm`)
-* `\mathbb` (`\Bbb`)
-* `\mathfrak` (`\mathfr` and `\frak`)
-* `\mathcal` (`\cal`)
-* `\mathscr` (`\scr`)
-* `\mathsf` (`\sf` and `\textsf`)
-* `\mathtt` (`\tt` and `\texttt`)
-* `\text`
-* `\verb`
-* `\pmb`
-
-## Spaces
-
-* `\,` (`\thinspace`)
-* `\:` (`\medspace`)
-* `\;` (`\thickspace`)
-* `\quad`
-* `\qquad`
-* `\!` (`\negthinspace`)
-* `\negmedspace`
-* `\negthickspace`
-* `\phantom`
-* `\mathrlap` (`\rlap`)
-* `\mathllap` (`\llap`)
-* `\mathclap` (`\clap`)
-* `\space` (Taken from [WebTeX](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec8.html#ARBSIZE "\space in the WebTeX Manual"))
-
-## Accents
-
-* `\bar`
-* `\overline` (`\closure\` and `\widebar`)
-* `\underline`
-* `\vec`
-* `\widevec`
-* `\dot`
-* `\ddot`
-* `\dddot`
-* `\ddddot`
-* `\tilde`
-* `\widetilde`
-* `\check`
-* `\widecheck`
-* `\hat`
-* `\widehat`
-* `\slash` (`\cancel`)
-* `\xcancel`
-* `\bcancel`
-* `\canceledto`
-* `\boxed`
-* `\fbox`
-* `\hbox`
-* `\mbox`
-* `\acute`
-* `\grave`
-* `\breve`
-* `\mathring`
-
-## Fractions, Sub/Superscripts, and Roots
-
-* `\frac`
-* `\tfrac`
-* `\dfrac`
-* `\above`
-* `\abovewithdelims`
-* `\binom`
-* `\tbinom`
-* `\brace`
-* `\brack`
-* `\choose`
-* `\dbinom`
-* `\over`
-* `\overwithdelims`
-* `\atop`
-* `\atopwithdelims`
-* `\substack`
-* `\overbrace`
-* `\underbrace`
-* `\overbracket`
-* `\underbracket`
-* `\underset`
-* `\overset` (`\stackrel`)
-* `\underoverset` (such as `\underoverset{subscript}{superscript}{symbol}`)
-* `\tensor` (taken from [WebTex](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec5.html#SUPER))
-* `\multiscripts` (taken from [WebTex](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec5.html#PRESCR))
-* `\sqrt`
-* `\root` (taken from [WebTex](https://golem.ph.utexas.edu/~distler/WebTeX/docs/wtxsec5.html#ROOT))
-* `\operatorname`
-* `\mathop`
-* `\mathbin`
-* `\mathrel`
-* `\mathraisebox` (`\mathraisebox{voffset}[height][depth]{content}` works just like `\raisebox`)
-
-As in LaTeX, `\sqrt` accepts an optional argument, so that `\sqrt[3]{n+1}` is equivalent to `\root{3}{n+1}`.
 
 ## Numbers
 
