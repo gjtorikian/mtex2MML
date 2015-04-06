@@ -253,9 +253,10 @@ const char *vertical_pipe_extract(const char *string)
     utstring_printf(columnlines, "%s", "none");
   }
 
-  attr_columnlines = utstring_body(columnlines);
+  attr_columnlines = dupe_string(utstring_body(columnlines));
   free(dupe);
   utstring_free(border);
+  utstring_free(columnlines);
 
   return attr_columnlines;
 }
@@ -276,8 +277,9 @@ const char *remove_excess_pipe_chars(const char *string)
     token = strtok(NULL, " ");
   }
 
-  attr_columnalign = utstring_body(columnalign);
+  attr_columnalign = dupe_string(utstring_body(columnalign));
   free(dupe);
+  utstring_free(columnalign);
 
   if (strlen(attr_columnalign) > 0) {
     remove_last_char(attr_columnalign); // remove the final space
@@ -309,6 +311,8 @@ const char *combine_row_data(UT_array **environment_data_stack)
 
   row_attr = dupe_string(utstring_body(row_attr_data));
   utarray_erase(*environment_data_stack, 0, 1);
+
+  utstring_free(row_attr_data);
 
   return row_attr;
 }
