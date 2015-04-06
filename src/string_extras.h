@@ -21,10 +21,10 @@ extern void remove_last_char(char* str);
 extern void remove_first_char(char* str);
 
 // Duplicates an immutable string
-extern char * dupe_string(const char * str);
+extern char * strdup(const char * str);
 
 // Duplicates an immutable string (up to n bytes)
-extern char * dupe_string_n(const char * s, size_t n);
+extern char * strndup(const char * s, size_t n);
 
 extern char * str_replace(char *string, const char *substr, const char *replacement);
 

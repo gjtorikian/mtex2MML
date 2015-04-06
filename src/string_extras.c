@@ -15,15 +15,12 @@ void remove_first_char(char* str)
   memmove(str, str + 1, len);
 }
 
-char *dupe_string(const char * str)
+char *strdup(const char *s)
 {
-  int len = strlen(str) + 1;
-  char *buf = malloc(len);
-  if (buf) { memcpy(buf, str, len); }
-  return buf;
+  return strndup(s, strlen(s));
 }
 
-char *dupe_string_n(const char *s, size_t n)
+char *strndup(const char *s, size_t n)
 {
   char* buf = malloc(n + 1);
   if (buf) {
@@ -43,10 +40,10 @@ char * str_replace (char *string, const char *substr, const char *replacement)
 
   if ( substr == NULL || replacement == NULL )
   {
-    return dupe_string (string);
+    return strdup(string);
   }
 
-  newstr = dupe_string (string);
+  newstr = strdup(string);
 
   while ( ( tok = strstr( newstr, substr ) ) )
   {

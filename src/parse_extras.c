@@ -11,25 +11,25 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   UT_array *row_spacing_stack;
   UT_array *rowlines_stack;
 
-  char *tok = NULL, *at_top = NULL;
+  char *tok = NULL, *at_top = NULL,
+       *temp = "", **last_stack_item,
+       *a, *em_str, *is_smallmatrix = NULL, *is_gathered = NULL;
 
-  char *temp = "", **last_stack_item;
-  char *a, *em_str;
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
               *cr_separator = "\\cr",
+              *begin_svg = "begin{svg}",
               *newline_separator = "\\newline",
-               *em_pattern_begin = "\\[", *em_pattern_end = "]",
-                *is_smallmatrix = NULL, *is_gathered = NULL;
+              *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int rowlines_stack_len = 0, em_offset = 0;
 
   // if not an environment, don't bother going on
-  if ( ((strstr(environment, from) == NULL && strstr(environment, until) == NULL)) || strstr(environment, "begin{svg}")) {
+  if ((strstr(environment, from) == NULL && strstr(environment, until) == NULL) || strstr(environment, begin_svg)) {
     return;
   }
 
-  char *dupe_environment = dupe_string(environment);
+  char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
 
   // set up the array stack
@@ -85,7 +85,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
             temp = tok + 2; // skip the first part ("\[")
             if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
               em_offset = (int)(tok - temp);
-              char *s = dupe_string_n(temp, em_offset);
+              char *s = strndup(temp, em_offset);
               utarray_push_back(row_spacing_stack, &s);
               free(s);
             }
@@ -200,7 +200,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
 
 const char *vertical_pipe_extract(const char *string)
 {
-  char *dupe = dupe_string(string);
+  char *dupe = strdup(string);
   UT_string *columnlines, *border;
   char *previous_column = "", *attr_columnlines, *attr_border;
   int i = 0;
@@ -253,7 +253,7 @@ const char *vertical_pipe_extract(const char *string)
     utstring_printf(columnlines, "%s", "none");
   }
 
-  attr_columnlines = dupe_string(utstring_body(columnlines));
+  attr_columnlines = strdup(utstring_body(columnlines));
   free(dupe);
   utstring_free(border);
   utstring_free(columnlines);
@@ -266,7 +266,7 @@ const char *remove_excess_pipe_chars(const char *string)
   UT_string *columnalign;
   utstring_new(columnalign);
 
-  char *dupe = dupe_string(string);
+  char *dupe = strdup(string);
   char *token = strtok(dupe, " ");
   char *attr_columnalign;
 
@@ -277,7 +277,7 @@ const char *remove_excess_pipe_chars(const char *string)
     token = strtok(NULL, " ");
   }
 
-  attr_columnalign = dupe_string(utstring_body(columnalign));
+  attr_columnalign = strdup(utstring_body(columnalign));
   free(dupe);
   utstring_free(columnalign);
 
@@ -309,7 +309,7 @@ const char *combine_row_data(UT_array **environment_data_stack)
   // combine the row spacing and row lines data
   utstring_printf(row_attr_data, "%s%s\" %s\"", "rowspacing=\"", row_spacing_data, row_lines_data);
 
-  row_attr = dupe_string(utstring_body(row_attr_data));
+  row_attr = strdup(utstring_body(row_attr_data));
   utarray_erase(*environment_data_stack, 0, 1);
 
   utstring_free(row_attr_data);
