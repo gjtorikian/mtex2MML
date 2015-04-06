@@ -15,21 +15,6 @@ void remove_first_char(char* str)
   memmove(str, str + 1, len);
 }
 
-char *strdup(const char *s)
-{
-  return strndup(s, strlen(s));
-}
-
-char *strndup(const char *s, size_t n)
-{
-  char* buf = malloc(n + 1);
-  if (buf) {
-    strncpy(buf, s, n);
-    buf[n] = '\0';
-  }
-  return buf;
-}
-
 char * str_replace (char *string, const char *substr, const char *replacement)
 {
   char *tok = NULL;
