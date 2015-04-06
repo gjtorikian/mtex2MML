@@ -23,22 +23,19 @@ char * str_replace (char *string, const char *substr, const char *replacement)
 
   /* if either substr or replacement is NULL, duplicate string a let caller handle it */
 
-  if ( substr == NULL || replacement == NULL )
-  {
+  if ( substr == NULL || replacement == NULL ) {
     return strdup(string);
   }
 
   newstr = strdup(string);
 
-  while ( ( tok = strstr( newstr, substr ) ) )
-  {
+  while ( ( tok = strstr( newstr, substr ) ) ) {
 
     oldstr = newstr;
     newstr = malloc ( strlen ( oldstr ) - strlen ( substr ) + strlen ( replacement ) + 1 );
 
     /* If failed to alloc mem, free old string and return NULL */
-    if ( newstr == NULL )
-    {
+    if ( newstr == NULL ) {
       free (oldstr);
       return NULL;
     }

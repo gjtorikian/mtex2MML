@@ -12,15 +12,15 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   UT_array *rowlines_stack;
 
   char *tok = NULL, *at_top = NULL,
-       *temp = "", **last_stack_item,
-       *a, *em_str, *is_smallmatrix = NULL, *is_gathered = NULL;
+        *temp = "", **last_stack_item,
+         *a, *em_str, *is_smallmatrix = NULL, *is_gathered = NULL;
 
   const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
-              *cr_separator = "\\cr",
-              *begin_svg = "begin{svg}",
-              *newline_separator = "\\newline",
-              *em_pattern_begin = "\\[", *em_pattern_end = "]";
+               *cr_separator = "\\cr",
+                *begin_svg = "begin{svg}",
+                 *newline_separator = "\\newline",
+                  *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int rowlines_stack_len = 0, em_offset = 0;
 
@@ -49,8 +49,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
 
         // we've reached the top, but there looks like there might be some data
         if (at_top != NULL && strstr(*last_stack_item, line_separator) == NULL && \
-           strstr(*last_stack_item, cr_separator) == NULL && \
-           strstr(*last_stack_item, newline_separator) == NULL) {
+            strstr(*last_stack_item, cr_separator) == NULL && \
+            strstr(*last_stack_item, newline_separator) == NULL) {
           if (strstr(*last_stack_item, hline) != NULL || strstr(*last_stack_item, hdashline) != NULL) {
             *encase = TOPENCLOSE;
           }
@@ -78,8 +78,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
 
         // if there's a line break...
         if (strstr(*last_stack_item, line_separator) != NULL || \
-           strstr(*last_stack_item, cr_separator) != NULL || \
-           strstr(*last_stack_item, newline_separator) != NULL) {
+            strstr(*last_stack_item, cr_separator) != NULL || \
+            strstr(*last_stack_item, newline_separator) != NULL) {
           // when an emphasis match, add it...
           if ( (tok = strstr(*last_stack_item, em_pattern_begin)) != NULL) {
             temp = tok + 2; // skip the first part ("\[")
