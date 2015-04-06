@@ -23,19 +23,19 @@ int main (int argc, char ** argv)
     fclose (f);
   }
 
-	char * mathml = mtex2MML_parse (buffer, length);
+  char * mathml = mtex2MML_parse (buffer, length);
 
-	if (mathml)
-		{
-			fputs (mathml, stdout);
-			fputs ("\n", stdout);
+  if (mathml)
+  {
+    fputs (mathml, stdout);
+    fputs ("\n", stdout);
 
-			mtex2MML_free_string (mathml);
-			mathml = 0;
-		}
-	else
-		{
-			fputs ("mtex2MML: mtex parser failed to generate MathML from mtex!\n", stderr);
-		}
-	return 0;
+    mtex2MML_free_string (mathml);
+    mathml = 0;
+  }
+  else
+  {
+    fputs ("mtex2MML: mtex parser failed to generate MathML from mtex!\n", stderr);
+  }
+  return 0;
 }
