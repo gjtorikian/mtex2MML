@@ -15,24 +15,6 @@ void remove_first_char(char* str)
   memmove(str, str + 1, len);
 }
 
-char *dupe_string(const char * str)
-{
-  int len = strlen(str) + 1;
-  char *buf = malloc(len);
-  if (buf) { memcpy(buf, str, len); }
-  return buf;
-}
-
-char *dupe_string_n(const char *s, size_t n)
-{
-  char* buf = malloc(n + 1);
-  if (buf) {
-    strncpy(buf, s, n);
-    buf[n] = '\0';
-  }
-  return buf;
-}
-
 char * str_replace (char *string, const char *substr, const char *replacement)
 {
   char *tok = NULL;
@@ -41,22 +23,19 @@ char * str_replace (char *string, const char *substr, const char *replacement)
 
   /* if either substr or replacement is NULL, duplicate string a let caller handle it */
 
-  if ( substr == NULL || replacement == NULL )
-  {
-    return dupe_string (string);
+  if ( substr == NULL || replacement == NULL ) {
+    return strdup(string);
   }
 
-  newstr = dupe_string (string);
+  newstr = strdup(string);
 
-  while ( ( tok = strstr( newstr, substr ) ) )
-  {
+  while ( ( tok = strstr( newstr, substr ) ) ) {
 
     oldstr = newstr;
     newstr = malloc ( strlen ( oldstr ) - strlen ( substr ) + strlen ( replacement ) + 1 );
 
     /* If failed to alloc mem, free old string and return NULL */
-    if ( newstr == NULL )
-    {
+    if ( newstr == NULL ) {
       free (oldstr);
       return NULL;
     }

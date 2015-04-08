@@ -20,12 +20,6 @@ extern void remove_last_char(char* str);
 // Remove the first character in a string
 extern void remove_first_char(char* str);
 
-// Duplicates an immutable string
-extern char * dupe_string(const char * str);
-
-// Duplicates an immutable string (up to n bytes)
-extern char * dupe_string_n(const char * s, size_t n);
-
 extern char * str_replace(char *string, const char *substr, const char *replacement);
 
 #ifdef __cplusplus

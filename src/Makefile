@@ -37,6 +37,9 @@ lex.yy.o:	lex.yy.c y.tab.c mtex2MML.h
 mtex2MML:	lex.yy.o y.tab.o mtex2MML.cc mtex2MML.h
 		$(CXX) $(CFLAGS) -o mtex2MML lex.yy.o y.tab.o string_extras.o color_definitions.o parse_extras.o mtex2MML.cc
 
+debug: lex.yy.o y.tab.o mtex2MML_debug.cc mtex2MML.h
+		$(CXX) $(CFLAGS) libefence.a -o mtex2MML lex.yy.o y.tab.o string_extras.o color_definitions.o parse_extras.o mtex2MML_debug.cc
+
 universal:
 		CFLAGS='-arch i686 -arch ppc' make all
 
