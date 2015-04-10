@@ -390,7 +390,7 @@ f(n) =
 \end{cases}
 $$
 '''
-    write_to_test_file @mtex.filter(text)
+
     assert_equal(@mtex.filter(text), fixture_file("env", "spaces_after_rowsep"))
   end
 
