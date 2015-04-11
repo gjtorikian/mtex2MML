@@ -74,6 +74,12 @@ extern const char *remove_excess_pipe_chars(const char *string);
 // return the proper rowlines information
 extern const char *combine_row_data(UT_array **environment_data_stack);
 
+// given a number, return it as an em
+extern const char * dbl2em(const char *str);
+
+// construct a skew sequence
+extern const char * implement_skew(char *base_str, char *em_skew, char *pattern);
+
 #ifdef __cplusplus
 }
 #endif

@@ -934,6 +934,8 @@ int mtex2MML_displaymode = 0;
 "\\closure" |
 "\\widebar"      {return WIDEBAR;}
 
+"\\skew"         {return SKEW; }
+
 "\\acute"        {return ACUTE;}
 
 "\\grave"        {return GRAVE;}

@@ -725,6 +725,7 @@ _
 \sin
 \sinh
 \slash
+\skew
 \small
 \smallfrown
 \smallint

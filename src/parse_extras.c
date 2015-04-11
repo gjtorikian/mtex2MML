@@ -316,3 +316,37 @@ const char *combine_row_data(UT_array **environment_data_stack)
 
   return row_attr;
 }
+
+const char * dbl2em(const char *str)
+{
+  UT_string *em;
+  utstring_new(em);
+
+  float dbl;
+  sscanf (str,"%*[^0123456789]%f", &dbl);
+  dbl *= 0.056;
+
+  utstring_printf(em, "%.3fem", dbl);
+  char * em_str = strdup(utstring_body(em));
+
+  utstring_free(em);
+
+  return em_str;
+}
+
+extern const char * implement_skew(char *base_str, char *em_skew, char *pattern)
+{
+    UT_string *skew_mathml;
+    utstring_new(skew_mathml);
+
+    utstring_printf(skew_mathml, "%s%s%s", "<mrow><mrow><mrow><mover><mrow>", base_str, "<mspace width=\"");
+    utstring_printf(skew_mathml, "%s%s%s", em_skew, "\" /></mrow>", "<mo stretchy=\"false\">");
+    utstring_printf(skew_mathml, "%s%s%s", pattern, "</mo></mover></mrow><mspace width=\"-", em_skew);
+    utstring_printf(skew_mathml, "%s", "\" /></mrow><mrow></mrow></mrow>");
+
+    char * skew_mathml_str = strdup(utstring_body(skew_mathml));
+
+    utstring_free(skew_mathml);
+
+    return skew_mathml_str;
+}
