@@ -124,6 +124,7 @@ _
 \bracevert
 \brack
 \breve
+\buildrel
 \bullet
 \bumpeq
 \Bumpeq

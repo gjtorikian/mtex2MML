@@ -965,6 +965,8 @@ int mtex2MML_displaymode = 0;
 
 "\\underset"     {return UNDER;}
 
+"\\buildrel"   {return BUILDREL;}
+
 "\\stackrel" |
 "\\overset"      {return OVER;}
 
