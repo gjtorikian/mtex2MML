@@ -719,6 +719,7 @@ _
 \sharp
 \shortmid
 \shortparallel
+\sideset
 \sigma
 \Sigma
 \sim

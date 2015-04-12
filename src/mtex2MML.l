@@ -863,6 +863,8 @@ int mtex2MML_displaymode = 0;
 "\\boxtimes" |
 "\\timesb"   {yylval=mtex2MML_copy_string("&boxtimes;"); return MOL;}
 
+"\\sideset"  {return SIDESET;}
+
 "\\sum"          {yylval=mtex2MML_copy_string("&Sum;"); return MOB;}
 
 "\\prod" |
