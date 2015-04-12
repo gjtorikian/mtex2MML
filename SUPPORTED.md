@@ -993,6 +993,7 @@ pmatrix
 
 smallmatrix
 split
+subarray
 svg
 
 vmatrix
