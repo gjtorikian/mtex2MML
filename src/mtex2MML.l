@@ -903,6 +903,7 @@ int mtex2MML_displaymode = 0;
 "\\frac"         {return FRAC;}
 "\\tfrac"         {return TFRAC;}
 "\\dfrac"         {return DFRAC;}
+"\\cfrac"         {return CFRAC;}
 
 "\\binom"        {return BINOM;}
 "\\tbinom"        {return TBINOM;}
