@@ -1099,6 +1099,7 @@ int mtex2MML_displaymode = 0;
 
 "\\mathopen"    {return MATHOPEN;}
 "\\mathclose"    {return MATHCLOSE;}
+"\\mathord"    {return MATHORD;}
 
 "\\enclose"     {BEGIN(ENCLOSEOPTS); return ENCLOSE;}
 
