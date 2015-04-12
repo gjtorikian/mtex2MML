@@ -298,6 +298,7 @@ _
 \geq
 \geqq
 \geqslant
+\genfrac
 \gets
 \gg
 \ggg

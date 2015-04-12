@@ -901,9 +901,10 @@ int mtex2MML_displaymode = 0;
 "\\parr"       {yylval=mtex2MML_copy_string("&#8523;"); return MOL;}
 
 "\\frac"         {return FRAC;}
-"\\tfrac"         {return TFRAC;}
-"\\dfrac"         {return DFRAC;}
-"\\cfrac"         {return CFRAC;}
+"\\tfrac"        {return TFRAC;}
+"\\dfrac"        {return DFRAC;}
+"\\cfrac"        {return CFRAC;}
+"\\genfrac"      {return GENFRAC;}
 
 "\\binom"        {return BINOM;}
 "\\tbinom"        {return TBINOM;}
