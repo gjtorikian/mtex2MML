@@ -1097,6 +1097,9 @@ int mtex2MML_displaymode = 0;
 "\\hbox"        {return HBOX;}
 "\\mbox"        {return MBOX;}
 
+"\\mathopen"    {return MATHOPEN;}
+"\\mathclose"    {return MATHCLOSE;}
+
 "\\enclose"     {BEGIN(ENCLOSEOPTS); return ENCLOSE;}
 
 "\\cal"         |

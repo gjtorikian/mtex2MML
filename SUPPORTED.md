@@ -479,11 +479,13 @@ _
 \mathbin
 \mathcal
 \mathclap
+\mathclose
 \mathfr
 \mathfrak
 \mathit
 \mathllap
 \mathop
+\mathopen
 \mathraisebox
 \mathrel
 \mathring
