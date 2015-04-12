@@ -487,6 +487,7 @@ _
 \mathop
 \mathopen
 \mathord
+\mathpunct
 \mathraisebox
 \mathrel
 \mathring
