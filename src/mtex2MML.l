@@ -1,7 +1,7 @@
 %{
 %}
 %option noyywrap
-%x MATH ATTRIBUTELIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS ENCLOSEOPTS ENCLOSEATTRPARSE ENCLOSETEXTPARSE SPACEWIDTH SPACEHEIGHT SPACEDEPTH HSPACEARG TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH ATTRIBUTELIST BRACKETLIST PMBSTRING BBOLD FRAKTUR CALLIGRAPHIC SCRIPT ROMAN VERBTEXT PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS ENVOPTIONS ALIGNATOPTS COLOPTS ENCLOSEOPTS ENCLOSEATTRPARSE ENCLOSETEXTPARSE SPACEWIDTH SPACEHEIGHT SPACEDEPTH HSPACEARG TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -1018,7 +1018,7 @@ int mtex2MML_displaymode = 0;
 "\\color"        {BEGIN(ATTRIBUTELIST); return COLOR;}
 "\\bgcolor"        {BEGIN(ATTRIBUTELIST); return BGCOLOR;}
 
-"\\bbox"         {return BBOX;}
+"\\bbox"         {BEGIN(BRACKETLIST); return BBOX;}
 
 "\\displaystyle"  {mtex2MML_displaymode=1; mtex2MML_rowposn=2; return DISPLAY;}
 
@@ -1227,7 +1227,15 @@ int mtex2MML_displaymode = 0;
 
 <ATTRIBUTELIST>"{"[ \t\n\r #a-zA-Z0-9.\-]*"}"  {BEGIN(MATH); yylval=mtex2MML_copy_string(yytext); if (yylval != mtex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return ATTRLIST;}
 
-<BRACKETLIST>"["[ \t\n\r #a-zA-Z0-9.\-]*"]"  {BEGIN(MATH); yylval=mtex2MML_copy_string(yytext); if (yylval != mtex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return BRACKLIST;}
+<BRACKETLIST>{
+"\["  {return ST;}
+"\]"  {BEGIN(MATH); return END;}
+[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%) { yylval=mtex2MML_copy_string(yytext); return PXSTRING; }
+[0-9a-zA-Z ]+":"[0-9a-zA-Z ]+   {yylval=mtex2MML_copy_string(yytext); return STYLESTRING;}
+#?[0-9a-zA-Z]+            {yylval=mtex2MML_copy_string(yytext); return COLORSTRING;}
+[\t\n\r, ]+       ;
+.           {return yytext[0];}
+}
 
 <OPTARG>{
 "[" {if(mtex2MML_optarg_ind < mtex2MML_optarg_depth - 1 && mtex2MML_inoptarg[mtex2MML_optarg_ind] !=1 ){mtex2MML_optarg_ind++; mtex2MML_inoptarg[mtex2MML_optarg_ind]=1;}; BEGIN(MATH); return OPTARGOPEN;}

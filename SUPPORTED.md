@@ -63,6 +63,7 @@ _
 \bar
 \barwedge
 \Bbb
+\bbox
 \bcancel
 \because
 \beta
