@@ -194,7 +194,8 @@ int mtex2MML_displaymode = 0;
 
 "\\#" {yylval=mtex2MML_copy_string("#"); return MOL;}
 
-","   |
+","   {yylval=mtex2MML_copy_string(yytext); return COMMADELIM;}
+
 ":"   |
 "!"   |
 "="   |
@@ -1017,6 +1018,8 @@ int mtex2MML_displaymode = 0;
 "\\color"        {BEGIN(ATTRIBUTELIST); return COLOR;}
 "\\bgcolor"        {BEGIN(ATTRIBUTELIST); return BGCOLOR;}
 
+"\\bbox"         {return BBOX;}
+
 "\\displaystyle"  {mtex2MML_displaymode=1; mtex2MML_rowposn=2; return DISPLAY;}
 
 "\\textstyle"     {mtex2MML_displaymode=0; mtex2MML_rowposn=2; return TEXTSTY;}
@@ -1223,6 +1226,8 @@ int mtex2MML_displaymode = 0;
 }
 
 <ATTRIBUTELIST>"{"[ \t\n\r #a-zA-Z0-9.\-]*"}"  {BEGIN(MATH); yylval=mtex2MML_copy_string(yytext); if (yylval != mtex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return ATTRLIST;}
+
+<BRACKETLIST>"["[ \t\n\r #a-zA-Z0-9.\-]*"]"  {BEGIN(MATH); yylval=mtex2MML_copy_string(yytext); if (yylval != mtex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return BRACKLIST;}
 
 <OPTARG>{
 "[" {if(mtex2MML_optarg_ind < mtex2MML_optarg_depth - 1 && mtex2MML_inoptarg[mtex2MML_optarg_ind] !=1 ){mtex2MML_optarg_ind++; mtex2MML_inoptarg[mtex2MML_optarg_ind]=1;}; BEGIN(MATH); return OPTARGOPEN;}

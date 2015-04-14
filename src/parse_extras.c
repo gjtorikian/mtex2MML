@@ -317,13 +317,33 @@ const char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
+const float extract_float_from_pxstring(const char * str) {
+  float dbl;
+  int match = 0;
+  match = sscanf (str, "%*[^0123456789]%f", &dbl);
+  if (match == 1) {
+    return dbl;
+  }
+
+  // must not be a float.
+  sscanf (str, "%d", &match);
+  return (float) match;
+}
+
+const char *extract_string_from_pxstring(const char * str) {
+  char *pixel;
+  float dbl;
+  pixel = malloc(3*sizeof(char));
+  sscanf (str, "%f%s", &dbl, pixel);
+  return pixel;
+}
+
 const char * dbl2em(const char *str)
 {
   UT_string *em;
   utstring_new(em);
 
-  float dbl;
-  sscanf (str,"%*[^0123456789]%f", &dbl);
+  float dbl = extract_float_from_pxstring(str);
   dbl *= 0.056;
 
   utstring_printf(em, "%.3fem", dbl);
@@ -334,7 +354,21 @@ const char * dbl2em(const char *str)
   return em_str;
 }
 
-extern const char * implement_skew(char *base_str, char *em_skew, char *pattern)
+const char * double_pixel(float f, char *pixel)
+{
+  UT_string *em;
+  utstring_new(em);
+
+  float dbl = f * 2;
+  utstring_printf(em, "%.3f%s", dbl, pixel);
+  char * em_str = strdup(utstring_body(em));
+
+  utstring_free(em);
+
+  return em_str;
+}
+
+const char * implement_skew(char *base_str, char *em_skew, char *pattern)
 {
     UT_string *skew_mathml;
     utstring_new(skew_mathml);
