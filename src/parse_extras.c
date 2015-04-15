@@ -320,7 +320,8 @@ const char *combine_row_data(UT_array **environment_data_stack)
 const float extract_number_from_pxstring(const char * str) {
   float dbl;
   int match = 0;
-  match = sscanf (str, "%*[^0123456789]%f", &dbl);
+
+  match = sscanf (str, "%*[^-0123456789]%f", &dbl);
   if (match == 1) {
     return dbl;
   }
