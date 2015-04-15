@@ -899,6 +899,7 @@ _
 \varUpsilon
 \varXi
 \Vbar
+\vcenter
 \vdash
 \vDash
 \Vdash

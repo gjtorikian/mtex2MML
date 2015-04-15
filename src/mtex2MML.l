@@ -1107,6 +1107,8 @@ int mtex2MML_displaymode = 0;
 "\\mathord"     {return MATHORD;}
 "\\mathpunct"   {return MATHPUNCT;}
 
+"\\vcenter"     {return VCENTER;}
+
 "\\enclose"     {BEGIN(ENCLOSEOPTS); return ENCLOSE;}
 
 "\\cal"         |
