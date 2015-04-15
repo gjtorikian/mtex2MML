@@ -2781,7 +2781,7 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
 | BEGINENV ALIGNAT ALIGNATVALUE END tableRowList ENDENV ALIGNAT {
   char *row_data = combine_row_data(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\"  rowspacing=\"3pt\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
   char * n = mtex2MML_global_label();
   $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
@@ -2798,7 +2798,7 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
 | BEGINENV ALIGNAT_STAR ALIGNATVALUE END tableRowList ENDENV ALIGNAT_STAR {
   char *row_data = combine_row_data(&environment_data_stack);
 
-  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
+  char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\"  rowspacing=\"3pt\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
   if (encase == TOPENCLOSE)
