@@ -993,7 +993,9 @@ int mtex2MML_displaymode = 0;
 "\\sqrt"         {BEGIN(OPTARG); return SQRT;}
 
 "\\root"         {return ROOT;}
-"\\of"           {/* Ignore */}
+"\\leftroot"         {return LEFTROOT;}
+
+"\\of"           {return OF;}
 
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
 "\\verb"[^ ]      {mtex2MML_verbdelim = yytext[yyleng-1]; mtex2MML_str = NULL; BEGIN(VERBTEXT); return VERBBOX;}

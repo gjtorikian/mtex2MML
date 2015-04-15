@@ -417,6 +417,7 @@ _
 \leftrightharpoons
 \leftrightsquigarrow
 \leftrightsquigarrow
+\leftroot
 \leftsquigarrow
 \leftthreetimes
 \lefttorightarrow

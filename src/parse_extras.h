@@ -75,13 +75,17 @@ extern const char *remove_excess_pipe_chars(const char *string);
 extern const char *combine_row_data(UT_array **environment_data_stack);
 
 // given a pixel string, retrieve the numeric portion from it
-extern const float extract_float_from_pxstring(const char * str);
+extern const float extract_number_from_pxstring(const char * str);
 
 // given a pixel string, retrieve the pixel type portion from it
 extern const char *extract_string_from_pxstring(const char * str);
 
 // given a number, return it as an em
 extern const char * dbl2em(const char *str);
+
+// given a number, return it as a leftroot number
+// taken straight from MathJax
+extern const char * leftroot_to_em(const char * str);
 
 // given a number and a pixel string, return the doubled number
 extern const char * double_pixel(float f, char *pixel);
