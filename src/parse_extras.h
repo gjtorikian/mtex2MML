@@ -83,9 +83,9 @@ extern const char *extract_string_from_pxstring(const char * str);
 // given a number, return it as an em
 extern const char * dbl2em(const char *str);
 
-// given a number, return it as a leftroot number
+// given a number, return it as a root position
 // taken straight from MathJax
-extern const char * leftroot_to_em(const char * str);
+extern const char * root_pos_to_em(const char * str);
 
 // given a number and a pixel string, return the doubled number
 extern const char * double_pixel(float f, char *pixel);

@@ -385,7 +385,7 @@ const char * implement_skew(char *base_str, char *em_skew, char *pattern)
     return skew_mathml_str;
 }
 
-const char * leftroot_to_em(const char * str) {
+const char * root_pos_to_em(const char * str) {
   UT_string *em;
   utstring_new(em);
 

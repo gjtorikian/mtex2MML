@@ -858,6 +858,7 @@ _
 \upharpoonleft
 \upharpoonright
 \uplus
+\uproot
 \Upsi
 \upsilon
 \Upsilon

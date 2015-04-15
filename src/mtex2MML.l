@@ -994,6 +994,7 @@ int mtex2MML_displaymode = 0;
 
 "\\root"         {return ROOT;}
 "\\leftroot"         {return LEFTROOT;}
+"\\uproot"         {return UPROOT;}
 
 "\\of"           {return OF;}
 
