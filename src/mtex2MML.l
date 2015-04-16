@@ -1286,6 +1286,8 @@ int mtex2MML_displaymode = 0;
 "\{alignat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
 "\{alignat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT_STAR;}
 "\{alignedat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
+"\{eqnarray*\}" {BEGIN(MATH); return EQNARRAY_STAR;}
+"\{eqnarray\}" {BEGIN(MATH); return EQNARRAY;}
 "\{gather\}" {BEGIN(MATH); return GATHER;}
 "\{gather*\}" {BEGIN(MATH); return GATHER_STAR;}
 "\{gathered\}[" {BEGIN(ENVOPTIONS); return GATHERED;}

@@ -989,6 +989,8 @@ Bmatrix
 
 cases
 
+eqnarray
+eqnarray*
 equation
 equation*
 

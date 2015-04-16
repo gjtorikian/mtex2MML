@@ -7,27 +7,40 @@
 
 void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
 {
+  const char *from = "\\begin", *until = "\\end",
+   *begin_svg = "begin{svg}";
+
+  // if not an environment, don't bother going on
+  if ((strstr(environment, from) == NULL && strstr(environment, until) == NULL) || strstr(environment, begin_svg)) {
+   return;
+  }
+
   UT_array *array_stack;
   UT_array *row_spacing_stack;
   UT_array *rowlines_stack;
 
   char *tok = NULL, *at_top = NULL,
         *temp = "", **last_stack_item,
-         *a, *em_str, *is_smallmatrix = NULL, *is_gathered = NULL;
+         *a, *em_str;
 
-  const char *from = "\\begin", *until = "\\end", *hline = "\\hline", *hdashline = "\\hdashline",
+   envType environmentType = NORMAL;
+   if (strstr(environment, "\\end{smallmatrix}") != NULL) {
+     environmentType = ENV_SMALLMATRIX;
+   } else if (strstr(environment, "\\end{gathered}") != NULL) {
+     environmentType = ENV_GATHERED;
+   } else if (strstr(environment, "\\end{eqnarray") != NULL) {
+     environmentType = ENV_EQNARRAY;
+   } else if (strstr(environment, "\\end{alignat") != NULL) {
+     environmentType = ENV_ALIGNAT;
+   }
+
+   const char *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
                *cr_separator = "\\cr",
-                *begin_svg = "begin{svg}",
                  *newline_separator = "\\newline",
                   *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int rowlines_stack_len = 0, em_offset = 0;
-
-  // if not an environment, don't bother going on
-  if ((strstr(environment, from) == NULL && strstr(environment, until) == NULL) || strstr(environment, begin_svg)) {
-    return;
-  }
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -92,10 +105,12 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           }
           // otherwise, use the default
           else {
-            if (strstr(*last_stack_item, "\\begin{smallmatrix}") != NULL) {
+            if (environmentType == ENV_SMALLMATRIX) {
               em_str = "0.2em";
-            } else if (strstr(*last_stack_item, "\\begin{gathered}") != NULL) {
+            } else if (environmentType == ENV_GATHERED) {
               em_str = "1.0ex";
+            } else if (environmentType == ENV_EQNARRAY || environmentType  == ENV_ALIGNAT) {
+              em_str = "3pt";
             } else {
               em_str = "0.5ex";
             }
@@ -111,13 +126,9 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           break;
         }
       }
-      if (at_top != NULL) {
-        is_smallmatrix = strstr(at_top, "\\begin{smallmatrix}");
-        is_gathered = strstr(at_top, "\\begin{gathered}");
-      }
 
       if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
-        perform_replacement(environment_data_stack, rowlines_stack, is_smallmatrix, is_gathered, row_spacing_stack);
+        perform_replacement(environment_data_stack, rowlines_stack, environmentType, row_spacing_stack);
       }
 
       utarray_clear(row_spacing_stack);
@@ -134,7 +145,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   free(dupe_environment);
 }
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack)
+void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environmentType, UT_array *row_spacing_stack)
 {
   char *a, *attr_rowlines, *attr_rowspacing;
   envdata_t row_data;
@@ -168,9 +179,9 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   utstring_new(s);
   char **p=NULL;
   while ( (p=(char**)utarray_prev(row_spacing_stack,p))) {
-    if (is_smallmatrix && strcmp(*p, "0.5ex") == 0) {
+    if (environmentType == ENV_SMALLMATRIX && strcmp(*p, "0.5ex") == 0) {
       utstring_printf(s, "%s ", "0.2em");
-    } else if (is_gathered && strcmp(*p, "0.5ex") == 0) {
+    } else if (environmentType == ENV_GATHERED && strcmp(*p, "0.5ex") == 0) {
       utstring_printf(s, "%s ", "1.0ex");
     } else {
       utstring_printf(s, "%s ", *p);
@@ -181,9 +192,9 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   if (strlen(attr_rowspacing) > 0) {
     remove_last_char(attr_rowspacing); // remove the final space
   } else {
-    if (is_smallmatrix != NULL) {
+    if (environmentType == ENV_SMALLMATRIX) {
       attr_rowspacing = "0.2em";
-    } else if (is_gathered != NULL) {
+    } else if (environmentType == ENV_GATHERED) {
       attr_rowspacing = "1.0ex";
     } else {
       attr_rowspacing = "0.5ex";

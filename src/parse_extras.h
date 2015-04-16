@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 typedef enum {NONE = 0, TOPENCLOSE} encaseType;
+typedef enum {NORMAL = 0, ENV_ALIGNAT, ENV_GATHERED, ENV_EQNARRAY, ENV_SMALLMATRIX} envType;
 
 typedef struct {
   char *rowspacing;
@@ -58,11 +59,11 @@ struct css_colors {
 //
 // The env_replacements function will push every line onto a stack. When an \end
 // is detected, it starts popping off the stack until it reaches the corresponding
-// \begin. It then modifies that stack with attribute strings, an arrangement of the
+// \begin. It then modifies that stack with attribute strings, an arrangement of
 // the symbols encountered while popping lines off.
 extern void env_replacements(UT_array **environment_data_stack, encaseType *encase, const char *environment);
 
-extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, const char *is_smallmatrix, const char *is_gathered, UT_array *row_spacing_stack);
+extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environmentType, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);
