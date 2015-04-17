@@ -1,2 +1,3 @@
- \DeclareMathOperator{\asin}{asin} \asin x \)
+$$
+  \DeclareMathOperator{\asin}{asin} \asin x \)
 $$

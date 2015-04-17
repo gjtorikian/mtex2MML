@@ -1292,6 +1292,8 @@ int mtex2MML_displaymode = 0;
 "\{gather*\}" {BEGIN(MATH); return GATHER_STAR;}
 "\{gathered\}[" {BEGIN(ENVOPTIONS); return GATHERED;}
 "\{gathered\}" {BEGIN(MATH); return GATHERED;}
+"\{multline*\}" {BEGIN(MATH); return MULTLINE_STAR;}
+"\{multline\}" {BEGIN(MATH); return MULTLINE;}
 "\{split\}" {BEGIN(MATH); return ALIGNED;}
 "\{array\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{subarray\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return SUBARRAY;}

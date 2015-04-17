@@ -9,18 +9,14 @@ extern "C" {
 #endif
 
 typedef enum {NONE = 0, TOPENCLOSE} encaseType;
-typedef enum {NORMAL = 0, ENV_ALIGNAT, ENV_GATHERED, ENV_EQNARRAY, ENV_SMALLMATRIX} envType;
+typedef enum {OTHER = 0, ENV_ALIGNAT, ENV_GATHERED, ENV_EQNARRAY, ENV_MULTLINE, ENV_SMALLMATRIX} envType;
 
 typedef struct {
   char *rowspacing;
   char *rowlines;
-  int empty;
+  envType environmentType;
+  int line_count;
 } envdata_t;
-
-typedef struct {
-  char *attribute;
-  int  offset_pos;
-} symbolData;
 
 struct css_colors {
   char name[22];             /* key */
@@ -93,6 +89,12 @@ extern const char * double_pixel(float f, char *pixel);
 
 // construct a skew sequence
 extern const char * implement_skew(char *base_str, char *em_skew, char *pattern);
+
+// get the environment type of the top-most item
+extern envType current_env_type(UT_array **environment_data_stack);
+
+// get the line count of the top-most item
+extern int current_env_line_count(UT_array **environment_data_stack);
 
 #ifdef __cplusplus
 }

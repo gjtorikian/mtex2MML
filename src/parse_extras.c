@@ -23,13 +23,15 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
         *temp = "", **last_stack_item,
          *a, *em_str;
 
-   envType environmentType = NORMAL;
+   envType environmentType = OTHER;
    if (strstr(environment, "\\end{smallmatrix}") != NULL) {
      environmentType = ENV_SMALLMATRIX;
    } else if (strstr(environment, "\\end{gathered}") != NULL) {
      environmentType = ENV_GATHERED;
    } else if (strstr(environment, "\\end{eqnarray") != NULL) {
      environmentType = ENV_EQNARRAY;
+   } else if (strstr(environment, "\\end{multline") != NULL) {
+     environmentType = ENV_MULTLINE;
    } else if (strstr(environment, "\\end{alignat") != NULL) {
      environmentType = ENV_ALIGNAT;
    }
@@ -111,6 +113,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
               em_str = "1.0ex";
             } else if (environmentType == ENV_EQNARRAY || environmentType  == ENV_ALIGNAT) {
               em_str = "3pt";
+            } else if (environmentType == ENV_MULTLINE) {
+              em_str = "0.5em";
             } else {
               em_str = "0.5ex";
             }
@@ -148,13 +152,15 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
 void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environmentType, UT_array *row_spacing_stack)
 {
   char *a, *attr_rowlines, *attr_rowspacing;
-  envdata_t row_data;
+  envdata_t env_data;
 
   // we cut the last char because we can always skip the first row
   utarray_pop_back(rowlines_stack);
 
+  int line_count = utarray_len(rowlines_stack);
+
   // empty rowlines should be reset
-  if (utarray_len(rowlines_stack) == 0) {
+  if (line_count == 0) {
     a = "none";
     utarray_push_back(rowlines_stack, &a);
   }
@@ -201,10 +207,13 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
     }
   }
 
-  row_data.rowspacing = attr_rowspacing;
-  row_data.rowlines = attr_rowlines;
+  // store pertinent metadata
+  env_data.rowspacing = attr_rowspacing;
+  env_data.rowlines = attr_rowlines;
+  env_data.environmentType = environmentType;
+  env_data.line_count = line_count;
 
-  utarray_push_back(*environment_data_stack, &row_data);
+  utarray_push_back(*environment_data_stack, &env_data);
   utstring_free(l);
   utstring_free(s);
 }
@@ -410,4 +419,22 @@ const char * root_pos_to_em(const char * str) {
   utstring_free(em);
 
   return em_str;
+}
+
+envType current_env_type(UT_array **environment_data_stack) {
+  if (utarray_len(*environment_data_stack) == 0)
+    return NULL;
+
+  envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
+
+  return row_data_elem->environmentType;
+}
+
+int current_env_line_count(UT_array **environment_data_stack) {
+  if (utarray_len(*environment_data_stack) == 0)
+    return -1;
+
+  envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
+
+  return row_data_elem->line_count;
 }
