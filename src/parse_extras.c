@@ -8,11 +8,11 @@
 void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
 {
   const char *from = "\\begin", *until = "\\end",
-   *begin_svg = "begin{svg}";
+              *begin_svg = "begin{svg}";
 
   // if not an environment, don't bother going on
   if ((strstr(environment, from) == NULL && strstr(environment, until) == NULL) || strstr(environment, begin_svg)) {
-   return;
+    return;
   }
 
   UT_array *array_stack;
@@ -23,24 +23,24 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
         *temp = "", **last_stack_item,
          *a, *em_str;
 
-   envType environmentType = OTHER;
-   if (strstr(environment, "\\end{smallmatrix}") != NULL) {
-     environmentType = ENV_SMALLMATRIX;
-   } else if (strstr(environment, "\\end{gathered}") != NULL) {
-     environmentType = ENV_GATHERED;
-   } else if (strstr(environment, "\\end{eqnarray") != NULL) {
-     environmentType = ENV_EQNARRAY;
-   } else if (strstr(environment, "\\end{multline") != NULL) {
-     environmentType = ENV_MULTLINE;
-   } else if (strstr(environment, "\\end{alignat") != NULL) {
-     environmentType = ENV_ALIGNAT;
-   }
+  envType environmentType = OTHER;
+  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
+    environmentType = ENV_SMALLMATRIX;
+  } else if (strstr(environment, "\\end{gathered}") != NULL) {
+    environmentType = ENV_GATHERED;
+  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
+    environmentType = ENV_EQNARRAY;
+  } else if (strstr(environment, "\\end{multline") != NULL) {
+    environmentType = ENV_MULTLINE;
+  } else if (strstr(environment, "\\end{alignat") != NULL) {
+    environmentType = ENV_ALIGNAT;
+  }
 
-   const char *hline = "\\hline", *hdashline = "\\hdashline",
+  const char *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
                *cr_separator = "\\cr",
-                 *newline_separator = "\\newline",
-                  *em_pattern_begin = "\\[", *em_pattern_end = "]";
+                *newline_separator = "\\newline",
+                 *em_pattern_begin = "\\[", *em_pattern_end = "]";
 
   int rowlines_stack_len = 0, em_offset = 0;
 
@@ -337,7 +337,8 @@ const char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
-const float extract_number_from_pxstring(const char * str) {
+const float extract_number_from_pxstring(const char * str)
+{
   float dbl;
   int match = 0;
 
@@ -351,7 +352,8 @@ const float extract_number_from_pxstring(const char * str) {
   return (float) match;
 }
 
-const char *extract_string_from_pxstring(const char * str) {
+const char *extract_string_from_pxstring(const char * str)
+{
   char *pixel;
   float dbl;
   pixel = malloc(3*sizeof(char));
@@ -391,22 +393,23 @@ const char * double_pixel(float f, char *pixel)
 
 const char * implement_skew(char *base_str, char *em_skew, char *pattern)
 {
-    UT_string *skew_mathml;
-    utstring_new(skew_mathml);
+  UT_string *skew_mathml;
+  utstring_new(skew_mathml);
 
-    utstring_printf(skew_mathml, "%s%s%s", "<mrow><mrow><mrow><mover><mrow>", base_str, "<mspace width=\"");
-    utstring_printf(skew_mathml, "%s%s%s", em_skew, "\" /></mrow>", "<mo stretchy=\"false\">");
-    utstring_printf(skew_mathml, "%s%s%s", pattern, "</mo></mover></mrow><mspace width=\"-", em_skew);
-    utstring_printf(skew_mathml, "%s", "\" /></mrow><mrow></mrow></mrow>");
+  utstring_printf(skew_mathml, "%s%s%s", "<mrow><mrow><mrow><mover><mrow>", base_str, "<mspace width=\"");
+  utstring_printf(skew_mathml, "%s%s%s", em_skew, "\" /></mrow>", "<mo stretchy=\"false\">");
+  utstring_printf(skew_mathml, "%s%s%s", pattern, "</mo></mover></mrow><mspace width=\"-", em_skew);
+  utstring_printf(skew_mathml, "%s", "\" /></mrow><mrow></mrow></mrow>");
 
-    char * skew_mathml_str = strdup(utstring_body(skew_mathml));
+  char * skew_mathml_str = strdup(utstring_body(skew_mathml));
 
-    utstring_free(skew_mathml);
+  utstring_free(skew_mathml);
 
-    return skew_mathml_str;
+  return skew_mathml_str;
 }
 
-const char * root_pos_to_em(const char * str) {
+const char * root_pos_to_em(const char * str)
+{
   UT_string *em;
   utstring_new(em);
 
@@ -421,18 +424,22 @@ const char * root_pos_to_em(const char * str) {
   return em_str;
 }
 
-envType current_env_type(UT_array **environment_data_stack) {
-  if (utarray_len(*environment_data_stack) == 0)
+envType current_env_type(UT_array **environment_data_stack)
+{
+  if (utarray_len(*environment_data_stack) == 0) {
     return NULL;
+  }
 
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
 
   return row_data_elem->environmentType;
 }
 
-int current_env_line_count(UT_array **environment_data_stack) {
-  if (utarray_len(*environment_data_stack) == 0)
+int current_env_line_count(UT_array **environment_data_stack)
+{
+  if (utarray_len(*environment_data_stack) == 0) {
     return -1;
+  }
 
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
 
