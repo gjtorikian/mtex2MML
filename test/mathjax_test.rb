@@ -42,6 +42,7 @@ class MTex2MMLMathJaxTest < MiniTest::Test
     incomplete_files = incomplete_files.join("\n * ")
     puts "\n\nNot doing the following #{incomplete_file_count} MathJax tests (because they're non-standard):\n\n * #{incomplete_files}"
     puts "\n\nSkipping the following MathJax tests:\n\n * #{skipped_files}"
-    puts "\n\n*** You did #{done_count} and skipped #{skipped_count}: #{coverage.round(2)}% coverage ***\n\n"
+    puts "\n\n*** You did #{done_count} and skipped #{skipped_count}: #{coverage.round(2)}% coverage ***"
+    puts "*** Tests last fetched: 3e882fd386 ***\n\n"
   end
 end

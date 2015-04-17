@@ -999,6 +999,8 @@ gather*
 gathered
 
 matrix
+multline
+multline*
 
 pmatrix
 
