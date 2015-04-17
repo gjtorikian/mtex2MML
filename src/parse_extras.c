@@ -427,7 +427,7 @@ const char * root_pos_to_em(const char * str)
 envType current_env_type(UT_array **environment_data_stack)
 {
   if (utarray_len(*environment_data_stack) == 0) {
-    return NULL;
+    return -1;
   }
 
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
