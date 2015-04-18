@@ -1986,7 +1986,7 @@ texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
 }
 | closedTerm TEXOVER closedTerm {
   char * s1 = mtex2MML_copy3("<mfrac>", $1, $3);
-  $$ = mtex2MML_copy2(s1, "</frac>");
+  $$ = mtex2MML_copy2(s1, "</mfrac>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
@@ -2028,7 +2028,7 @@ texatop: MROWOPEN compoundTermList TEXATOP compoundTermList MROWCLOSE {
 }
 | closedTerm TEXATOP closedTerm {
   char * s1 = mtex2MML_copy3("<mfrac linethickness=\"0\">", $1, $3);
-  $$ = mtex2MML_copy2(s1, "</frac>");
+  $$ = mtex2MML_copy2(s1, "</mfrac>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
@@ -2187,11 +2187,11 @@ bar: BAR closedTerm {
 };
 
 vec: VEC closedTerm {
-  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&RightVector;</mo></mover>");
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x2192;</mo></mover>");
   mtex2MML_free_string($2);
 }
 | WIDEVEC closedTerm {
-  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&RightVector;</mo></mover>");
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&#x2192;</mo></mover>");
   mtex2MML_free_string($2);
 };
 
