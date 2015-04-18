@@ -1029,7 +1029,8 @@ int mtex2MML_displaymode = 0;
 
 "\\textsize"     {return TEXTSIZE;}
 
-"\\scriptstyle" |
+"\\scriptstyle"  {return SCSTY; }
+
 "\\scriptsize"     {return SCSIZE;}
 
 "\\scriptscriptstyle" |
