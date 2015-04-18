@@ -1962,17 +1962,17 @@ mfrac: FRAC closedTerm closedTerm {
 pod: POD closedTerm {
   $$ = mtex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
   mtex2MML_free_string($2);
-}
+};
 
 pmod: PMOD closedTerm {
   $$ = mtex2MML_copy3( "<mrow><mo lspace=\"mediummathspace\">(</mo><mo rspace=\"thinmathspace\">mod</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo></mrow>");
   mtex2MML_free_string($2);
-}
+};
 
 bmod: BMOD closedTerm {
   $$ = mtex2MML_copy3( "<mrow><mo lspace=\"thickmathspace\" rspace=\"thickmathspace\">mod</mo>", $2, "</mrow>");
   mtex2MML_free_string($2);
-}
+};
 
 buildrel: BUILDREL closedTerm TEXOVER closedTerm {
   char *s1 = mtex2MML_copy3("<mrow><mover>", $4, $2);
@@ -1983,14 +1983,7 @@ buildrel: BUILDREL closedTerm TEXOVER closedTerm {
   mtex2MML_free_string($4);
 };
 
-texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
-  char * s1 = mtex2MML_copy3("<mfrac><mrow>", $2, "</mrow><mrow>");
-  $$ = mtex2MML_copy3(s1, $4, "</mrow></mfrac>");
-  mtex2MML_free_string(s1);
-  mtex2MML_free_string($2);
-  mtex2MML_free_string($4);
-}
-| closedTerm TEXOVER closedTerm {
+texover: closedTerm TEXOVER closedTerm {
   char * s1 = mtex2MML_copy3("<mfrac>", $1, $3);
   $$ = mtex2MML_copy2(s1, "</mfrac>");
   mtex2MML_free_string(s1);
@@ -2995,7 +2988,7 @@ sideset: SIDESET MROWOPEN SUB closedTerm SUP closedTerm MROWCLOSE MROWOPEN SUB c
   mtex2MML_free_string($10);
   mtex2MML_free_string($12);
   mtex2MML_free_string($14);
-}
+};
 
 array: ARRAY MROWOPEN tableRowList MROWCLOSE {
   $$ = mtex2MML_copy3("<mrow><mtable>", $3, "</mtable></mrow>");
