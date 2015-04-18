@@ -1270,13 +1270,17 @@ verbstring: VERBBOX VERBSTRING {
   mtex2MML_free_string($2);
 };
 
-displaystyle: DISPLAY compoundTermList {
-  $$ = mtex2MML_copy3("<mstyle displaystyle=\"true\">", $2, "</mstyle>");
+displaystyle: DISPLAY MROWOPEN texover MROWCLOSE {
+  $$ = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow>", $3, "</mrow></mstyle>");
+  mtex2MML_free_string($3);
+}
+| DISPLAY compoundTermList {
+  $$ = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow>", $2, "</mrow></mstyle>");
   mtex2MML_free_string($2);
 };
 
 textstyle: TEXTSTY compoundTermList {
-  $$ = mtex2MML_copy3("<mstyle displaystyle=\"false\">", $2, "</mstyle>");
+  $$ = mtex2MML_copy3("<mstyle displaystyle=\"false\" scriptlevel=\"0\">", $2, "</mstyle>");
   mtex2MML_free_string($2);
 };
 
@@ -2114,8 +2118,9 @@ brack: closedTerm BRACK closedTerm {
 };
 
 choose: closedTerm CHOOSE closedTerm {
-  char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $1, $3);
-  $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow>");
+  char * s1 = mtex2MML_copy3("<mrow><mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">(</mo></mrow><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">)</mo></mrow></mrow>");
+
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);

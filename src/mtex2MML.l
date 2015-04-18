@@ -28,14 +28,19 @@ int mtex2MML_env_start = 0;
 int mtex2MML_variant_start = 0;
 
 #define YY_USER_ACTION mtex2MML_capture_eqn_src();
-# define mtex2MML_eqn_bufsize 131072
+#define mtex2MML_eqn_bufsize 131072
 char mtex2MML_eqn_src[mtex2MML_eqn_bufsize];
 char * mtex2MML_eqn_end = mtex2MML_eqn_src;
 char mtex2MML_verbdelim;
 char * mtex2MML_str;
 
 int mtex2MML_rowposn = 0;
+
+// TODO: I'm not sure what the next option does. My addition
+// of `display_style` is to fix issue776. Probably worth merging
+// these in the future?
 int mtex2MML_displaymode = 0;
+int display_style = 0;
 
 %}
 %%
@@ -1023,13 +1028,13 @@ int mtex2MML_displaymode = 0;
 
 "\\bbox"         {BEGIN(BRACKETLIST); return BBOX;}
 
-"\\displaystyle"  {mtex2MML_displaymode=1; mtex2MML_rowposn=2; return DISPLAY;}
+"\\displaystyle"  {mtex2MML_displaymode=1; mtex2MML_rowposn=2; display_style = 1; return DISPLAY;}
 
-"\\textstyle"     {mtex2MML_displaymode=0; mtex2MML_rowposn=2; return TEXTSTY;}
+"\\textstyle"     {mtex2MML_displaymode=0; mtex2MML_rowposn=2; display_style = 0; return TEXTSTY;}
 
-"\\textsize"     {return TEXTSIZE;}
+"\\textsize"     {display_style = 0; return TEXTSIZE;}
 
-"\\scriptstyle"  {return SCSTY; }
+"\\scriptstyle"  {display_style = 0; return SCSTY;}
 
 "\\scriptsize"     {return SCSIZE;}
 
