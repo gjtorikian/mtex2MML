@@ -2080,38 +2080,38 @@ texabovewithdelims: closedTerm TEXABOVEWITHDELIMS LEFTDELIM RIGHTDELIM PXSTRING 
 };
 
 binom: BINOM closedTerm closedTerm {
-  char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $3);
-  $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow>");
+  char * s1 = mtex2MML_copy3("<mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">(</mo><mfrac linethickness=\"0\">", $2, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo maxsize=\"2.047em\" minsize=\"2.047em\">)</mo></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($3);
 }
 | TBINOM closedTerm closedTerm {
-  char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mstyle displaystyle=\"false\"><mfrac linethickness=\"0\">", $2, $3);
-  $$ = mtex2MML_copy2(s1, "</mfrac></mstyle><mo>)</mo></mrow>");
+  char * s1 = mtex2MML_copy3("<mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">(</mo><mstyle displaystyle=\"false\"><mfrac linethickness=\"0\">", $2, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac></mstyle><mo maxsize=\"2.047em\" minsize=\"2.047em\">)</mo></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($2);
   mtex2MML_free_string($3);
 }
 | DBINOM closedTerm closedTerm {
-    char * s1 = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $3);
-    $$ = mtex2MML_copy2(s1, "</mfrac><mo>)</mo></mrow></mstyle>");
+    char * s1 = mtex2MML_copy3("<mstyle displaystyle=\"true\" scriptlevel=\"0\"><mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">(</mo><mfrac linethickness=\"0\">", $2, $3);
+    $$ = mtex2MML_copy2(s1, "</mfrac><mo maxsize=\"2.047em\" minsize=\"2.047em\">)</mo></mrow></mstyle>");
     mtex2MML_free_string(s1);
     mtex2MML_free_string($2);
     mtex2MML_free_string($3);
 };
 
 brace: closedTerm BRACE closedTerm {
-  char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mfrac linethickness=\"0\">", $1, $3);
-  $$ = mtex2MML_copy2(s1, "</mfrac><mo>}</mo></mrow>");
+  char * s1 = mtex2MML_copy3("<mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">{</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo maxsize=\"2.047em\" minsize=\"2.047em\">}</mo></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
 };
 
 brack: closedTerm BRACK closedTerm {
-  char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mfrac linethickness=\"0\">", $1, $3);
-  $$ = mtex2MML_copy2(s1, "</mfrac><mo>]</mo></mrow>");
+  char * s1 = mtex2MML_copy3("<mrow><mo maxsize=\"2.047em\" minsize=\"2.047em\">[</mo><mfrac linethickness=\"0\">", $1, $3);
+  $$ = mtex2MML_copy2(s1, "</mfrac><mo maxsize=\"2.047em\" minsize=\"2.047em\">]</mo></mrow>");
   mtex2MML_free_string(s1);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
