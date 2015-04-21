@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 typedef enum {NONE = 0, TOPENCLOSE} encaseType;
-typedef enum {OTHER = 0, ENV_ALIGNAT, ENV_GATHERED, ENV_EQNARRAY, ENV_MULTLINE, ENV_SMALLMATRIX} envType;
+typedef enum {OTHER = 0, ENV_ALIGNAT, ENV_ALIGNED, ENV_GATHERED, ENV_EQNARRAY, ENV_MULTLINE, ENV_SMALLMATRIX} envType;
 
 typedef struct {
   char *rowspacing;

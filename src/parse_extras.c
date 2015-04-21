@@ -34,6 +34,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
     environmentType = ENV_MULTLINE;
   } else if (strstr(environment, "\\end{alignat") != NULL) {
     environmentType = ENV_ALIGNAT;
+  }else if (strstr(environment, "\\end{aligned}") != NULL) {
+    environmentType = ENV_ALIGNED;
   }
 
   const char *hline = "\\hline", *hdashline = "\\hdashline",
@@ -111,7 +113,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
               em_str = "0.2em";
             } else if (environmentType == ENV_GATHERED) {
               em_str = "1.0ex";
-            } else if (environmentType == ENV_EQNARRAY || environmentType  == ENV_ALIGNAT) {
+            } else if (environmentType == ENV_EQNARRAY || environmentType == ENV_ALIGNAT || environmentType  == ENV_ALIGNED) {
               em_str = "3pt";
             } else if (environmentType == ENV_MULTLINE) {
               em_str = "0.5em";
