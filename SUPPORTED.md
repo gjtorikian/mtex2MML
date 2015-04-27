@@ -1,5 +1,7 @@
 This list represents the complete set of commands supported by mtex2MML.
 
+The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine, though.
+
 ## Symbols
 
 ``` latex

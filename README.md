@@ -39,7 +39,7 @@ This library exposes the following methods:
 
 Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now, it has a ~93% compatability with MathJax, give or take.
 
-The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, etc.). Everything else in standard TeX math should be fine, though.
+The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine, though.
 
 ## Building
 
@@ -60,8 +60,8 @@ Run `rake test` to run the test suite.
 
 mtex2MML has a test suite that matches the one found in [MathJax](https://github.com/mathjax/MathJax-test), with a few exceptions:
 
-* Files marked as `.xtex` have features that are not implemented, but should be in the future
-* Files marked as `.no_tex` have features that won't be implemented
+* Files marked as `.xtex` have features that are not implemented, but probably should be in the future.
+* Files marked as `.no_tex` have features that probably won't be implemented.
 
 At the end of the test run, mtex2MML will list the percentage of features that still need coverage.
 
