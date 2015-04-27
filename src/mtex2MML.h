@@ -54,6 +54,7 @@ extern int    mtex2MML_lineno;
 
 extern int    mtex2MML_rowposn;
 extern int    mtex2MML_displaymode;
+extern int    display_style;
 
 #ifdef __cplusplus
 }

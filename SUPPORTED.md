@@ -44,8 +44,8 @@ _
 \arcsin
 \arctan
 \arg
-\arrowvert
 \Arrowvert
+\arrowvert
 \ast
 \asymp
 \atop
@@ -63,6 +63,7 @@ _
 \bar
 \barwedge
 \Bbb
+\bbox
 \bcancel
 \because
 \beta
@@ -76,19 +77,19 @@ _
 \bigcap
 \bigcirc
 \bigcup
-\bigg
 \Bigg
-\biggl
+\bigg
 \Biggl
-\biggm
+\biggl
 \Biggm
-\biggr
+\biggm
 \Biggr
+\biggr
 \biginterleave
-\bigl
 \Bigl
-\bigm
+\bigl
 \Bigm
+\bigm
 \bigodot
 \bigoplus
 \bigotimes
@@ -124,9 +125,10 @@ _
 \bracevert
 \brack
 \breve
+\buildrel
 \bullet
-\bumpeq
 \Bumpeq
+\bumpeq
 ```
 
 ## C
@@ -134,13 +136,15 @@ _
 ``` latex
 \cal
 \cancel
+\cancelto
 \canceledto
-\cap
 \Cap
+\cap
 \cdot
 \cdotp
 \cdots
 \centerdot
+\cfrac
 \check
 \checkmark
 \chi
@@ -158,14 +162,14 @@ _
 \closure
 \clubsuit
 \colon
-\colonapprox
 \Colonapprox
-\coloneq
+\colonapprox
 \Coloneq
-\coloneqq
+\coloneq
 \Coloneqq
-\colonsim
+\coloneqq
 \Colonsim
+\colonsim
 \color
 \colorbox
 \complement
@@ -178,9 +182,10 @@ _
 \cosh
 \cot
 \coth
+\cr
 \csc
-\cup
 \Cup
+\cup
 \curlyeqprec
 \curlyeqsucc
 \curlyvee
@@ -208,14 +213,14 @@ _
 \ddots
 \deg
 \Del
-\delta
 \Delta
+\delta
 \det
 \dfrac
 \diagdown
 \diagup
-\diamond
 \Diamond
+\diamond
 \diamondsuit
 \digamma
 \dim
@@ -223,7 +228,7 @@ _
 \div
 \divideontimes
 \dot
-\doteq
+\Doteq
 \doteq
 \doteqdot
 \dotplus
@@ -237,8 +242,8 @@ _
 \doublecap
 \doublecup
 \doubleintegral
-\downarrow
 \Downarrow
+\downarrow
 \downdownarrows
 \downharpoonleft
 \downharpoonright
@@ -290,13 +295,14 @@ _
 
 ``` latex
 \Game
-\gamma
 \Gamma
+\gamma
 \gcd
 \ge
 \geq
 \geqq
 \geqslant
+\genfrac
 \gets
 \gg
 \ggg
@@ -333,8 +339,8 @@ _
 \hskip
 \hslash
 \hspace
-\huge
 \Huge
+\huge
 ```
 
 ## I
@@ -376,8 +382,8 @@ _
 ## K
 
 ``` latex
-\kappa
 \Kappa
+\kappa
 \ker
 \kern
 ```
@@ -385,14 +391,14 @@ _
 ## L
 
 ``` latex
-\lambda
 \Lambda
+\lambda
 \land
 \lang
 \langle
-\large
-\Large
 \LARGE
+\Large
+\large
 \LaTeX
 \lbrace
 \lbrack
@@ -402,18 +408,19 @@ _
 \ldots
 \le
 \leadsto
-\leftarrow
 \Leftarrow
+\leftarrow
 \leftarrowtail
 \leftharpoondown
 \leftharpoonup
 \leftleftarrows
-\leftrightarrow
 \Leftrightarrow
+\leftrightarrow
 \leftrightarrows
 \leftrightharpoons
 \leftrightsquigarrow
 \leftrightsquigarrow
+\leftroot
 \leftsquigarrow
 \leftthreetimes
 \lefttorightarrow
@@ -449,28 +456,31 @@ _
 \lnot
 \lnsim
 \log
-\longleftarrow
+\lor
 \Longleftarrow
-\longleftrightarrow
+\longleftarrow
 \Longleftrightarrow
+\longleftrightarrow
 \longmapsto
 \longrightarrow
 \Longrightarrow
 \looparrowleft
 \looparrowright
+\lrcorner
 \lower
 \lozenge
 \Lsh
 \lt
 \ltimes
-\lvert
 \lVert
+\lvert
 \lvertneqq
 ```
 
 ## M
 
 ``` latex
+\maltese
 \map
 \mapsto
 \mathbb
@@ -478,11 +488,16 @@ _
 \mathbin
 \mathcal
 \mathclap
+\mathclose
 \mathfr
 \mathfrak
 \mathit
+\mathinner
 \mathllap
 \mathop
+\mathopen
+\mathord
+\mathpunct
 \mathraisebox
 \mathrel
 \mathring
@@ -522,10 +537,10 @@ _
 \natural
 \ncong
 \ne
-\nearr
 \neArr
-\nearrow
+\nearr
 \neArrow
+\nearrow
 \neg
 \negmedspace
 \negthickspace
@@ -538,10 +553,10 @@ _
 \ngeqslant
 \ngtr
 \ni
-\nleftarrow
 \nLeftarrow
-\nleftrightarrow
+\nleftarrow
 \nLeftrightarrow
+\nleftrightarrow
 \nleq
 \nleqq
 \nleqslant
@@ -556,8 +571,8 @@ _
 \nparallel
 \nprec
 \npreceq
-\nrightarrow
 \nRightarrow
+\nrightarrow
 \nshortmid
 \nshortparallel
 \nsim
@@ -573,16 +588,16 @@ _
 \ntrianglelefteq
 \ntriangleright
 \ntrianglerighteq
-\nu
 \Nu
-\nvdash
+\nu
 \nvDash
-\nVdash
+\nvdash
 \nVDash
-\nwarr
+\nVdash
 \nwArr
-\nwarrow
+\nwarr
 \nwArrow
+\nwarrow
 ```
 
 ## O
@@ -592,8 +607,8 @@ _
 \odot
 \oint
 \oldstyle
-\omega
 \Omega
+\omega
 \omicron
 \ominus
 \operatorname
@@ -620,13 +635,13 @@ _
 \parallel
 \parr
 \partial
-\perp
 \Perp
+\perp
 \phantom
-\phi
 \Phi
-\pi
+\phi
 \Pi
+\pi
 \pitchfork
 \plusb
 \pm
@@ -647,8 +662,8 @@ _
 \product
 \projlim
 \propto
-\psi
 \Psi
+\psi
 ```
 
 ## Q
@@ -674,10 +689,10 @@ _
 \rfloor
 \rgroup
 \rhd
-\rho
 \Rho
-\rightarrow
+\rho
 \Rightarrow
+\rightarrow
 \rightarrowtail
 \rightharpoondown
 \rightharpoonup
@@ -692,17 +707,18 @@ _
 \rm
 \rmoustache
 \root
-\rrangle
 \Rrightarrow
+\rrangle
 \Rsh
 \rtimes
-\rvert
 \rVert
+\rvert
 ```
 
 ## S
 
 ``` latex
+\S
 \scr
 \scriptscriptsize
 \scriptscriptstyle
@@ -718,13 +734,15 @@ _
 \sharp
 \shortmid
 \shortparallel
-\sigma
+\sideset
 \Sigma
+\sigma
 \sim
 \simeq
 \sin
 \sinh
 \slash
+\skew
 \small
 \smallfrown
 \smallint
@@ -732,8 +750,8 @@ _
 \smallsmile
 \smash
 \smile
-\space
 \Space
+\space
 \spadesuit
 \sphericalangle
 \sqcap
@@ -798,8 +816,8 @@ _
 \texttt
 \tfrac
 \therefore
-\theta
 \Theta
+\theta
 \thickapprox
 \thicksim
 \thickspace
@@ -807,6 +825,7 @@ _
 \tilde
 \times
 \timesb
+\Tiny
 \tiny
 \to
 \top
@@ -836,21 +855,23 @@ _
 \underoverset (such as `\underoverset{subscript}{superscript}{symbol}`)
 \underrightarrow
 \underset
-\union
 \Union
+\union
 \unlhd
 \unrhd
 \uparr
-\uparrow
 \Uparrow
+\uparrow
 \updarr
+\Updownarrow
 \updownarrow
 \upharpoonleft
 \upharpoonright
 \uplus
+\uproot
 \Upsi
-\upsilon
 \Upsilon
+\upsilon
 \upuparrows
 \urcorner
 ```
@@ -890,18 +911,19 @@ _
 \varUpsilon
 \varXi
 \Vbar
-\vdash
+\vcenter
 \vDash
-\Vdash
+\vdash
 \VDash
+\Vdash
 \vdots
 \vec
 \vee
 \Vee
 \veebar
 \verb
-\vert
 \Vert
+\vert
 \vphantom
 \Vvdash
 ```
@@ -926,14 +948,15 @@ _
 \xcancel
 \xhookleftarrow
 \xhookrightarrow
-\xi
 \Xi
+\xi
 \xleftarrow
 \xLeftarrow
 \xleftrightarrow
 \xLeftrightarrow
 \xleftrightharpoons
 \xlongequal
+\xmapsto
 \xrightarrow
 \xRightarrow
 \xrightleftharpoons
@@ -972,11 +995,13 @@ aligned
 alignedat
 array
 
-bmatrix
 Bmatrix
+bmatrix
 
 cases
 
+eqnarray
+eqnarray*
 equation
 equation*
 
@@ -985,15 +1010,18 @@ gather*
 gathered
 
 matrix
+multline
+multline*
 
 pmatrix
 
 smallmatrix
 split
+subarray
 svg
 
-vmatrix
 Vmatrix
+vmatrix
 ```
 
 ### The `array` Environment

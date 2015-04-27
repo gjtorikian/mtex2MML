@@ -1,4 +1,5 @@
-$
+We're intentionally skipping this one, because it just proves `\newcommand` works with the styling.
+
       \newcommand\onehalf{
       \mathchoice{\frac 1 2}{1 \mbox{over} 2}{1/2}{\unicode{x00BD}}
       }
@@ -7,4 +8,3 @@ $
       {\displaystyle \onehalf}
       {\scriptscriptstyle \onehalf}
       {\scriptstyle \onehalf}
-$

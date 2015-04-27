@@ -37,7 +37,9 @@ This library exposes the following methods:
 
 ## What's supported?
 
-Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do.
+Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now, it has a ~93% compatability with MathJax, give or take.
+
+The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, etc.). Everything else in standard TeX math should be fine, though.
 
 ## Building
 
