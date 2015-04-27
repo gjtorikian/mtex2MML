@@ -430,20 +430,12 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($3);
 }
 | mob SUP closedTerm SUB closedTerm {
-  if (mtex2MML_displaymode == 1) {
-    char * s1 = mtex2MML_copy3("<munderover>", $1, " ");
-    char * s2 = mtex2MML_copy3($5, " ", $3);
-    $$ = mtex2MML_copy3(s1, s2, "</munderover>");
-    mtex2MML_free_string(s1);
-    mtex2MML_free_string(s2);
-  }
-  else {
-    char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
-    char * s2 = mtex2MML_copy3($5, " ", $3);
-    $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
-    mtex2MML_free_string(s1);
-    mtex2MML_free_string(s2);
-  }
+  char * s1 = mtex2MML_copy3("<munderover>", $1, " ");
+  char * s2 = mtex2MML_copy3($5, " ", $3);
+  $$ = mtex2MML_copy3(s1, s2, "</munderover>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
@@ -462,7 +454,33 @@ compoundTerm: mob SUB closedTerm SUP closedTerm {
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
 }
-|mib SUB closedTerm SUP closedTerm {
+| mob SUP closedTerm LIMITS SUB closedTerm {
+  char * mo = str_replace($1, "<mo>", "<mo movablelimits=\"false\">");
+  char * s1 = mtex2MML_copy2("<munderover>", mo);
+  char * s2 = mtex2MML_copy3($6, " ", $3);
+  $$ = mtex2MML_copy3(s1, s2, "</munderover>");
+
+  mtex2MML_free_string(mo);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($6);
+}
+| mob SUP closedTerm NOLIMITS SUB closedTerm {
+  char * mo = str_replace($1, "<mo>", "<mo movablelimits=\"false\">");
+  char * s1 = mtex2MML_copy2("<msubsup>", mo);
+  char * s2 = mtex2MML_copy3($6, " ", $3);
+  $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
+
+  mtex2MML_free_string(mo);
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string(s2);
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($3);
+  mtex2MML_free_string($6);
+}
+| mib SUB closedTerm SUP closedTerm {
   if (mtex2MML_displaymode == 1) {
     char * s1 = mtex2MML_copy3("<munderover>", $1, " ");
     char * s2 = mtex2MML_copy3($3, " ", $5);
@@ -2144,6 +2162,30 @@ underrightarrow: UNDERRIGHTARROW closedTerm {
 munderbrace: UNDERBRACE closedTerm {
   $$ = mtex2MML_copy3("<munder>", $2, "<mo>&UnderBrace;</mo></munder>");
   mtex2MML_free_string($2);
+}
+| UNDERBRACE closedTerm SUB closedTerm {
+  char * s1 = mtex2MML_copy3("<munder><munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  $$ = mtex2MML_copy3(s1, $4, "</munder>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($4);
+}
+| UNDERBRACE closedTerm LIMITS SUB closedTerm {
+  char * s1 = mtex2MML_copy3("<munder><munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  $$ = mtex2MML_copy3(s1, $5, "</munder>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($5);
+}
+| UNDERBRACE closedTerm NOLIMITS SUB closedTerm {
+  char * s1 = mtex2MML_copy3("<msub><munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  $$ = mtex2MML_copy3(s1, $5, "</msub>");
+
+  mtex2MML_free_string(s1);
+  mtex2MML_free_string($2);
+  mtex2MML_free_string($5);
 };
 
 munderbracket: UNDERBRACKET closedTerm {
