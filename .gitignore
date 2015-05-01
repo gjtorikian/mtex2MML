@@ -1,11 +1,12 @@
-src/*.o
+*.o
+*.so
+
 src/lex.yy.c
 src/y.output
 src/y.tab.c
 src/y.tab.h
 src/mtex2MML
 src/y.tab.o
-src/*.so
 src/file.test
 src/libefence.a
 

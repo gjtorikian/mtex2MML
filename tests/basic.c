@@ -1,28 +1,32 @@
-/* adding.c for the "Adding" suite */
-#include "clar.h"
-#include "../src/mtex2MML.h"
+#include "clar_test.h"
 #include <stdio.h>
 
-static int *answer;
+static char *fixture_tex;
+static char *fixture_mml;
+static char *result;
 
 void test_basic__initialize(void)
 {
-    answer = malloc(sizeof(int));
-    cl_assert_(answer != NULL, "No memory left?");
-    *answer = 42;
+  // global_test_counter++;
 }
 
 void test_basic__cleanup(void)
 {
-    free(answer);
+  if (fixture_tex != NULL)
+    free(fixture_tex);
+
+  if (fixture_mml != NULL)
+    free(fixture_mml);
+
+  if (result != NULL)
+    free(result);
 }
 
-void test_basic__make_sure_math_still_works(void)
+void test_basic__inline(void)
 {
-    char * x = mtex2MML_parse("$x$", 3);
-    printf("%s", x);
+  fixture_tex = read_fixture_tex("basic/inline.text");
+  fixture_mml = read_fixture_mml("basic/inline.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
-    cl_assert_(5 > 3, "Five should probably be greater than three");
-    cl_assert_(-5 < 2, "Negative numbers are small, I think");
-    cl_assert_(*answer == 42, "The universe is doing OK. And the initializer too.");
+  cl_assert_equal_s(fixture_mml, result);
 }

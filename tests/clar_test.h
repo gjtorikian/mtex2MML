@@ -13,4 +13,8 @@
 /* Your custom shared includes / defines here */
 extern int global_test_counter;
 
+#include "helpers.h"
+#include "../src/mtex2MML.h"
+#include "deps/file2str/file2str.h"
+
 #endif

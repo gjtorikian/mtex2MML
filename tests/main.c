@@ -22,6 +22,12 @@ int __cdecl main(int argc, char *argv[])
 int main(int argc, char *argv[])
 #endif
 {
+  // global_test_counter = 0;
+
 	/* Run the test suite */
-	return clar_test(argc, argv);
+	int ret = clar_test(argc, argv);
+
+  // cl_assert_equal_i(1, global_test_counter);
+
+  return ret;
 }
