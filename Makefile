@@ -10,16 +10,14 @@ BINDIR=/usr/local/bin
 
 YYPREFIX=mtex2MML_yy
 
-CFLAGS += -Wall -Wextra -pedantic -std=gnu99 -iquote inc
+CFLAGS += -Wall -Werror -Wextra -pedantic -std=gnu99 -iquote inc
 
 all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a
 
 .PHONY: clean
 clean:
 	$(RM) src/y.tab.* src/lex.yy.c src/mtex2MML src/*.o src/*.output src/*.so src/*.dll src/*.sl
-
-%.o: %.c
-	$(CC) -o $@ $(CFLAGS) -c $<
+	git clean -xf src
 
 src/y.tab.c:
 	$(BISON) -p $(YYPREFIX) -d src/mtex2MML.y
@@ -32,7 +30,7 @@ src/lex.yy.c:
 	mv lex.yy.c src
 
 src/y.tab.o:	src/y.tab.c
-	$(CC) $(CFLAGS) -c -o src/y.tab.o src/y.tab.c
+	$(CC) -c -o src/y.tab.o src/y.tab.c
 
 src/lex.yy.o:	src/lex.yy.c src/y.tab.c
 	$(CC) -c -o src/lex.yy.o src/lex.yy.c
@@ -46,5 +44,5 @@ libmtex2MML.a: $(OBJS)
 .PHONY: test
 test:
 	tests/generate.py tests/
-	$(CC) -L. dist/libmtex2MML.a tests/clar.c tests/main.c tests/basic.c -o tests/testrunner
+	$(CC) $(TESTS) dist/libmtex2MML.a -o tests/testrunner
 	./tests/testrunner
