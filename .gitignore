@@ -7,7 +7,6 @@ src/y.tab.c
 src/y.tab.h
 src/mtex2MML
 src/y.tab.o
-src/file.test
 src/libefence.a
 
 tests/test.html
@@ -16,5 +15,6 @@ test/minimal_test.rb
 /tests/clar.suite.rule
 /tests/.clarcache
 /tests/testrunner
+file.test
 
 dist/

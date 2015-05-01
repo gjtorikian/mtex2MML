@@ -64,3 +64,11 @@ clar.suite:
 .PHONY: format
 format:
 	astyle --indent=spaces=2 --style=1tbs --keep-one-line-blocks $(SOURCES) $(TESTS)
+
+.PHONY: debug
+debug:
+	$(CC) tests/debug/mtex2MML_debug.c -o tests/debug/mtex2MML
+
+# .PHONY: valgrind
+# valgrind:
+# 	valgrind --log-fd=1 --tool=memcheck --partial-loads-ok=yes --undef-value-errors=no --leak-check=full --show-leak-kinds=all ruby
