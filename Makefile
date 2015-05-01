@@ -10,7 +10,7 @@ BINDIR=/usr/local/bin
 
 YYPREFIX=mtex2MML_yy
 
-CFLAGS += -Wall -Werror -Wextra -pedantic -std=gnu99 -iquote inc
+CFLAGS += -Wall -Werror -Wextra -Wno-sign-compare -pedantic -std=gnu99 -iquote inc
 
 all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a
 
