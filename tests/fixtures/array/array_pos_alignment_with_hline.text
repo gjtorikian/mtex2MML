@@ -1,0 +1,12 @@
+$$
+\begin{array}[t]{clcr}
+n & \text{Left} & \text{Center} & \text{Right} \\
+\hline
+1 & 0.24 & 1 & 125 \\
+\hline
+2 & -1 & 189 & -8 \\
+\hline
+3 & -20 & 2000 & 1+10i
+\hline
+\end{array}
+$$
