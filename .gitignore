@@ -1,5 +1,3 @@
-src/mtex2MML.bundle
-src/mtex2MML_ruby.c
 src/*.o
 src/lex.yy.c
 src/y.output
@@ -11,14 +9,11 @@ src/*.so
 src/file.test
 src/libefence.a
 
-ext/
-!ext/extconf.rb
-
-lib/mtex2MML.bundle
-lib/mtex2MML.so
-
 test.html
 test/minimal_test.rb
 /tests/clar.suite
 /tests/clar.suite.rule
 /tests/.clarcache
+/tests/testrunner
+
+dist/

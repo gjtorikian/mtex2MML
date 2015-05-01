@@ -43,10 +43,14 @@ The most obvious gap in this library is the inability to define new commands (vi
 
 ## Building
 
-You need GNU make and [Flex](http://flex.sourceforge.net/) to build the mtex2MML code. To build it:
+To build the mtex2MML library, you need:
+* GNU make
+* [Bison](https://www.gnu.org/software/bison/)
+* [Flex](http://flex.sourceforge.net/)
+
+You can run:
 
 ```
-cd src
 make
 ```
 

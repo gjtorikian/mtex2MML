@@ -1,8 +1,12 @@
-language: ruby
-rvm:
-  - 2.0
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq swig
-install:
-  - gem install minitest
+language: c
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+script:
+ - script/cibuild
