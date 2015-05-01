@@ -9,7 +9,7 @@
 #include "parse_extras.h"
 #include "string_extras.h"
 
-#include "deps/uthash/uthash.h"
+#include "../deps/uthash/uthash.h"
 
 struct css_colors *colors = NULL;
 

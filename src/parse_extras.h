@@ -1,8 +1,8 @@
 #ifndef PARSE_EXTRAS_H
 #define PARSE_EXTRAS_H
 
-#include "deps/uthash/uthash.h"
-#include "deps/uthash/utarray.h"
+#include "../deps/uthash/uthash.h"
+#include "../deps/uthash/utarray.h"
 
 #ifdef __cplusplus
 extern "C" {
