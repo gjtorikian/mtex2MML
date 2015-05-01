@@ -34,7 +34,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
     environmentType = ENV_MULTLINE;
   } else if (strstr(environment, "\\end{alignat") != NULL) {
     environmentType = ENV_ALIGNAT;
-  }else if (strstr(environment, "\\end{aligned}") != NULL) {
+  } else if (strstr(environment, "\\end{aligned}") != NULL) {
     environmentType = ENV_ALIGNED;
   }
 

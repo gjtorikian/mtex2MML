@@ -13,14 +13,17 @@ void test_array__initialize(void)
 
 void test_array__cleanup(void)
 {
-  if (fixture_tex != NULL)
+  if (fixture_tex != NULL) {
     free(fixture_tex);
+  }
 
-  if (fixture_mml != NULL)
+  if (fixture_mml != NULL) {
     free(fixture_mml);
+  }
 
-  if (result != NULL)
+  if (result != NULL) {
     free(result);
+  }
 }
 
 void test_array__basic_array(void)

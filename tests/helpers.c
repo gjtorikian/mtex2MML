@@ -20,9 +20,8 @@ char * read_fixture_mml(char *filename)
 void write_test_file(char * data)
 {
   FILE *fp = fopen(cl_fixture("../test.html"), "w+");
-  if (fp != NULL)
-  {
-      fputs(data, fp);
-      fclose(fp);
+  if (fp != NULL) {
+    fputs(data, fp);
+    fclose(fp);
   }
 }

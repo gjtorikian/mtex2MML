@@ -16,6 +16,8 @@ TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
 CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
 CFLAGS += -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
 
+#### GENERAL ####
+
 all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a
 
 .PHONY: clean
@@ -49,6 +51,7 @@ libmtex2MML.a: $(OBJS)
 	mv libmtex2MML.a dist/
 	cp src/mtex2MML.h dist/
 
+#### TESTS #####
 .PHONY: test
 test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
 	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) dist/libmtex2MML.a -o tests/testrunner
@@ -56,3 +59,8 @@ test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
 
 clar.suite:
 	python tests/generate.py tests/
+
+#### OTHER ####
+.PHONY: format
+format:
+	astyle --indent=spaces=2 --style=1tbs --keep-one-line-blocks $(SOURCES) $(TESTS)

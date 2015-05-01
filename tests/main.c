@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
 {
   global_test_counter = 0;
 
-	/* Run the test suite */
-	int ret = clar_test(argc, argv);
+  /* Run the test suite */
+  int ret = clar_test(argc, argv);
 
   // cl_assert_equal_i(3, global_test_counter);
 
