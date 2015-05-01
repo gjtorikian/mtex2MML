@@ -1508,7 +1508,9 @@ void mtex2MML_setup (const char * buffer, unsigned long length)
 int mtex2MML_capture_eqn_src()
 {
   if (YY_START != INITIAL && YY_START != SVGENV)
-    mtex2MML_do_capture_eqn();
+    return mtex2MML_do_capture_eqn();
+
+  return -1;
 }
 
 int mtex2MML_do_capture_eqn()
@@ -1517,14 +1519,17 @@ int mtex2MML_do_capture_eqn()
   {
     strcpy(mtex2MML_eqn_end, yytext);
     mtex2MML_eqn_end += yyleng;
+    return 0;
   }
+
+  return -1;
 }
 
 static int s_mtex2MML_read (char * buffer, int max_size)
 {
   int result = 0;
 
-  if (max_size < s_mtex2MML_length)
+  if ((unsigned long) max_size < s_mtex2MML_length)
   {
     result = max_size;
 

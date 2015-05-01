@@ -32,9 +32,8 @@ struct css_colors *colors = NULL;
 
  extern char * yytext;
 
- extern int global_label = 1;
-
- extern int line_counter = 1;
+ global_label = 1;
+ line_counter = 1;
 
  static void mtex2MML_default_error (const char * msg)
    {

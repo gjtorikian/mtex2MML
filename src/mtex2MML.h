@@ -42,6 +42,9 @@ extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
 extern void   mtex2MML_restart ();
 
+extern int mtex2MML_do_capture_eqn();
+extern int mtex2MML_capture_eqn_src();
+
 extern char * mtex2MML_copy_string (const char * str);
 extern char * mtex2MML_copy_string_extra (const char * str, unsigned extra);
 extern char * mtex2MML_copy2 (const char * first, const char * second);
@@ -55,6 +58,9 @@ extern int    mtex2MML_lineno;
 extern int    mtex2MML_rowposn;
 extern int    mtex2MML_displaymode;
 extern int    display_style;
+
+extern int    global_label;
+extern int    line_counter;
 
 #ifdef __cplusplus
 }
