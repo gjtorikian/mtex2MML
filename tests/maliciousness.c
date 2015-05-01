@@ -32,10 +32,10 @@ void test_maliciousness__cleanup(void)
 //   cl_assert_equal_s(fixture_mml, result);
 // }
 
-void test_maliciousness__unknown_command(void)
-{
-  result = "$\not__thisisnotreal$";
-  result = mtex2MML_parse(result, strlen(result));
-
-  cl_assert(result == NULL);
-}
+// void test_maliciousness__unknown_command(void)
+// {
+//   result = "$\not__thisisnotreal$";
+//   result = mtex2MML_parse(result, strlen(result));
+//
+//   cl_assert(result == NULL);
+// }
