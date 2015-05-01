@@ -24,39 +24,39 @@ struct css_colors {
   UT_hash_handle hh;         /* makes this structure hashable */
 };
 
-// Move various symbols not easily supported inline within the `\begin` line
-// This is so that the Bison parser can properly act on these. For example,
-// `\hline`, `\hlinedash`, or `\\[2ex]` declerations.
-//
-// In order to properly address these situations, we need to parse them, find their symbols,
-// and then modify the starting environment declaration to point out where those symbols are.
-//
-// Suppose there is an array like:
-//
-// \begin{array}{c:c}
-//   \begin{array}{c|cclc}
-//     \text{min} & 0 & 1 & 2 & 3\\
-//     \hline
-//     0 & 0 & 0 & 0 & 0\\
-//     1 & 0 & 1 & 1 & 1\\
-//     2 & 0 & 1 & 2 & 2\\
-//     3 & 0 & 1 & 2 & 3
-//   \end{array}
-// &
-//   \begin{array}{c|cccl}
-//     \text{max}&0&1&2&3\\
-//     \hline
-//     0 & 0 & 1 & 2 & 3\\
-//     1 & 1 & 1 & 2 & 3\\
-//     2 & 2 & 2 & 2 & 3\\
-//     3 & 3 & 3 & 3 & 3
-//   \end{array}
-// \end{array}
-//
-// The env_replacements function will push every line onto a stack. When an \end
-// is detected, it starts popping off the stack until it reaches the corresponding
-// \begin. It then modifies that stack with attribute strings, an arrangement of
-// the symbols encountered while popping lines off.
+/* Move various symbols not easily supported inline within the `\begin` line
+This is so that the Bison parser can properly act on these. For example,
+`\hline`, `\hlinedash`, or `\\[2ex]` declerations.
+
+In order to properly address these situations, we need to parse them, find their symbols,
+and then modify the starting environment declaration to point out where those symbols are.
+
+Suppose there is an array like:
+
+\begin{array}{c:c}
+  \begin{array}{c|cclc}
+    \text{min} & 0 & 1 & 2 & 3\\
+    \hline
+    0 & 0 & 0 & 0 & 0\\
+    1 & 0 & 1 & 1 & 1\\
+    2 & 0 & 1 & 2 & 2\\
+    3 & 0 & 1 & 2 & 3
+  \end{array}
+&
+  \begin{array}{c|cccl}
+    \text{max}&0&1&2&3\\
+    \hline
+    0 & 0 & 1 & 2 & 3\\
+    1 & 1 & 1 & 2 & 3\\
+    2 & 2 & 2 & 2 & 3\\
+    3 & 3 & 3 & 3 & 3
+  \end{array}
+\end{array}
+
+The env_replacements function will push every line onto a stack. When an \end
+is detected, it starts popping off the stack until it reaches the corresponding
+\begin. It then modifies that stack with attribute strings, an arrangement of
+the symbols encountered while popping lines off. */
 extern void env_replacements(UT_array **environment_data_stack, encaseType *encase, const char *environment);
 
 extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environmentType, UT_array *row_spacing_stack);
