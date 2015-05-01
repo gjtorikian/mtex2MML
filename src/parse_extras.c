@@ -339,7 +339,7 @@ const char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
-const float extract_number_from_pxstring(const char * str)
+float extract_number_from_pxstring(const char * str)
 {
   float dbl;
   int match = 0;
