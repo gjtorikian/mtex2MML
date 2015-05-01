@@ -10,7 +10,7 @@ src/y.tab.o
 src/file.test
 src/libefence.a
 
-test.html
+tests/test.html
 test/minimal_test.rb
 /tests/clar.suite
 /tests/clar.suite.rule
