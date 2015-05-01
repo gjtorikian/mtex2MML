@@ -1,8 +1,0 @@
-$
-      \frac 1 2
-	    \begingroup
-      \renewcommand\frac[2]{#1 / #2}
-      \frac 1 2
-      \endgroup
-      \frac 1 2
-$

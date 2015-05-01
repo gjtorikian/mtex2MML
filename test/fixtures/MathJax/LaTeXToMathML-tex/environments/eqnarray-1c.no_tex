@@ -1,7 +1,0 @@
-This uses `autoNumber: "AMS"`, which we do not care about.
-
-      \begin{eqnarray*}
-      a & = & b & + & c \\
-      d & = & e & + & f \\
-      g & = & h & + & i
-      \end{eqnarray*}

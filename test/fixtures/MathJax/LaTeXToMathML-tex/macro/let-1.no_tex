@@ -1,5 +1,0 @@
-$
-      \let\oldfrac\frac
-      \renewcommand{\frac}[2]{\left( \oldfrac{#1}{#2} \right)}
-      \frac 1 2
-$

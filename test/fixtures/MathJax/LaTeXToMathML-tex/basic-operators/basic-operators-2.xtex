@@ -1,5 +1,0 @@
-$
-      \newcommand\s[3]{#1+#2+#3} \s a b c
-      \begin{smallmatrix} a\\ c \end{smallmatrix}
-      % comment
-$
