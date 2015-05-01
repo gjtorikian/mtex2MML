@@ -1,0 +1,26 @@
+
+      \begin{CD}
+        @&gt;A&gt;&gt;
+      \end{CD}
+      \begin{CD}
+        @&gt;&gt;A&gt;
+      \end{CD}
+      \begin{CD}
+        @{B}
+      \end{CD}
+      \begin{CD}
+        @{B}
+      \end{CD}
+      \begin{CD}
+        @ACAA
+      \end{CD}
+      \begin{CD}
+        @AACA
+      \end{CD}
+      \begin{CD}
+        @VDVV
+      \end{CD}
+      \begin{CD}
+        @VVDV
+      \end{CD}
+$

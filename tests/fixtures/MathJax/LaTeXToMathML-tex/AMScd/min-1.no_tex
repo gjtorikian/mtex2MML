@@ -1,0 +1,14 @@
+$$
+\begin{equation}
+      \minCDarrowwidth{100px}
+      \begin{CD}
+        @&gt;&gt;&gt;
+      \end{CD}
+      \begin{CD}
+        @
+      \end{CD}
+      \begin{CD}
+        @=
+      \end{CD}
+      \end{equation}
+$$
