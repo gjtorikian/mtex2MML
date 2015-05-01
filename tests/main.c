@@ -16,18 +16,20 @@
  * application, main() should return the same value returned by clar_test().
  */
 
+int global_test_counter = 0;
+
 #ifdef _WIN32
 int __cdecl main(int argc, char *argv[])
 #else
 int main(int argc, char *argv[])
 #endif
 {
-  // global_test_counter = 0;
+  global_test_counter = 0;
 
 	/* Run the test suite */
 	int ret = clar_test(argc, argv);
 
-  // cl_assert_equal_i(1, global_test_counter);
+  // cl_assert_equal_i(3, global_test_counter);
 
   return ret;
 }

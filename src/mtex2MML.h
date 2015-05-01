@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+// #define mtex2MML_CAPTURE 1
+
 /* Step 1. Parse a buffer with mtex source; return value is mathml, or 0 on failure (e.g., parse error).
  */
 extern char * mtex2MML_parse (const char * buffer, unsigned long length);

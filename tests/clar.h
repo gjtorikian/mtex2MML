@@ -9,6 +9,8 @@
 
 #include <stdlib.h>
 
+extern int global_test_counter;
+
 enum cl_test_status {
 	CL_TEST_OK,
 	CL_TEST_FAILURE,

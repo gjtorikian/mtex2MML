@@ -20,8 +20,12 @@ all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a
 
 .PHONY: clean
 clean:
-	git clean -xf src
-	# git clean -xf tests
+	$(RM) src/lex.yy.*
+	$(RM) src/*y.*
+	$(RM) src/*.o
+	$(RM) tests/*.o
+	$(RM) tests/.clarcache
+	$(RM) tests/clar.suite
 
 src/y.tab.c:
 	$(BISON) -p $(YYPREFIX) -d src/mtex2MML.y
@@ -47,7 +51,6 @@ libmtex2MML.a: $(OBJS)
 
 .PHONY: test
 test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
-	tests/generate.py tests/
 	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) dist/libmtex2MML.a -o tests/testrunner
 	./tests/testrunner
 
