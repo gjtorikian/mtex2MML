@@ -19,3 +19,6 @@ lib/mtex2MML.so
 
 test.html
 test/minimal_test.rb
+/tests/clar.suite
+/tests/clar.suite.rule
+/tests/.clarcache
