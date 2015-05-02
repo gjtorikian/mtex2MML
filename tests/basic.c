@@ -28,7 +28,7 @@ void test_basic__cleanup(void)
 
 void test_basic__inline(void)
 {
-  fixture_tex = read_fixture_tex("basic/inline.text");
+  fixture_tex = read_fixture_tex("basic/inline.txt");
   fixture_mml = read_fixture_mml("basic/inline.html");
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
@@ -37,7 +37,7 @@ void test_basic__inline(void)
 
 void test_basic__block(void)
 {
-  fixture_tex = read_fixture_tex("basic/block.text");
+  fixture_tex = read_fixture_tex("basic/block.txt");
   fixture_mml = read_fixture_mml("basic/block.html");
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
@@ -46,7 +46,7 @@ void test_basic__block(void)
 
 void test_basic__comments(void)
 {
-  fixture_tex = read_fixture_tex("basic/comments.text");
+  fixture_tex = read_fixture_tex("basic/comments.txt");
   fixture_mml = read_fixture_mml("basic/comments.html");
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 

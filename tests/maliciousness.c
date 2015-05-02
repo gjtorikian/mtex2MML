@@ -25,7 +25,7 @@ void test_maliciousness__cleanup(void)
 
 // void test_maliciousness__chained_monstrosity(void)
 // {
-//   fixture_tex = read_fixture_tex("maliciousness/chained_monstrosity.text");
+//   fixture_tex = read_fixture_tex("maliciousness/chained_monstrosity.txt");
 //   fixture_mml = read_fixture_mml("maliciousness/chained_monstrosity.html");
 //   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 //

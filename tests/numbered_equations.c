@@ -28,7 +28,7 @@ void test_numbered_equations__cleanup(void)
 
 // void test_numbered_equations__single_equation(void)
 // {
-//   fixture_tex = read_fixture_tex("numbered_equations/single_equation.text");
+//   fixture_tex = read_fixture_tex("numbered_equations/single_equation.txt");
 //   fixture_mml = read_fixture_mml("numbered_equations/single_equation.html");
 //   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 //
@@ -37,7 +37,7 @@ void test_numbered_equations__cleanup(void)
 //
 // void test_numbered_equations__multiple_equations(void)
 // {
-//   fixture_tex = read_fixture_tex("numbered_equations/multiple_equations.text");
+//   fixture_tex = read_fixture_tex("numbered_equations/multiple_equations.txt");
 //   fixture_mml = read_fixture_mml("numbered_equations/multiple_equations.html");
 //   result = mtex2MML_global_parse(fixture_tex, strlen(fixture_tex), 1);
 //

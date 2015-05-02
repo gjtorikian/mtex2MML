@@ -28,7 +28,7 @@ void test_cornercases__cleanup(void)
 
 void test_cornercases__broken_up_inline_env(void)
 {
-  fixture_tex = read_fixture_tex("cornercases/broken_up_inline_env.text");
+  fixture_tex = read_fixture_tex("cornercases/broken_up_inline_env.txt");
   fixture_mml = read_fixture_mml("cornercases/broken_up_inline_env.html");
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
@@ -37,7 +37,7 @@ void test_cornercases__broken_up_inline_env(void)
 
 void test_cornercases__some_crazy_alignment(void)
 {
-  fixture_tex = read_fixture_tex("cornercases/some_crazy_alignment.text");
+  fixture_tex = read_fixture_tex("cornercases/some_crazy_alignment.txt");
   fixture_mml = read_fixture_mml("cornercases/some_crazy_alignment.html");
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
