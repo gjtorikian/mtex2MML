@@ -73,6 +73,6 @@ format:
 debug:
 	$(CC) tests/debug/mtex2MML_debug.c -o tests/debug/mtex2MML
 
-# .PHONY: valgrind
-# valgrind:
-# 	valgrind --log-fd=1 --tool=memcheck --partial-loads-ok=yes --undef-value-errors=no --leak-check=full --show-leak-kinds=all ruby
+.PHONY: leakcheck
+leakcheck:
+	valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./tests/testrunner -smathjax  >/dev/null

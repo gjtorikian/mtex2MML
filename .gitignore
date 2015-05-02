@@ -16,6 +16,7 @@ tests/clar.suite.rule
 tests/.clarcache
 tests/testrunner
 tests/mathjax_summary.txt
+tests/testrunner.dSYM/
 file.test
 
 dist/
