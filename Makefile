@@ -53,9 +53,12 @@ libmtex2MML.a: $(OBJS)
 
 #### TESTS #####
 .PHONY: test
-test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
+test: mathjax clar.suite mathjax tests/helpers.h tests/clar_test.h $(TESTOBJS)
 	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) dist/libmtex2MML.a -o tests/testrunner
 	./tests/testrunner
+
+mathjax:
+	python tests/mathjax_generate.py
 
 clar.suite:
 	python tests/generate.py tests/
