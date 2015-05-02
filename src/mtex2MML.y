@@ -3312,7 +3312,8 @@ void envdata_dtor(void *_elt)
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
-const char *format_additions(const char *buffer) {
+const char *format_additions(const char *buffer)
+{
   utarray_new(environment_data_stack, &envdata_icd);
 
   if (colors == NULL)
@@ -3321,6 +3322,18 @@ const char *format_additions(const char *buffer) {
   encase = NONE;
   line_counter = 1;
   env_replacements(&environment_data_stack, &encase, buffer);
+}
+
+void free_additions()
+{
+  utarray_free(environment_data_stack);
+
+  struct css_colors *c = NULL, *tmp;
+
+  HASH_ITER(hh, colors, c, tmp) {
+    HASH_DEL(colors, c);
+    free(c);
+  }
 }
 
 char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start)
@@ -3341,14 +3354,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
   result = mtex2MML_yyparse (&mathml);
 
-  utarray_free(environment_data_stack);
-
-  struct css_colors *c = NULL, *tmp;
-
-  HASH_ITER(hh, colors, c, tmp) {
-    HASH_DEL(colors, c);
-    free(c);
-  }
+  free_additions();
 
   if (result && mathml) /* shouldn't happen? */
     {
@@ -3365,8 +3371,11 @@ int mtex2MML_filter (const char * buffer, unsigned long length)
   format_additions(buffer);
   mtex2MML_setup (buffer, length);
   mtex2MML_restart ();
+  free_additions();
 
-  return mtex2MML_yyparse (0);
+  int result = mtex2MML_yyparse (0);
+
+  return result;
 }
 
 #define MTEX_DELIMITER_DOLLAR 0
