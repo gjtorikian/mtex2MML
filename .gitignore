@@ -1,6 +1,8 @@
 *.o
 *.so
 
+lib/ # need this for mathematical
+
 src/lex.yy.c
 src/y.output
 src/y.tab.c
