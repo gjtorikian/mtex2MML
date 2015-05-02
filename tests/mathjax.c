@@ -32,7 +32,8 @@ void test_mathjax__abovebelowaccents1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/accents-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/accents-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -41,7 +42,8 @@ void test_mathjax__abovebelowaccents2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/accents-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/accents-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -50,7 +52,8 @@ void test_mathjax__abovebelowaccents3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/accents-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/accents-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -59,7 +62,8 @@ void test_mathjax__abovebelowbuildrel1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/buildrel-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/buildrel-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -68,7 +72,8 @@ void test_mathjax__abovebelowissue877(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/issue877.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/issue877.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -77,7 +82,8 @@ void test_mathjax__abovebelowissue937(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/issue937.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/issue937.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -86,7 +92,8 @@ void test_mathjax__abovebelowoverbrace1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/overbrace-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/overbrace-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -95,7 +102,8 @@ void test_mathjax__abovebelowoverbracket1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/overbracket-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/overbracket-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -104,7 +112,8 @@ void test_mathjax__abovebelowoverset1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/overset-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/overset-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -113,7 +122,8 @@ void test_mathjax__abovebelowsideset1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/sideset-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/sideset-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -122,7 +132,8 @@ void test_mathjax__abovebelowstackrel1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/stackrel-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/stackrel-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -131,7 +142,8 @@ void test_mathjax__abovebelowsubarray1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/subarray-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/subarray-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -140,7 +152,8 @@ void test_mathjax__abovebelowsubstack1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/substack-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/substack-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -149,7 +162,8 @@ void test_mathjax__abovebelowunderbrace1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/underbrace-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/underbrace-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -158,7 +172,8 @@ void test_mathjax__abovebelowunderbracket1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/underbracket-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/underbracket-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -167,7 +182,8 @@ void test_mathjax__abovebelowunderset1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/above-below/underset-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/above-below/underset-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -176,7 +192,8 @@ void test_mathjax__arrowsarrows1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/arrows/arrows-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/arrows/arrows-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -185,7 +202,8 @@ void test_mathjax__arrowsarrows2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/arrows/arrows-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/arrows/arrows-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -194,7 +212,8 @@ void test_mathjax__arrowsarrows3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/arrows/arrows-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/arrows/arrows-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -203,7 +222,8 @@ void test_mathjax__arrowsarrows4(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/arrows/arrows-4.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/arrows/arrows-4.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -212,7 +232,8 @@ void test_mathjax__arrowsarrows5(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/arrows/arrows-5.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/arrows/arrows-5.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -221,7 +242,8 @@ void test_mathjax__atomsmathinner1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathinner-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathinner-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -230,7 +252,8 @@ void test_mathjax__atomsmathop1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathop-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathop-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -239,7 +262,8 @@ void test_mathjax__atomsmathop1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathop-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathop-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -248,7 +272,8 @@ void test_mathjax__atomsmathopenclose1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathopenclose-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathopenclose-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -257,7 +282,8 @@ void test_mathjax__atomsmathord1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathord-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathord-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -266,7 +292,8 @@ void test_mathjax__atomsmathpunct1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathpunct-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathpunct-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -275,7 +302,8 @@ void test_mathjax__atomsmathrel1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/atoms/mathrel-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/atoms/mathrel-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -284,7 +312,8 @@ void test_mathjax__basicoperatorsbackslashed1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/basic-operators/backslashed-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/basic-operators/backslashed-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -293,7 +322,8 @@ void test_mathjax__basicoperatorsbasicoperators1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/basic-operators/basic-operators-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/basic-operators/basic-operators-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -302,7 +332,8 @@ void test_mathjax__basicoperatorsremap1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/basic-operators/remap-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/basic-operators/remap-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -311,7 +342,8 @@ void test_mathjax__colorscolor1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/colors/color-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/colors/color-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -320,7 +352,8 @@ void test_mathjax__colorscolorbox1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/colors/colorbox-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/colors/colorbox-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -329,7 +362,8 @@ void test_mathjax__colorsnamedcolors1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/colors/namedcolors-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/colors/namedcolors-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -338,7 +372,8 @@ void test_mathjax__delimitersbig1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/big-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/big-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -347,7 +382,8 @@ void test_mathjax__delimitersbig2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/big-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/big-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -356,7 +392,8 @@ void test_mathjax__delimitersbig3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/big-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/big-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -365,7 +402,8 @@ void test_mathjax__delimitersdelimiters1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/delimiters-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/delimiters-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -374,7 +412,8 @@ void test_mathjax__delimitersdelimiters2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/delimiters-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/delimiters-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -383,7 +422,8 @@ void test_mathjax__delimitersissue775(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue775.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue775.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -392,7 +432,8 @@ void test_mathjax__delimitersissue7761a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue776-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue776-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -401,7 +442,8 @@ void test_mathjax__delimitersissue7761b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue776-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue776-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -410,7 +452,8 @@ void test_mathjax__delimitersissue7762(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue776-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue776-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -419,7 +462,8 @@ void test_mathjax__delimitersissue7763(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue776-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue776-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -428,7 +472,8 @@ void test_mathjax__delimitersissue7764(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue776-4.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue776-4.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -437,7 +482,8 @@ void test_mathjax__delimitersissue7765(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/issue776-5.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/issue776-5.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -446,7 +492,8 @@ void test_mathjax__delimitersleftright1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/delimiters/left-right-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/delimiters/left-right-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -455,7 +502,8 @@ void test_mathjax__environmentsalign1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/align-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/align-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -464,7 +512,8 @@ void test_mathjax__environmentsalign1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/align-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/align-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -473,7 +522,8 @@ void test_mathjax__environmentsalignat1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/alignat-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/alignat-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -482,7 +532,8 @@ void test_mathjax__environmentsalignat1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/alignat-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/alignat-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -491,7 +542,8 @@ void test_mathjax__environmentsaligned1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/aligned-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/aligned-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -500,7 +552,8 @@ void test_mathjax__environmentsaligned2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/aligned-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/aligned-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -509,7 +562,8 @@ void test_mathjax__environmentsalignedat1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/alignedat-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/alignedat-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -518,7 +572,8 @@ void test_mathjax__environmentseqalign1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/eqalign-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/eqalign-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -527,7 +582,8 @@ void test_mathjax__environmentseqalignno1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/eqalignno-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/eqalignno-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -536,7 +592,8 @@ void test_mathjax__environmentseqnarray1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/eqnarray-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/eqnarray-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -545,7 +602,8 @@ void test_mathjax__environmentseqnarray1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/eqnarray-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/eqnarray-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -554,7 +612,8 @@ void test_mathjax__environmentsequation1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/equation-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/equation-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -563,7 +622,8 @@ void test_mathjax__environmentsequation2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/equation-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/equation-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -572,7 +632,8 @@ void test_mathjax__environmentsgather1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/gather-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/gather-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -581,7 +642,8 @@ void test_mathjax__environmentsgather1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/gather-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/gather-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -590,7 +652,8 @@ void test_mathjax__environmentsgathered1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/gathered-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/gathered-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -599,7 +662,8 @@ void test_mathjax__environmentsgathered2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/gathered-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/gathered-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -608,7 +672,8 @@ void test_mathjax__environmentsissue9821a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/issue982-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/issue982-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -617,7 +682,8 @@ void test_mathjax__environmentsissue9821b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/issue982-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/issue982-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -626,7 +692,8 @@ void test_mathjax__environmentsissue9822a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/issue982-2a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/issue982-2a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -635,7 +702,8 @@ void test_mathjax__environmentsissue9822b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/issue982-2b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/issue982-2b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -644,7 +712,8 @@ void test_mathjax__environmentsissue9823a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/issue982-3a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/issue982-3a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -653,7 +722,8 @@ void test_mathjax__environmentsissue9823b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/issue982-3b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/issue982-3b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -662,7 +732,8 @@ void test_mathjax__environmentsmultline1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/multline-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/multline-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -671,7 +742,8 @@ void test_mathjax__environmentsmultline1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/multline-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/multline-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -680,7 +752,8 @@ void test_mathjax__environmentssplit1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/environments/split-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/environments/split-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -689,7 +762,8 @@ void test_mathjax__fracabove1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/above-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/above-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -698,7 +772,8 @@ void test_mathjax__fracabovewithdelims1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/abovewithdelims-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/abovewithdelims-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -707,7 +782,8 @@ void test_mathjax__fracatop1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/atop-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/atop-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -716,7 +792,8 @@ void test_mathjax__fracatopwithdelims1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/atopwithdelims-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/atopwithdelims-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -725,7 +802,8 @@ void test_mathjax__fracbinom1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/binom-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/binom-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -734,7 +812,8 @@ void test_mathjax__fracbrace1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/brace-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/brace-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -743,7 +822,8 @@ void test_mathjax__fracbrack1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/brack-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/brack-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -752,7 +832,8 @@ void test_mathjax__fraccfrac1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/cfrac-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/cfrac-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -761,7 +842,8 @@ void test_mathjax__fracchoose1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/choose-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/choose-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -770,7 +852,8 @@ void test_mathjax__fracdbinom1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/dbinom-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/dbinom-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -779,7 +862,8 @@ void test_mathjax__fracdfrac1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/dfrac-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/dfrac-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -788,7 +872,8 @@ void test_mathjax__fracfrac1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/frac-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/frac-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -797,7 +882,8 @@ void test_mathjax__fracfrac1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/frac-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/frac-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -806,7 +892,8 @@ void test_mathjax__fracgenfrac1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/genfrac-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/genfrac-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -815,7 +902,8 @@ void test_mathjax__fracissue969(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/issue969.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/issue969.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -824,7 +912,8 @@ void test_mathjax__fracoverwithdelims1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/overwithdelims-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/overwithdelims-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -833,7 +922,8 @@ void test_mathjax__fractbinom1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/tbinom-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/tbinom-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -842,7 +932,8 @@ void test_mathjax__fractfrac1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/frac/tfrac-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/frac/tfrac-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -851,7 +942,8 @@ void test_mathjax__issuesissue11522(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue1152-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue1152-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -860,7 +952,8 @@ void test_mathjax__issuesissue375(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue375.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue375.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -869,7 +962,8 @@ void test_mathjax__issuesissue856(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue856.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue856.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -878,7 +972,8 @@ void test_mathjax__issuesissue9011a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue901-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue901-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -887,7 +982,8 @@ void test_mathjax__issuesissue9011b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue901-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue901-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -896,7 +992,8 @@ void test_mathjax__issuesissue9011c(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue901-1c.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue901-1c.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -905,7 +1002,8 @@ void test_mathjax__issuesissue9011d(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/issues/issue901-1d.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/issues/issue901-1d.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -914,7 +1012,8 @@ void test_mathjax__layoutboxes1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/boxes-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/boxes-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -923,7 +1022,8 @@ void test_mathjax__layoutkern1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/kern-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/kern-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -932,7 +1032,8 @@ void test_mathjax__layoutkern1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/kern-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/kern-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -941,7 +1042,8 @@ void test_mathjax__layoutllap1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/llap-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/llap-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -950,7 +1052,8 @@ void test_mathjax__layoutlower1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/lower-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/lower-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -959,7 +1062,8 @@ void test_mathjax__layoutmathstrut1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/mathstrut-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/mathstrut-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -968,7 +1072,8 @@ void test_mathjax__layoutmoveleft1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/moveleft-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/moveleft-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -977,7 +1082,8 @@ void test_mathjax__layoutmoveright1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/moveright-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/moveright-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -986,7 +1092,8 @@ void test_mathjax__layoutnewline1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/newline-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/newline-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -995,7 +1102,8 @@ void test_mathjax__layoutphantom1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/phantom-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/phantom-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1004,7 +1112,8 @@ void test_mathjax__layoutraise1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/raise-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/raise-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1013,7 +1122,8 @@ void test_mathjax__layoutrlap1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/rlap-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/rlap-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1022,7 +1132,8 @@ void test_mathjax__layoutskip1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/skip-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/skip-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1031,7 +1142,8 @@ void test_mathjax__layoutskip1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/skip-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/skip-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1040,7 +1152,8 @@ void test_mathjax__layoutsmash1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/smash-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/smash-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1049,7 +1162,8 @@ void test_mathjax__layoutspaces1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/spaces-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/spaces-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1058,7 +1172,8 @@ void test_mathjax__layoutstrut1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/strut-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/strut-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1067,7 +1182,8 @@ void test_mathjax__layoutvcenter1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/layout/vcenter-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/layout/vcenter-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1076,7 +1192,8 @@ void test_mathjax__lettersgreek1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/letters/greek-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/letters/greek-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1085,7 +1202,8 @@ void test_mathjax__lettersgreek2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/letters/greek-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/letters/greek-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1094,7 +1212,8 @@ void test_mathjax__lettersgreek3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/letters/greek-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/letters/greek-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1103,7 +1222,8 @@ void test_mathjax__lettersgreek4(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/letters/greek-4.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/letters/greek-4.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1112,7 +1232,8 @@ void test_mathjax__lettershebrew1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/letters/hebrew-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/letters/hebrew-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1121,7 +1242,8 @@ void test_mathjax__mathvariantBbb1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/Bbb-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/Bbb-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1130,7 +1252,8 @@ void test_mathjax__mathvariantbf1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/bf-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/bf-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1139,7 +1262,8 @@ void test_mathjax__mathvariantboldsymbol1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/boldsymbol-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/boldsymbol-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1148,7 +1272,8 @@ void test_mathjax__mathvariantcal1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/cal-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/cal-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1157,7 +1282,8 @@ void test_mathjax__mathvariantfrak1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/frak-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/frak-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1166,7 +1292,8 @@ void test_mathjax__mathvariantit1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/it-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/it-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1175,7 +1302,8 @@ void test_mathjax__mathvariantmathbb1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathbb-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathbb-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1184,7 +1312,8 @@ void test_mathjax__mathvariantmathbf1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathbf-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathbf-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1193,7 +1322,8 @@ void test_mathjax__mathvariantmathbf1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathbf-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathbf-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1202,7 +1332,8 @@ void test_mathjax__mathvariantmathbf2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathbf-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathbf-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1211,7 +1342,8 @@ void test_mathjax__mathvariantmathcal1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathcal-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathcal-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1220,7 +1352,8 @@ void test_mathjax__mathvariantmathfrak1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathfrak-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathfrak-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1229,7 +1362,8 @@ void test_mathjax__mathvariantmathit1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathit-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathit-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1238,7 +1372,8 @@ void test_mathjax__mathvariantmathrm1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathrm-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathrm-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1247,7 +1382,8 @@ void test_mathjax__mathvariantmathscr1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathscr-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathscr-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1256,7 +1392,8 @@ void test_mathjax__mathvariantmathsf1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathsf-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathsf-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1265,7 +1402,8 @@ void test_mathjax__mathvariantmathtt1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mathtt-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mathtt-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1274,7 +1412,8 @@ void test_mathjax__mathvariantmit1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/mit-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/mit-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1283,7 +1422,8 @@ void test_mathjax__mathvariantpmb1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/pmb-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/pmb-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1292,7 +1432,8 @@ void test_mathjax__mathvariantrm1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/rm-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/rm-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1301,7 +1442,8 @@ void test_mathjax__mathvariantscr1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/scr-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/scr-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1310,7 +1452,8 @@ void test_mathjax__mathvariantsf1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/sf-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/sf-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1319,7 +1462,8 @@ void test_mathjax__mathvarianttext1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/text-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/text-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1328,7 +1472,8 @@ void test_mathjax__mathvarianttextbf1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/textbf-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/textbf-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1337,7 +1482,8 @@ void test_mathjax__mathvarianttextit1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/textit-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/textit-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1346,7 +1492,8 @@ void test_mathjax__mathvarianttextrm1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/textrm-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/textrm-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1355,7 +1502,8 @@ void test_mathjax__mathvarianttextsf1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/textsf-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/textsf-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1364,7 +1512,8 @@ void test_mathjax__mathvarianttexttt1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/texttt-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/texttt-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1373,7 +1522,8 @@ void test_mathjax__mathvarianttt1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/mathvariant/tt-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/mathvariant/tt-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1382,7 +1532,8 @@ void test_mathjax__matricesarray1a(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/array-1a.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/array-1a.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1391,7 +1542,8 @@ void test_mathjax__matricesarray1b(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/array-1b.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/array-1b.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1400,7 +1552,8 @@ void test_mathjax__matricesarray2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/array-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/array-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1409,7 +1562,8 @@ void test_mathjax__matricesarray3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/array-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/array-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1418,7 +1572,8 @@ void test_mathjax__matricesbmatrix1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/bmatrix-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/bmatrix-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1427,7 +1582,8 @@ void test_mathjax__matricesbmatrix2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/bmatrix-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/bmatrix-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1436,7 +1592,8 @@ void test_mathjax__matricesmatrix1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/matrix-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/matrix-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1445,7 +1602,8 @@ void test_mathjax__matricesmatrix2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/matrix-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/matrix-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1454,7 +1612,8 @@ void test_mathjax__matricespmatrix1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/pmatrix-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/pmatrix-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1463,7 +1622,8 @@ void test_mathjax__matricespmatrix2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/pmatrix-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/pmatrix-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1472,7 +1632,8 @@ void test_mathjax__matricessmallmatrix1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/smallmatrix-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/smallmatrix-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1481,7 +1642,8 @@ void test_mathjax__matricesvmatrix1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/vmatrix-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/vmatrix-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1490,7 +1652,8 @@ void test_mathjax__matricesvmatrix2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/matrices/vmatrix-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/matrices/vmatrix-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1499,7 +1662,8 @@ void test_mathjax__nonstandardTiny1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/non-standard/Tiny-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/non-standard/Tiny-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1508,7 +1672,8 @@ void test_mathjax__otherbbox1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/bbox-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/bbox-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1517,7 +1682,8 @@ void test_mathjax__otherboxed1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/boxed-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/boxed-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1526,7 +1692,8 @@ void test_mathjax__othercancel1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/cancel-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/cancel-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1535,7 +1702,8 @@ void test_mathjax__othercases1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/cases-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/cases-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1544,7 +1712,8 @@ void test_mathjax__otherenclose1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/enclose-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/enclose-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1553,7 +1722,8 @@ void test_mathjax__otherfunctions1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/functions-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/functions-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1562,7 +1732,8 @@ void test_mathjax__otherLaTeX1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/LaTeX-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/LaTeX-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1571,7 +1742,8 @@ void test_mathjax__otherlimits1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/limits-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/limits-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1580,7 +1752,8 @@ void test_mathjax__otherlimits2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/limits-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/limits-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1589,7 +1762,8 @@ void test_mathjax__otherlimits3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/limits-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/limits-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1598,7 +1772,8 @@ void test_mathjax__othermathsize1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/mathsize-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/mathsize-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1607,7 +1782,8 @@ void test_mathjax__othermod1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/mod-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/mod-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1616,7 +1792,8 @@ void test_mathjax__othernot1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/not-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/not-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1625,7 +1802,8 @@ void test_mathjax__otherpod1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/pod-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/pod-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1634,7 +1812,8 @@ void test_mathjax__otherprimes1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/primes-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/primes-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1643,7 +1822,8 @@ void test_mathjax__otherprimes2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/primes-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/primes-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1652,7 +1832,8 @@ void test_mathjax__otherprimes3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/primes-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/primes-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1661,7 +1842,8 @@ void test_mathjax__otherstyle1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/style-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/style-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1670,7 +1852,8 @@ void test_mathjax__otherverb1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/verb-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/verb-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1679,7 +1862,8 @@ void test_mathjax__otherverb2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/verb-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/verb-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1688,7 +1872,8 @@ void test_mathjax__rootsroot1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/roots/root-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/roots/root-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1697,7 +1882,8 @@ void test_mathjax__rootsroot2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/roots/root-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/roots/root-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1706,7 +1892,8 @@ void test_mathjax__rootsroot3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/roots/root-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/roots/root-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1715,7 +1902,8 @@ void test_mathjax__rootssqrt1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/roots/sqrt-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/roots/sqrt-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1724,7 +1912,8 @@ void test_mathjax__rootssqrt2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/roots/sqrt-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/roots/sqrt-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1733,7 +1922,8 @@ void test_mathjax__symbolsbinaryops1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/binaryops-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/binaryops-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1742,7 +1932,8 @@ void test_mathjax__symbolsdots1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/dots-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/dots-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1751,7 +1942,8 @@ void test_mathjax__symbolslargeops1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/largeops-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/largeops-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1760,7 +1952,8 @@ void test_mathjax__symbolslargeops2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/largeops-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/largeops-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1769,7 +1962,8 @@ void test_mathjax__symbolsrelations1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/relations-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/relations-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1778,7 +1972,8 @@ void test_mathjax__symbolssymbols1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/symbols-1.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/symbols-1.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1787,7 +1982,8 @@ void test_mathjax__symbolssymbols2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/symbols-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/symbols-2.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1796,7 +1992,8 @@ void test_mathjax__symbolssymbols3(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/symbols-3.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/symbols-3.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1805,7 +2002,8 @@ void test_mathjax__symbolssymbols4(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/symbols-4.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/symbols-4.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1814,7 +2012,8 @@ void test_mathjax__symbolssymbols5(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/symbols-5.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/symbols-5.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
@@ -1823,7 +2022,8 @@ void test_mathjax__symbolssymbols6(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/symbols/symbols-6.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/symbols/symbols-6.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 } 
