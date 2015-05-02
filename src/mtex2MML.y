@@ -3371,9 +3371,9 @@ int mtex2MML_filter (const char * buffer, unsigned long length)
   format_additions(buffer);
   mtex2MML_setup (buffer, length);
   mtex2MML_restart ();
-  free_additions();
 
   int result = mtex2MML_yyparse (0);
+  free_additions();
 
   return result;
 }
