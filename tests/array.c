@@ -1,6 +1,7 @@
 #include "clar.h"
 #include "clar_test.h"
 #include <stdio.h>
+#include <string.h>
 
 static char *fixture_tex;
 static char *fixture_mml;

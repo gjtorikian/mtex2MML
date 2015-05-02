@@ -1,6 +1,7 @@
 #include "clar.h"
 #include "clar_test.h"
 #include <stdio.h>
+#include <string.h>
 
 static char *fixture_tex;
 static char *fixture_mml;
@@ -36,7 +37,7 @@ void test_mathjax__abovebelowaccents1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowaccents2(void)
 {
@@ -46,7 +47,7 @@ void test_mathjax__abovebelowaccents2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowaccents3(void)
 {
@@ -56,7 +57,7 @@ void test_mathjax__abovebelowaccents3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowbuildrel1(void)
 {
@@ -66,7 +67,7 @@ void test_mathjax__abovebelowbuildrel1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowissue877(void)
 {
@@ -76,7 +77,7 @@ void test_mathjax__abovebelowissue877(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowissue937(void)
 {
@@ -86,7 +87,7 @@ void test_mathjax__abovebelowissue937(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowoverbrace1(void)
 {
@@ -96,7 +97,7 @@ void test_mathjax__abovebelowoverbrace1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowoverbracket1(void)
 {
@@ -106,7 +107,7 @@ void test_mathjax__abovebelowoverbracket1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowoverset1(void)
 {
@@ -116,7 +117,7 @@ void test_mathjax__abovebelowoverset1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowsideset1(void)
 {
@@ -126,7 +127,7 @@ void test_mathjax__abovebelowsideset1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowstackrel1(void)
 {
@@ -136,7 +137,7 @@ void test_mathjax__abovebelowstackrel1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowsubarray1(void)
 {
@@ -146,7 +147,7 @@ void test_mathjax__abovebelowsubarray1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowsubstack1(void)
 {
@@ -156,7 +157,7 @@ void test_mathjax__abovebelowsubstack1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowunderbrace1(void)
 {
@@ -166,7 +167,7 @@ void test_mathjax__abovebelowunderbrace1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowunderbracket1(void)
 {
@@ -176,7 +177,7 @@ void test_mathjax__abovebelowunderbracket1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__abovebelowunderset1(void)
 {
@@ -186,7 +187,7 @@ void test_mathjax__abovebelowunderset1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__arrowsarrows1(void)
 {
@@ -196,7 +197,7 @@ void test_mathjax__arrowsarrows1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__arrowsarrows2(void)
 {
@@ -206,7 +207,7 @@ void test_mathjax__arrowsarrows2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__arrowsarrows3(void)
 {
@@ -216,7 +217,7 @@ void test_mathjax__arrowsarrows3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__arrowsarrows4(void)
 {
@@ -226,7 +227,7 @@ void test_mathjax__arrowsarrows4(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__arrowsarrows5(void)
 {
@@ -236,7 +237,7 @@ void test_mathjax__arrowsarrows5(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathinner1(void)
 {
@@ -246,7 +247,7 @@ void test_mathjax__atomsmathinner1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathop1a(void)
 {
@@ -256,7 +257,7 @@ void test_mathjax__atomsmathop1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathop1b(void)
 {
@@ -266,7 +267,7 @@ void test_mathjax__atomsmathop1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathopenclose1(void)
 {
@@ -276,7 +277,7 @@ void test_mathjax__atomsmathopenclose1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathord1(void)
 {
@@ -286,7 +287,7 @@ void test_mathjax__atomsmathord1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathpunct1(void)
 {
@@ -296,7 +297,7 @@ void test_mathjax__atomsmathpunct1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__atomsmathrel1(void)
 {
@@ -306,7 +307,7 @@ void test_mathjax__atomsmathrel1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__basicoperatorsbackslashed1(void)
 {
@@ -316,7 +317,7 @@ void test_mathjax__basicoperatorsbackslashed1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__basicoperatorsbasicoperators1(void)
 {
@@ -326,7 +327,7 @@ void test_mathjax__basicoperatorsbasicoperators1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__basicoperatorsremap1(void)
 {
@@ -336,7 +337,7 @@ void test_mathjax__basicoperatorsremap1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__colorscolor1(void)
 {
@@ -346,7 +347,7 @@ void test_mathjax__colorscolor1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__colorscolorbox1(void)
 {
@@ -356,7 +357,7 @@ void test_mathjax__colorscolorbox1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__colorsnamedcolors1(void)
 {
@@ -366,7 +367,7 @@ void test_mathjax__colorsnamedcolors1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersbig1(void)
 {
@@ -376,7 +377,7 @@ void test_mathjax__delimitersbig1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersbig2(void)
 {
@@ -386,7 +387,7 @@ void test_mathjax__delimitersbig2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersbig3(void)
 {
@@ -396,7 +397,7 @@ void test_mathjax__delimitersbig3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersdelimiters1(void)
 {
@@ -406,7 +407,7 @@ void test_mathjax__delimitersdelimiters1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersdelimiters2(void)
 {
@@ -416,7 +417,7 @@ void test_mathjax__delimitersdelimiters2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue775(void)
 {
@@ -426,7 +427,7 @@ void test_mathjax__delimitersissue775(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue7761a(void)
 {
@@ -436,7 +437,7 @@ void test_mathjax__delimitersissue7761a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue7761b(void)
 {
@@ -446,7 +447,7 @@ void test_mathjax__delimitersissue7761b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue7762(void)
 {
@@ -456,7 +457,7 @@ void test_mathjax__delimitersissue7762(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue7763(void)
 {
@@ -466,7 +467,7 @@ void test_mathjax__delimitersissue7763(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue7764(void)
 {
@@ -476,7 +477,7 @@ void test_mathjax__delimitersissue7764(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersissue7765(void)
 {
@@ -486,7 +487,7 @@ void test_mathjax__delimitersissue7765(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__delimitersleftright1(void)
 {
@@ -496,7 +497,7 @@ void test_mathjax__delimitersleftright1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsalign1a(void)
 {
@@ -506,7 +507,7 @@ void test_mathjax__environmentsalign1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsalign1b(void)
 {
@@ -516,7 +517,7 @@ void test_mathjax__environmentsalign1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsalignat1a(void)
 {
@@ -526,7 +527,7 @@ void test_mathjax__environmentsalignat1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsalignat1b(void)
 {
@@ -536,7 +537,7 @@ void test_mathjax__environmentsalignat1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsaligned1(void)
 {
@@ -546,7 +547,7 @@ void test_mathjax__environmentsaligned1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsaligned2(void)
 {
@@ -556,7 +557,7 @@ void test_mathjax__environmentsaligned2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsalignedat1(void)
 {
@@ -566,7 +567,7 @@ void test_mathjax__environmentsalignedat1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentseqalign1(void)
 {
@@ -576,7 +577,7 @@ void test_mathjax__environmentseqalign1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentseqalignno1(void)
 {
@@ -586,7 +587,7 @@ void test_mathjax__environmentseqalignno1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentseqnarray1a(void)
 {
@@ -596,7 +597,7 @@ void test_mathjax__environmentseqnarray1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentseqnarray1b(void)
 {
@@ -606,7 +607,7 @@ void test_mathjax__environmentseqnarray1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsequation1(void)
 {
@@ -616,7 +617,7 @@ void test_mathjax__environmentsequation1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsequation2(void)
 {
@@ -626,7 +627,7 @@ void test_mathjax__environmentsequation2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsgather1a(void)
 {
@@ -636,7 +637,7 @@ void test_mathjax__environmentsgather1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsgather1b(void)
 {
@@ -646,7 +647,7 @@ void test_mathjax__environmentsgather1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsgathered1(void)
 {
@@ -656,7 +657,7 @@ void test_mathjax__environmentsgathered1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsgathered2(void)
 {
@@ -666,7 +667,7 @@ void test_mathjax__environmentsgathered2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsissue9821a(void)
 {
@@ -676,7 +677,7 @@ void test_mathjax__environmentsissue9821a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsissue9821b(void)
 {
@@ -686,7 +687,7 @@ void test_mathjax__environmentsissue9821b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsissue9822a(void)
 {
@@ -696,7 +697,7 @@ void test_mathjax__environmentsissue9822a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsissue9822b(void)
 {
@@ -706,7 +707,7 @@ void test_mathjax__environmentsissue9822b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsissue9823a(void)
 {
@@ -716,7 +717,7 @@ void test_mathjax__environmentsissue9823a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsissue9823b(void)
 {
@@ -726,7 +727,7 @@ void test_mathjax__environmentsissue9823b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsmultline1a(void)
 {
@@ -736,7 +737,7 @@ void test_mathjax__environmentsmultline1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentsmultline1b(void)
 {
@@ -746,7 +747,7 @@ void test_mathjax__environmentsmultline1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__environmentssplit1(void)
 {
@@ -756,7 +757,7 @@ void test_mathjax__environmentssplit1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracabove1(void)
 {
@@ -766,7 +767,7 @@ void test_mathjax__fracabove1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracabovewithdelims1(void)
 {
@@ -776,7 +777,7 @@ void test_mathjax__fracabovewithdelims1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracatop1(void)
 {
@@ -786,7 +787,7 @@ void test_mathjax__fracatop1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracatopwithdelims1(void)
 {
@@ -796,7 +797,7 @@ void test_mathjax__fracatopwithdelims1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracbinom1(void)
 {
@@ -806,7 +807,7 @@ void test_mathjax__fracbinom1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracbrace1(void)
 {
@@ -816,7 +817,7 @@ void test_mathjax__fracbrace1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracbrack1(void)
 {
@@ -826,7 +827,7 @@ void test_mathjax__fracbrack1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fraccfrac1(void)
 {
@@ -836,7 +837,7 @@ void test_mathjax__fraccfrac1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracchoose1(void)
 {
@@ -846,7 +847,7 @@ void test_mathjax__fracchoose1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracdbinom1(void)
 {
@@ -856,7 +857,7 @@ void test_mathjax__fracdbinom1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracdfrac1(void)
 {
@@ -866,7 +867,7 @@ void test_mathjax__fracdfrac1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracfrac1a(void)
 {
@@ -876,7 +877,7 @@ void test_mathjax__fracfrac1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracfrac1b(void)
 {
@@ -886,7 +887,7 @@ void test_mathjax__fracfrac1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracgenfrac1(void)
 {
@@ -896,7 +897,7 @@ void test_mathjax__fracgenfrac1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracissue969(void)
 {
@@ -906,7 +907,7 @@ void test_mathjax__fracissue969(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fracoverwithdelims1(void)
 {
@@ -916,7 +917,7 @@ void test_mathjax__fracoverwithdelims1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fractbinom1(void)
 {
@@ -926,7 +927,7 @@ void test_mathjax__fractbinom1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__fractfrac1(void)
 {
@@ -936,7 +937,7 @@ void test_mathjax__fractfrac1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue11522(void)
 {
@@ -946,7 +947,7 @@ void test_mathjax__issuesissue11522(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue375(void)
 {
@@ -956,7 +957,7 @@ void test_mathjax__issuesissue375(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue856(void)
 {
@@ -966,7 +967,7 @@ void test_mathjax__issuesissue856(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue9011a(void)
 {
@@ -976,7 +977,7 @@ void test_mathjax__issuesissue9011a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue9011b(void)
 {
@@ -986,7 +987,7 @@ void test_mathjax__issuesissue9011b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue9011c(void)
 {
@@ -996,7 +997,7 @@ void test_mathjax__issuesissue9011c(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__issuesissue9011d(void)
 {
@@ -1006,7 +1007,7 @@ void test_mathjax__issuesissue9011d(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutboxes1(void)
 {
@@ -1016,7 +1017,7 @@ void test_mathjax__layoutboxes1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutkern1a(void)
 {
@@ -1026,7 +1027,7 @@ void test_mathjax__layoutkern1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutkern1b(void)
 {
@@ -1036,7 +1037,7 @@ void test_mathjax__layoutkern1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutllap1(void)
 {
@@ -1046,7 +1047,7 @@ void test_mathjax__layoutllap1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutlower1(void)
 {
@@ -1056,7 +1057,7 @@ void test_mathjax__layoutlower1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutmathstrut1(void)
 {
@@ -1066,7 +1067,7 @@ void test_mathjax__layoutmathstrut1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutmoveleft1(void)
 {
@@ -1076,7 +1077,7 @@ void test_mathjax__layoutmoveleft1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutmoveright1(void)
 {
@@ -1086,7 +1087,7 @@ void test_mathjax__layoutmoveright1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutnewline1(void)
 {
@@ -1096,7 +1097,7 @@ void test_mathjax__layoutnewline1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutphantom1(void)
 {
@@ -1106,7 +1107,7 @@ void test_mathjax__layoutphantom1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutraise1(void)
 {
@@ -1116,7 +1117,7 @@ void test_mathjax__layoutraise1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutrlap1(void)
 {
@@ -1126,7 +1127,7 @@ void test_mathjax__layoutrlap1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutskip1a(void)
 {
@@ -1136,7 +1137,7 @@ void test_mathjax__layoutskip1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutskip1b(void)
 {
@@ -1146,7 +1147,7 @@ void test_mathjax__layoutskip1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutsmash1(void)
 {
@@ -1156,7 +1157,7 @@ void test_mathjax__layoutsmash1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutspaces1(void)
 {
@@ -1166,7 +1167,7 @@ void test_mathjax__layoutspaces1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutstrut1(void)
 {
@@ -1176,7 +1177,7 @@ void test_mathjax__layoutstrut1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__layoutvcenter1(void)
 {
@@ -1186,7 +1187,7 @@ void test_mathjax__layoutvcenter1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__lettersgreek1(void)
 {
@@ -1196,7 +1197,7 @@ void test_mathjax__lettersgreek1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__lettersgreek2(void)
 {
@@ -1206,7 +1207,7 @@ void test_mathjax__lettersgreek2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__lettersgreek3(void)
 {
@@ -1216,7 +1217,7 @@ void test_mathjax__lettersgreek3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__lettersgreek4(void)
 {
@@ -1226,7 +1227,7 @@ void test_mathjax__lettersgreek4(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__lettershebrew1(void)
 {
@@ -1236,7 +1237,7 @@ void test_mathjax__lettershebrew1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantBbb1(void)
 {
@@ -1246,7 +1247,7 @@ void test_mathjax__mathvariantBbb1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantbf1(void)
 {
@@ -1256,7 +1257,7 @@ void test_mathjax__mathvariantbf1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantboldsymbol1(void)
 {
@@ -1266,7 +1267,7 @@ void test_mathjax__mathvariantboldsymbol1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantcal1(void)
 {
@@ -1276,7 +1277,7 @@ void test_mathjax__mathvariantcal1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantfrak1(void)
 {
@@ -1286,7 +1287,7 @@ void test_mathjax__mathvariantfrak1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantit1(void)
 {
@@ -1296,7 +1297,7 @@ void test_mathjax__mathvariantit1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathbb1(void)
 {
@@ -1306,7 +1307,7 @@ void test_mathjax__mathvariantmathbb1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathbf1a(void)
 {
@@ -1316,7 +1317,7 @@ void test_mathjax__mathvariantmathbf1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathbf1b(void)
 {
@@ -1326,7 +1327,7 @@ void test_mathjax__mathvariantmathbf1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathbf2(void)
 {
@@ -1336,7 +1337,7 @@ void test_mathjax__mathvariantmathbf2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathcal1(void)
 {
@@ -1346,7 +1347,7 @@ void test_mathjax__mathvariantmathcal1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathfrak1(void)
 {
@@ -1356,7 +1357,7 @@ void test_mathjax__mathvariantmathfrak1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathit1(void)
 {
@@ -1366,7 +1367,7 @@ void test_mathjax__mathvariantmathit1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathrm1(void)
 {
@@ -1376,7 +1377,7 @@ void test_mathjax__mathvariantmathrm1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathscr1(void)
 {
@@ -1386,7 +1387,7 @@ void test_mathjax__mathvariantmathscr1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathsf1(void)
 {
@@ -1396,7 +1397,7 @@ void test_mathjax__mathvariantmathsf1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmathtt1(void)
 {
@@ -1406,7 +1407,7 @@ void test_mathjax__mathvariantmathtt1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantmit1(void)
 {
@@ -1416,7 +1417,7 @@ void test_mathjax__mathvariantmit1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantpmb1(void)
 {
@@ -1426,7 +1427,7 @@ void test_mathjax__mathvariantpmb1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantrm1(void)
 {
@@ -1436,7 +1437,7 @@ void test_mathjax__mathvariantrm1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantscr1(void)
 {
@@ -1446,7 +1447,7 @@ void test_mathjax__mathvariantscr1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvariantsf1(void)
 {
@@ -1456,7 +1457,7 @@ void test_mathjax__mathvariantsf1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttext1(void)
 {
@@ -1466,7 +1467,7 @@ void test_mathjax__mathvarianttext1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttextbf1(void)
 {
@@ -1476,7 +1477,7 @@ void test_mathjax__mathvarianttextbf1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttextit1(void)
 {
@@ -1486,7 +1487,7 @@ void test_mathjax__mathvarianttextit1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttextrm1(void)
 {
@@ -1496,7 +1497,7 @@ void test_mathjax__mathvarianttextrm1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttextsf1(void)
 {
@@ -1506,7 +1507,7 @@ void test_mathjax__mathvarianttextsf1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttexttt1(void)
 {
@@ -1516,7 +1517,7 @@ void test_mathjax__mathvarianttexttt1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__mathvarianttt1(void)
 {
@@ -1526,7 +1527,7 @@ void test_mathjax__mathvarianttt1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesarray1a(void)
 {
@@ -1536,7 +1537,7 @@ void test_mathjax__matricesarray1a(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesarray1b(void)
 {
@@ -1546,7 +1547,7 @@ void test_mathjax__matricesarray1b(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesarray2(void)
 {
@@ -1556,7 +1557,7 @@ void test_mathjax__matricesarray2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesarray3(void)
 {
@@ -1566,7 +1567,7 @@ void test_mathjax__matricesarray3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesbmatrix1(void)
 {
@@ -1576,7 +1577,7 @@ void test_mathjax__matricesbmatrix1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesbmatrix2(void)
 {
@@ -1586,7 +1587,7 @@ void test_mathjax__matricesbmatrix2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesmatrix1(void)
 {
@@ -1596,7 +1597,7 @@ void test_mathjax__matricesmatrix1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesmatrix2(void)
 {
@@ -1606,7 +1607,7 @@ void test_mathjax__matricesmatrix2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricespmatrix1(void)
 {
@@ -1616,7 +1617,7 @@ void test_mathjax__matricespmatrix1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricespmatrix2(void)
 {
@@ -1626,7 +1627,7 @@ void test_mathjax__matricespmatrix2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricessmallmatrix1(void)
 {
@@ -1636,7 +1637,7 @@ void test_mathjax__matricessmallmatrix1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesvmatrix1(void)
 {
@@ -1646,7 +1647,7 @@ void test_mathjax__matricesvmatrix1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__matricesvmatrix2(void)
 {
@@ -1656,7 +1657,7 @@ void test_mathjax__matricesvmatrix2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__nonstandardTiny1(void)
 {
@@ -1666,7 +1667,7 @@ void test_mathjax__nonstandardTiny1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherbbox1(void)
 {
@@ -1676,7 +1677,7 @@ void test_mathjax__otherbbox1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherboxed1(void)
 {
@@ -1686,7 +1687,7 @@ void test_mathjax__otherboxed1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__othercancel1(void)
 {
@@ -1696,7 +1697,7 @@ void test_mathjax__othercancel1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__othercases1(void)
 {
@@ -1706,7 +1707,7 @@ void test_mathjax__othercases1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherenclose1(void)
 {
@@ -1716,7 +1717,7 @@ void test_mathjax__otherenclose1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherfunctions1(void)
 {
@@ -1726,7 +1727,7 @@ void test_mathjax__otherfunctions1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherLaTeX1(void)
 {
@@ -1736,7 +1737,7 @@ void test_mathjax__otherLaTeX1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherlimits1(void)
 {
@@ -1746,7 +1747,7 @@ void test_mathjax__otherlimits1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherlimits2(void)
 {
@@ -1756,7 +1757,7 @@ void test_mathjax__otherlimits2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherlimits3(void)
 {
@@ -1766,7 +1767,7 @@ void test_mathjax__otherlimits3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__othermathsize1(void)
 {
@@ -1776,7 +1777,7 @@ void test_mathjax__othermathsize1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__othermod1(void)
 {
@@ -1786,7 +1787,7 @@ void test_mathjax__othermod1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__othernot1(void)
 {
@@ -1796,7 +1797,7 @@ void test_mathjax__othernot1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherpod1(void)
 {
@@ -1806,7 +1807,7 @@ void test_mathjax__otherpod1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherprimes1(void)
 {
@@ -1816,7 +1817,7 @@ void test_mathjax__otherprimes1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherprimes2(void)
 {
@@ -1826,7 +1827,7 @@ void test_mathjax__otherprimes2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherprimes3(void)
 {
@@ -1836,7 +1837,7 @@ void test_mathjax__otherprimes3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherstyle1(void)
 {
@@ -1846,7 +1847,7 @@ void test_mathjax__otherstyle1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherverb1(void)
 {
@@ -1856,7 +1857,7 @@ void test_mathjax__otherverb1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__otherverb2(void)
 {
@@ -1866,7 +1867,7 @@ void test_mathjax__otherverb2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__rootsroot1(void)
 {
@@ -1876,7 +1877,7 @@ void test_mathjax__rootsroot1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__rootsroot2(void)
 {
@@ -1886,7 +1887,7 @@ void test_mathjax__rootsroot2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__rootsroot3(void)
 {
@@ -1896,7 +1897,7 @@ void test_mathjax__rootsroot3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__rootssqrt1(void)
 {
@@ -1906,7 +1907,7 @@ void test_mathjax__rootssqrt1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__rootssqrt2(void)
 {
@@ -1916,7 +1917,7 @@ void test_mathjax__rootssqrt2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolsbinaryops1(void)
 {
@@ -1926,7 +1927,7 @@ void test_mathjax__symbolsbinaryops1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolsdots1(void)
 {
@@ -1936,7 +1937,7 @@ void test_mathjax__symbolsdots1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolslargeops1(void)
 {
@@ -1946,7 +1947,7 @@ void test_mathjax__symbolslargeops1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolslargeops2(void)
 {
@@ -1956,7 +1957,7 @@ void test_mathjax__symbolslargeops2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolsrelations1(void)
 {
@@ -1966,7 +1967,7 @@ void test_mathjax__symbolsrelations1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolssymbols1(void)
 {
@@ -1976,7 +1977,7 @@ void test_mathjax__symbolssymbols1(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolssymbols2(void)
 {
@@ -1986,7 +1987,7 @@ void test_mathjax__symbolssymbols2(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolssymbols3(void)
 {
@@ -1996,7 +1997,7 @@ void test_mathjax__symbolssymbols3(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolssymbols4(void)
 {
@@ -2006,7 +2007,7 @@ void test_mathjax__symbolssymbols4(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolssymbols5(void)
 {
@@ -2016,7 +2017,7 @@ void test_mathjax__symbolssymbols5(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
 
 void test_mathjax__symbolssymbols6(void)
 {
@@ -2026,4 +2027,4 @@ void test_mathjax__symbolssymbols6(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
-} 
+}
