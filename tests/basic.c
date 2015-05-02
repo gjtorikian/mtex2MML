@@ -61,7 +61,6 @@ void test_basic__filter(void)
   int status = mtex2MML_filter(fixture_tex, strlen(fixture_tex));
   result = mtex2MML_output();
 
-  cl_assert_equal_s(0, status);
   cl_assert_equal_s(fixture_mml, result);
 }
 
