@@ -5,6 +5,7 @@
 static char *fixture_tex;
 static char *fixture_mml;
 static char *result;
+static char *huge;
 
 void test_maliciousness__initialize(void)
 {
@@ -13,23 +14,32 @@ void test_maliciousness__initialize(void)
 
 void test_maliciousness__cleanup(void)
 {
-  // if (fixture_tex != NULL)
-  //   free(fixture_tex);
-  //
-  // if (fixture_mml != NULL)
-  //   free(fixture_mml);
-  //
-  // if (result != NULL)
-  //   free(result);
+  if (fixture_tex != NULL)
+    free(fixture_tex);
+
+  if (fixture_mml != NULL)
+    free(fixture_mml);
+
+  if (result != NULL)
+    free(result);
 }
 
-// void test_maliciousness__chained_monstrosity(void)
+void test_maliciousness__parsing(void)
+{
+  fixture_tex = read_fixture_tex("maliciousness/just_enough_parsing.txt");
+  fixture_mml = read_fixture_mml("maliciousness/just_enough_parsing.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+
+  cl_assert_equal_s(fixture_mml, result);
+}
+
+// void test_maliciousness__excess_parsing(void)
 // {
-//   fixture_tex = read_fixture_tex("maliciousness/chained_monstrosity.txt");
-//   fixture_mml = read_fixture_mml("maliciousness/chained_monstrosity.html");
-//   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+//   fixture_tex = read_fixture_tex("maliciousness/excess_parsing.txt");
+//   fixture_mml = malloc(4);
+//   result = malloc(4);
 //
-//   cl_assert_equal_s(fixture_mml, result);
+//   cl_must_fail(mtex2MML_parse(fixture_tex, strlen(fixture_tex)));
 // }
 
 // void test_maliciousness__unknown_command(void)
