@@ -1,5 +1,6 @@
 #include "clar.h"
 #include "clar_test.h"
+#include "deps/trim/trim.h"
 #include <stdio.h>
 
 static char *fixture_tex;
@@ -51,4 +52,35 @@ void test_basic__comments(void)
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
   cl_assert_equal_s(fixture_mml, result);
+}
+
+void test_basic__filter(void)
+{
+  fixture_tex = read_fixture_tex("basic/filter.txt");
+  fixture_mml = read_fixture_mml("basic/filter.html");
+  int status = mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(0, status);
+  cl_assert_equal_s(fixture_mml, result);
+}
+
+void test_basic__html_filter(void)
+{
+  fixture_tex = read_fixture_tex("basic/html_filter.txt");
+  fixture_mml = read_fixture_mml("basic/html_filter.html");
+  mtex2MML_html_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+}
+
+void test_basic__strict_html_filter(void)
+{
+  fixture_tex = read_fixture_tex("basic/strict_html_filter.txt");
+  fixture_mml = read_fixture_mml("basic/strict_html_filter.html");
+  mtex2MML_strict_html_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
 }

@@ -39,7 +39,8 @@ void test_numbered_equations__multiple_equations(void)
 {
   fixture_tex = read_fixture_tex("numbered_equations/multiple_equations.txt");
   fixture_mml = read_fixture_mml("numbered_equations/multiple_equations.html");
-  result = mtex2MML_global_parse(fixture_tex, strlen(fixture_tex), 1);
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 }
