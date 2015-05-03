@@ -1005,7 +1005,7 @@ int display_style = 0;
 "\\of"           {return OF;}
 
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
-"\\verb"[^ ]      {mtex2MML_verbdelim = yytext[yyleng-1]; mtex2MML_str = NULL; BEGIN(VERBTEXT); return VERBBOX;}
+"\\verb"[^ ]      {mtex2MML_verbdelim = yytext[yyleng-1]; mtex2MML_str = mtex2MML_copy_string_extra("", 1); BEGIN(VERBTEXT); return VERBBOX;}
 
 "\\statusline"    {BEGIN(PLAINTEXT); return STATLINE;}
 "\\tooltip"       {BEGIN(PLAINTEXT); return TOOLTIP;}
@@ -1412,7 +1412,7 @@ int display_style = 0;
 }
 
 <VERBTEXT>{
-.         { if (yytext[0] != mtex2MML_verbdelim) { mtex2MML_str=mtex2MML_copy2(mtex2MML_str, yytext); } else { yylval=mtex2MML_str; BEGIN(MATH); return VERBSTRING; } }
+.         { if (yytext[0] != mtex2MML_verbdelim) { char *s = mtex2MML_copy_string(mtex2MML_str); mtex2MML_free_string(mtex2MML_str); mtex2MML_str=mtex2MML_copy2(s, yytext); } else { yylval=mtex2MML_copy_string(mtex2MML_str); mtex2MML_free_string(mtex2MML_str); BEGIN(MATH); return VERBSTRING; } }
 }
 
 <NUM>{
