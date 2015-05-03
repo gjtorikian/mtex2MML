@@ -52,11 +52,14 @@ libmtex2MML.a: $(OBJS)
 	cp src/mtex2MML.h dist/
 
 #### TESTS #####
+
 .PHONY: test
-test: mathjax clar.suite mathjax tests/helpers.h tests/clar_test.h $(TESTOBJS)
-	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) dist/libmtex2MML.a -o tests/testrunner
+test: mathjax compile_test
 	./tests/testrunner
 	cat ./tests/mathjax_summary.txt
+
+compile_test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
+	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) dist/libmtex2MML.a -o tests/testrunner
 
 mathjax:
 	python tests/mathjax_generate.py
@@ -65,6 +68,7 @@ clar.suite:
 	python tests/generate.py tests/
 
 #### OTHER ####
+
 .PHONY: format
 format:
 	astyle --indent=spaces=2 --style=1tbs --keep-one-line-blocks $(SOURCES) $(TESTS)
