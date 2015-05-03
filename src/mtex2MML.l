@@ -118,8 +118,7 @@ int display_style = 0;
 "\\$"           {yylval=mtex2MML_copy_string("$"); return MI;}
 "\\%"           {yylval=mtex2MML_copy_string("%"); return MI;}
 
-"\\\\"[\n\r\t ]*\[[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%)\] { mtex2MML_rowposn=2; return ROWSEP;}
-
+"\\\\"[\n\r\t ]*\[[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%)\] |
 "\\newline"[\n\r\t ]* |
 "\\cr"[\n\r\t ]*      |
 "\\\\"[\n\r\t ]*          { mtex2MML_rowposn=2; return ROWSEP; }
