@@ -36,16 +36,19 @@ void test_maliciousness__parsing(void)
 // void test_maliciousness__excess_parsing(void)
 // {
 //   fixture_tex = read_fixture_tex("maliciousness/excess_parsing.txt");
-//   fixture_mml = malloc(4);
-//   result = malloc(4);
+//   fixture_mml =  read_fixture_mml("maliciousness/just_enough_parsing.html");
+//   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 //
 //   cl_must_fail(mtex2MML_parse(fixture_tex, strlen(fixture_tex)));
 // }
 
 // void test_maliciousness__unknown_command(void)
 // {
-//   result = "$\not__thisisnotreal$";
-//   result = mtex2MML_parse(result, strlen(result));
+//   fixture_tex = read_fixture_tex("maliciousness/just_enough_parsing.txt");
+//   fixture_mml = read_fixture_mml("maliciousness/just_enough_parsing.html");
+//
+//   char *s = "$\not__thisisnotreal$";
+//   result = mtex2MML_parse(s, strlen(s));
 //
 //   cl_assert(result == NULL);
 // }
