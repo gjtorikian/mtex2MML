@@ -22,6 +22,8 @@ struct css_colors *colors = NULL;
 // #define YYDEBUG 1
 // yydebug = 1;
 
+#define YYERROR_VERBOSE 1
+
 #define yytext mtex2MML_yytext
 
  UT_array *environment_data_stack;
