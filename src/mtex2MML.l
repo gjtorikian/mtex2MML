@@ -124,7 +124,7 @@ int display_style = 0;
 "\\cr"[\n\r\t ]*      |
 "\\\\"[\n\r\t ]*          { mtex2MML_rowposn=2; return ROWSEP; }
 
-[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); free(normalized_px); return PXSTRING; }
+[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); mtex2MML_free_string(normalized_px); return PXSTRING; }
 
 [a-zA-Z]       {yylval=mtex2MML_copy_string(yytext); return MI;}
 
@@ -481,7 +481,7 @@ int display_style = 0;
 "\\xhookrightarrow"    |
 "\\xtwoheadrightarrow"    |
 "\\xtwoheadleftarrow"    |
-"\\xmapsto" {BEGIN(OPTARG); char * s1 = mtex2MML_copy_string(yytext+2); yylval = mtex2MML_copy3("&", s1, ";"); mtex2MML_free_string(s1); return XARROW;}
+"\\xmapsto" {BEGIN(OPTARG); yylval = mtex2MML_copy3("&", yytext+2, ";"); return XARROW;}
 
 "\\xlongequal" {BEGIN(OPTARG); yylval=mtex2MML_copy_string("&#61;"); return XARROW;}
 
@@ -1242,7 +1242,7 @@ int display_style = 0;
 <BRACKETLIST>{
 "\["  {return ST;}
 "\]"  {BEGIN(MATH); return END;}
-[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); if (normalized_px[0] == '.') remove_first_char(normalized_px); yylval=mtex2MML_copy_string(normalized_px); free(normalized_px); return PXSTRING; }
+[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); if (normalized_px[0] == '.') remove_first_char(normalized_px); yylval=mtex2MML_copy_string(normalized_px); mtex2MML_free_string(normalized_px); return PXSTRING; }
 [0-9a-zA-Z ]+":"[0-9a-zA-Z ]+   {yylval=mtex2MML_copy_string(yytext); return STYLESTRING;}
 #?[0-9a-zA-Z]+            {yylval=mtex2MML_copy_string(yytext); return COLORSTRING;}
 [\t\n\r, ]+       ;
@@ -1468,21 +1468,21 @@ int display_style = 0;
 
 <SPACEWIDTH>{
 "\{"      { return ST;}
-[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); free(normalized_px); return PXSTRING; }
+[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); mtex2MML_free_string(normalized_px); return PXSTRING; }
 "\}"      {BEGIN(SPACEHEIGHT); return ST;}
 [\t\n\r ]+       ;
 }
 
 <SPACEHEIGHT>{
 "\{"      { return ST;}
-[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); free(normalized_px); return PXSTRING; }
+[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); mtex2MML_free_string(normalized_px); return PXSTRING; }
 "\}"      {BEGIN(SPACEDEPTH); return ST;}
 [\t\n\r ]+       ;
 }
 
 <SPACEDEPTH>{
 "\{"      { return ST;}
-[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); free(normalized_px); return PXSTRING; }
+[0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); mtex2MML_free_string(normalized_px); return PXSTRING; }
 "\}"      {BEGIN(MATH); return ST;}
 [\t\n\r ]+       ;
 }

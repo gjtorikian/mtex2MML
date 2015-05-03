@@ -82,7 +82,7 @@ struct css_colors *colors = NULL;
              {
                strcpy(copy, mtex2MML_output_string);
                if (*mtex2MML_output_string != '\0')
-                   free(mtex2MML_output_string);
+                   mtex2MML_free_string(mtex2MML_output_string);
              }
            else
              copy[0] = 0;
@@ -105,7 +105,7 @@ struct css_colors *colors = NULL;
                     {
                        strcpy(copy, mtex2MML_output_string);
                        if (*mtex2MML_output_string != '\0')
-                          free(mtex2MML_output_string);
+                          mtex2MML_free_string(mtex2MML_output_string);
                     }
                   else
                      copy[0] = 0;
@@ -117,7 +117,7 @@ struct css_colors *colors = NULL;
             {
               char * copy = mtex2MML_copy2(mtex2MML_output_string, buffer);
               if (*mtex2MML_output_string != '\0')
-                 free(mtex2MML_output_string);
+                 mtex2MML_free_string(mtex2MML_output_string);
               mtex2MML_output_string = copy;
             }
         }
@@ -127,7 +127,7 @@ struct css_colors *colors = NULL;
     {
        char * temp = mtex2MML_copy2(mtex2MML_output_string, buffer);
        if (*mtex2MML_output_string != '\0')
-         free(mtex2MML_output_string);
+         mtex2MML_free_string(mtex2MML_output_string);
        mtex2MML_output_string = temp;
     }
     void (*mtex2MML_write) (const char * buffer, unsigned long length) = mtex2MML_capture;
