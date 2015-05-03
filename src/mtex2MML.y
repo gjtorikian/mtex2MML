@@ -1540,8 +1540,13 @@ enclose: ENCLOSE ST ENCLOSENOTATION ST ENCLOSETEXT ST {
   char * notation = str_replace($3, ",", " ");
   char * attr = str_replace($5, ",", " ");
   if (strstr(attr, "arrow=1") != NULL) {
+    mtex2MML_free_string(attr);
     attr = str_replace($5, "arrow=1", "");
-    notation = mtex2MML_copy2(notation, " updiagonalarrow");
+
+    char *t = mtex2MML_copy_string(notation);
+    mtex2MML_free_string(notation);
+    notation = mtex2MML_copy2(t, " updiagonalarrow");
+    mtex2MML_free_string(t);
   }
   char * s1 = mtex2MML_copy3("<menclose notation=\"", notation, "\" ");
   char * s2 = mtex2MML_copy3(s1, attr, "><mi>");
