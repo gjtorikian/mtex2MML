@@ -1,4 +1,4 @@
-import string, os
+import re, string, os
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 MATHJAX_TEST_TEST_DIR = os.path.join(PATH, 'fixtures', 'MathJax')
@@ -24,11 +24,17 @@ txt_count = 0
 xtex_count = 0
 notex_count = 0
 
+DEBUG_MODE = False
+
 for root, dirs, files in os.walk(MATHJAX_TEST_TEXT_DIR):
     for file in files:
         name = os.path.basename(root) + "/" + os.path.splitext(file)[0]
         if file.endswith(".txt"):
-            fixtures.append(name)
+            if DEBUG_MODE:
+                if re.search('accents-\d', name):
+                    fixtures.append(name)
+            else:
+                fixtures.append(name)
             txt_count += 1
         elif file.endswith(".xtex"):
             xtex_files.append(name)
