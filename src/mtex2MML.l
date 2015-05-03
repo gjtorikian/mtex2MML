@@ -1408,7 +1408,7 @@ int display_style = 0;
 <PLAINTEXT_CURLY>{
 \\.          {yylval = mtex2MML_copy2(yylval, yytext+1); }
 "\}"         {BEGIN(MATH); return TEXTSTRING;}
-.            {yylval=mtex2MML_copy2(yylval, yytext);}
+.            {char *s = mtex2MML_copy_string(yylval); mtex2MML_free_string(yylval); yylval=mtex2MML_copy2(s, yytext);  mtex2MML_free_string(s);}
 }
 
 <VERBTEXT>{
