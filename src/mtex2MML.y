@@ -317,7 +317,7 @@ xmlmmlTermList:
 | xmlmmlTermList char {/* all proc. in body*/}
 | xmlmmlTermList expression {/* all proc. in body*/};
 
-char: CHAR { /* Do nothing...but what did this used to do? printf("%s", $1); */ };
+char: CHAR { mtex2MML_free_string($1); /* Do nothing...but what did this used to do? printf("%s", $1); */ };
 
 expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}
@@ -2896,6 +2896,7 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   if (encase == TOPENCLOSE)
     $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
+  mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
@@ -2911,6 +2912,7 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   if (encase == TOPENCLOSE)
     $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
+  mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
@@ -2924,6 +2926,7 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   if (encase == TOPENCLOSE)
     $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
 
+  mtex2MML_free_string($3);
   mtex2MML_free_string($5);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(row_data);
