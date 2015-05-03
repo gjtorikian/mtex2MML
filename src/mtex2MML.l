@@ -189,7 +189,7 @@ int display_style = 0;
 
 "\\uparrow"   |
 "\\downarrow" |
-"\\updownarrow" {yylval=mtex2MML_copy3("&", yytext, ";"); return OTHERDELIM;}
+"\\updownarrow" {yylval=mtex2MML_copy2(yytext, ";"); if (yylval != mtex2MML_empty_string) yylval[0]='&'; return OTHERDELIM;}
 
 "."             {yylval=mtex2MML_copy_string(yytext); return PERIODDELIM;}
 
