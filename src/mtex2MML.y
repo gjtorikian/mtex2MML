@@ -2607,10 +2607,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2621,10 +2624,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
-  $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
@@ -2636,10 +2642,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2651,10 +2660,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right center left\" columnspacing=\"thickmathspace\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+      mtex2MML_free_string(t);
+    }
+  else
+    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(n);
@@ -2666,10 +2679,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right center left\" columnspacing=\"thickmathspace\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2681,10 +2697,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+      mtex2MML_free_string(t);
+    }
+  else
+    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(n);
@@ -2696,10 +2716,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2711,10 +2734,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+      mtex2MML_free_string(t);
+    }
+  else
+    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(n);
@@ -2726,10 +2753,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnwidth=\"100%\" width=\"85%\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2739,10 +2769,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>(</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
+      $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+      mtex2MML_free_string(t);
+    }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>)</mo></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2752,10 +2786,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>[</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
+      $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+      mtex2MML_free_string(t);
+    }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>]</mo></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2765,10 +2803,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&VerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
+      $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+      mtex2MML_free_string(t);
+    }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&VerticalBar;</mo></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2778,10 +2820,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>}</mo></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2791,10 +2837,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>&DoubleVerticalBar;</mo><mrow><mtable displaystyle=\"false\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow><mo>&DoubleVerticalBar;</mo></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2804,10 +2854,13 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"false\" columnspacing=\"0.333em\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2817,10 +2870,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mo>{</mo><mrow><mtable displaystyle=\"false\" columnalign=\"left left\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2831,10 +2888,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" align=\"", $3, "\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ");
   char * s2 = mtex2MML_copy3(s1, row_data, ">");
-  $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s2, $5, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
@@ -2846,10 +2907,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2861,10 +2926,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
   char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(n);
@@ -2876,10 +2945,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
@@ -2891,10 +2964,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
   char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
@@ -2907,10 +2984,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
@@ -2921,10 +3002,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
-  $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
@@ -2940,10 +3025,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s2 = mtex2MML_copy3(s1, row_data, " columnalign=\"");
   char * s3 = mtex2MML_copy3(s2, column_align, "\" ");
   char * s4 = mtex2MML_copy3(s3, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s4, $7, "</mtable>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s4, $7, "</mtable>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s4, $7, "</mtable>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2964,10 +3053,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" ", row_data, " columnalign=\"");
   char * s2 = mtex2MML_copy3(s1, column_align, "\" ");
   char * s3 = mtex2MML_copy3(s2, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s3, $6, "</mtable>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s3, $6, "</mtable>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s3, $6, "</mtable>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
@@ -2984,10 +3077,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" columnspacing=\"0em 0em 0em 0em\" rowspacing=\"0.1em\" columnalign=\"", column_align, "\" ");
   char * s2 = mtex2MML_copy3(s1, pipe_chars, "\">");
-  $$ = mtex2MML_copy3(s2, $6, "</mtable>");
 
-  if (encase == TOPENCLOSE)
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", $$, "</menclose>");
+  if (encase == TOPENCLOSE) {
+    char *t = mtex2MML_copy3(s2, $6, "</mtable>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
+  }
+  else
+    $$ = mtex2MML_copy3(s2, $6, "</mtable>");
 
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
