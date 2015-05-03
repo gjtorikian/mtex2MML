@@ -75,4 +75,4 @@ debug:
 
 .PHONY: leakcheck
 leakcheck:
-	valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./tests/testrunner -smathjax  >/dev/null
+	valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./tests/testrunner -sbasic -smathjax  >/dev/null
