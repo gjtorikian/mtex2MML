@@ -14,7 +14,6 @@ Want something added, but don't want to code? That's cool! Please provide a clea
 > I'd like to be able to use `\douglas` in my equations, like this:
 >
 >     $$
->     \being{array}
 >     \douglas - 2 = 40
 >     $$
 >

@@ -82,7 +82,7 @@ See the *maliciousness.c* test for a demonstration on how to perform error handl
 
 ## Contributing
 
-Found a bug, or want to request a feature? Great! Check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information!
+Found a bug or want to request a feature? Great! Check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information!
 
 ## License
 
