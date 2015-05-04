@@ -7,7 +7,7 @@ YYPREFIX=mtex2MML_yy
 BISON=bison -y -v
 FLEX=flex -P$(YYPREFIX) -olex.yy.c
 
-RM=rm -f
+RM=rm -rf
 INSTALL=install -c
 BINDIR=/usr/local/bin
 
@@ -22,6 +22,7 @@ all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a mtex2MML
 
 .PHONY: clean
 clean:
+	$(RM) build
 	$(RM) src/lex.yy.*
 	$(RM) src/*y.*
 	$(RM) src/*.o
@@ -54,6 +55,9 @@ libmtex2MML.a: $(OBJS)
 mtex2MML:	$(OBJS) src/mtex2MML.h
 		$(CC) $(CFLAGS) -o mtex2MML $(OBJS)
 		mv mtex2MML build/
+
+install: mtex2MML
+	$(INSTALL) build/mtex2MML $(BINDIR)
 
 #### TESTS #####
 
