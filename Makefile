@@ -3,9 +3,9 @@ OBJS = $(SOURCES:.c=.o)
 TESTS = $(shell find tests -name '*.c')
 TESTOBJS = $(TESTS:.c=.o)
 
+YYPREFIX=mtex2MML_yy
 BISON=bison -y -v
 FLEX=flex -P$(YYPREFIX) -olex.yy.c
-YYPREFIX=mtex2MML_yy
 
 RM=rm -f
 INSTALL=install -c
