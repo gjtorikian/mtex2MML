@@ -58,7 +58,7 @@ The library exposes the following methods:
 
 * `int mtex2MML_strict_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
-[The *tests/basic.c* suite](./blob/master/tests/basic.c) provides a demonstrate of how these methods can be used.
+[The *tests/basic.c* suite](tests/basic.c) provides a demonstrate of how these methods can be used.
 
 ### As a command
 
@@ -97,7 +97,7 @@ make install
 
 If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a status code. A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). An error message is also printed to STDERR.
 
-[The *tests/maliciousness.c* suite](./blob/master/tests/maliciousness.c) has a demonstration on how to perform error handling.
+[The *tests/maliciousness.c* suite](tests/maliciousness.c) has a demonstration on how to perform error handling.
 
 ## Contributing
 
