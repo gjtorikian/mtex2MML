@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/gjtorikian/mtex2MML.svg?branch=master)](https://travis-ci.org/gjtorikian/mtex2MML)
 
-This is a Bison grammar to convert TeX math into MathML. It is written in C. Rather than a standalone program, it's meant to be used within another library--perhaps wrapped in a higher-level language for easier use.
+This is a Bison grammar to convert TeX math into MathML. It can be used as a standalone program or as a static library. is written in C.
 
-The goal of this library is to implement as much of the AMS-TeX math as possible.
+The goal of this project is to implement as much of the AMS-TeX math as possible.
 
-This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distler/blog/itex2MML.html), originally written by Jacques Distler and Paul Gartside. It has vastly more support for AMS-TeX math than the original, with a far greater test suite.
+This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distler/blog/itex2MML.html), originally written by Jacques Distler and Paul Gartside. It has vastly more support for AMS-TeX math than the original, with a much larger test suite.
 
 ### Why MathML?!
 
@@ -16,56 +16,67 @@ However, you can consider MathML as an intermediate format onto greater things, 
 
 ## What's supported?
 
-Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now, it has a ~93% compatibility with MathJax.
+Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now it has a ~93% compatibility with everything MathJax can do.
 
 The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine.
 
 ## Usage
 
-You will need to link `libmtex2MML.a` and `mtex2MML.h` as libraries in your program.
-
 Inline equations are demarcated by `$...$`. Display equations are demarcated by `$$...$$` or `\[...\]`. You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not allowed.
 
-### Methods available
+### As a library
 
-This library exposes the following methods:
+To use mtex2MML as a library, you will need to include `libmtex2MML.a` and `mtex2MML.h` during the compilation of your program.
 
-* `char * mtex2MML_parse(char * str, unsigned long strlen)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
+#### Methods available
 
-* `char * mtex2MML_global_parse(char * str, unsigned long strlen, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
+The library exposes the following methods:
 
-* `int mtex2MML_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
+* `char * mtex2MML_parse(const char * str, unsigned long strlen)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
 
-* `int mtex2MML_html_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+* `char * mtex2MML_global_parse(const char * str, unsigned long strlen, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
 
-* `int mtex2MML_strict_html_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+* `int mtex2MML_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
+
+* `int mtex2MML_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+
+* `int mtex2MML_strict_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
 [The `tests/basic.c` suite](blob/master/tests/basic.c) provides a demonstrate of how these methods can be used.
 
+### As a command
+
+Like any good Unix program, the mtex2MML binary operates on pipes. That is to say, it works like this:
+
+```
+echo '\sin y' | mtex2MML --inline > math.txt
+```
+
+Use `mtex2MML -h` to get a list of all the options and documentation.
+
 ## Building
 
-To build the mtex2MML library, you need:
+To build mtex2MML, you need:
 * GNU make
 * [Bison](https://www.gnu.org/software/bison/)
 * [Flex](http://flex.sourceforge.net/)
 
-You can run:
+To fetch dependencies and run the library, call:
 
 ```
+script/bootstrap
 make
 ```
 
-to build the lib into *dist*.
+Output is set to the  *build* directory.
 
 ## Testing
 
-Run
+To run the test suite, you can call:
 
 ```
 make test
 ```
-
-to run the test suite.
 
 mtex2MML has a test suite that matches the one found in [MathJax](https://github.com/mathjax/MathJax-test), with a few exceptions:
 
@@ -73,6 +84,14 @@ mtex2MML has a test suite that matches the one found in [MathJax](https://github
 * Files marked as `.no_tex` have features that probably won't be implemented.
 
 At the end of the test run, mtex2MML will list the percentage of features that still need coverage.
+
+## Installing
+
+To install the mtex2MML binary, you can run:
+
+```
+make install
+```
 
 ## Error handling
 
