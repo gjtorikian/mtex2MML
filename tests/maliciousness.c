@@ -14,14 +14,17 @@ void test_maliciousness__initialize(void)
 
 void test_maliciousness__cleanup(void)
 {
-  if (fixture_tex != NULL)
+  if (fixture_tex != NULL) {
     free(fixture_tex);
+  }
 
-  if (fixture_mml != NULL)
+  if (fixture_mml != NULL) {
     free(fixture_mml);
+  }
 
-  if (result != NULL)
+  if (result != NULL) {
     free(result);
+  }
 }
 
 void test_maliciousness__parsing(void)
@@ -46,7 +49,8 @@ void test_maliciousness__excess_parsing(void)
 void test_maliciousness__unknown_command_with_parse(void)
 {
   // lazy way to continue with the free in cleanup
-  fixture_tex = malloc(1); fixture_mml = malloc(1);
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
 
   char *s1 = "$\\not__thisisnotreal$";
   result = mtex2MML_parse(s1, strlen(s1));
@@ -60,7 +64,8 @@ void test_maliciousness__unknown_command_with_parse(void)
 void test_maliciousness__unknown_command_with_filter(void)
 {
   // lazy way to continue with the free in cleanup
-  fixture_tex = malloc(1); fixture_mml = malloc(1);
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
 
   char *s1 = "$\\not__thisisnotreal$";
   int status1 = mtex2MML_filter(s1, strlen(s1));
