@@ -18,7 +18,7 @@ CFLAGS += -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_P
 
 #### GENERAL ####
 
-all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a
+all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a mtex2MML
 
 .PHONY: clean
 clean:
@@ -50,6 +50,10 @@ libmtex2MML.a: $(OBJS)
 	mkdir -p build/
 	mv libmtex2MML.a build/
 	cp src/mtex2MML.h build/
+
+mtex2MML:	$(OBJS) src/mtex2MML.h
+		$(CC) $(CFLAGS) -o mtex2MML $(OBJS)
+		mv mtex2MML build/
 
 #### TESTS #####
 
