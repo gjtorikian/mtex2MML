@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/gjtorikian/mtex2MML.svg?branch=master)](https://travis-ci.org/gjtorikian/mtex2MML)
 
-This is a Bison grammar to convert TeX math into MathML. It can be used as a standalone program or as a static library. is written in C.
+This is a Bison grammar to convert TeX math into MathML. It can be used as a standalone program or as a static library. It is written in C.
 
-The goal of this project is to implement as much of the AMS-TeX math as possible.
+The goal of this project is to implement as much AMS-TeX math as possible.
 
 This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distler/blog/itex2MML.html), originally written by Jacques Distler and Paul Gartside. It has vastly more support for AMS-TeX math than the original, with a much larger test suite.
 
@@ -19,6 +19,22 @@ However, you can consider MathML as an intermediate format onto greater things, 
 Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now it has a ~93% compatibility with everything MathJax can do.
 
 The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine.
+
+## Building
+
+To build mtex2MML, you need:
+* GNU make
+* [Bison](https://www.gnu.org/software/bison/)
+* [Flex](http://flex.sourceforge.net/)
+
+To fetch dependencies and run the library, call:
+
+```
+script/bootstrap
+make
+```
+
+Output is sent to the *build* directory.
 
 ## Usage
 
@@ -42,7 +58,7 @@ The library exposes the following methods:
 
 * `int mtex2MML_strict_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
-[The `tests/basic.c` suite](blob/master/tests/basic.c) provides a demonstrate of how these methods can be used.
+[The *tests/basic.c* suite](./blob/master/tests/basic.c) provides a demonstrate of how these methods can be used.
 
 ### As a command
 
@@ -53,22 +69,6 @@ echo '\sin y' | mtex2MML --inline > math.txt
 ```
 
 Use `mtex2MML -h` to get a list of all the options and documentation.
-
-## Building
-
-To build mtex2MML, you need:
-* GNU make
-* [Bison](https://www.gnu.org/software/bison/)
-* [Flex](http://flex.sourceforge.net/)
-
-To fetch dependencies and run the library, call:
-
-```
-script/bootstrap
-make
-```
-
-Output is set to the  *build* directory.
 
 ## Testing
 
@@ -95,9 +95,9 @@ make install
 
 ## Error handling
 
-If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail. A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). An error message is also printed to STDERR.
+If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a status code. A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). An error message is also printed to STDERR.
 
-See the *maliciousness.c* test for a demonstration on how to perform error handling.
+[The *tests/maliciousness.c* suite](./blob/master/tests/maliciousness.c) has a demonstration on how to perform error handling.
 
 ## Contributing
 
