@@ -19,4 +19,4 @@ tests/mathjax_summary.txt
 tests/testrunner.dSYM/
 file.test
 
-dist/
+build/

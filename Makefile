@@ -47,9 +47,9 @@ src/lex.yy.o:	src/lex.yy.c src/y.tab.c
 
 libmtex2MML.a: $(OBJS)
 	$(AR) crv libmtex2MML.a $(OBJS)
-	mkdir -p dist/
-	mv libmtex2MML.a dist/
-	cp src/mtex2MML.h dist/
+	mkdir -p build/
+	mv libmtex2MML.a build/
+	cp src/mtex2MML.h build/
 
 #### TESTS #####
 
@@ -59,7 +59,7 @@ test: mathjax compile_test
 	cat ./tests/mathjax_summary.txt
 
 compile_test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
-	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) dist/libmtex2MML.a -o tests/testrunner
+	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) build/libmtex2MML.a -o tests/testrunner
 
 mathjax:
 	python tests/mathjax_generate.py
