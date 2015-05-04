@@ -4,7 +4,7 @@
 
 This is a Bison grammar to convert TeX math into MathML. It is written in C. Rather than a standalone program, it's meant to be used within another library--perhaps wrapped in a higher-level language for easier use.
 
-The goal of this particular fork is to implement as much of the AMS-TeX math as possible, and less on customizations like WebTeX.
+The goal of this library is to implement as much of the AMS-TeX math as possible.
 
 This code is a fork of [the itex2MML project](https://golem.ph.utexas.edu/~distler/blog/itex2MML.html), originally written by Jacques Distler and Paul Gartside. It has vastly more support for AMS-TeX math than the original, with a far greater test suite.
 
@@ -16,9 +16,9 @@ However, you can consider MathML as an intermediate format onto greater things, 
 
 ## What's supported?
 
-Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now, it has a ~93% compatibility with MathJax, give or take.
+Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now, it has a ~93% compatibility with MathJax.
 
-The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine, though.
+The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine.
 
 ## Usage
 
@@ -30,15 +30,15 @@ Inline equations are demarcated by `$...$`. Display equations are demarcated by 
 
 This library exposes the following methods:
 
-* `mtex2MML_parse(char * str, unsigned long strlen)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
+* `char * mtex2MML_parse(char * str, unsigned long strlen)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
 
-* `mtex2MML_global_parse(char * str, unsigned long strlen, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
+* `char * mtex2MML_global_parse(char * str, unsigned long strlen, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
 
-* `mtex2MML_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
+* `int mtex2MML_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
 
-* `mtex2MML_html_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+* `int mtex2MML_html_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
-* `mtex2MML_strict_html_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+* `int mtex2MML_strict_html_filter(char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
 [The `tests/basic.c` suite](blob/master/tests/basic.c) provides a demonstrate of how these methods can be used.
 
@@ -55,7 +55,7 @@ You can run:
 make
 ```
 
-To build the lib into *dist*.
+to build the lib into *dist*.
 
 ## Testing
 
@@ -73,6 +73,12 @@ mtex2MML has a test suite that matches the one found in [MathJax](https://github
 * Files marked as `.no_tex` have features that probably won't be implemented.
 
 At the end of the test run, mtex2MML will list the percentage of features that still need coverage.
+
+## Error handling
+
+If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail. A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). An error message is also printed to STDERR.
+
+See the *maliciousness.c* test for a demonstration on how to perform error handling.
 
 ## Contributing
 
