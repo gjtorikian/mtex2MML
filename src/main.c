@@ -12,8 +12,9 @@ int main (int argc, char ** argv)
 
   int bStop = 0;
   int bForbidMarkup = 0;
+  int arg = 1;
 
-  for (int arg = 1; arg < argc; arg++) {
+  for (arg; arg < argc; arg++) {
     char* args = argv[arg];
 
     if (strcmp(args, "--version") == 0 || strcmp(args, "-v") == 0) {
