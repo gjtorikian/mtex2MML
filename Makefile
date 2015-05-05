@@ -42,10 +42,10 @@ src/lex.yy.c:
 	mv lex.yy.c src
 
 src/y.tab.o:	src/y.tab.c
-	$(CC) -c -o src/y.tab.o src/y.tab.c
+	$(CC) -fPIC -c -o src/y.tab.o src/y.tab.c
 
 src/lex.yy.o:	src/lex.yy.c src/y.tab.c
-	$(CC) -c -o src/lex.yy.o src/lex.yy.c
+	$(CC) -fPIC -c -o src/lex.yy.o src/lex.yy.c
 
 libmtex2MML.a: $(OBJS)
 	$(AR) crv libmtex2MML.a $(OBJS)
