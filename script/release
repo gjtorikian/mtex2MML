@@ -17,7 +17,8 @@ puts "Creating tag #{TAG_NAME}..."
 
 puts "Creating release..."
 client = Octokit::Client.new(:access_token => ENV['MY_PERSONAL_TOKEN'])
-release_response = client.create_release('gjtorikian/mtex2MML', TAG_NAME)
+release_response = client.create_release 'gjtorikian/mtex2MML', TAG_NAME, \
+                                        :name => VERSION
 release_url = release_response[:url]
 
 UPLOADED_FILES.each_pair do |file, mime|
