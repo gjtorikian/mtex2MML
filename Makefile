@@ -31,6 +31,9 @@ clean:
 	$(RM) tests/.clarcache
 	$(RM) tests/clar.suite
 
+%.o: %.c
+	$(CC) -fPIC -c -o $@ $<
+
 src/y.tab.c:
 	$(BISON) -p $(YYPREFIX) -d src/mtex2MML.y
 	mv y.output src
