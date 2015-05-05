@@ -1,0 +1,6 @@
+$$
+\begin{gathered}
+2x - 5y =  8 \\
+3x^2 + 9y =  3a + c
+\end{gathered}
+$$

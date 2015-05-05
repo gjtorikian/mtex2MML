@@ -3,7 +3,7 @@
 #ifndef STRING_EXTRAS_H
 #define STRING_EXTRAS_H
 
-#include "deps/uthash/utstring.h"
+#include "../deps/uthash/utstring.h"
 
 // all for str_replace
 #include <stdio.h>

@@ -1,0 +1,1 @@
+$\max\limits_{1\leq j\leq n}$

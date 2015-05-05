@@ -21,12 +21,6 @@ char * str_replace (char *string, const char *substr, const char *replacement)
   char *newstr = NULL;
   char *oldstr = NULL;
 
-  /* if either substr or replacement is NULL, duplicate string a let caller handle it */
-
-  if ( substr == NULL || replacement == NULL ) {
-    return strdup(string);
-  }
-
   newstr = strdup(string);
 
   while ( ( tok = strstr( newstr, substr ) ) ) {

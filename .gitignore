@@ -1,21 +1,22 @@
-src/mtex2MML.bundle
-src/mtex2MML_ruby.c
-src/*.o
+*.o
+*.so
+
+lib/ # need this for mathematical
+
 src/lex.yy.c
 src/y.output
 src/y.tab.c
 src/y.tab.h
-src/mtex2MML
 src/y.tab.o
-src/*.so
-src/file.test
 src/libefence.a
 
-ext/
-!ext/extconf.rb
+tests/test.html
+tests/clar.suite
+tests/clar.suite.rule
+tests/.clarcache
+tests/testrunner
+tests/mathjax_summary.txt
+tests/testrunner.dSYM/
+file.test
 
-lib/mtex2MML.bundle
-lib/mtex2MML.so
-
-test.html
-test/minimal_test.rb
+build/

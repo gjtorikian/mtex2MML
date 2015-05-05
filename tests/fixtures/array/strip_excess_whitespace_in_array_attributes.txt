@@ -1,0 +1,8 @@
+$$
+\begin{array}{c|c}
+\mathrm{Bad} & \mathrm{Better} \\
+\hline \\
+\iiint_V f(x)dz dy dx & \iiint_V f(x)\,dz\,dy\,dx
+\end{array}
+$$
+  

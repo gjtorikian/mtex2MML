@@ -34,7 +34,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
     environmentType = ENV_MULTLINE;
   } else if (strstr(environment, "\\end{alignat") != NULL) {
     environmentType = ENV_ALIGNAT;
-  }else if (strstr(environment, "\\end{aligned}") != NULL) {
+  } else if (strstr(environment, "\\end{aligned}") != NULL) {
     environmentType = ENV_ALIGNED;
   }
 
@@ -339,7 +339,7 @@ const char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
-const float extract_number_from_pxstring(const char * str)
+float extract_number_from_pxstring(const char * str)
 {
   float dbl;
   int match = 0;
