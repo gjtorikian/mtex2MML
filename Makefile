@@ -26,6 +26,7 @@ clean:
 	$(RM) src/lex.yy.*
 	$(RM) src/*y.*
 	$(RM) src/*.o
+	$(RM) src/*.orig
 	$(RM) tests/*.o
 	$(RM) tests/.clarcache
 	$(RM) tests/clar.suite
