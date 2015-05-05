@@ -14,7 +14,7 @@ BINDIR=/usr/local/bin
 CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
 CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
-CFLAGS += -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
+CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
 
 #### GENERAL ####
 
@@ -31,9 +31,6 @@ clean:
 	$(RM) tests/.clarcache
 	$(RM) tests/clar.suite
 
-%.o: %.c
-	$(CC) -fPIC -c -o $@ $<
-
 src/y.tab.c:
 	$(BISON) -p $(YYPREFIX) -d src/mtex2MML.y
 	mv y.output src
@@ -45,10 +42,10 @@ src/lex.yy.c:
 	mv lex.yy.c src
 
 src/y.tab.o:	src/y.tab.c
-	$(CC) -fPIC -c -o src/y.tab.o src/y.tab.c
+	$(CC) $(CFLAGS) -c -o src/y.tab.o src/y.tab.c
 
 src/lex.yy.o:	src/lex.yy.c src/y.tab.c
-	$(CC) -fPIC -c -o src/lex.yy.o src/lex.yy.c
+	$(CC) $(CFLAGS) -c -o src/lex.yy.o src/lex.yy.c
 
 libmtex2MML.a: $(OBJS)
 	$(AR) crv libmtex2MML.a $(OBJS)
