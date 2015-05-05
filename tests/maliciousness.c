@@ -42,7 +42,7 @@ void test_maliciousness__excess_parsing(void)
   fixture_mml =  read_fixture_mml("maliciousness/just_enough_parsing.html");
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
-  cl_assert(result == 2);
+  cl_assert(result == NULL);
   result = malloc(1);
 }
 
@@ -54,7 +54,7 @@ void test_maliciousness__unknown_command_with_parse(void)
 
   char *s1 = "$\\not__thisisnotreal$";
   result = mtex2MML_parse(s1, strlen(s1));
-  cl_assert(result == 1);
+  cl_assert(result == NULL);
 
   char *s2 = "$x$";
   result = mtex2MML_parse(s2, strlen(s2));

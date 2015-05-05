@@ -3467,13 +3467,14 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
 
   free_additions();
 
-  /* See Bison documentation/maliciousness test. 1 if parse error, 2 if memory exhuastion, etc. */
-  if (result) {
+  /* See Bison documentation/maliciousness test: http://bit.ly/1IbpOja
+     1 if parse error, 2 if memory exhuastion, etc. */
+  if (result > 0) {
     if (mathml) {
       mtex2MML_free_string (mathml);
       mathml = 0;
     }
-    return result;
+    return NULL;
   }
 
   return mathml;
