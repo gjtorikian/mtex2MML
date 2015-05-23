@@ -5,6 +5,8 @@ require 'pp'
 
 `git push origin`
 
+`make`
+
 MTEX2MML_HEADER = File.read(File.join('src', 'mtex2MML.h'))
 VERSION = MTEX2MML_HEADER.match(/MTEX2MML_VERSION\s*"(.+?)"/)[1]
 TAG_NAME = "v#{VERSION}"
