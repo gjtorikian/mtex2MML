@@ -1275,6 +1275,8 @@ int display_style = 0;
 }
 
 <MATHENV>{
+"\\notag" |
+"\\nonumber" { /* ignore, but address in .y */}
 "\{equation\}" { BEGIN(MATH); return EQUATION;}
 "\{equation*\}" { BEGIN(MATH); return EQUATION_STAR;}
 "\{matrix\}" {BEGIN(MATH); return MATRIX;}
