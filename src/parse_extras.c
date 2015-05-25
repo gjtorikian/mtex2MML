@@ -102,7 +102,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
         }
 
         if (environmentType == ENV_EQUATION || environmentType == ENV_ALIGN) {
-          if (strstr(*last_stack_item, "\\notag") || strstr(*last_stack_item, "\\nonumber")) {
+          if (strstr(*prev_stack_item, "\\notag") == NULL && strstr(*prev_stack_item, "\\nonumber") == NULL) {
             hasEqnNumber = 1;
           }
         }
