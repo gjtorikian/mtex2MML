@@ -65,11 +65,11 @@ install: mtex2MML
 #### TESTS #####
 
 .PHONY: test
-test: mathjax compile_test
+test: compile_test
 	./tests/testrunner
 	cat ./tests/mathjax_summary.txt
 
-compile_test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
+compile_test: mathjax clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
 	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) build/libmtex2MML.a -o tests/testrunner
 
 mathjax:
