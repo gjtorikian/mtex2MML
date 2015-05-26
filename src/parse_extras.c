@@ -103,7 +103,9 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
         }
 
         // if it has a notag/nonumber setting, suppress the label
-        if (environment_type == ENV_EQUATION || environment_type == ENV_ALIGN) {
+        if (environment_type == ENV_EQUATION || \
+            environment_type == ENV_ALIGN || \
+            environment_type == ENV_ALIGNAT) {
           eqn = !(strstr(*prev_stack_item, notag) != NULL || \
                    strstr(*prev_stack_item, nonumber) != NULL);
         }

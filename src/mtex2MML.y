@@ -2608,7 +2608,7 @@ mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
   mtex2MML_free_string($3);
 }
 | BEGINENV EQUATION_STAR tableRowList ENDENV EQUATION_STAR {
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
+  $$ = mtex2MML_copy3("<mtable>", $3, "</mtable>");
 
   mtex2MML_free_string($3);
 }
@@ -2933,17 +2933,17 @@ mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   if (encase == TOPENCLOSE) {
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", s2, "</menclose>");
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
+    mtex2MML_free_string(t);
   }
   else
-    $$ = mtex2MML_copy_string(s2);
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNENV_STAR tableRowList ENDENV ALIGNENV_STAR {
@@ -2967,22 +2967,18 @@ mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-    char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    char *t = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
     $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
     mtex2MML_free_string(t);
   }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNAT_STAR ALIGNATVALUE END tableRowList ENDENV ALIGNAT_STAR {
