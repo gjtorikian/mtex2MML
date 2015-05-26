@@ -281,7 +281,7 @@ struct css_colors *colors = NULL;
    char * n = (char *) malloc(256);
    snprintf(n, 256, "%d", global_label);
    global_label++;
-   char *prefix = mtex2MML_copy3("</mtd><mtd><mtext>(", n, ")</mtext></mtd></mlabeledtr></mtable>");
+   char *prefix = mtex2MML_copy3("<mtd><mtext>(", n, ")</mtext></mtd>");
    mtex2MML_free_string(n);
 
    return prefix;
@@ -2602,14 +2602,12 @@ emptymrow: EMPTYMROW {
   $$ = mtex2MML_copy_string("<mrow/>");
 };
 
-mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
-  char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", $3, n);
+mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
+  $$ = mtex2MML_copy3("<mtable>", $3, "</mtable>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
 }
-| BEGINENV EQUATION_STAR compoundTermList ENDENV EQUATION_STAR {
+| BEGINENV EQUATION_STAR tableRowList ENDENV EQUATION_STAR {
   $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
 
   mtex2MML_free_string($3);
@@ -2936,18 +2934,14 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
   char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-    char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
-    $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
-    mtex2MML_free_string(t);
+    $$ = mtex2MML_copy3("<menclose notation=\"top\">", s2, "</menclose>");
   }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy_string(s2);
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
   mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
@@ -3288,7 +3282,21 @@ tableRowList: tableRow {
 };
 
 tableRow: simpleTableRow {
-  $$ = mtex2MML_copy3("<mtr>", $1, "</mtr>");
+  int has_eqn_number = fetch_eqn_number(&environment_data_stack);
+
+  if (has_eqn_number) {
+    char * n = mtex2MML_global_label();
+
+    char *s1 = mtex2MML_copy3("<mlabeledtr>", n, $1);
+    $$ = mtex2MML_copy2(s1, "</mlabeledtr>");
+
+    mtex2MML_free_string(n);
+    mtex2MML_free_string(s1);
+  }
+  else {
+    $$ = mtex2MML_copy3("<mtr>", $1, "</mtr>");
+  }
+
   mtex2MML_free_string($1);
 }
 | optsTableRow {

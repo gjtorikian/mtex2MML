@@ -72,6 +72,9 @@ extern const char *remove_excess_pipe_chars(const char *string);
 // return the proper rowlines information
 extern const char *combine_row_data(UT_array **environment_data_stack);
 
+// return the has_eqn_number value of the last row
+extern int fetch_eqn_number(UT_array **environment_data_stack);
+
 // given a pixel string, retrieve the numeric portion from it
 extern float extract_number_from_pxstring(const char * str);
 

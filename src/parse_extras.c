@@ -354,6 +354,18 @@ const char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
+int fetch_eqn_number(UT_array **environment_data_stack)
+{
+  // if no information was provided, give nothing
+  if (utarray_len(*environment_data_stack) == 0) {
+    return 0;
+  }
+
+  envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
+
+  return row_data_elem->has_eqn_number;
+}
+
 float extract_number_from_pxstring(const char * str)
 {
   float dbl;
