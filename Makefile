@@ -18,7 +18,7 @@ CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIX
 
 #### GENERAL ####
 
-all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a mtex2MML
+all: clean lex libmtex2MML.a mtex2MML
 
 .PHONY: clean
 clean:
@@ -30,6 +30,8 @@ clean:
 	$(RM) tests/*.o
 	$(RM) tests/.clarcache
 	$(RM) tests/clar.suite
+
+lex: src/y.tab.o src/lex.yy.o
 
 src/y.tab.c:
 	$(BISON) -p $(YYPREFIX) -d src/mtex2MML.y
