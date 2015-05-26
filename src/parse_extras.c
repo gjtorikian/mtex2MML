@@ -19,12 +19,11 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   UT_array *array_stack;
   UT_array *row_spacing_stack;
   UT_array *rowlines_stack;
+  UT_array *eqn_number_stack;
 
   char *tok = NULL, *at_top = NULL,
         *temp = "", **prev_stack_item,
          *a, *em_str;
-
-  int has_eqn_number = 0;
 
   envType environment_type = OTHER;
 
@@ -50,7 +49,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
               *line_separator = "\\\\",
                *cr_separator = "\\cr",
                 *newline_separator = "\\newline",
-                 *em_pattern_begin = "\\[", *em_pattern_end = "]";
+                 *em_pattern_begin = "\\[", *em_pattern_end = "]",
+                 *notag = "\\notag", *nonumber = "\\nonumber";
 
   int rowlines_stack_len = 0, em_offset = 0;
 
@@ -61,6 +61,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   utarray_new(array_stack, &ut_str_icd);
   utarray_new(row_spacing_stack, &ut_str_icd);
   utarray_new(rowlines_stack, &ut_str_icd);
+  utarray_new(eqn_number_stack, &ut_int_icd);
 
   while (line != NULL) {
     utarray_push_back(array_stack, &line);
@@ -101,10 +102,12 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           utarray_push_back(rowlines_stack, &a);
         }
 
+        // if it has a notag/nonumber setting, suppress the label
         if (environment_type == ENV_EQUATION || environment_type == ENV_ALIGN) {
-          if (strstr(*prev_stack_item, "\\notag") == NULL && strstr(*prev_stack_item, "\\nonumber") == NULL) {
-            has_eqn_number = 1;
-          }
+          int i = !(strstr(*prev_stack_item, notag) != NULL || \
+                   strstr(*prev_stack_item, nonumber) != NULL);
+
+          utarray_push_back(eqn_number_stack, &i);
         }
 
         // if there's a line break...
@@ -121,7 +124,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
               free(s);
             }
           }
-          // ...otherwise, use the default
+          // ...otherwise, use the default emphasis
           else {
             if (environment_type == ENV_SMALLMATRIX) {
               em_str = "0.2em";
@@ -148,7 +151,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
       }
 
       if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
-        perform_replacement(environment_data_stack, rowlines_stack, environment_type, has_eqn_number, row_spacing_stack);
+        perform_replacement(environment_data_stack, rowlines_stack, environment_type, eqn_number_stack, row_spacing_stack);
       }
 
       utarray_clear(row_spacing_stack);
@@ -165,13 +168,15 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   free(dupe_environment);
 }
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, int has_eqn_number, UT_array *row_spacing_stack)
+void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *eqn_number_stack, UT_array *row_spacing_stack)
 {
   char *a, *attr_rowlines, *attr_rowspacing;
   envdata_t env_data;
 
   // we cut the last char because we can always skip the first row
   utarray_pop_back(rowlines_stack);
+
+  utarray_erase(eqn_number_stack, 0, 1);
 
   int line_count = utarray_len(rowlines_stack);
 
@@ -227,7 +232,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   env_data.rowspacing = attr_rowspacing;
   env_data.rowlines = attr_rowlines;
   env_data.environment_type = environment_type;
-  env_data.has_eqn_number = has_eqn_number;
+  env_data.eqn_numbers = eqn_number_stack;
   env_data.line_count = line_count;
 
   utarray_push_back(*environment_data_stack, &env_data);
@@ -356,14 +361,13 @@ const char *combine_row_data(UT_array **environment_data_stack)
 
 int fetch_eqn_number(UT_array **environment_data_stack)
 {
-  // if no information was provided, give nothing
-  if (utarray_len(*environment_data_stack) == 0) {
-    return 0;
-  }
+  envdata_t *row_data_elem = (envdata_t*) utarray_back(*environment_data_stack);
+  UT_array *eqn_numbers = row_data_elem->eqn_numbers;
 
-  envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
+  int *e = (int*) utarray_back(eqn_numbers);
+  utarray_pop_back(eqn_numbers);
 
-  return row_data_elem->has_eqn_number;
+  return *e;
 }
 
 float extract_number_from_pxstring(const char * str)

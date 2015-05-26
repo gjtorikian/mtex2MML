@@ -1,0 +1,7 @@
+$$
+\begin{align}
+  a & b  \notag \\ % no number is shown
+  c & d \\ % there is a number
+  e & f \nonumber % no number
+\end{align}
+$$

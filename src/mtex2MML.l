@@ -73,7 +73,7 @@ int display_style = 0;
 "\\hline" |
 "\\hdashline"      { /* Ignore */ ;}
 
-^%.+               { /* Ignore */ ;}
+.?%.+$               { /* Ignore */ ;}
 
 "{"            {mtex2MML_rowposn = 2; if(mtex2MML_inoptarg[mtex2MML_optarg_ind] != 0) mtex2MML_inoptarg[mtex2MML_optarg_ind]++; return MROWOPEN;}
 "}"            {if(mtex2MML_inoptarg[mtex2MML_optarg_ind] != 0) mtex2MML_inoptarg[mtex2MML_optarg_ind]--; return MROWCLOSE;}
@@ -1126,6 +1126,9 @@ int display_style = 0;
 "\\begin"        {mtex2MML_env_start = 1; BEGIN(MATHENV); return BEGINENV;}
 "\\end"          {BEGIN(MATHENV); return ENDENV;}
 
+"\\notag" |
+"\\nonumber"     { /* ignore, but address in .y */}
+
 "\\substack"     {return SUBSTACK;}
 
 "\\cases"        {return CASES;}
@@ -1275,8 +1278,6 @@ int display_style = 0;
 }
 
 <MATHENV>{
-"\\notag" |
-"\\nonumber" { /* ignore, but address in .y */}
 "\{equation\}" { BEGIN(MATH); return EQUATION;}
 "\{equation*\}" { BEGIN(MATH); return EQUATION_STAR;}
 "\{matrix\}" {BEGIN(MATH); return MATRIX;}
