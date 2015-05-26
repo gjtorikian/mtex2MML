@@ -60,6 +60,8 @@ is detected, it starts popping off the stack until it reaches the corresponding
 the symbols encountered while popping lines off. */
 extern void env_replacements(UT_array **environment_data_stack, encaseType *encase, const char *environment);
 
+extern int determine_environment(const char *environment);
+
 extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)

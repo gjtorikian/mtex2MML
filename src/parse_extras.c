@@ -9,6 +9,29 @@ static const char *BEGIN = "\\begin";
 static const char *END = "\\end";
 static const char *beginSVG = "begin{svg}";
 
+int determine_environment(const char *environment)
+{
+  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
+    return ENV_SMALLMATRIX;
+  } else if (strstr(environment, "\\end{gathered}") != NULL) {
+    return ENV_GATHERED;
+  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
+    return ENV_EQNARRAY;
+  } else if (strstr(environment, "\\end{multline") != NULL) {
+    return ENV_MULTLINE;
+  } else if (strstr(environment, "\\end{alignat") != NULL) {
+    return ENV_ALIGNAT;
+  } else if (strstr(environment, "\\end{aligned}") != NULL) {
+    return ENV_ALIGNED;
+  } else if (strstr(environment, "\\end{equation}") != NULL) {
+    return ENV_EQUATION;
+  } else if (strstr(environment, "\\end{align}") != NULL) {
+    return ENV_ALIGN;
+  }
+
+  return OTHER;
+}
+
 void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
 {
   // if not an environment, don't bother going on
@@ -24,26 +47,6 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   char *tok = NULL, *at_top = NULL,
         *temp = "", **prev_stack_item,
          *a, *em_str;
-
-  envType environment_type = OTHER;
-
-  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
-    environment_type = ENV_SMALLMATRIX;
-  } else if (strstr(environment, "\\end{gathered}") != NULL) {
-    environment_type = ENV_GATHERED;
-  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
-    environment_type = ENV_EQNARRAY;
-  } else if (strstr(environment, "\\end{multline") != NULL) {
-    environment_type = ENV_MULTLINE;
-  } else if (strstr(environment, "\\end{alignat") != NULL) {
-    environment_type = ENV_ALIGNAT;
-  } else if (strstr(environment, "\\end{aligned}") != NULL) {
-    environment_type = ENV_ALIGNED;
-  } else if (strstr(environment, "\\end{equation}") != NULL) {
-    environment_type = ENV_EQUATION;
-  } else if (strstr(environment, "\\end{align}") != NULL) {
-    environment_type = ENV_ALIGN;
-  }
 
   const char *hline = "\\hline", *hdashline = "\\hdashline",
               *line_separator = "\\\\",
@@ -67,6 +70,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
     utarray_push_back(array_stack, &line);
 
     if (strstr(line, END) != NULL) {
+      envType environment_type = determine_environment(line);
+
       while (utarray_len(array_stack) > 0) {
         prev_stack_item = (char **)utarray_back(array_stack);
 
