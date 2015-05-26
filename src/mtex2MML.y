@@ -3411,6 +3411,7 @@ void envdata_copy(void *_dst, const void *_src)
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
   dst->environment_type = src->environment_type;
+  dst->has_eqn_number = src->has_eqn_number;
   dst->line_count = src->line_count;
 }
 
