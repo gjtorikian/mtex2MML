@@ -3410,7 +3410,7 @@ void envdata_copy(void *_dst, const void *_src)
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
-  dst->environmentType = src->environmentType;
+  dst->environment_type = src->environment_type;
   dst->line_count = src->line_count;
 }
 
