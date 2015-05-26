@@ -52,7 +52,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
                  *em_pattern_begin = "\\[", *em_pattern_end = "]",
                  *notag = "\\notag", *nonumber = "\\nonumber";
 
-  int rowlines_stack_len = 0, em_offset = 0;
+  int rowlines_stack_len = 0, em_offset = 0, eqn = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -104,11 +104,14 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
 
         // if it has a notag/nonumber setting, suppress the label
         if (environment_type == ENV_EQUATION || environment_type == ENV_ALIGN) {
-          int i = !(strstr(*prev_stack_item, notag) != NULL || \
+          eqn = !(strstr(*prev_stack_item, notag) != NULL || \
                    strstr(*prev_stack_item, nonumber) != NULL);
-
-          utarray_push_back(eqn_number_stack, &i);
         }
+        else {
+          eqn = 0;
+        }
+
+        utarray_push_back(eqn_number_stack, &eqn);
 
         // if there's a line break...
         if (strstr(*prev_stack_item, line_separator) != NULL || \
@@ -176,7 +179,9 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   // we cut the last char because we can always skip the first row
   utarray_pop_back(rowlines_stack);
 
-  utarray_erase(eqn_number_stack, 0, 1);
+  if (utarray_len(eqn_number_stack) != 0) {
+    utarray_erase(eqn_number_stack, 0, 1);
+  }
 
   int line_count = utarray_len(rowlines_stack);
 
@@ -361,8 +366,17 @@ const char *combine_row_data(UT_array **environment_data_stack)
 
 int fetch_eqn_number(UT_array **environment_data_stack)
 {
+  // if no information was provided, expect nothing
+  if (utarray_len(*environment_data_stack) == 0) {
+    return 0;
+  }
+
   envdata_t *row_data_elem = (envdata_t*) utarray_back(*environment_data_stack);
   UT_array *eqn_numbers = row_data_elem->eqn_numbers;
+
+  if (utarray_len(eqn_numbers) == 0) {
+    return 0;
+  }
 
   int *e = (int*) utarray_back(eqn_numbers);
   utarray_pop_back(eqn_numbers);
