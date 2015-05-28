@@ -140,7 +140,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
               em_str = "0.2em";
             } else if (environment_type == ENV_GATHERED) {
               em_str = "1.0ex";
-            } else if (environment_type == ENV_EQNARRAY || environment_type == ENV_ALIGNAT || environment_type  == ENV_ALIGNED) {
+            } else if (environment_type == ENV_EQNARRAY || environment_type == ENV_ALIGNAT || environment_type == ENV_ALIGNED) {
               em_str = "3pt";
             } else if (environment_type == ENV_MULTLINE) {
               em_str = "0.5em";
