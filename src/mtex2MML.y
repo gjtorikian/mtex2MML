@@ -2667,21 +2667,17 @@ mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right center left\" columnspacing=\"thickmathspace\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
       $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
       mtex2MML_free_string(t);
     }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV EQNARRAY_STAR tableRowList ENDENV EQNARRAY_STAR {

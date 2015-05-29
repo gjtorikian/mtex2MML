@@ -117,10 +117,12 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           utarray_push_back(rowlines_stack, &a);
         }
 
-        // if it has a notag/nonumber setting, suppress the label
+        // some environments have labelling for every row.
+        // supress it if it has a \notag or \nonumber
         if (environment_type == ENV_EQUATION || \
             environment_type == ENV_ALIGN || \
-            environment_type == ENV_ALIGNAT) {
+            environment_type == ENV_ALIGNAT ||
+            environment_type == ENV_EQNARRAY) {
           eqn = !(strstr(*prev_stack_item, notag) != NULL || \
                    strstr(*prev_stack_item, nonumber) != NULL);
         }
