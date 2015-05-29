@@ -14,7 +14,7 @@ BINDIR=/usr/local/bin
 CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
 CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
-CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
+CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc -lm
 
 #### GENERAL ####
 
