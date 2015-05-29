@@ -3268,7 +3268,7 @@ tableRowList: tableRow {
 tableRow: simpleTableRow {
   int has_eqn_number = fetch_eqn_number(&environment_data_stack);
 
-  if (has_eqn_number) {
+  if (has_eqn_number && strcmp($1, "<mtd/>") != 0) {
     char * n = mtex2MML_global_label();
 
     char *s1 = mtex2MML_copy3("<mlabeledtr>", n, $1);
@@ -3403,7 +3403,7 @@ void envdata_copy(void *_dst, const void *_src)
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
   dst->environment_type = src->environment_type;
-  if (dst->eqn_numbers == NULL) utarray_new(dst->eqn_numbers, &ut_int_icd);
+  utarray_new(dst->eqn_numbers, &ut_int_icd);
   utarray_concat(dst->eqn_numbers, src->eqn_numbers);
   dst->line_count = src->line_count;
 }

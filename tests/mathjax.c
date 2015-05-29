@@ -1869,6 +1869,16 @@ void test_mathjax__otherverb2(void)
   cl_assert_equal_s(fixture_mml, result);
 }
 
+void test_mathjax__referencesnotag1(void)
+{
+  fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/references/notag-1.txt");
+  fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/references/notag-1.html");
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, result);
+}
+
 void test_mathjax__rootsroot1(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/roots/root-1.txt");
