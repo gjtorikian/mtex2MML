@@ -3403,7 +3403,7 @@ void envdata_copy(void *_dst, const void *_src)
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
   dst->environment_type = src->environment_type;
-  utarray_new(dst->eqn_numbers, &ut_int_icd);
+  if (dst->eqn_numbers == NULL) utarray_new(dst->eqn_numbers, &ut_int_icd);
   utarray_concat(dst->eqn_numbers, src->eqn_numbers);
   dst->line_count = src->line_count;
 }
