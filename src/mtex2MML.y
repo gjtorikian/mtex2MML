@@ -3396,14 +3396,15 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
-// see https://troydhanson.github.io/uthash/utarray.html#_structures
+// see http://git.io/vk8Sz
 void envdata_copy(void *_dst, const void *_src)
 {
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
   dst->environment_type = src->environment_type;
-  dst->eqn_numbers = src->eqn_numbers;
+  utarray_new(dst->eqn_numbers, &ut_int_icd);
+  utarray_concat(dst->eqn_numbers, src->eqn_numbers);
   dst->line_count = src->line_count;
 }
 
@@ -3412,6 +3413,7 @@ void envdata_dtor(void *_elt)
   envdata_t *elt = (envdata_t*)_elt;
   if (elt->rowspacing) { free(elt->rowspacing); }
   if (elt->rowlines) { free(elt->rowlines); }
+  if (elt->eqn_numbers) { utarray_free(elt->eqn_numbers); }
 }
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};

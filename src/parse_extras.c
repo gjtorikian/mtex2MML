@@ -202,6 +202,8 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   utarray_free(array_stack);
   utarray_free(row_spacing_stack);
   utarray_free(rowlines_stack);
+  utarray_free(eqn_number_stack);
+
   free(dupe_environment);
 }
 
