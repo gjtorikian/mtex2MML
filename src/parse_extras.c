@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "parse_extras.h"
 #include "string_extras.h"
@@ -13,12 +14,16 @@ int determine_environment(const char *environment)
 {
   if (strstr(environment, "\\end{smallmatrix}") != NULL) {
     return ENV_SMALLMATRIX;
+  } else if (strstr(environment, "\\end{gather}") != NULL) {
+    return ENV_GATHER;
   } else if (strstr(environment, "\\end{gathered}") != NULL) {
     return ENV_GATHERED;
   } else if (strstr(environment, "\\end{eqnarray") != NULL) {
     return ENV_EQNARRAY;
-  } else if (strstr(environment, "\\end{multline") != NULL) {
+  } else if (strstr(environment, "\\end{multline}") != NULL) {
     return ENV_MULTLINE;
+  } else if (strstr(environment, "\\end{multline*}") != NULL) {
+    return ENV_MULTLINESTAR;
   } else if (strstr(environment, "\\end{alignat") != NULL) {
     return ENV_ALIGNAT;
   } else if (strstr(environment, "\\end{aligned}") != NULL) {
@@ -55,7 +60,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
                  *em_pattern_begin = "\\[", *em_pattern_end = "]",
                  *notag = "\\notag", *nonumber = "\\nonumber";
 
-  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0;
+  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0, insertion_idx = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -88,11 +93,12 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           break;
         }
 
-        // eqalign/eqalignno is a bit...special. it's a deprecated environment,
-        // but it still uses the same line separators, so it tends
-        // to mess with "proper" labelled environments. if we find
-        // one, erase all the data.
-        if (strstr(*prev_stack_item, "\\eqalign") != NULL) {
+        // these environments are a bit...special. they still use
+        // the same line separators, so they tendto mess with "proper"
+        // labelled environments, because they exist within \begin{equation}
+        // if we find one, erase all the stored row info.
+        if (strstr(*prev_stack_item, "\\eqalign") != NULL || \
+        strstr(*prev_stack_item, "\\split") != NULL) {
           for (i = rowlines_stack_len; i > 1; i--) {
             utarray_pop_back(rowlines_stack);
             utarray_pop_back(eqn_number_stack);
@@ -154,7 +160,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
               em_str = "1.0ex";
             } else if (environment_type == ENV_EQNARRAY || environment_type == ENV_ALIGNAT || environment_type == ENV_ALIGNED) {
               em_str = "3pt";
-            } else if (environment_type == ENV_MULTLINE) {
+            } else if (environment_type == ENV_MULTLINE || environment_type == ENV_MULTLINESTAR) {
               em_str = "0.5em";
             } else {
               em_str = "0.5ex";
@@ -173,6 +179,15 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
       }
 
       if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
+        // some environments only have one label for the whole environment,
+        // rather than a label per row. in that case, jam a label
+        // in the middle.
+        if (environment_type == ENV_GATHER || environment_type == ENV_MULTLINE) {
+          insertion_idx = ceil(utarray_len(eqn_number_stack) / 2);
+          eqn = 1;
+          utarray_insert(eqn_number_stack, &eqn, insertion_idx);
+          utarray_pop_back(eqn_number_stack);
+        }
         perform_replacement(environment_data_stack, rowlines_stack, environment_type, eqn_number_stack, row_spacing_stack);
       }
 
