@@ -88,7 +88,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           break;
         }
 
-        // eqalign is a bit...special. it's a deprecated environment,
+        // eqalign/eqalignno is a bit...special. it's a deprecated environment,
         // but it still uses the same line separators, so it tends
         // to mess with "proper" labelled environments. if we find
         // one, erase all the data.
