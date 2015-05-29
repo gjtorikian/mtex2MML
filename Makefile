@@ -14,7 +14,8 @@ BINDIR=/usr/local/bin
 CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
 CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
-CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc -lm
+CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
+LDFLAGS += -lm
 
 #### GENERAL ####
 
@@ -56,8 +57,8 @@ libmtex2MML.a: $(OBJS)
 	cp src/mtex2MML.h build/
 
 mtex2MML:	$(OBJS) src/mtex2MML.h
-		$(CC) $(CFLAGS) -o mtex2MML $(OBJS)
-		mv mtex2MML build/
+	$(CC) $(CFLAGS) -o mtex2MML $(OBJS)
+	mv mtex2MML build/
 
 install: mtex2MML
 	$(INSTALL) build/mtex2MML $(BINDIR)
