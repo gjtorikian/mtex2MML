@@ -5,7 +5,6 @@
 static char *fixture_tex;
 static char *fixture_mml;
 static char *result;
-static char *huge;
 
 void test_maliciousness__initialize(void)
 {
