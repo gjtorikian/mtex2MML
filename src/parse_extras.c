@@ -55,7 +55,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
                  *em_pattern_begin = "\\[", *em_pattern_end = "]",
                  *notag = "\\notag", *nonumber = "\\nonumber";
 
-  int rowlines_stack_len = 0, em_offset = 0, eqn = 0;
+  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -85,8 +85,18 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           if (strstr(*prev_stack_item, hline) != NULL || strstr(*prev_stack_item, hdashline) != NULL) {
             *encase = TOPENCLOSE;
           }
-
           break;
+        }
+
+        // eqalign is a bit...special. it's a deprecated environment,
+        // but it still uses the same line separators, so it tends
+        // to mess with "proper" labelled environments. if we find
+        // one, erase all the data.
+        if (strstr(*prev_stack_item, "\\eqalign") != NULL) {
+          for (i = rowlines_stack_len; i > 1; i--) {
+            utarray_pop_back(rowlines_stack);
+            utarray_pop_back(eqn_number_stack);
+          }
         }
 
         // looking for a hline/hdashline match
