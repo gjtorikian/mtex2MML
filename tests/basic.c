@@ -5,7 +5,7 @@
 
 static char *fixture_tex;
 static char *fixture_mml;
-static char *result;
+static const char *result;
 
 void test_basic__initialize(void)
 {
@@ -58,7 +58,7 @@ void test_basic__filter(void)
 {
   fixture_tex = read_fixture_tex("basic/filter.txt");
   fixture_mml = read_fixture_mml("basic/filter.html");
-  int status = mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
