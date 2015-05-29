@@ -1,5 +1,13 @@
-SOURCES = $(shell find src -name '*.c')
-OBJS = $(SOURCES:.c=.o)
+CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
+CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
+CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
+LDFLAGS += -lm
+
+SOURCES  := $(wildcard src/*.c)
+INCLUDES := $(wildcard *.h)
+OBJECTS  := $(SOURCES:src/%.c=src/%.o)
+
 TESTS = $(shell find tests -name '*.c')
 TESTOBJS = $(TESTS:.c=.o)
 
@@ -10,12 +18,6 @@ FLEX=flex -P$(YYPREFIX) -olex.yy.c
 RM=rm -rf
 INSTALL=install -c
 BINDIR=/usr/local/bin
-
-CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
-TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
-CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
-CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
-LDFLAGS += -lm
 
 #### GENERAL ####
 
@@ -50,15 +52,19 @@ src/y.tab.o:	src/y.tab.c
 src/lex.yy.o:	src/lex.yy.c src/y.tab.c
 	$(CC) $(CFLAGS) -c -o src/lex.yy.o src/lex.yy.c
 
-libmtex2MML.a: $(OBJS)
-	$(AR) crv libmtex2MML.a $(OBJS)
+libmtex2MML.a: $(OBJECTS) lex
+	$(AR) crv libmtex2MML.a src/y.tab.o src/lex.yy.o $(OBJECTS)
 	mkdir -p build/
 	mv libmtex2MML.a build/
 	cp src/mtex2MML.h build/
 
-mtex2MML:	$(OBJS) src/mtex2MML.h
-	$(CC) $(CFLAGS) -o mtex2MML $(OBJS)
+mtex2MML: $(OBJECTS) lex src/mtex2MML.h
+	mkdir -p build/
+	$(CC) $(CFLAGS) -o mtex2MML $(OBJECTS) src/y.tab.o src/lex.yy.o $(LDFLAGS)
 	mv mtex2MML build/
+
+$(OBJECTS): src/%.o : src/%.c
+	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
 install: mtex2MML
 	$(INSTALL) build/mtex2MML $(BINDIR)
@@ -71,7 +77,7 @@ test: compile_test
 	cat ./tests/mathjax_summary.txt
 
 compile_test: mathjax clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
-	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) build/libmtex2MML.a -o tests/testrunner
+	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) build/libmtex2MML.a -o tests/testrunner $(LDFLAGS)
 
 mathjax:
 	python tests/mathjax_generate.py
