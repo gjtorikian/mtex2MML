@@ -5,7 +5,7 @@
 
 static char *fixture_tex;
 static char *fixture_mml;
-static char *result;
+static const char *result;
 
 void test_mathjax__initialize(void)
 {
@@ -1863,6 +1863,16 @@ void test_mathjax__otherverb2(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/other/verb-2.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/other/verb-2.html");
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, result);
+}
+
+void test_mathjax__referencesnotag1(void)
+{
+  fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/references/notag-1.txt");
+  fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/references/notag-1.html");
   mtex2MML_filter(fixture_tex, strlen(fixture_tex));
   result = mtex2MML_output();
 

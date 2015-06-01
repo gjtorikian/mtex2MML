@@ -281,7 +281,7 @@ struct css_colors *colors = NULL;
    char * n = (char *) malloc(256);
    snprintf(n, 256, "%d", global_label);
    global_label++;
-   char *prefix = mtex2MML_copy3("</mtd><mtd><mtext>(", n, ")</mtext></mtd></mlabeledtr></mtable>");
+   char *prefix = mtex2MML_copy3("<mtd><mtext>(", n, ")</mtext></mtd>");
    mtex2MML_free_string(n);
 
    return prefix;
@@ -1592,7 +1592,7 @@ mbox: MBOX closedTerm {
 };
 
 bold: BOLD closedTerm {
-  $$ = mtex2MML_copy3("<mstyle mathvariant=\"bold\">", $2, "</mstyle>");
+  $$ = mtex2MML_copy3("<mi mathvariant=\"bold\">", $2, "</mi>");
   mtex2MML_free_string($2);
 };
 
@@ -2602,15 +2602,13 @@ emptymrow: EMPTYMROW {
   $$ = mtex2MML_copy_string("<mrow/>");
 };
 
-mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
-  char * n = mtex2MML_global_label();
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", $3, n);
+mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
+  $$ = mtex2MML_copy3("<mtable>", $3, "</mtable>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
 }
-| BEGINENV EQUATION_STAR compoundTermList ENDENV EQUATION_STAR {
-  $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd><mtext>&#8239;</mtext></mtd><mtd>", $3, "</mtd></mlabeledtr></mtable>");
+| BEGINENV EQUATION_STAR tableRowList ENDENV EQUATION_STAR {
+  $$ = mtex2MML_copy3("<mtable>", $3, "</mtable>");
 
   mtex2MML_free_string($3);
 }
@@ -2669,21 +2667,17 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right center left\" columnspacing=\"thickmathspace\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
       $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
       mtex2MML_free_string(t);
     }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV EQNARRAY_STAR tableRowList ENDENV EQNARRAY_STAR {
@@ -2706,21 +2700,17 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
       $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
       mtex2MML_free_string(t);
     }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV GATHER_STAR tableRowList ENDENV GATHER_STAR {
@@ -2743,21 +2733,17 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-      char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+      char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
       $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
       mtex2MML_free_string(t);
     }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV MULTLINE_STAR tableRowList ENDENV MULTLINE_STAR {
@@ -2935,21 +2921,17 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnspacing=\"0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em\" columnalign=\"right left right left right left right left right left\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-    char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    char *t = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
     $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
     mtex2MML_free_string(t);
   }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $3, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNENV_STAR tableRowList ENDENV ALIGNENV_STAR {
@@ -2973,22 +2955,18 @@ mathenv: BEGINENV EQUATION compoundTermList ENDENV EQUATION {
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mrow><mtable displaystyle=\"true\" columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\" ", row_data, ">");
-  char * s2 = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
-  char * n = mtex2MML_global_label();
 
   if (encase == TOPENCLOSE) {
-    char *t = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    char *t = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
     $$ = mtex2MML_copy3("<menclose notation=\"top\">", t, "</menclose>");
     mtex2MML_free_string(t);
   }
   else
-    $$ = mtex2MML_copy3("<mtable><mlabeledtr><mtd>", s2, n);
+    $$ = mtex2MML_copy3(s1, $5, "</mtable></mrow>");
 
   mtex2MML_free_string($3);
   mtex2MML_free_string($5);
-  mtex2MML_free_string(n);
   mtex2MML_free_string(s1);
-  mtex2MML_free_string(s2);
   mtex2MML_free_string(row_data);
 }
 | BEGINENV ALIGNAT_STAR ALIGNATVALUE END tableRowList ENDENV ALIGNAT_STAR {
@@ -3288,7 +3266,21 @@ tableRowList: tableRow {
 };
 
 tableRow: simpleTableRow {
-  $$ = mtex2MML_copy3("<mtr>", $1, "</mtr>");
+  int has_eqn_number = fetch_eqn_number(&environment_data_stack);
+
+  if (has_eqn_number && strcmp($1, "<mtd/>") != 0) {
+    char * n = mtex2MML_global_label();
+
+    char *s1 = mtex2MML_copy3("<mlabeledtr>", n, $1);
+    $$ = mtex2MML_copy2(s1, "</mlabeledtr>");
+
+    mtex2MML_free_string(n);
+    mtex2MML_free_string(s1);
+  }
+  else {
+    $$ = mtex2MML_copy3("<mtr>", $1, "</mtr>");
+  }
+
   mtex2MML_free_string($1);
 }
 | optsTableRow {
@@ -3337,7 +3329,7 @@ tableCell:   {
   $$ = mtex2MML_copy_string("<mtd/>");
 }
 | compoundTermList {
-  if (current_env_type(&environment_data_stack) != ENV_MULTLINE) {
+  if (current_env_type(&environment_data_stack) != ENV_MULTLINE && current_env_type(&environment_data_stack) != ENV_MULTLINESTAR) {
     $$ = mtex2MML_copy3("<mtd>", $1, "</mtd>");
   }
   else {
@@ -3404,13 +3396,15 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
-// see https://troydhanson.github.io/uthash/utarray.html#_structures
+// see http://git.io/vk8Sz
 void envdata_copy(void *_dst, const void *_src)
 {
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
   dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
   dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
-  dst->environmentType = src->environmentType;
+  dst->environment_type = src->environment_type;
+  utarray_new(dst->eqn_numbers, &ut_int_icd);
+  utarray_concat(dst->eqn_numbers, src->eqn_numbers);
   dst->line_count = src->line_count;
 }
 
@@ -3419,6 +3413,7 @@ void envdata_dtor(void *_elt)
   envdata_t *elt = (envdata_t*)_elt;
   if (elt->rowspacing) { free(elt->rowspacing); }
   if (elt->rowlines) { free(elt->rowlines); }
+  if (elt->eqn_numbers) { utarray_free(elt->eqn_numbers); }
 }
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};

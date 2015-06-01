@@ -9,12 +9,13 @@ extern "C" {
 #endif
 
 typedef enum {NONE = 0, TOPENCLOSE} encaseType;
-typedef enum {OTHER = 0, ENV_ALIGNAT, ENV_ALIGNED, ENV_GATHERED, ENV_EQNARRAY, ENV_MULTLINE, ENV_SMALLMATRIX} envType;
+typedef enum {OTHER = 0, ENV_ALIGN, ENV_ALIGNAT, ENV_ALIGNED, ENV_EQUATION, ENV_GATHER, ENV_GATHERED, ENV_EQNARRAY, ENV_MULTLINE, ENV_MULTLINESTAR, ENV_SMALLMATRIX} envType;
 
 typedef struct {
   char *rowspacing;
   char *rowlines;
-  envType environmentType;
+  envType environment_type;
+  UT_array *eqn_numbers;
   int line_count;
 } envdata_t;
 
@@ -59,7 +60,11 @@ is detected, it starts popping off the stack until it reaches the corresponding
 the symbols encountered while popping lines off. */
 extern void env_replacements(UT_array **environment_data_stack, encaseType *encase, const char *environment);
 
-extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environmentType, UT_array *row_spacing_stack);
+extern int determine_environment(const char *environment);
+
+extern int identify_eqn_number(envType environment_type, char *line);
+
+extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
 extern const char *vertical_pipe_extract(const char *string);
@@ -70,6 +75,9 @@ extern const char *remove_excess_pipe_chars(const char *string);
 
 // return the proper rowlines information
 extern const char *combine_row_data(UT_array **environment_data_stack);
+
+// return the has_eqn_number value of the last row
+extern int fetch_eqn_number(UT_array **environment_data_stack);
 
 // given a pixel string, retrieve the numeric portion from it
 extern float extract_number_from_pxstring(const char * str);

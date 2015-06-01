@@ -1,0 +1,5 @@
+$$
+\begin{equation} a \end{equation}
+\begin{equation} b \notag \end{equation}
+\begin{equation} c \nonumber \end{equation}
+$$

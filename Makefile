@@ -1,5 +1,13 @@
-SOURCES = $(shell find src -name '*.c')
-OBJS = $(SOURCES:.c=.o)
+CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
+CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
+CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
+LDFLAGS += -lm
+
+SOURCES  := $(wildcard src/*.c)
+INCLUDES := $(wildcard *.h)
+OBJECTS  := $(SOURCES:src/%.c=src/%.o)
+
 TESTS = $(shell find tests -name '*.c')
 TESTOBJS = $(TESTS:.c=.o)
 
@@ -11,14 +19,9 @@ RM=rm -rf
 INSTALL=install -c
 BINDIR=/usr/local/bin
 
-CURRENT_MAKEFILE  := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
-TEST_DIRECTORY    := $(abspath $(dir $(CURRENT_MAKEFILE)))/tests
-CLAR_FIXTURE_PATH := $(TEST_DIRECTORY)/fixtures/
-CFLAGS += -fPIC -Wall -Wextra -Wno-sign-compare -DCLAR_FIXTURE_PATH=\"$(CLAR_FIXTURE_PATH)\" -pedantic -std=gnu99 -iquote inc
-
 #### GENERAL ####
 
-all: clean src/y.tab.o src/lex.yy.o libmtex2MML.a mtex2MML
+all: clean lex libmtex2MML.a mtex2MML
 
 .PHONY: clean
 clean:
@@ -30,6 +33,8 @@ clean:
 	$(RM) tests/*.o
 	$(RM) tests/.clarcache
 	$(RM) tests/clar.suite
+
+lex: src/y.tab.o src/lex.yy.o
 
 src/y.tab.c:
 	$(BISON) -p $(YYPREFIX) -d src/mtex2MML.y
@@ -47,15 +52,19 @@ src/y.tab.o:	src/y.tab.c
 src/lex.yy.o:	src/lex.yy.c src/y.tab.c
 	$(CC) $(CFLAGS) -c -o src/lex.yy.o src/lex.yy.c
 
-libmtex2MML.a: $(OBJS)
-	$(AR) crv libmtex2MML.a $(OBJS)
+libmtex2MML.a: $(OBJECTS) lex
+	$(AR) crv libmtex2MML.a src/y.tab.o src/lex.yy.o $(OBJECTS)
 	mkdir -p build/
 	mv libmtex2MML.a build/
 	cp src/mtex2MML.h build/
 
-mtex2MML:	$(OBJS) src/mtex2MML.h
-		$(CC) $(CFLAGS) -o mtex2MML $(OBJS)
-		mv mtex2MML build/
+mtex2MML: $(OBJECTS) lex src/mtex2MML.h
+	mkdir -p build/
+	$(CC) $(CFLAGS) -o mtex2MML $(OBJECTS) src/y.tab.o src/lex.yy.o $(LDFLAGS)
+	mv mtex2MML build/
+
+$(OBJECTS): src/%.o : src/%.c
+	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
 install: mtex2MML
 	$(INSTALL) build/mtex2MML $(BINDIR)
@@ -63,12 +72,12 @@ install: mtex2MML
 #### TESTS #####
 
 .PHONY: test
-test: mathjax compile_test
+test: compile_test
 	./tests/testrunner
 	cat ./tests/mathjax_summary.txt
 
-compile_test: clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
-	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) build/libmtex2MML.a -o tests/testrunner
+compile_test: mathjax clar.suite tests/helpers.h tests/clar_test.h $(TESTOBJS)
+	$(CC) $(CFLAGS) -Wno-implicit-function-declaration $(TESTOBJS) build/libmtex2MML.a -o tests/testrunner $(LDFLAGS)
 
 mathjax:
 	python tests/mathjax_generate.py

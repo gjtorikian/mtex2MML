@@ -24,14 +24,14 @@ txt_count = 0
 xtex_count = 0
 notex_count = 0
 
-DEBUG_MODE = False
+regex = False #'environments/alignat-1b'
 
 for root, dirs, files in os.walk(MATHJAX_TEST_TEXT_DIR):
     for file in files:
         name = os.path.basename(root) + "/" + os.path.splitext(file)[0]
         if file.endswith(".txt"):
-            if DEBUG_MODE:
-                if re.search('accents-\d', name):
+            if regex:
+                if re.search(regex, name):
                     fixtures.append(name)
             else:
                 fixtures.append(name)

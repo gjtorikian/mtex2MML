@@ -1,50 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "parse_extras.h"
 #include "string_extras.h"
 
+static const char *BEGIN = "\\begin";
+static const char *END = "\\end";
+static const char *BEGIN_SVG = "begin{svg}";
+
+const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
+            *LINE_SEPARATOR = "\\\\",
+             *CR_SEPARATOR = "\\cr",
+              *NEWLINE_SEPARATOR = "\\newline",
+               *EM_PATTERN_BEGIN = "\\[", *EM_PATTERN_END = "]",
+               *NOTAG = "\\notag", *NONUMBER = "\\nonumber";
+
+int determine_environment(const char *environment)
+{
+  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
+    return ENV_SMALLMATRIX;
+  } else if (strstr(environment, "\\end{gather}") != NULL) {
+    return ENV_GATHER;
+  } else if (strstr(environment, "\\end{gathered}") != NULL) {
+    return ENV_GATHERED;
+  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
+    return ENV_EQNARRAY;
+  } else if (strstr(environment, "\\end{multline}") != NULL) {
+    return ENV_MULTLINE;
+  } else if (strstr(environment, "\\end{multline*}") != NULL) {
+    return ENV_MULTLINESTAR;
+  } else if (strstr(environment, "\\end{alignat") != NULL) {
+    return ENV_ALIGNAT;
+  } else if (strstr(environment, "\\end{aligned}") != NULL) {
+    return ENV_ALIGNED;
+  } else if (strstr(environment, "\\end{equation}") != NULL) {
+    return ENV_EQUATION;
+  } else if (strstr(environment, "\\end{align}") != NULL) {
+    return ENV_ALIGN;
+  }
+
+  return OTHER;
+}
+
+int identify_eqn_number(envType environment_type, char *line)
+{
+  // some environments have labelling for every row.
+  // supress it if it has a \notag or \nonumber
+  if (environment_type == ENV_EQUATION || \
+      environment_type == ENV_ALIGN || \
+      environment_type == ENV_ALIGNAT ||
+      environment_type == ENV_EQNARRAY) {
+        if (line == NULL)
+        return 1;
+        else
+     return !(strstr(line, NOTAG) != NULL || \
+             strstr(line, NONUMBER) != NULL);
+  }
+  else {
+    return 0;
+  }
+}
+
 void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
 {
-  const char *from = "\\begin", *until = "\\end",
-              *begin_svg = "begin{svg}";
-
   // if not an environment, don't bother going on
-  if ((strstr(environment, from) == NULL && strstr(environment, until) == NULL) || strstr(environment, begin_svg)) {
+  if ((strstr(environment, BEGIN) == NULL && strstr(environment, END) == NULL) || strstr(environment, BEGIN_SVG)) {
     return;
   }
 
   UT_array *array_stack;
   UT_array *row_spacing_stack;
   UT_array *rowlines_stack;
+  UT_array *eqn_number_stack;
 
   char *tok = NULL, *at_top = NULL,
-        *temp = "", **last_stack_item,
+        *temp = "", **prev_stack_item,
          *a, *em_str;
 
-  envType environmentType = OTHER;
-  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
-    environmentType = ENV_SMALLMATRIX;
-  } else if (strstr(environment, "\\end{gathered}") != NULL) {
-    environmentType = ENV_GATHERED;
-  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
-    environmentType = ENV_EQNARRAY;
-  } else if (strstr(environment, "\\end{multline") != NULL) {
-    environmentType = ENV_MULTLINE;
-  } else if (strstr(environment, "\\end{alignat") != NULL) {
-    environmentType = ENV_ALIGNAT;
-  } else if (strstr(environment, "\\end{aligned}") != NULL) {
-    environmentType = ENV_ALIGNED;
-  }
-
-  const char *hline = "\\hline", *hdashline = "\\hdashline",
-              *line_separator = "\\\\",
-               *cr_separator = "\\cr",
-                *newline_separator = "\\newline",
-                 *em_pattern_begin = "\\[", *em_pattern_end = "]";
-
-  int rowlines_stack_len = 0, em_offset = 0;
+  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0, insertion_idx = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -53,36 +88,55 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   utarray_new(array_stack, &ut_str_icd);
   utarray_new(row_spacing_stack, &ut_str_icd);
   utarray_new(rowlines_stack, &ut_str_icd);
+  utarray_new(eqn_number_stack, &ut_int_icd);
 
   while (line != NULL) {
     utarray_push_back(array_stack, &line);
 
-    if (strstr(line, until) != NULL) {
+    if (strstr(line, END) != NULL) {
+      envType environment_type = determine_environment(line);
+
       while (utarray_len(array_stack) > 0) {
-        last_stack_item = (char **)utarray_back(array_stack);
+        prev_stack_item = (char **)utarray_back(array_stack);
 
         rowlines_stack_len = utarray_len(rowlines_stack);
-        at_top = strstr(*last_stack_item, from);
+        at_top = strstr(*prev_stack_item, BEGIN);
 
         // we've reached the top, but there looks like there might be some data
-        if (at_top != NULL && strstr(*last_stack_item, line_separator) == NULL && \
-            strstr(*last_stack_item, cr_separator) == NULL && \
-            strstr(*last_stack_item, newline_separator) == NULL) {
-          if (strstr(*last_stack_item, hline) != NULL || strstr(*last_stack_item, hdashline) != NULL) {
+        if (at_top != NULL && strstr(*prev_stack_item, LINE_SEPARATOR) == NULL && \
+            strstr(*prev_stack_item, CR_SEPARATOR) == NULL && \
+            strstr(*prev_stack_item, NEWLINE_SEPARATOR) == NULL) {
+          if (strstr(*prev_stack_item, HLINE) != NULL || strstr(*prev_stack_item, HDASHLINE) != NULL) {
             *encase = TOPENCLOSE;
           }
-
+          // TODO: not super confident this is bulletproof
+          if (rowlines_stack_len == 0) {
+            eqn = identify_eqn_number(environment_type, *prev_stack_item);
+            utarray_push_back(eqn_number_stack, &eqn);
+          }
           break;
         }
 
+        // these environments are a bit...special. they still use
+        // the same line separators, so they tend to mess with "proper"
+        // labelled environments, because they exist within \begin{equation}
+        // if we find one, erase all the stored row info.
+        if (strstr(*prev_stack_item, "\\eqalign") != NULL || \
+        strstr(*prev_stack_item, "\\split") != NULL) {
+          for (i = rowlines_stack_len; i > 1; i--) {
+            utarray_pop_back(rowlines_stack);
+            utarray_pop_back(eqn_number_stack);
+          }
+        }
+
         // looking for a hline/hdashline match
-        if (strstr(*last_stack_item, hline) != NULL) {
+        if (strstr(*prev_stack_item, HLINE) != NULL) {
           if (rowlines_stack_len > 0) {
             utarray_pop_back(rowlines_stack);
           }
           a = "solid";
           utarray_push_back(rowlines_stack, &a);
-        } else if (strstr(*last_stack_item, hdashline) != NULL) {
+        } else if (strstr(*prev_stack_item, HDASHLINE) != NULL) {
           if (rowlines_stack_len > 0) {
             utarray_pop_back(rowlines_stack);
           }
@@ -93,29 +147,32 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
           utarray_push_back(rowlines_stack, &a);
         }
 
+        eqn = identify_eqn_number(environment_type, *prev_stack_item);
+        utarray_push_back(eqn_number_stack, &eqn);
+
         // if there's a line break...
-        if (strstr(*last_stack_item, line_separator) != NULL || \
-            strstr(*last_stack_item, cr_separator) != NULL || \
-            strstr(*last_stack_item, newline_separator) != NULL) {
-          // when an emphasis match, add it...
-          if ( (tok = strstr(*last_stack_item, em_pattern_begin)) != NULL) {
+        if (strstr(*prev_stack_item, LINE_SEPARATOR) != NULL || \
+            strstr(*prev_stack_item, CR_SEPARATOR) != NULL || \
+            strstr(*prev_stack_item, NEWLINE_SEPARATOR) != NULL) {
+          // ...with an emphasis match, add it...
+          if ( (tok = strstr(*prev_stack_item, EM_PATTERN_BEGIN)) != NULL) {
             temp = tok + 2; // skip the first part ("\[")
-            if ( (tok = strstr(temp, em_pattern_end)) != NULL) {
+            if ( (tok = strstr(temp, EM_PATTERN_END)) != NULL) {
               em_offset = (int)(tok - temp);
               char *s = strndup(temp, em_offset);
               utarray_push_back(row_spacing_stack, &s);
               free(s);
             }
           }
-          // otherwise, use the default
+          // ...otherwise, use the default emphasis
           else {
-            if (environmentType == ENV_SMALLMATRIX) {
+            if (environment_type == ENV_SMALLMATRIX) {
               em_str = "0.2em";
-            } else if (environmentType == ENV_GATHERED) {
+            } else if (environment_type == ENV_GATHERED) {
               em_str = "1.0ex";
-            } else if (environmentType == ENV_EQNARRAY || environmentType == ENV_ALIGNAT || environmentType  == ENV_ALIGNED) {
+            } else if (environment_type == ENV_EQNARRAY || environment_type == ENV_ALIGNAT || environment_type == ENV_ALIGNED) {
               em_str = "3pt";
-            } else if (environmentType == ENV_MULTLINE) {
+            } else if (environment_type == ENV_MULTLINE || environment_type == ENV_MULTLINESTAR) {
               em_str = "0.5em";
             } else {
               em_str = "0.5ex";
@@ -133,12 +190,20 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
         }
       }
 
-      if ((rowlines_stack_len != 0 || utarray_len(row_spacing_stack))) {
-        perform_replacement(environment_data_stack, rowlines_stack, environmentType, row_spacing_stack);
+      // some environments only have one label for the whole environment,
+      // rather than a label per row. in that case, jam a label
+      // in the middle.
+      if (environment_type == ENV_GATHER || environment_type == ENV_MULTLINE) {
+        insertion_idx = ceil(utarray_len(eqn_number_stack) / 2);
+        eqn = 1;
+        utarray_insert(eqn_number_stack, &eqn, insertion_idx);
+        utarray_pop_back(eqn_number_stack);
       }
+      perform_replacement(environment_data_stack, rowlines_stack, environment_type, eqn_number_stack, row_spacing_stack);
 
       utarray_clear(row_spacing_stack);
       utarray_clear(rowlines_stack);
+      utarray_clear(eqn_number_stack);
       rowlines_stack_len = 0;
     }
 
@@ -148,16 +213,22 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
   utarray_free(array_stack);
   utarray_free(row_spacing_stack);
   utarray_free(rowlines_stack);
+  utarray_free(eqn_number_stack);
+
   free(dupe_environment);
 }
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environmentType, UT_array *row_spacing_stack)
+void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *eqn_number_stack, UT_array *row_spacing_stack)
 {
   char *a, *attr_rowlines, *attr_rowspacing;
   envdata_t env_data;
 
   // we cut the last char because we can always skip the first row
-  utarray_pop_back(rowlines_stack);
+  if (utarray_len(rowlines_stack) != 0)
+    utarray_pop_back(rowlines_stack);
+
+  if (utarray_len(eqn_number_stack) > 1)
+    utarray_erase(eqn_number_stack, 0, 1);
 
   int line_count = utarray_len(rowlines_stack);
 
@@ -187,9 +258,9 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   utstring_new(s);
   char **p=NULL;
   while ( (p=(char**)utarray_prev(row_spacing_stack,p))) {
-    if (environmentType == ENV_SMALLMATRIX && strcmp(*p, "0.5ex") == 0) {
+    if (environment_type == ENV_SMALLMATRIX && strcmp(*p, "0.5ex") == 0) {
       utstring_printf(s, "%s ", "0.2em");
-    } else if (environmentType == ENV_GATHERED && strcmp(*p, "0.5ex") == 0) {
+    } else if (environment_type == ENV_GATHERED && strcmp(*p, "0.5ex") == 0) {
       utstring_printf(s, "%s ", "1.0ex");
     } else {
       utstring_printf(s, "%s ", *p);
@@ -200,9 +271,9 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   if (strlen(attr_rowspacing) > 0) {
     remove_last_char(attr_rowspacing); // remove the final space
   } else {
-    if (environmentType == ENV_SMALLMATRIX) {
+    if (environment_type == ENV_SMALLMATRIX) {
       attr_rowspacing = "0.2em";
-    } else if (environmentType == ENV_GATHERED) {
+    } else if (environment_type == ENV_GATHERED) {
       attr_rowspacing = "1.0ex";
     } else {
       attr_rowspacing = "0.5ex";
@@ -212,7 +283,8 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   // store pertinent metadata
   env_data.rowspacing = attr_rowspacing;
   env_data.rowlines = attr_rowlines;
-  env_data.environmentType = environmentType;
+  env_data.environment_type = environment_type;
+  env_data.eqn_numbers = eqn_number_stack;
   env_data.line_count = line_count;
 
   utarray_push_back(*environment_data_stack, &env_data);
@@ -339,6 +411,24 @@ const char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
+int fetch_eqn_number(UT_array **environment_data_stack)
+{
+  // if no information was provided, expect nothing
+  if (utarray_len(*environment_data_stack) == 0) {
+    return 0;
+  }
+
+  envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
+  if (utarray_len(row_data_elem->eqn_numbers) == 0) {
+    return 0;
+  }
+
+  int *e = (int*) utarray_back(row_data_elem->eqn_numbers);
+  utarray_pop_back(row_data_elem->eqn_numbers);
+
+  return *e;
+}
+
 float extract_number_from_pxstring(const char * str)
 {
   float dbl;
@@ -434,7 +524,7 @@ envType current_env_type(UT_array **environment_data_stack)
 
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);
 
-  return row_data_elem->environmentType;
+  return row_data_elem->environment_type;
 }
 
 int current_env_line_count(UT_array **environment_data_stack)
