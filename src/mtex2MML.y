@@ -1592,7 +1592,11 @@ mbox: MBOX closedTerm {
 };
 
 bold: BOLD closedTerm {
-  $$ = mtex2MML_copy3("<mstyle mathvariant=\"bold\">", $2, "</mstyle>");
+  /* TODO: stupid hack to get bold mover working */
+  char * b = str_replace($2, "<mi>", "<mi mathvariant=\"bold\">");
+
+  $$ = mtex2MML_copy3("<mstyle mathvariant=\"bold\">", b, "</mstyle>");
+  mtex2MML_free_string(b);
   mtex2MML_free_string($2);
 };
 
