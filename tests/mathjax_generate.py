@@ -66,8 +66,8 @@ skipped_files = "\n * ".join(xtex_files)
 incomplete_files = "\n * ".join(notex_files)
 
 if xtex_count > 0:
-    with open(os.path.join(PATH, "mathjax_summary.txt"), 'w+') as message_file:
-        message_file.write("\nNot doing the following {0} MathJax tests (because they're non-standard):\n\n * {1}".format(notex_count, incomplete_files))
-        message_file.write("\n\nSkipping the following MathJax tests:\n\n * {0}".format(skipped_files))
-        message_file.write("\n\n*** You did {0} and skipped {1}: {2}% coverage ***".format(txt_count, xtex_count, coverage))
-        message_file.write("\n\n*** Tests last fetched: 3e882fd386 ***\n\n")
+    with open(os.path.join(PATH, "mathjax_summary.txt"), 'w') as data:
+        data.write("\nNot doing the following {0} MathJax tests (because they're non-standard):\n\n * {1}".format(notex_count, incomplete_files))
+        data.write("\n\nSkipping the following MathJax tests:\n\n * {0}".format(skipped_files))
+        data.write("\n\n*** You did {0} and skipped {1}: {2}% coverage ***".format(txt_count, xtex_count, coverage))
+        data.write("\n\n*** Tests last fetched: 3e882fd386 ***\n\n")
