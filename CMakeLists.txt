@@ -99,6 +99,7 @@ endif()
 
 # Tests
 IF (BUILD_CLAR)
+  INCLUDE (CTest)
   FIND_PACKAGE(PythonInterp REQUIRED)
 
   SET(CLAR_FIXTURES "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/")
@@ -129,7 +130,8 @@ IF (BUILD_CLAR)
 
   SET_SOURCE_FILES_PROPERTIES(
     ${CLAR_PATH}/clar.c
-    PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/clar.suite)
+    PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/clar.suite
+  )
 
   ADD_EXECUTABLE(mtex2MML_clar ${SRC_H} ${SRC_MTEX2MML} ${SRC_CLAR} ${SRC_TEST}
                 ${BISON_MTEX2MMLPARSER_OUTPUTS}
@@ -141,13 +143,8 @@ IF (BUILD_CLAR)
 
   IF(UNIX)
     # setup valgrind
-    SET(CMAKE_MEMORYCHECK_COMMAND valgrind)
-    SET(CMAKE_MEMORYCHECK_COMMAND_OPTIONS
-       "valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./tests/testrunner  >/dev/null")
-
-    SET(MEMCHECK_COMMAND
-       "${CMAKE_MEMORYCHECK_COMMAND} ${CMAKE_MEMORYCHECK_COMMAND_OPTIONS}")
-    SEPARATE_ARGUMENTS(MEMCHECK_COMMAND)
+    ADD_CUSTOM_TARGET(memcheck
+      valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./mtex2MML_clar  >/dev/null
+    )
   ENDIF()
-
 ENDIF ()
