@@ -54,9 +54,6 @@ FILE(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
 FILE(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 LIST(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
 
-# Since parser.c does not exists yet when cmake is run, mark it as generated
-SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c GENERATED)
-
 SET(PROGRAM "mtex2MML")
 set(PROGRAM_SOURCES
   ${SRC_MTEX2MML}
@@ -96,10 +93,10 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic")
 endif()
 
-
 # Tests
 IF (BUILD_CLAR)
   INCLUDE (CTest)
+  ENABLE_TESTING()
   FIND_PACKAGE(PythonInterp REQUIRED)
 
   SET(CLAR_FIXTURES "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/")
@@ -122,6 +119,20 @@ IF (BUILD_CLAR)
   )
 
   ADD_CUSTOM_COMMAND(
+    OUTPUT ${CLAR_PATH}/mathjax_summary.txt
+    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
+    DEPENDS ${SRC_TEST}
+    WORKING_DIRECTORY ${CLAR_PATH}
+  )
+
+  ADD_CUSTOM_COMMAND(
+    TARGET mtex2MML_clar
+    POST_BUILD
+    COMMAND echo "hello"
+    WORKING_DIRECTORY ${CLAR_PATH}
+  )
+
+  ADD_CUSTOM_COMMAND(
     OUTPUT ${CLAR_PATH}/clar.suite
     COMMAND ${PYTHON_EXECUTABLE} generate.py
     DEPENDS ${SRC_TEST}
@@ -133,12 +144,16 @@ IF (BUILD_CLAR)
     PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/clar.suite
   )
 
+  SET_SOURCE_FILES_PROPERTIES(
+    ${CLAR_PATH}/mathjax.c
+    PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/mathjax_summary.txt
+  )
+
   ADD_EXECUTABLE(mtex2MML_clar ${SRC_H} ${SRC_MTEX2MML} ${SRC_CLAR} ${SRC_TEST}
                 ${BISON_MTEX2MMLPARSER_OUTPUTS}
                 ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
   )
 
-  ENABLE_TESTING()
   ADD_TEST(mtex2MML_clar mtex2MML_clar -v)
 
   IF(UNIX)
