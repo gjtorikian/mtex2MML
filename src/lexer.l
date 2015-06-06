@@ -7,7 +7,7 @@
 
 #define YYSTYPE char *
 
-#include "y.tab.h"
+#include "parser.h"
 #include "mtex2MML.h"
 #include "parse_extras.h"
 #include "string_extras.h"
