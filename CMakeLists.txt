@@ -1,0 +1,153 @@
+# Building (out of source build):
+# > mkdir build && cd build
+# > cmake ..
+# > cmake --build .
+#
+# Testing:
+# > ctest -V
+#
+# Install:
+# > cmake --build . --target install
+
+PROJECT(mtex2MML C)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9 FATAL_ERROR)
+CMAKE_POLICY(SET CMP0015 NEW)
+
+INCLUDE(CheckLibraryExists)
+
+SET(PROJECT_NAME "mtex2MML")
+SET(LIBRARY "libmtex2MML")
+SET(STATICLIBRARY "libmtex2MML_static")
+
+FILE(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/mtex2MML.h" MTEX2MML_HEADER REGEX "^#define MTEX2MML_VERSION \"[^\"]*\"$")
+
+STRING(REGEX REPLACE "^.*MTEX2MML_VERSION \"([0-9]+).*$" "\\1" MTEX2MML_VERSION_MAJOR "${MTEX2MML_HEADER}")
+STRING(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_MINOR  "${MTEX2MML_HEADER}")
+STRING(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_REV "${MTEX2MML_HEADER}")
+SET(MTEX2MML_VERSION_STRING "${MTEX2MML_VERSION_MAJOR}.${MTEX2MML_VERSION_MINOR}.${MTEX2MML_VERSION_REV}")
+
+# Installation paths
+SET(BIN_INSTALL_DIR bin CACHE PATH "Where to install binaries to.")
+SET(LIB_INSTALL_DIR lib CACHE PATH "Where to install libraries to.")
+SET(INCLUDE_INSTALL_DIR include CACHE PATH "Where to install headers to.")
+
+# Build options
+OPTION(BUILD_CLAR      "Build Tests using the Clar suite"    ON)
+
+# Find required dependencies
+INCLUDE_DIRECTORIES(src deps ${CMAKE_CURRENT_BINARY_DIR})
+
+FIND_PACKAGE(BISON)
+FIND_PACKAGE(FLEX)
+
+SET(YYPREFIX mtex2MML_yy)
+
+BISON_TARGET(MTEX2MMLPARSER ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.c COMPILE_FLAGS "-y -v -p ${YYPREFIX}")
+FLEX_TARGET(MTEX2MMLSCANNER ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.c COMPILE_FLAGS "-P ${YYPREFIX}")
+ADD_FLEX_BISON_DEPENDENCY(MTEX2MMLSCANNER MTEX2MMLPARSER)
+
+# Add parser.c to the list of sources
+SET(SRC_MTEX2MML ${SRC_MTEX2MML} ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c)
+
+# Collect sourcefiles
+FILE(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
+FILE(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+LIST(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
+
+# Since parser.c does not exists yet when cmake is run, mark it as generated
+SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c GENERATED)
+
+SET(PROGRAM "mtex2MML")
+set(PROGRAM_SOURCES
+  ${SRC_MTEX2MML}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
+  ${BISON_MTEX2MMLPARSER_OUTPUTS}
+  ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
+)
+ADD_EXECUTABLE(${PROGRAM} ${PROGRAM_SOURCES})
+
+ADD_LIBRARY(${LIBRARY} SHARED
+            ${SRC_H}
+            ${SRC_MTEX2MML}
+            ${BISON_MTEX2MMLPARSER_OUTPUTS}
+            ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
+)
+ADD_LIBRARY(${STATICLIBRARY} STATIC
+            ${SRC_H}
+            ${SRC_MTEX2MML}
+            ${BISON_MTEX2MMLPARSER_OUTPUTS}
+            ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
+)
+
+ADD_DEPENDENCIES(${PROGRAM} MTEX2MMLParser)
+ADD_DEPENDENCIES(${STATICLIBRARY} MTEX2MMLParser)
+ADD_DEPENDENCIES(${LIBRARY} MTEX2MMLParser)
+
+# Always compile with warnings
+if(MSVC)
+  # Force to always compile with W4
+  if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+  else()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+  endif()
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4127 /wd4244 /wd4267 /wd4706 /wd4800 /D_CRT_SECURE_NO_WARNINGS")
+elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic")
+endif()
+
+
+# Tests
+IF (BUILD_CLAR)
+  FIND_PACKAGE(PythonInterp REQUIRED)
+
+  SET(CLAR_FIXTURES "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/")
+  SET(CLAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+  ADD_DEFINITIONS(-DCLAR_FIXTURE_PATH=\"${CLAR_FIXTURES}\")
+	ADD_DEFINITIONS(-DCLAR_TMPDIR=\"libmtex2MML_tests\")
+
+  INCLUDE_DIRECTORIES(${CLAR_PATH})
+  FILE(GLOB_RECURSE SRC_TEST ${CLAR_PATH}/*/*.c ${CLAR_PATH}/*/*.h)
+  SET(SRC_CLAR "${CLAR_PATH}/main.c" "${CLAR_PATH}/clar.c"
+    "${CLAR_PATH}/array.c"
+    "${CLAR_PATH}/basic.c"
+    "${CLAR_PATH}/cornercases.c"
+    "${CLAR_PATH}/env.c"
+    "${CLAR_PATH}/functions.c"
+    "${CLAR_PATH}/helpers.c"
+    "${CLAR_PATH}/maliciousness.c"
+    "${CLAR_PATH}/mathjax.c"
+    "${CLAR_PATH}/numbered_equations.c"
+  )
+
+  ADD_CUSTOM_COMMAND(
+    OUTPUT ${CLAR_PATH}/clar.suite
+    COMMAND ${PYTHON_EXECUTABLE} generate.py
+    DEPENDS ${SRC_TEST}
+    WORKING_DIRECTORY ${CLAR_PATH}
+  )
+
+  SET_SOURCE_FILES_PROPERTIES(
+    ${CLAR_PATH}/clar.c
+    PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/clar.suite)
+
+  ADD_EXECUTABLE(mtex2MML_clar ${SRC_H} ${SRC_MTEX2MML} ${SRC_CLAR} ${SRC_TEST}
+                ${BISON_MTEX2MMLPARSER_OUTPUTS}
+                ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
+  )
+
+  ENABLE_TESTING()
+  ADD_TEST(mtex2MML_clar mtex2MML_clar -v)
+
+  IF(UNIX)
+    # setup valgrind
+    SET(CMAKE_MEMORYCHECK_COMMAND valgrind)
+    SET(CMAKE_MEMORYCHECK_COMMAND_OPTIONS
+       "valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./tests/testrunner  >/dev/null")
+
+    SET(MEMCHECK_COMMAND
+       "${CMAKE_MEMORYCHECK_COMMAND} ${CMAKE_MEMORYCHECK_COMMAND_OPTIONS}")
+    SEPARATE_ARGUMENTS(MEMCHECK_COMMAND)
+  ENDIF()
+
+ENDIF ()
