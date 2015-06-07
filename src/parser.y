@@ -3011,8 +3011,8 @@ mathenv: BEGINENV EQUATION tableRowList ENDENV EQUATION {
   mtex2MML_free_string(row_data);
 }
 | BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
-  const char *pipe_chars = vertical_pipe_extract($5);
-  const char *column_align = remove_excess_pipe_chars($5);
+  char *pipe_chars = vertical_pipe_extract($5);
+  char *column_align = remove_excess_pipe_chars($5);
   char *row_data = combine_row_data(&environment_data_stack);
 
   char * s1 = mtex2MML_copy3("<mtable displaystyle=\"false\" align=\"", $3, "\" ");
@@ -3433,7 +3433,7 @@ const char *format_additions(const char *buffer)
   encaseType *encase_pointer = NONE;
   line_counter = 1;
   env_replacements(&environment_data_stack, &encase_pointer, buffer);
-  encase = encase_pointer;
+  encase = (encaseType) encase_pointer;
 }
 
 void free_additions()

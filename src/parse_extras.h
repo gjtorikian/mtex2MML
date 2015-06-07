@@ -61,36 +61,36 @@ extern int identify_eqn_number(envType environment_type, char *line);
 extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
-extern const char *vertical_pipe_extract(const char *string);
+extern char *vertical_pipe_extract(char *string);
 
 // removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--
 // we need to remove the "s" and "d" characters
-extern const char *remove_excess_pipe_chars(const char *string);
+extern char *remove_excess_pipe_chars(char *string);
 
 // return the proper rowlines information
-extern const char *combine_row_data(UT_array **environment_data_stack);
+extern char *combine_row_data(UT_array **environment_data_stack);
 
 // return the has_eqn_number value of the last row
 extern int fetch_eqn_number(UT_array **environment_data_stack);
 
 // given a pixel string, retrieve the numeric portion from it
-extern float extract_number_from_pxstring(const char * str);
+extern float extract_number_from_pxstring(char * str);
 
 // given a pixel string, retrieve the pixel type portion from it
-extern const char *extract_string_from_pxstring(const char * str);
+extern char *extract_string_from_pxstring(char * str);
 
 // given a number, return it as an em
-extern const char * dbl2em(const char *str);
+extern char *dbl2em(char *str);
 
 // given a number, return it as a root position
 // taken straight from MathJax
-extern const char * root_pos_to_em(const char * str);
+extern char *root_pos_to_em(char * str);
 
 // given a number and a pixel string, return the doubled number
-extern const char * double_pixel(float f, char *pixel);
+extern char *double_pixel(float f, char *pixel);
 
 // construct a skew sequence
-extern const char * implement_skew(char *base_str, char *em_skew, char *pattern);
+extern char *implement_skew(char *base_str, char *em_skew, char *pattern);
 
 // get the environment type of the top-most item
 extern envType current_env_type(UT_array **environment_data_stack);

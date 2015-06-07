@@ -293,7 +293,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   utstring_free(s);
 }
 
-const char *vertical_pipe_extract(const char *string)
+char *vertical_pipe_extract(char *string)
 {
   char *dupe = strdup(string);
   UT_string *columnlines, *border;
@@ -356,7 +356,7 @@ const char *vertical_pipe_extract(const char *string)
   return attr_columnlines;
 }
 
-const char *remove_excess_pipe_chars(const char *string)
+char *remove_excess_pipe_chars(char *string)
 {
   UT_string *columnalign;
   utstring_new(columnalign);
@@ -383,7 +383,7 @@ const char *remove_excess_pipe_chars(const char *string)
   return attr_columnalign;
 }
 
-const char *combine_row_data(UT_array **environment_data_stack)
+char *combine_row_data(UT_array **environment_data_stack)
 {
   // if no information was provided, give a standard sizing
   if (utarray_len(*environment_data_stack) == 0) {
@@ -430,7 +430,7 @@ int fetch_eqn_number(UT_array **environment_data_stack)
   return *e;
 }
 
-float extract_number_from_pxstring(const char * str)
+float extract_number_from_pxstring(char * str)
 {
   float dbl;
   int match = 0;
@@ -445,7 +445,7 @@ float extract_number_from_pxstring(const char * str)
   return (float) match;
 }
 
-const char *extract_string_from_pxstring(const char * str)
+char *extract_string_from_pxstring(char * str)
 {
   char *pixel;
   float dbl;
@@ -454,7 +454,7 @@ const char *extract_string_from_pxstring(const char * str)
   return pixel;
 }
 
-const char * dbl2em(const char *str)
+char * dbl2em(char *str)
 {
   UT_string *em;
   utstring_new(em);
@@ -470,7 +470,7 @@ const char * dbl2em(const char *str)
   return em_str;
 }
 
-const char * double_pixel(float f, char *pixel)
+char * double_pixel(float f, char *pixel)
 {
   UT_string *em;
   utstring_new(em);
@@ -484,7 +484,7 @@ const char * double_pixel(float f, char *pixel)
   return em_str;
 }
 
-const char * implement_skew(char *base_str, char *em_skew, char *pattern)
+char * implement_skew(char *base_str, char *em_skew, char *pattern)
 {
   UT_string *skew_mathml;
   utstring_new(skew_mathml);
@@ -501,7 +501,7 @@ const char * implement_skew(char *base_str, char *em_skew, char *pattern)
   return skew_mathml_str;
 }
 
-const char * root_pos_to_em(const char * str)
+char * root_pos_to_em(char * str)
 {
   UT_string *em;
   utstring_new(em);
