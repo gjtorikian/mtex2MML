@@ -76,7 +76,7 @@ struct css_colors *colors = NULL;
 #ifdef mtex2MML_CAPTURE
     static char * mtex2MML_output_string = "" ;
 
-    const char * mtex2MML_output ()
+    char * mtex2MML_output ()
     {
         char * copy = (char *) malloc((mtex2MML_output_string ? strlen(mtex2MML_output_string) : 0) + 1);
         if (copy)

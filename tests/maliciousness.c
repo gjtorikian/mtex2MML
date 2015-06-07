@@ -5,7 +5,7 @@
 
 static char *fixture_tex;
 static char *fixture_mml;
-static const char *result;
+static char *result;
 
 void test_maliciousness__initialize(void)
 {
@@ -20,6 +20,10 @@ void test_maliciousness__cleanup(void)
 
   if (fixture_mml != NULL) {
     free(fixture_mml);
+  }
+
+  if (result != NULL) {
+    free(result);
   }
 }
 
@@ -39,7 +43,6 @@ void test_maliciousness__excess_parsing(void)
   result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
 
   cl_assert(result == NULL);
-  result = malloc(1);
 }
 
 void test_maliciousness__unknown_command_with_parse(void)
@@ -51,6 +54,7 @@ void test_maliciousness__unknown_command_with_parse(void)
   char *s1 = "$\\not__thisisnotreal$";
   result = mtex2MML_parse(s1, strlen(s1));
   cl_assert(result == NULL);
+  free(result);
 
   char *s2 = "$x$";
   result = mtex2MML_parse(s2, strlen(s2));
@@ -68,6 +72,7 @@ void test_maliciousness__unknown_command_with_filter(void)
   result = mtex2MML_output();
   cl_assert(status1 == 1);
   cl_assert(strlen(result) == 0);
+  free(result);
 
   char *s2 = "$x$";
   int status2 = mtex2MML_filter(s2, strlen(s2));

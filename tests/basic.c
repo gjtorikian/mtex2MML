@@ -6,7 +6,7 @@
 
 static char *fixture_tex;
 static char *fixture_mml;
-static const char *result;
+static char *result;
 
 void test_basic__initialize(void)
 {
@@ -21,6 +21,10 @@ void test_basic__cleanup(void)
 
   if (fixture_mml != NULL) {
     free(fixture_mml);
+  }
+
+  if (result != NULL) {
+    free(result);
   }
 }
 

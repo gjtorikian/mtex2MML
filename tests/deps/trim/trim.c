@@ -2,9 +2,8 @@
 #include <ctype.h>
 
 char *
-trim(const char *s)
+trim(char *str)
 {
-  char *str = strdup(s);
   char *end;
 
   // ltrim
