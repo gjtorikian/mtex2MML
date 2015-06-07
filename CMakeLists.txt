@@ -9,13 +9,20 @@
 # Install:
 # > cmake --build . --target install
 
-project(mtex2MML C)
+#
+#
+#   General project setup
+#
+#
+project(mtex2MML)
+enable_language(C)
 cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 cmake_policy(SET CMP0015 NEW)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/astyle.cmake")
 
 include(CheckLibraryExists)
+include(GenerateExportHeader)
 
 set(PROJECT_NAME "mtex2MML")
 set(LIBRARY "libmtex2MML")
@@ -28,34 +35,57 @@ string(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML
 string(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_REV "${MTEX2MML_HEADER}")
 set(MTEX2MML_VERSION_STRING "${MTEX2MML_VERSION_MAJOR}.${MTEX2MML_VERSION_MINOR}.${MTEX2MML_VERSION_REV}")
 
-# Installation paths
+#
+#
+#   Installation paths
+#
+#
 set(BIN_INSTALL_DIR bin CACHE PATH "Where to install binaries to.")
 set(LIB_INSTALL_DIR lib CACHE PATH "Where to install libraries to.")
 set(INCLUDE_INSTALL_DIR include CACHE PATH "Where to install headers to.")
 
-# Build options
+#
+#
+#   Build options
+#
+#
 option(BUILD_CLAR      "Build Tests using the Clar suite"    ON)
 
-# Find required dependencies
+#
+#
+#   Find required dependencies
+#
+#
 include_directories(src deps ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 find_library(M_LIB m) # only necessary for true *nix systems
 
+#
+#
+#   Configure Bison/Flex
+#
+#
 set(YYPREFIX mtex2MML_yy)
 
 bison_target(MTEX2MMLPARSER ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.c COMPILE_FLAGS "-y -v -p ${YYPREFIX}")
 flex_target(MTEX2MMLSCANNER ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.c COMPILE_FLAGS "-P ${YYPREFIX}")
 add_flex_bison_dependency(MTEX2MMLSCANNER MTEX2MMLPARSER)
 
-# Add parser.c to the list of sources
-set(SRC_MTEX2MML ${SRC_MTEX2MML} ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c)
+#
+#
+#   Define targets
+#
+#
 
-# Collect sourcefiles
+# Collect sourcefiles, exclude main.c from libraries
 file(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
 file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 list(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
+
+# Add parser.c to the list of sources
+# set(SRC_MTEX2MML ${SRC_MTEX2MML} ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c)
 
 set(PROGRAM "mtex2MML")
 set(PROGRAM_SOURCES
@@ -64,8 +94,8 @@ set(PROGRAM_SOURCES
   ${BISON_MTEX2MMLPARSER_OUTPUTS}
   ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
 )
-add_executable(${PROGRAM} ${PROGRAM_SOURCES})
 
+add_executable(${PROGRAM} ${PROGRAM_SOURCES})
 add_library(${LIBRARY} SHARED
             ${SRC_H}
             ${SRC_MTEX2MML}
@@ -78,10 +108,10 @@ add_library(${STATICLIBRARY} STATIC
             ${BISON_MTEX2MMLPARSER_OUTPUTS}
             ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
 )
-
-add_dependencies(${PROGRAM} MTEX2MMLParser)
-add_dependencies(${STATICLIBRARY} MTEX2MMLParser)
-add_dependencies(${LIBRARY} MTEX2MMLParser)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/libmtex2MML.pc.in
+${CMAKE_CURRENT_BINARY_DIR}/libmtex2MML.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libmtex2MML.pc
+  DESTINATION lib/pkgconfig)
 
 if(UNIX AND NOT APPLE AND NOT CYGWIN)
   target_link_libraries(${PROGRAM} ${M_LIB})
@@ -102,7 +132,47 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic")
 endif()
 
-# Tests
+set_target_properties(${LIBRARY} PROPERTIES
+  OUTPUT_NAME "mtex2MML"
+  SOVERSION ${MTEX2MML_VERSION_STRING}
+  VERSION ${MTEX2MML_VERSION_STRING}
+)
+
+#
+#
+#   Rename outputs
+#
+#
+if (MSVC)
+  set_target_properties(${STATICLIBRARY} PROPERTIES
+    OUTPUT_NAME "mtex2MML_static"
+    VERSION ${MTEX2MML_VERSION_STRING}
+  )
+else()
+  set_target_properties(${STATICLIBRARY} PROPERTIES
+    OUTPUT_NAME "mtex2MML"
+    VERSION ${MTEX2MML_VERSION_STRING}
+  )
+endif(MSVC)
+
+set_property(TARGET ${LIBRARY}
+  APPEND PROPERTY MACOSX_RPATH true
+)
+
+generate_export_header(${LIBRARY}
+    BASE_NAME ${PROJECT_NAME})
+
+if (MSVC)
+  set_property(TARGET ${PROGRAM}
+    APPEND PROPERTY LINK_FLAGS /INCREMENTAL:NO
+  )
+endif(MSVC)
+
+#
+#
+#   Tests
+#
+#
 if (BUILD_CLAR)
   include (CTest)
   enable_testing()
