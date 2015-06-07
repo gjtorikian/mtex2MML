@@ -15,7 +15,7 @@ const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
              *CR_SEPARATOR = "\\cr",
               *NEWLINE_SEPARATOR = "\\newline",
                *EM_PATTERN_BEGIN = "\\[", *EM_PATTERN_END = "]",
-               *NOTAG = "\\notag", *NONUMBER = "\\nonumber";
+                *NOTAG = "\\notag", *NONUMBER = "\\nonumber";
 
 int determine_environment(const char *environment)
 {
@@ -52,13 +52,12 @@ int identify_eqn_number(envType environment_type, char *line)
       environment_type == ENV_ALIGN || \
       environment_type == ENV_ALIGNAT ||
       environment_type == ENV_EQNARRAY) {
-        if (line == NULL)
-        return 1;
-        else
-     return !(strstr(line, NOTAG) != NULL || \
-             strstr(line, NONUMBER) != NULL);
-  }
-  else {
+    if (line == NULL) {
+      return 1;
+    } else
+      return !(strstr(line, NOTAG) != NULL || \
+               strstr(line, NONUMBER) != NULL);
+  } else {
     return 0;
   }
 }
@@ -122,7 +121,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType * encase, co
         // labelled environments, because they exist within \begin{equation}
         // if we find one, erase all the stored row info.
         if (strstr(*prev_stack_item, "\\eqalign") != NULL || \
-        strstr(*prev_stack_item, "\\split") != NULL) {
+            strstr(*prev_stack_item, "\\split") != NULL) {
           for (i = rowlines_stack_len; i > 1; i--) {
             utarray_pop_back(rowlines_stack);
             utarray_pop_back(eqn_number_stack);
@@ -224,11 +223,13 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   envdata_t env_data;
 
   // we cut the last char because we can always skip the first row
-  if (utarray_len(rowlines_stack) != 0)
+  if (utarray_len(rowlines_stack) != 0) {
     utarray_pop_back(rowlines_stack);
+  }
 
-  if (utarray_len(eqn_number_stack) > 1)
+  if (utarray_len(eqn_number_stack) > 1) {
     utarray_erase(eqn_number_stack, 0, 1);
+  }
 
   int line_count = utarray_len(rowlines_stack);
 
