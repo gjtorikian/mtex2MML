@@ -41,7 +41,7 @@ include_directories(src deps ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
-find_library(M_LIB m REQUIRED)
+find_library(M_LIB m) # only necessary for true *nix systems
 
 set(YYPREFIX mtex2MML_yy)
 
@@ -83,9 +83,11 @@ add_dependencies(${PROGRAM} MTEX2MMLParser)
 add_dependencies(${STATICLIBRARY} MTEX2MMLParser)
 add_dependencies(${LIBRARY} MTEX2MMLParser)
 
-target_link_libraries(${PROGRAM} ${M_LIB})
-target_link_libraries(${STATICLIBRARY} ${M_LIB})
-target_link_libraries(${LIBRARY} ${M_LIB})
+if(UNIX AND NOT APPLE AND NOT CYGWIN)
+  target_link_libraries(${PROGRAM} ${M_LIB})
+  target_link_libraries(${STATICLIBRARY} ${M_LIB})
+  target_link_libraries(${LIBRARY} ${M_LIB})
+endif()
 
 # Always compile with warnings
 if(MSVC)
@@ -151,7 +153,9 @@ if (BUILD_CLAR)
                 ${BISON_MTEX2MMLPARSER_OUTPUTS}
                 ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
   )
-  target_link_libraries(mtex2MML_clar ${M_LIB})
+  if(UNIX AND NOT APPLE AND NOT CYGWIN)
+    target_link_libraries(mtex2MML_clar ${M_LIB})
+  endif()
 
   add_test(mtex2MML_clar mtex2MML_clar -v)
 
