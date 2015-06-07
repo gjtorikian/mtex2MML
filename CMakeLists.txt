@@ -84,9 +84,6 @@ file(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
 file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 list(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
 
-# Add parser.c to the list of sources
-# set(SRC_MTEX2MML ${SRC_MTEX2MML} ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c)
-
 set(PROGRAM "mtex2MML")
 set(PROGRAM_SOURCES
   ${SRC_MTEX2MML}
