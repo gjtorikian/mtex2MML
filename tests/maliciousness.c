@@ -1,10 +1,11 @@
 #include "clar.h"
 #include "clar_test.h"
 #include <stdio.h>
+#include <string.h>
 
 static char *fixture_tex;
 static char *fixture_mml;
-static char *result;
+static const char *result;
 
 void test_maliciousness__initialize(void)
 {
@@ -19,10 +20,6 @@ void test_maliciousness__cleanup(void)
 
   if (fixture_mml != NULL) {
     free(fixture_mml);
-  }
-
-  if (result != NULL) {
-    free(result);
   }
 }
 
@@ -71,7 +68,6 @@ void test_maliciousness__unknown_command_with_filter(void)
   result = mtex2MML_output();
   cl_assert(status1 == 1);
   cl_assert(strlen(result) == 0);
-  free(result);
 
   char *s2 = "$x$";
   int status2 = mtex2MML_filter(s2, strlen(s2));

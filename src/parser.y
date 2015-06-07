@@ -3423,14 +3423,14 @@ void envdata_dtor(void *_elt)
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
-const char *format_additions(const char *buffer)
+void format_additions(const char *buffer)
 {
   utarray_new(environment_data_stack, &envdata_icd);
 
   if (colors == NULL)
     mtex2MML_create_css_colors(&colors);
 
-  encaseType *encase_pointer = NONE;
+  encaseType *encase_pointer = (encaseType *)NONE;
   line_counter = 1;
   env_replacements(&environment_data_stack, &encase_pointer, buffer);
   encase = (encaseType) encase_pointer;
@@ -3512,12 +3512,12 @@ static void mtex2MML_keep_error (const char * msg)
 
 int mtex2MML_html_filter (const char * buffer, unsigned long length)
 {
-  mtex2MML_do_html_filter (buffer, length, 0);
+  return mtex2MML_do_html_filter (buffer, length, 0);
 }
 
 int mtex2MML_strict_html_filter (const char * buffer, unsigned long length)
 {
-  mtex2MML_do_html_filter (buffer, length, 1);
+  return mtex2MML_do_html_filter (buffer, length, 1);
 }
 
 int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup)

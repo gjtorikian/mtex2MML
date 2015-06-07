@@ -2,6 +2,6 @@
 #define __TRIM__
 
 char *
-trim(char *str);
+trim(const char *s);
 
 #endif /*__TRIM__*/

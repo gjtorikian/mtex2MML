@@ -1,6 +1,10 @@
+#include <string.h>
+#include <ctype.h>
+
 char *
-trim(char *str)
+trim(const char *s)
 {
+  char *str = strdup(s);
   char *end;
 
   // ltrim

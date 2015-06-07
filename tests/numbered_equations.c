@@ -21,10 +21,6 @@ void test_numbered_equations__cleanup(void)
   if (fixture_mml != NULL) {
     free(fixture_mml);
   }
-
-  if (result != NULL) {
-    free(result);
-  }
 }
 
 void test_numbered_equations__single_equation(void)

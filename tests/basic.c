@@ -2,6 +2,7 @@
 #include "clar_test.h"
 #include "deps/trim/trim.h"
 #include <stdio.h>
+#include <string.h>
 
 static char *fixture_tex;
 static char *fixture_mml;
@@ -20,10 +21,6 @@ void test_basic__cleanup(void)
 
   if (fixture_mml != NULL) {
     free(fixture_mml);
-  }
-
-  if (result != NULL) {
-    free(result);
   }
 }
 

@@ -106,7 +106,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType **encase, co
             strstr(*prev_stack_item, CR_SEPARATOR) == NULL && \
             strstr(*prev_stack_item, NEWLINE_SEPARATOR) == NULL) {
           if (strstr(*prev_stack_item, HLINE) != NULL || strstr(*prev_stack_item, HDASHLINE) != NULL) {
-            *encase = TOPENCLOSE;
+            *encase = (encaseType*)TOPENCLOSE;
           }
           // TODO: not super confident this is bulletproof
           if (rowlines_stack_len == 0) {
