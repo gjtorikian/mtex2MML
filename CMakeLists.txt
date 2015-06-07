@@ -158,6 +158,7 @@ IF (BUILD_CLAR)
                 ${BISON_MTEX2MMLPARSER_OUTPUTS}
                 ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
   )
+  TARGET_LINK_LIBRARIES(mtex2MML_clar ${M_LIB})
 
   ADD_TEST(mtex2MML_clar mtex2MML_clar -v)
 
