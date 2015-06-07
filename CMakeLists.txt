@@ -186,6 +186,7 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/array.c"
     "${CLAR_PATH}/basic.c"
     "${CLAR_PATH}/cornercases.c"
+    "${CLAR_PATH}/delimiters.c"
     "${CLAR_PATH}/env.c"
     "${CLAR_PATH}/functions.c"
     "${CLAR_PATH}/helpers.c"
