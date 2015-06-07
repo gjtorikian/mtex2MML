@@ -1,5 +1,5 @@
-#ifndef PARSE_EXTRAS_H
-#define PARSE_EXTRAS_H
+#ifndef PARSE_H
+#define PARSE_H
 
 #include "../deps/uthash/uthash.h"
 #include "../deps/uthash/utarray.h"
@@ -52,54 +52,54 @@ The env_replacements function will push every line onto a stack. When an \end
 is detected, it starts popping off the stack until it reaches the corresponding
 \begin. It then modifies that stack with attribute strings, an arrangement of
 the symbols encountered while popping lines off. */
-extern void env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment);
+extern void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment);
 
-extern int determine_environment(const char *environment);
+extern int mtex2MML_determine_environment(const char *environment);
 
-extern int identify_eqn_number(envType environment_type, char *line);
+extern int mtex2MML_identify_eqn_number(envType environment_type, char *line);
 
-extern void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
+extern void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
 
 // determines the column border arrangement from the array environment definition (c|cc|c...)
-extern char *vertical_pipe_extract(char *string);
+extern char *mtex2MML_vertical_pipe_extract(char *string);
 
 // removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--
 // we need to remove the "s" and "d" characters
-extern char *remove_excess_pipe_chars(char *string);
+extern char *mtex2MML_remove_excess_pipe_chars(char *string);
 
 // return the proper rowlines information
-extern char *combine_row_data(UT_array **environment_data_stack);
+extern char *mtex2MML_combine_row_data(UT_array **environment_data_stack);
 
 // return the has_eqn_number value of the last row
-extern int fetch_eqn_number(UT_array **environment_data_stack);
+extern int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack);
 
 // given a pixel string, retrieve the numeric portion from it
-extern float extract_number_from_pxstring(char * str);
+extern float mtex2MML_extract_number_from_pxstring(char * str);
 
 // given a pixel string, retrieve the pixel type portion from it
-extern char *extract_string_from_pxstring(char * str);
+extern char *mtex2MML_extract_string_from_pxstring(char * str);
 
 // given a number, return it as an em
-extern char *dbl2em(char *str);
+extern char *mtex2MML_dbl2em(char *str);
 
 // given a number, return it as a root position
 // taken straight from MathJax
-extern char *root_pos_to_em(char * str);
+extern char *mtex2MML_root_pos_to_em(char * str);
 
 // given a number and a pixel string, return the doubled number
-extern char *double_pixel(float f, char *pixel);
+extern char *mtex2MML_double_pixel(float f, char *pixel);
 
 // construct a skew sequence
-extern char *implement_skew(char *base_str, char *em_skew, char *pattern);
+extern char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern);
 
 // get the environment type of the top-most item
-extern envType current_env_type(UT_array **environment_data_stack);
+extern envType mtex2MML_current_env_type(UT_array **environment_data_stack);
 
 // get the line count of the top-most item
-extern int current_env_line_count(UT_array **environment_data_stack);
+extern int mtex2MML_current_env_line_count(UT_array **environment_data_stack);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* ! PARSE_EXTRAS_H */
+#endif /* ! PARSE_H */

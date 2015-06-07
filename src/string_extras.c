@@ -3,19 +3,19 @@
 #include <string.h>
 #include "string_extras.h"
 
-void remove_last_char(char* str)
+void mtex2MML_remove_last_char(char* str)
 {
   size_t len = strlen(str);
   str[len - 1] = '\0';
 }
 
-void remove_first_char(char* str)
+void mtex2MML_remove_first_char(char* str)
 {
   size_t len = strlen(str);
   memmove(str, str + 1, len);
 }
 
-char * str_replace (char *string, const char *substr, const char *replacement)
+char * mtex2MML_str_replace (char *string, const char *substr, const char *replacement)
 {
   char *tok = NULL;
   char *newstr = NULL;

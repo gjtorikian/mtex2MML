@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "parse_extras.h"
+#include "parse.h"
 #include "string_extras.h"
 
 static const char *BEGIN = "\\begin";
@@ -17,7 +17,7 @@ const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
                *EM_PATTERN_BEGIN = "\\[", *EM_PATTERN_END = "]",
                 *NOTAG = "\\notag", *NONUMBER = "\\nonumber";
 
-int determine_environment(const char *environment)
+int mtex2MML_determine_environment(const char *environment)
 {
   if (strstr(environment, "\\end{smallmatrix}") != NULL) {
     return ENV_SMALLMATRIX;
@@ -44,7 +44,7 @@ int determine_environment(const char *environment)
   return OTHER;
 }
 
-int identify_eqn_number(envType environment_type, char *line)
+int mtex2MML_identify_eqn_number(envType environment_type, char *line)
 {
   // some environments have labelling for every row.
   // supress it if it has a \notag or \nonumber
@@ -62,7 +62,7 @@ int identify_eqn_number(envType environment_type, char *line)
   }
 }
 
-void env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
+void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
 {
   // if not an environment, don't bother going on
   if ((strstr(environment, BEGIN) == NULL && strstr(environment, END) == NULL) || strstr(environment, BEGIN_SVG)) {
@@ -93,7 +93,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType **encase, co
     utarray_push_back(array_stack, &line);
 
     if (strstr(line, END) != NULL) {
-      envType environment_type = determine_environment(line);
+      envType environment_type = mtex2MML_determine_environment(line);
 
       while (utarray_len(array_stack) > 0) {
         prev_stack_item = (char **)utarray_back(array_stack);
@@ -110,7 +110,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType **encase, co
           }
           // TODO: not super confident this is bulletproof
           if (rowlines_stack_len == 0) {
-            eqn = identify_eqn_number(environment_type, *prev_stack_item);
+            eqn = mtex2MML_identify_eqn_number(environment_type, *prev_stack_item);
             utarray_push_back(eqn_number_stack, &eqn);
           }
           break;
@@ -146,7 +146,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType **encase, co
           utarray_push_back(rowlines_stack, &a);
         }
 
-        eqn = identify_eqn_number(environment_type, *prev_stack_item);
+        eqn = mtex2MML_identify_eqn_number(environment_type, *prev_stack_item);
         utarray_push_back(eqn_number_stack, &eqn);
 
         // if there's a line break...
@@ -198,7 +198,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType **encase, co
         utarray_insert(eqn_number_stack, &eqn, insertion_idx);
         utarray_pop_back(eqn_number_stack);
       }
-      perform_replacement(environment_data_stack, rowlines_stack, environment_type, eqn_number_stack, row_spacing_stack);
+      mtex2MML_perform_replacement(environment_data_stack, rowlines_stack, environment_type, eqn_number_stack, row_spacing_stack);
 
       utarray_clear(row_spacing_stack);
       utarray_clear(rowlines_stack);
@@ -217,7 +217,7 @@ void env_replacements(UT_array **environment_data_stack, encaseType **encase, co
   free(dupe_environment);
 }
 
-void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *eqn_number_stack, UT_array *row_spacing_stack)
+void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *eqn_number_stack, UT_array *row_spacing_stack)
 {
   char *a, *attr_rowlines, *attr_rowspacing;
   envdata_t env_data;
@@ -251,7 +251,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
 
   attr_rowlines = utstring_body(l);
   if (strlen(attr_rowlines) > 0) {
-    remove_last_char(attr_rowlines); // remove the final space
+    mtex2MML_remove_last_char(attr_rowlines); // remove the final space
   }
 
   // given the row_spacing values, construct an attribute list (separated by spaces)
@@ -270,7 +270,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
 
   attr_rowspacing = utstring_body(s);
   if (strlen(attr_rowspacing) > 0) {
-    remove_last_char(attr_rowspacing); // remove the final space
+    mtex2MML_remove_last_char(attr_rowspacing); // remove the final space
   } else {
     if (environment_type == ENV_SMALLMATRIX) {
       attr_rowspacing = "0.2em";
@@ -293,7 +293,7 @@ void perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_s
   utstring_free(s);
 }
 
-char *vertical_pipe_extract(char *string)
+char *mtex2MML_vertical_pipe_extract(char *string)
 {
   char *dupe = strdup(string);
   UT_string *columnlines, *border;
@@ -306,10 +306,10 @@ char *vertical_pipe_extract(char *string)
   // the first character (if it exists) determines the frame border
   if (strncmp(dupe, "s", 1) == 0) {
     utstring_printf(columnlines, "%s", "frame=\"solid\" columnlines=\"");
-    remove_first_char(dupe);
+    mtex2MML_remove_first_char(dupe);
   } else if (strncmp(dupe, "d", 1) == 0) {
     utstring_printf(columnlines, "%s", "frame=\"dashed\" columnlines=\"");
-    remove_first_char(dupe);
+    mtex2MML_remove_first_char(dupe);
   } else {
     utstring_printf(columnlines, "%s", "columnlines=\"");
   }
@@ -339,7 +339,7 @@ char *vertical_pipe_extract(char *string)
 
   attr_border = utstring_body(border);
   if (strlen(attr_border) > 0) {
-    remove_last_char(attr_border); // remove the final space
+    mtex2MML_remove_last_char(attr_border); // remove the final space
   }
   utstring_printf(columnlines, "%s", attr_border);
 
@@ -356,7 +356,7 @@ char *vertical_pipe_extract(char *string)
   return attr_columnlines;
 }
 
-char *remove_excess_pipe_chars(char *string)
+char *mtex2MML_remove_excess_pipe_chars(char *string)
 {
   UT_string *columnalign;
   utstring_new(columnalign);
@@ -377,13 +377,13 @@ char *remove_excess_pipe_chars(char *string)
   utstring_free(columnalign);
 
   if (strlen(attr_columnalign) > 0) {
-    remove_last_char(attr_columnalign); // remove the final space
+    mtex2MML_remove_last_char(attr_columnalign); // remove the final space
   }
 
   return attr_columnalign;
 }
 
-char *combine_row_data(UT_array **environment_data_stack)
+char *mtex2MML_combine_row_data(UT_array **environment_data_stack)
 {
   // if no information was provided, give a standard sizing
   if (utarray_len(*environment_data_stack) == 0) {
@@ -412,7 +412,7 @@ char *combine_row_data(UT_array **environment_data_stack)
   return row_attr;
 }
 
-int fetch_eqn_number(UT_array **environment_data_stack)
+int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack)
 {
   // if no information was provided, expect nothing
   if (utarray_len(*environment_data_stack) == 0) {
@@ -430,7 +430,7 @@ int fetch_eqn_number(UT_array **environment_data_stack)
   return *e;
 }
 
-float extract_number_from_pxstring(char * str)
+float mtex2MML_extract_number_from_pxstring(char * str)
 {
   float dbl;
   int match = 0;
@@ -445,7 +445,7 @@ float extract_number_from_pxstring(char * str)
   return (float) match;
 }
 
-char *extract_string_from_pxstring(char * str)
+char *mtex2MML_extract_string_from_pxstring(char * str)
 {
   char *pixel;
   float dbl;
@@ -454,12 +454,12 @@ char *extract_string_from_pxstring(char * str)
   return pixel;
 }
 
-char * dbl2em(char *str)
+char *mtex2MML_dbl2em(char *str)
 {
   UT_string *em;
   utstring_new(em);
 
-  float dbl = extract_number_from_pxstring(str);
+  float dbl = mtex2MML_extract_number_from_pxstring(str);
   dbl *= 0.056;
 
   utstring_printf(em, "%.3fem", dbl);
@@ -470,7 +470,7 @@ char * dbl2em(char *str)
   return em_str;
 }
 
-char * double_pixel(float f, char *pixel)
+char *mtex2MML_double_pixel(float f, char *pixel)
 {
   UT_string *em;
   utstring_new(em);
@@ -484,7 +484,7 @@ char * double_pixel(float f, char *pixel)
   return em_str;
 }
 
-char * implement_skew(char *base_str, char *em_skew, char *pattern)
+char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern)
 {
   UT_string *skew_mathml;
   utstring_new(skew_mathml);
@@ -494,19 +494,19 @@ char * implement_skew(char *base_str, char *em_skew, char *pattern)
   utstring_printf(skew_mathml, "%s%s%s", pattern, "</mo></mover></mrow><mspace width=\"-", em_skew);
   utstring_printf(skew_mathml, "%s", "\" /></mrow><mrow></mrow></mrow>");
 
-  char * skew_mathml_str = strdup(utstring_body(skew_mathml));
+  char *skew_mathml_str = strdup(utstring_body(skew_mathml));
 
   utstring_free(skew_mathml);
 
   return skew_mathml_str;
 }
 
-char * root_pos_to_em(char * str)
+char *mtex2MML_root_pos_to_em(char * str)
 {
   UT_string *em;
   utstring_new(em);
 
-  float dbl = extract_number_from_pxstring(str);
+  float dbl = mtex2MML_extract_number_from_pxstring(str);
   dbl /= 15;
 
   utstring_printf(em, "%.3fem", dbl);
@@ -517,7 +517,7 @@ char * root_pos_to_em(char * str)
   return em_str;
 }
 
-envType current_env_type(UT_array **environment_data_stack)
+envType mtex2MML_current_env_type(UT_array **environment_data_stack)
 {
   if (utarray_len(*environment_data_stack) == 0) {
     return -1;
@@ -528,7 +528,7 @@ envType current_env_type(UT_array **environment_data_stack)
   return row_data_elem->environment_type;
 }
 
-int current_env_line_count(UT_array **environment_data_stack)
+int mtex2MML_current_env_line_count(UT_array **environment_data_stack)
 {
   if (utarray_len(*environment_data_stack) == 0) {
     return -1;

@@ -15,13 +15,13 @@ extern "C" {
 #endif
 
 // Remove the final character in a string
-extern void remove_last_char(char* str);
+extern void mtex2MML_remove_last_char(char* str);
 
 // Remove the first character in a string
-extern void remove_first_char(char* str);
+extern void mtex2MML_remove_first_char(char* str);
 
 // replace a substr in a string with a replacement
-extern char * str_replace(char *string, const char *substr, const char *replacement);
+extern char * mtex2MML_str_replace(char *string, const char *substr, const char *replacement);
 
 #ifdef __cplusplus
 }
