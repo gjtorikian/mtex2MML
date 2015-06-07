@@ -144,11 +144,6 @@ if (BUILD_CLAR)
     PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/clar.suite
   )
 
-  set_source_files_properties(
-    ${CLAR_PATH}/mathjax.c
-    PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/mathjax_summary.txt
-  )
-
   add_executable(mtex2MML_clar ${SRC_H} ${SRC_MTEX2MML} ${SRC_CLAR} ${SRC_TEST}
                 ${BISON_MTEX2MMLPARSER_OUTPUTS}
                 ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
