@@ -28,14 +28,14 @@ struct css_colors *colors = NULL;
 
  UT_array *environment_data_stack;
 
- encaseType * encase = NONE;
+ encaseType encase = NONE;
 
  extern int yylex ();
 
  extern char * yytext;
 
- global_label = 1;
- line_counter = 1;
+ int global_label = 1;
+ int line_counter = 1;
 
  static void mtex2MML_default_error (const char * msg)
    {
@@ -3429,9 +3429,10 @@ const char *format_additions(const char *buffer)
   if (colors == NULL)
     create_css_colors(&colors);
 
-  encase = NONE;
+  encaseType *encase_pointer = NONE;
   line_counter = 1;
-  env_replacements(&environment_data_stack, &encase, buffer);
+  env_replacements(&environment_data_stack, &encase_pointer, buffer);
+  encase = &encase_pointer;
 }
 
 void free_additions()
