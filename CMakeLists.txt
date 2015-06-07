@@ -123,17 +123,8 @@ IF (BUILD_CLAR)
     "${CLAR_PATH}/numbered_equations.c"
   )
 
-  ADD_CUSTOM_COMMAND(
-    OUTPUT ${CLAR_PATH}/mathjax_summary.txt
+  ADD_CUSTOM_TARGET(MATHJAX ALL
     COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
-    DEPENDS ${SRC_TEST}
-    WORKING_DIRECTORY ${CLAR_PATH}
-  )
-
-  ADD_CUSTOM_COMMAND(
-    TARGET mtex2MML_clar
-    POST_BUILD
-    COMMAND echo "hello"
     WORKING_DIRECTORY ${CLAR_PATH}
   )
 
