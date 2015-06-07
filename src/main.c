@@ -46,7 +46,7 @@ int main (int argc, char ** argv)
              "  --forbid-markup forbid markup (more precisely, the '<' and '>' characters) in TeX equations\n"
              "  --print-mtex    used in conjuction with --inline or --display: prints the TeX string\n"
              "\n"
-             "For further information, see https://github.com/gjtorikian/mtex2MML\n", stdout);
+             "For more information, see https://github.com/gjtorikian/mtex2MML\n", stdout);
 
       bStop = 1;
       break;

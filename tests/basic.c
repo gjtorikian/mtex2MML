@@ -2,10 +2,11 @@
 #include "clar_test.h"
 #include "deps/trim/trim.h"
 #include <stdio.h>
+#include <string.h>
 
 static char *fixture_tex;
 static char *fixture_mml;
-static const char *result;
+static char *result;
 
 void test_basic__initialize(void)
 {

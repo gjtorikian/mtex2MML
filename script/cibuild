@@ -1,8 +1,11 @@
 #!/bin/bash
 
+mkdir -p build
+cd build
+cmake ..
 make
-make test
-if [ ${TRAVIS_OS_NAME:-'linux'} = 'linux' ]
+ctest -V
+if [ -n "$CI" ]
 then
-    make leakcheck
+  make memcheck
 fi

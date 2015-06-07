@@ -5,7 +5,7 @@ set -e
 echo "==> Installing required libraries…"
 
 if [ "$(uname)" == "Darwin" ]; then
-  for pkg in flex bison; do
+  for pkg in flex bison cmake; do
     if brew list -1 | grep -q "^${pkg}\$"; then
         echo "Package '$pkg' is installed"
     else
@@ -14,7 +14,7 @@ if [ "$(uname)" == "Darwin" ]; then
     fi
   done
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  sudo apt-get -qq -y install flex bison
+  sudo apt-get -qq -y install flex bison cmake
 fi
 
 if [ ${TRAVIS_OS_NAME:-'linux'} = 'linux' ]
@@ -26,3 +26,5 @@ elif [ ${TRAVIS_OS_NAME:-'linux'} = 'osx' ]
 then
     echo "Building without python3, to make sure that works."
 fi
+
+mkdir -p build

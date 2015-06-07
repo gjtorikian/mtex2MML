@@ -5,7 +5,7 @@
 
 static char *fixture_tex;
 static char *fixture_mml;
-static const char *result;
+static char *result;
 
 void test_mathjax__initialize(void)
 {

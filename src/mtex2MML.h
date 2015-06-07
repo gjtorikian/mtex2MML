@@ -25,6 +25,7 @@ extern int    mtex2MML_filter (const char * buffer, unsigned long length);
 extern int    mtex2MML_html_filter (const char * buffer, unsigned long length);
 extern int    mtex2MML_strict_html_filter (const char * buffer, unsigned long length);
 
+extern int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup);
 
 /* To change output methods:
  *
@@ -47,7 +48,7 @@ extern void   mtex2MML_restart ();
 extern int mtex2MML_do_capture_eqn();
 extern int mtex2MML_capture_eqn_src();
 
-extern const char * mtex2MML_output ();
+extern char * mtex2MML_output ();
 
 extern char * mtex2MML_copy_string (const char * str);
 extern char * mtex2MML_copy_string_extra (const char * str, unsigned extra);

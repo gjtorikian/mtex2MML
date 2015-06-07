@@ -5,14 +5,16 @@
 #include <stdio.h>
 #include <string.h>
 
-char * read_fixture_tex(char *filename)
+char * read_fixture_tex(const char *filename)
 {
-  return file2str(cl_fixture(filename));
+  const char *tex = cl_fixture(filename);
+  return file2str(tex);
 }
 
-char * read_fixture_mml(char *filename)
+char * read_fixture_mml(const char *filename)
 {
-  char * data = file2str(cl_fixture(filename));
+  const char *mml = cl_fixture(filename);
+  char * data = file2str(mml);
 
   return trim(data);
 }
