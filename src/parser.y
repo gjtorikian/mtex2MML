@@ -3433,7 +3433,7 @@ const char *format_additions(const char *buffer)
   encaseType *encase_pointer = NONE;
   line_counter = 1;
   env_replacements(&environment_data_stack, &encase_pointer, buffer);
-  encase = &encase_pointer;
+  encase = encase_pointer;
 }
 
 void free_additions()

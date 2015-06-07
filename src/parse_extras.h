@@ -52,7 +52,7 @@ The env_replacements function will push every line onto a stack. When an \end
 is detected, it starts popping off the stack until it reaches the corresponding
 \begin. It then modifies that stack with attribute strings, an arrangement of
 the symbols encountered while popping lines off. */
-extern void env_replacements(UT_array **environment_data_stack, encaseType *encase, const char *environment);
+extern void env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment);
 
 extern int determine_environment(const char *environment);
 

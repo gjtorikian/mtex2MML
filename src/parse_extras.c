@@ -62,7 +62,7 @@ int identify_eqn_number(envType environment_type, char *line)
   }
 }
 
-void env_replacements(UT_array **environment_data_stack, encaseType * encase, const char *environment)
+void env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
 {
   // if not an environment, don't bother going on
   if ((strstr(environment, BEGIN) == NULL && strstr(environment, END) == NULL) || strstr(environment, BEGIN_SVG)) {
