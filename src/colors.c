@@ -1,7 +1,6 @@
-#include "parse_extras.h"
-#include "../deps/uthash/uthash.h"
+#include "colors.h"
 
-void create_css_colors(struct css_colors **colors)
+void mtex2MML_create_css_colors(struct css_colors **colors)
 {
   const char **n, **h,
         *names[] = { "\"Apricot\"","\"Aquamarine\"","\"Bittersweet\"",

@@ -19,12 +19,6 @@ typedef struct {
   int line_count;
 } envdata_t;
 
-struct css_colors {
-  char name[22];             /* key */
-  char color[10];
-  UT_hash_handle hh;         /* makes this structure hashable */
-};
-
 /* Move various symbols not easily supported inline within the `\begin` line
 This is so that the Bison parser can properly act on these. For example,
 `\hline`, `\hlinedash`, or `\\[2ex]` declerations.

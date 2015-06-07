@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "mtex2MML.h"
+#include "colors.h"
 #include "parse_extras.h"
 #include "string_extras.h"
 
@@ -3427,7 +3428,7 @@ const char *format_additions(const char *buffer)
   utarray_new(environment_data_stack, &envdata_icd);
 
   if (colors == NULL)
-    create_css_colors(&colors);
+    mtex2MML_create_css_colors(&colors);
 
   encaseType *encase_pointer = NONE;
   line_counter = 1;
