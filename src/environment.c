@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "parse.h"
+#include "environment.h"
 #include "string_extras.h"
 
 static const char *BEGIN = "\\begin";

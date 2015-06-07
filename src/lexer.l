@@ -9,7 +9,7 @@
 
 #include "parser.h"
 #include "mtex2MML.h"
-#include "parse.h"
+#include "environment.h"
 #include "string_extras.h"
 
 #define YY_NEVER_INTERACTIVE 1

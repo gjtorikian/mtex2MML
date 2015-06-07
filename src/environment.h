@@ -1,5 +1,5 @@
-#ifndef PARSE_H
-#define PARSE_H
+#ifndef ENVIRONMENT_H
+#define ENVIRONMENT_H
 
 #include "../deps/uthash/uthash.h"
 #include "../deps/uthash/utarray.h"
@@ -102,4 +102,4 @@ extern int mtex2MML_current_env_line_count(UT_array **environment_data_stack);
 }
 #endif
 
-#endif /* ! PARSE_H */
+#endif /* ! ENVIRONMENT_H */
