@@ -7,6 +7,7 @@
 
 #include "mtex2MML.h"
 #include "colors.h"
+#include "em.h"
 #include "environment.h"
 #include "string_extras.h"
 

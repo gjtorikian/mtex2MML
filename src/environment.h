@@ -73,25 +73,6 @@ extern char *mtex2MML_combine_row_data(UT_array **environment_data_stack);
 // return the has_eqn_number value of the last row
 extern int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack);
 
-// given a pixel string, retrieve the numeric portion from it
-extern float mtex2MML_extract_number_from_pxstring(char * str);
-
-// given a pixel string, retrieve the pixel type portion from it
-extern char *mtex2MML_extract_string_from_pxstring(char * str);
-
-// given a number, return it as an em
-extern char *mtex2MML_dbl2em(char *str);
-
-// given a number, return it as a root position
-// taken straight from MathJax
-extern char *mtex2MML_root_pos_to_em(char * str);
-
-// given a number and a pixel string, return the doubled number
-extern char *mtex2MML_double_pixel(float f, char *pixel);
-
-// construct a skew sequence
-extern char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern);
-
 // get the environment type of the top-most item
 extern envType mtex2MML_current_env_type(UT_array **environment_data_stack);
 
