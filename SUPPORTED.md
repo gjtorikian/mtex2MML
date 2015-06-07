@@ -566,8 +566,10 @@ _
 \nmid
 \nobreakspace
 \nolimits
+\nonumber
 \normalsize
 \not
+\notag
 \notin
 \notni
 \nparallel

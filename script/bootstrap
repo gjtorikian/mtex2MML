@@ -26,3 +26,5 @@ elif [ ${TRAVIS_OS_NAME:-'linux'} = 'osx' ]
 then
     echo "Building without python3, to make sure that works."
 fi
+
+mkdir -p build
