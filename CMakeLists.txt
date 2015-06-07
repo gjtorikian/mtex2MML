@@ -9,83 +9,83 @@
 # Install:
 # > cmake --build . --target install
 
-PROJECT(mtex2MML C)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9 FATAL_ERROR)
-CMAKE_POLICY(SET CMP0015 NEW)
+project(mtex2MML C)
+cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+cmake_policy(SET CMP0015 NEW)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/astyle.cmake")
 
-INCLUDE(CheckLibraryExists)
+include(CheckLibraryExists)
 
-SET(PROJECT_NAME "mtex2MML")
-SET(LIBRARY "libmtex2MML")
-SET(STATICLIBRARY "libmtex2MML_static")
+set(PROJECT_NAME "mtex2MML")
+set(LIBRARY "libmtex2MML")
+set(STATICLIBRARY "libmtex2MML_static")
 
-FILE(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/mtex2MML.h" MTEX2MML_HEADER REGEX "^#define MTEX2MML_VERSION \"[^\"]*\"$")
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/mtex2MML.h" MTEX2MML_HEADER REGEX "^#define MTEX2MML_VERSION \"[^\"]*\"$")
 
-STRING(REGEX REPLACE "^.*MTEX2MML_VERSION \"([0-9]+).*$" "\\1" MTEX2MML_VERSION_MAJOR "${MTEX2MML_HEADER}")
-STRING(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_MINOR  "${MTEX2MML_HEADER}")
-STRING(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_REV "${MTEX2MML_HEADER}")
-SET(MTEX2MML_VERSION_STRING "${MTEX2MML_VERSION_MAJOR}.${MTEX2MML_VERSION_MINOR}.${MTEX2MML_VERSION_REV}")
+string(REGEX REPLACE "^.*MTEX2MML_VERSION \"([0-9]+).*$" "\\1" MTEX2MML_VERSION_MAJOR "${MTEX2MML_HEADER}")
+string(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_MINOR  "${MTEX2MML_HEADER}")
+string(REGEX REPLACE "^.*MTEX2MML_VERSION \"[0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" MTEX2MML_VERSION_REV "${MTEX2MML_HEADER}")
+set(MTEX2MML_VERSION_STRING "${MTEX2MML_VERSION_MAJOR}.${MTEX2MML_VERSION_MINOR}.${MTEX2MML_VERSION_REV}")
 
 # Installation paths
-SET(BIN_INSTALL_DIR bin CACHE PATH "Where to install binaries to.")
-SET(LIB_INSTALL_DIR lib CACHE PATH "Where to install libraries to.")
-SET(INCLUDE_INSTALL_DIR include CACHE PATH "Where to install headers to.")
+set(BIN_INSTALL_DIR bin CACHE PATH "Where to install binaries to.")
+set(LIB_INSTALL_DIR lib CACHE PATH "Where to install libraries to.")
+set(INCLUDE_INSTALL_DIR include CACHE PATH "Where to install headers to.")
 
 # Build options
-OPTION(BUILD_CLAR      "Build Tests using the Clar suite"    ON)
+option(BUILD_CLAR      "Build Tests using the Clar suite"    ON)
 
 # Find required dependencies
-INCLUDE_DIRECTORIES(src deps ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(src deps ${CMAKE_CURRENT_BINARY_DIR})
 
-FIND_PACKAGE(BISON REQUIRED)
-FIND_PACKAGE(FLEX REQUIRED)
-FIND_LIBRARY(M_LIB m REQUIRED)
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
+find_library(M_LIB m REQUIRED)
 
-SET(YYPREFIX mtex2MML_yy)
+set(YYPREFIX mtex2MML_yy)
 
-BISON_TARGET(MTEX2MMLPARSER ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.c COMPILE_FLAGS "-y -v -p ${YYPREFIX}")
-FLEX_TARGET(MTEX2MMLSCANNER ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.c COMPILE_FLAGS "-P ${YYPREFIX}")
-ADD_FLEX_BISON_DEPENDENCY(MTEX2MMLSCANNER MTEX2MMLPARSER)
+bison_target(MTEX2MMLPARSER ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.c COMPILE_FLAGS "-y -v -p ${YYPREFIX}")
+flex_target(MTEX2MMLSCANNER ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.c COMPILE_FLAGS "-P ${YYPREFIX}")
+add_flex_bison_dependency(MTEX2MMLSCANNER MTEX2MMLPARSER)
 
 # Add parser.c to the list of sources
-SET(SRC_MTEX2MML ${SRC_MTEX2MML} ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c)
+set(SRC_MTEX2MML ${SRC_MTEX2MML} ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c)
 
 # Collect sourcefiles
-FILE(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
-FILE(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
-LIST(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
+file(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
+file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+list(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
 
-SET(PROGRAM "mtex2MML")
+set(PROGRAM "mtex2MML")
 set(PROGRAM_SOURCES
   ${SRC_MTEX2MML}
   ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
   ${BISON_MTEX2MMLPARSER_OUTPUTS}
   ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
 )
-ADD_EXECUTABLE(${PROGRAM} ${PROGRAM_SOURCES})
+add_executable(${PROGRAM} ${PROGRAM_SOURCES})
 
-ADD_LIBRARY(${LIBRARY} SHARED
+add_library(${LIBRARY} SHARED
             ${SRC_H}
             ${SRC_MTEX2MML}
             ${BISON_MTEX2MMLPARSER_OUTPUTS}
             ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
 )
-ADD_LIBRARY(${STATICLIBRARY} STATIC
+add_library(${STATICLIBRARY} STATIC
             ${SRC_H}
             ${SRC_MTEX2MML}
             ${BISON_MTEX2MMLPARSER_OUTPUTS}
             ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
 )
 
-ADD_DEPENDENCIES(${PROGRAM} MTEX2MMLParser)
-ADD_DEPENDENCIES(${STATICLIBRARY} MTEX2MMLParser)
-ADD_DEPENDENCIES(${LIBRARY} MTEX2MMLParser)
+add_dependencies(${PROGRAM} MTEX2MMLParser)
+add_dependencies(${STATICLIBRARY} MTEX2MMLParser)
+add_dependencies(${LIBRARY} MTEX2MMLParser)
 
-TARGET_LINK_LIBRARIES(${PROGRAM} ${M_LIB})
-TARGET_LINK_LIBRARIES(${STATICLIBRARY} ${M_LIB})
-TARGET_LINK_LIBRARIES(${LIBRARY} ${M_LIB})
+target_link_libraries(${PROGRAM} ${M_LIB})
+target_link_libraries(${STATICLIBRARY} ${M_LIB})
+target_link_libraries(${LIBRARY} ${M_LIB})
 
 # Always compile with warnings
 if(MSVC)
@@ -101,19 +101,19 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif()
 
 # Tests
-IF (BUILD_CLAR)
-  INCLUDE (CTest)
-  ENABLE_TESTING()
-  FIND_PACKAGE(PythonInterp REQUIRED)
+if (BUILD_CLAR)
+  include (CTest)
+  enable_testing()
+  find_package(PythonInterp REQUIRED)
 
-  SET(CLAR_FIXTURES "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/")
-  SET(CLAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tests")
-  ADD_DEFINITIONS(-DCLAR_FIXTURE_PATH=\"${CLAR_FIXTURES}\")
-	ADD_DEFINITIONS(-DCLAR_TMPDIR=\"libmtex2MML_tests\")
+  set(CLAR_FIXTURES "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/")
+  set(CLAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+  add_definitions(-DCLAR_FIXTURE_PATH=\"${CLAR_FIXTURES}\")
+	add_definitions(-DCLAR_TMPDIR=\"libmtex2MML_tests\")
 
-  INCLUDE_DIRECTORIES(${CLAR_PATH})
-  FILE(GLOB_RECURSE SRC_TEST ${CLAR_PATH}/*/*.c ${CLAR_PATH}/*/*.h)
-  SET(SRC_CLAR "${CLAR_PATH}/main.c" "${CLAR_PATH}/clar.c"
+  include_directories(${CLAR_PATH})
+  file(GLOB_RECURSE SRC_TEST ${CLAR_PATH}/*/*.c ${CLAR_PATH}/*/*.h)
+  set(SRC_CLAR "${CLAR_PATH}/main.c" "${CLAR_PATH}/clar.c"
     "${CLAR_PATH}/array.c"
     "${CLAR_PATH}/basic.c"
     "${CLAR_PATH}/cornercases.c"
@@ -125,40 +125,40 @@ IF (BUILD_CLAR)
     "${CLAR_PATH}/numbered_equations.c"
   )
 
-  ADD_CUSTOM_TARGET(MATHJAX ALL
+  add_custom_target(MATHJAX ALL
     COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
     WORKING_DIRECTORY ${CLAR_PATH}
   )
 
-  ADD_CUSTOM_COMMAND(
+  add_custom_command(
     OUTPUT ${CLAR_PATH}/clar.suite
     COMMAND ${PYTHON_EXECUTABLE} generate.py
     DEPENDS ${SRC_TEST}
     WORKING_DIRECTORY ${CLAR_PATH}
   )
 
-  SET_SOURCE_FILES_PROPERTIES(
+  set_source_files_properties(
     ${CLAR_PATH}/clar.c
     PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/clar.suite
   )
 
-  SET_SOURCE_FILES_PROPERTIES(
+  set_source_files_properties(
     ${CLAR_PATH}/mathjax.c
     PROPERTIES OBJECT_DEPENDS ${CLAR_PATH}/mathjax_summary.txt
   )
 
-  ADD_EXECUTABLE(mtex2MML_clar ${SRC_H} ${SRC_MTEX2MML} ${SRC_CLAR} ${SRC_TEST}
+  add_executable(mtex2MML_clar ${SRC_H} ${SRC_MTEX2MML} ${SRC_CLAR} ${SRC_TEST}
                 ${BISON_MTEX2MMLPARSER_OUTPUTS}
                 ${FLEX_MTEX2MMLSCANNER_OUTPUTS}
   )
-  TARGET_LINK_LIBRARIES(mtex2MML_clar ${M_LIB})
+  target_link_libraries(mtex2MML_clar ${M_LIB})
 
-  ADD_TEST(mtex2MML_clar mtex2MML_clar -v)
+  add_test(mtex2MML_clar mtex2MML_clar -v)
 
-  IF(UNIX)
+  if(UNIX)
     # setup valgrind
-    ADD_CUSTOM_TARGET(memcheck
+    add_custom_target(memcheck
       valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./mtex2MML_clar  >/dev/null
     )
-  ENDIF()
-ENDIF ()
+  endif()
+endif ()
