@@ -59,8 +59,6 @@ int display_style = 0;
 
 <MATH>{
 
-
-
 "$"{1,2} |
 "\\]"    |
 "\\)"         {mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0; mtex2MML_eqn_end=mtex2MML_eqn_src; yylval=mtex2MML_copy_escaped(mtex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
