@@ -1,4 +1,4 @@
-$
+$$
       \begin{pmatrix}
       m_{1,1}  m_{1,2}  \cdots  m_{1,n} \\
       m_{2,1}  m_{2,2}  \cdots  m_{2,n} \\

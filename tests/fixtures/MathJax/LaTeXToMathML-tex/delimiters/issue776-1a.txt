@@ -1,6 +1,6 @@
-$
+$$
 \displaystyle {\displaystyle{a\over b}\choose \displaystyle{c\over d}}
 \textstyle {\displaystyle{a\over b}\choose \displaystyle{c\over d}}
 \scriptstyle {\displaystyle{a\over b}\choose \displaystyle{c\over d}}
 \scriptscriptstyle {\displaystyle{a\over b}\choose \displaystyle{c\over d}}
-$
+$$

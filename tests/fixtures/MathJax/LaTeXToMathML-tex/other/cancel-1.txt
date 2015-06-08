@@ -1,4 +1,4 @@
-$
+$$
       \cancel{x}
       \bcancel{x}
       \xcancel{x}

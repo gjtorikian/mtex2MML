@@ -1,4 +1,4 @@
-$
+$$
 \acute {abc}
 \grave {abc}
 \bar {abc}
@@ -13,4 +13,4 @@ $
 \hat {abc}
 \widehat {abc}
 \breve {abc}
-$
+$$

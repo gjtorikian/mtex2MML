@@ -1,4 +1,4 @@
-$
+$$
       \injlim
       \projlim
       \varinjlim

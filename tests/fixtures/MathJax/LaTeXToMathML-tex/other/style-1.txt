@@ -1,4 +1,4 @@
-$
+$$
       {\textstyle x}
       {\displaystyle x}
       {\scriptscriptstyle x}

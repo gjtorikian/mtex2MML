@@ -1,7 +1,7 @@
-$
+$$
       \begin{eqnarray}
       a & = & b & + & c \\
       d & = & e & + & f \\
       g & = & h & + & i
       \end{eqnarray}
-$
+$$
