@@ -1,4 +1,4 @@
-$
+$$
       \begin{equation}
       \begin{aligned}
       a & = & b & + & c \\
@@ -6,4 +6,4 @@ $
       g & = & h & + & i
       \end{aligned}
       \end{equation}
-$
+$$

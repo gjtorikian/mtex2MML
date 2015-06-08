@@ -1,4 +1,4 @@
-$
+$$
       \begin{vmatrix}
       a  b  c \\
       d  e  f \\

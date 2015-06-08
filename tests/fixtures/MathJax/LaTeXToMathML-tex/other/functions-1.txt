@@ -1,4 +1,4 @@
-$
+$$
       {\arccos x}
       {\arcsin x}
       {\arctan x}
@@ -31,4 +31,4 @@ $
       {\sup x}
       {\tan x}
       {\tanh x}
-$
+$$

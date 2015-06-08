@@ -1,6 +1,6 @@
-$
+$$
       \aleph
       \beth
       \gimel
       \daleth
-$
+$$

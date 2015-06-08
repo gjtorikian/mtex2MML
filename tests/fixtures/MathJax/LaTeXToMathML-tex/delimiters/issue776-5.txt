@@ -1,6 +1,6 @@
-$
+$$
 \displaystyle \dbinom{\displaystyle{a\over b}}{\displaystyle{c\over d}}
 \textstyle \dbinom{\displaystyle{a\over b}}{\displaystyle{c\over d}}
 \scriptstyle \dbinom{\displaystyle{a\over b}}{\displaystyle{c\over d}}
 \scriptscriptstyle \dbinom{\displaystyle{a\over b}}{\displaystyle{c\over d}}
-$
+$$

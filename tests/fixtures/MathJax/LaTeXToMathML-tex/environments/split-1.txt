@@ -1,4 +1,4 @@
-$
+$$
       \begin{equation}
       \begin{split}
       a &= b + c \\
@@ -6,4 +6,4 @@ $
       &= f + g
       \end{split}
       \end{equation}
-$
+$$

@@ -1,4 +1,4 @@
-$
+$$
       \alpha
       \beta
       \gamma
@@ -29,4 +29,4 @@ $
       \chi
       \psi
       \omega
-$
+$$

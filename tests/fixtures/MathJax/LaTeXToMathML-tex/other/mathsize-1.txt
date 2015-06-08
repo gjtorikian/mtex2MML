@@ -1,4 +1,4 @@
-$
+$$
       {\tiny x}
       {\small x}
       {\normalsize x}

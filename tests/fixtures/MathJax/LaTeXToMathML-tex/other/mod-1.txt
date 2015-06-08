@@ -1,4 +1,4 @@
-$
+$$
       1 \equiv 4 \mod{3} ;
       9 \equiv 3 \bmod{6} ;
       8 \equiv 2 \pmod{3}

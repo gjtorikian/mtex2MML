@@ -1,4 +1,4 @@
-$
+$$
       \varDelta
       \varGamma
       \varLambda
@@ -10,4 +10,4 @@ $
       \varTheta
       \varUpsilon
       \varXi
-$
+$$
