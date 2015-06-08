@@ -40,179 +40,176 @@ struct css_colors *colors = NULL;
  int line_counter = 1;
 
  static void mtex2MML_default_error (const char * msg)
-   {
-     if (msg)
-       fprintf(stderr, "Line: %d Error: %s\n", mtex2MML_lineno, msg);
+ {
+   if (msg) {
+     fprintf(stderr, "Line: %d Error: %s\n", mtex2MML_lineno, msg);
    }
+ }
 
  void (*mtex2MML_error) (const char * msg) = mtex2MML_default_error;
 
  static void yyerror (char **ret_str, char * s)
-   {
-     char * msg = mtex2MML_copy3 (s, " at token ", yytext);
-     if (mtex2MML_error)
-       (*mtex2MML_error) (msg);
-     mtex2MML_free_string (msg);
+ {
+   char * msg = mtex2MML_copy3 (s, " at token ", yytext);
+   if (mtex2MML_error) {
+     (*mtex2MML_error) (msg);
    }
+   mtex2MML_free_string (msg);
+ }
 
  /* Note: If length is 0, then buffer is treated like a string; otherwise only length bytes are written.
   */
  static void mtex2MML_default_write (const char * buffer, unsigned long length)
-   {
-     if (buffer)
-       {
-   if (length)
-     fwrite (buffer, 1, length, stdout);
-   else
-     fputs (buffer, stdout);
-       }
+ {
+   if (buffer) {
+     if (length) {
+       fwrite (buffer, 1, length, stdout);
+     } else {
+       fputs (buffer, stdout);
+     }
    }
+ }
 
  static void mtex2MML_default_write_mathml (const char * mathml)
-   {
-     if (mtex2MML_write)
-       (*mtex2MML_write) (mathml, 0);
+ {
+   if (mtex2MML_write) {
+     (*mtex2MML_write) (mathml, 0);
    }
+ }
 
-#ifdef mtex2MML_CAPTURE
-    static char * mtex2MML_output_string = "" ;
+ #ifdef mtex2MML_CAPTURE
+ static char * mtex2MML_output_string = "" ;
 
-    char * mtex2MML_output ()
-    {
-        char * copy = (char *) malloc((mtex2MML_output_string ? strlen(mtex2MML_output_string) : 0) + 1);
-        if (copy)
-          {
-           if (mtex2MML_output_string)
-             {
-               strcpy(copy, mtex2MML_output_string);
-               if (*mtex2MML_output_string != '\0')
-                   mtex2MML_free_string(mtex2MML_output_string);
-             }
-           else
-             copy[0] = 0;
-           mtex2MML_output_string = "";
-          }
-        return copy;
-    }
+ char * mtex2MML_output ()
+ {
+   char * copy = (char *) malloc((mtex2MML_output_string ? strlen(mtex2MML_output_string) : 0) + 1);
+   if (copy) {
+     if (mtex2MML_output_string) {
+       strcpy(copy, mtex2MML_output_string);
+       if (*mtex2MML_output_string != '\0') {
+         mtex2MML_free_string(mtex2MML_output_string);
+       }
+     } else {
+       copy[0] = 0;
+     }
+     mtex2MML_output_string = "";
+   }
+   return copy;
+ }
 
  static void mtex2MML_capture (const char * buffer, unsigned long length)
-    {
-     if (buffer)
-       {
-         if (length)
-           {
-              unsigned long first_length = mtex2MML_output_string ? strlen(mtex2MML_output_string) : 0;
-              char * copy  = (char *) malloc(first_length + length + 1);
-              if (copy)
-                {
-                  if (mtex2MML_output_string)
-                    {
-                       strcpy(copy, mtex2MML_output_string);
-                       if (*mtex2MML_output_string != '\0')
-                          mtex2MML_free_string(mtex2MML_output_string);
-                    }
-                  else
-                     copy[0] = 0;
-                  strncat(copy, buffer, length);
-                  mtex2MML_output_string = copy;
-                 }
-            }
-         else
-            {
-              char * copy = mtex2MML_copy2(mtex2MML_output_string, buffer);
-              if (*mtex2MML_output_string != '\0')
-                 mtex2MML_free_string(mtex2MML_output_string);
-              mtex2MML_output_string = copy;
-            }
-        }
-    }
-
-    static void mtex2MML_capture_mathml (const char * buffer)
-    {
-       char * temp = mtex2MML_copy2(mtex2MML_output_string, buffer);
-       if (*mtex2MML_output_string != '\0')
+ {
+   if (buffer) {
+     if (length) {
+       unsigned long first_length = mtex2MML_output_string ? strlen(mtex2MML_output_string) : 0;
+       char * copy  = (char *) malloc(first_length + length + 1);
+       if (copy) {
+         if (mtex2MML_output_string) {
+           strcpy(copy, mtex2MML_output_string);
+           if (*mtex2MML_output_string != '\0') {
+             mtex2MML_free_string(mtex2MML_output_string);
+           }
+         } else {
+           copy[0] = 0;
+         }
+         strncat(copy, buffer, length);
+         mtex2MML_output_string = copy;
+       }
+     } else {
+       char * copy = mtex2MML_copy2(mtex2MML_output_string, buffer);
+       if (*mtex2MML_output_string != '\0') {
          mtex2MML_free_string(mtex2MML_output_string);
-       mtex2MML_output_string = temp;
-    }
-    void (*mtex2MML_write) (const char * buffer, unsigned long length) = mtex2MML_capture;
-    void (*mtex2MML_write_mathml) (const char * mathml) = mtex2MML_capture_mathml;
-#else
-    void (*mtex2MML_write) (const char * buffer, unsigned long length) = mtex2MML_default_write;
-    void (*mtex2MML_write_mathml) (const char * mathml) = mtex2MML_default_write_mathml;
-#endif
+       }
+       mtex2MML_output_string = copy;
+     }
+   }
+ }
+
+ static void mtex2MML_capture_mathml (const char * buffer)
+ {
+   char * temp = mtex2MML_copy2(mtex2MML_output_string, buffer);
+   if (*mtex2MML_output_string != '\0') {
+     mtex2MML_free_string(mtex2MML_output_string);
+   }
+   mtex2MML_output_string = temp;
+ }
+ void (*mtex2MML_write) (const char * buffer, unsigned long length) = mtex2MML_capture;
+ void (*mtex2MML_write_mathml) (const char * mathml) = mtex2MML_capture_mathml;
+ #else
+ void (*mtex2MML_write) (const char * buffer, unsigned long length) = mtex2MML_default_write;
+ void (*mtex2MML_write_mathml) (const char * mathml) = mtex2MML_default_write_mathml;
+ #endif
 
  char * mtex2MML_empty_string = (char *) "";
 
  /* Create a copy of a string, adding space for extra chars
   */
  char * mtex2MML_copy_string_extra (const char * str, unsigned extra)
-   {
-     char * copy = (char *) malloc(extra + (str ? strlen (str) : 0) + 1);
-     if (copy)
-       {
-   if (str)
-     strcpy(copy, str);
-   else
-     copy[0] = 0;
-       }
-     return copy ? copy : mtex2MML_empty_string;
+ {
+   char * copy = (char *) malloc(extra + (str ? strlen (str) : 0) + 1);
+   if (copy) {
+     if (str) {
+       strcpy(copy, str);
+     } else {
+       copy[0] = 0;
+     }
    }
+   return copy ? copy : mtex2MML_empty_string;
+ }
 
  /* Create a copy of a string, appending two strings
   */
  char * mtex2MML_copy3 (const char * first, const char * second, const char * third)
-   {
-     int  first_length =  first ? strlen( first) : 0;
-     int second_length = second ? strlen(second) : 0;
-     int  third_length =  third ? strlen( third) : 0;
+ {
+   int  first_length =  first ? strlen( first) : 0;
+   int second_length = second ? strlen(second) : 0;
+   int  third_length =  third ? strlen( third) : 0;
 
-     char * copy = (char *) malloc(first_length + second_length + third_length + 1);
+   char * copy = (char *) malloc(first_length + second_length + third_length + 1);
 
-     if (copy)
-       {
-   if (first)
-     strcpy(copy, first);
-   else
-     copy[0] = 0;
+   if (copy) {
+     if (first) {
+       strcpy(copy, first);
+     } else {
+       copy[0] = 0;
+     }
 
-   if (second) strcat(copy, second);
-   if ( third) strcat(copy,  third);
-       }
-     return copy ? copy : mtex2MML_empty_string;
+     if (second) { strcat(copy, second); }
+     if ( third) { strcat(copy,  third); }
    }
+   return copy ? copy : mtex2MML_empty_string;
+ }
 
  /* Create a copy of a string, appending a second string
   */
  char * mtex2MML_copy2 (const char * first, const char * second)
-   {
-     return mtex2MML_copy3(first, second, 0);
-   }
+ {
+   return mtex2MML_copy3(first, second, 0);
+ }
 
  /* Create a copy of a string
   */
  char * mtex2MML_copy_string (const char * str)
-   {
-     return mtex2MML_copy3(str, 0, 0);
-   }
+ {
+   return mtex2MML_copy3(str, 0, 0);
+ }
 
  /* Create a copy of a string, escaping unsafe characters for XML
   */
  char * mtex2MML_copy_escaped (const char * str)
-   {
-     unsigned long length = 0;
+ {
+   unsigned long length = 0;
 
-     const char * ptr1 = str;
+   const char * ptr1 = str;
 
-     char * ptr2 = 0;
-     char * copy = 0;
+   char * ptr2 = 0;
+   char * copy = 0;
 
-     if ( str == 0) return mtex2MML_empty_string;
-     if (*str == 0) return mtex2MML_empty_string;
+   if ( str == 0) { return mtex2MML_empty_string; }
+   if (*str == 0) { return mtex2MML_empty_string; }
 
-     while (*ptr1)
-       {
-   switch (*ptr1)
-     {
+   while (*ptr1) {
+     switch (*ptr1) {
      case '<':  /* &lt;   */
      case '>':  /* &gt;   */
        length += 4;
@@ -229,57 +226,55 @@ struct css_colors *colors = NULL;
        length += 1;
        break;
      }
-   ++ptr1;
-       }
-
-     copy = (char *) malloc (length + 1);
-
-     if (copy)
-       {
-   ptr1 = str;
-   ptr2 = copy;
-
-   while (*ptr1)
-     {
-       switch (*ptr1)
-         {
-         case '<':
-     strcpy (ptr2, "&lt;");
-     ptr2 += 4;
-     break;
-         case '>':
-     strcpy (ptr2, "&gt;");
-     ptr2 += 4;
-     break;
-         case '&':  /* &amp;  */
-     strcpy (ptr2, "&amp;");
-     ptr2 += 5;
-     break;
-         case '\'': /* &apos; */
-     strcpy (ptr2, "&apos;");
-     ptr2 += 6;
-     break;
-         case '"':  /* &quot; */
-     strcpy (ptr2, "&quot;");
-     ptr2 += 6;
-     break;
-         case '-':  /* &#x2d; */
-     strcpy (ptr2, "&#x2d;");
-     ptr2 += 6;
-     break;
-         default:
-     *ptr2++ = *ptr1;
-     break;
-         }
-       ++ptr1;
-     }
-   *ptr2 = 0;
-       }
-     return copy ? copy : mtex2MML_empty_string;
+     ++ptr1;
    }
 
+   copy = (char *) malloc (length + 1);
+
+   if (copy) {
+     ptr1 = str;
+     ptr2 = copy;
+
+     while (*ptr1) {
+       switch (*ptr1) {
+       case '<':
+         strcpy (ptr2, "&lt;");
+         ptr2 += 4;
+         break;
+       case '>':
+         strcpy (ptr2, "&gt;");
+         ptr2 += 4;
+         break;
+       case '&':  /* &amp;  */
+         strcpy (ptr2, "&amp;");
+         ptr2 += 5;
+         break;
+       case '\'': /* &apos; */
+         strcpy (ptr2, "&apos;");
+         ptr2 += 6;
+         break;
+       case '"':  /* &quot; */
+         strcpy (ptr2, "&quot;");
+         ptr2 += 6;
+         break;
+       case '-':  /* &#x2d; */
+         strcpy (ptr2, "&#x2d;");
+         ptr2 += 6;
+         break;
+       default:
+         *ptr2++ = *ptr1;
+         break;
+       }
+       ++ptr1;
+     }
+     *ptr2 = 0;
+   }
+   return copy ? copy : mtex2MML_empty_string;
+ }
+
  /* Returns a string representation of the global_label, and increments the label */
- char * mtex2MML_global_label() {
+ char * mtex2MML_global_label()
+ {
    char * n = (char *) malloc(256);
    snprintf(n, 256, "%d", global_label);
    global_label++;
@@ -292,18 +287,20 @@ struct css_colors *colors = NULL;
  /* Create a hex character reference string corresponding to code
   */
  char * mtex2MML_character_reference (unsigned long int code)
-   {
-#define ENTITY_LENGTH 10
-     char * entity = (char *) malloc(ENTITY_LENGTH);
-     sprintf(entity, "&#x%05lx;", code);
-     return entity;
-   }
+ {
+ #define ENTITY_LENGTH 10
+   char * entity = (char *) malloc(ENTITY_LENGTH);
+   sprintf(entity, "&#x%05lx;", code);
+   return entity;
+ }
 
  void mtex2MML_free_string (char * str)
-   {
-     if (str && str != mtex2MML_empty_string)
-       free(str);
+ {
+   if (str && str != mtex2MML_empty_string) {
+     free(str);
    }
+ }
+
 
 %}
 
@@ -3540,188 +3537,149 @@ int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 
   mtex2MML_error = mtex2MML_keep_error;
 
- _until_math:
+_until_math:
   ptr2 = ptr1;
 
-  while (ptr2 < end)
-    {
-      if (*ptr2 == '$') break;
-      if ((*ptr2 == '\\') && (ptr2 + 1 < end))
-  {
-    if (*(ptr2+1) == '[') break;
-  }
-      ++ptr2;
+  while (ptr2 < end) {
+    if (*ptr2 == '$') { break; }
+    if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
+      if (*(ptr2+1) == '[') { break; }
     }
-  if (mtex2MML_write && ptr2 > ptr1)
+    ++ptr2;
+  }
+  if (mtex2MML_write && ptr2 > ptr1) {
     (*mtex2MML_write) (ptr1, ptr2 - ptr1);
+  }
 
-  if (ptr2 == end) goto _finish;
+  if (ptr2 == end) { goto _finish; }
 
- _until_html:
+_until_html:
   ptr1 = ptr2;
 
-  if (ptr2 + 1 < end)
-    {
-      if ((*ptr2 == '\\') && (*(ptr2+1) == '['))
-  {
-    type = MTEX_DELIMITER_SQUARE;
-    ptr2 += 2;
-  }
-      else if ((*ptr2 == '$') && (*(ptr2+1) == '$'))
-  {
-    type = MTEX_DELIMITER_DOUBLE;
-    ptr2 += 2;
-  }
-      else
-  {
-    type = MTEX_DELIMITER_DOLLAR;
-    ptr2 += 2;
-  }
+  if (ptr2 + 1 < end) {
+    if ((*ptr2 == '\\') && (*(ptr2+1) == '[')) {
+      type = MTEX_DELIMITER_SQUARE;
+      ptr2 += 2;
+    } else if ((*ptr2 == '$') && (*(ptr2+1) == '$')) {
+      type = MTEX_DELIMITER_DOUBLE;
+      ptr2 += 2;
+    } else {
+      type = MTEX_DELIMITER_DOLLAR;
+      ptr2 += 2;
     }
-  else goto _finish;
+  } else { goto _finish; }
 
   skip = 0;
   match = 0;
 
-  while (ptr2 < end)
-    {
-      switch (*ptr2)
-  {
-  case '<':
-  case '>':
-    if (forbid_markup == 1) skip = 1;
-    break;
+  while (ptr2 < end) {
+    switch (*ptr2) {
+    case '<':
+    case '>':
+      if (forbid_markup == 1) { skip = 1; }
+      break;
 
-  case '\\':
-    if (ptr2 + 1 < end)
-      {
-        if (*(ptr2 + 1) == '[')
-    {
-      skip = 1;
-    }
-        else if (*(ptr2 + 1) == ']')
-    {
-      if (type == MTEX_DELIMITER_SQUARE)
-        {
-          ptr2 += 2;
-          match = 1;
-        }
-      else
-        {
+    case '\\':
+      if (ptr2 + 1 < end) {
+        if (*(ptr2 + 1) == '[') {
           skip = 1;
+        } else if (*(ptr2 + 1) == ']') {
+          if (type == MTEX_DELIMITER_SQUARE) {
+            ptr2 += 2;
+            match = 1;
+          } else {
+            skip = 1;
+          }
         }
-    }
       }
-    break;
+      break;
 
-  case '$':
-    if (type == MTEX_DELIMITER_SQUARE)
-      {
+    case '$':
+      if (type == MTEX_DELIMITER_SQUARE) {
         skip = 1;
-      }
-    else if (ptr2 + 1 < end)
-      {
-        if (*(ptr2 + 1) == '$')
-    {
-      if (type == MTEX_DELIMITER_DOLLAR)
-        {
+      } else if (ptr2 + 1 < end) {
+        if (*(ptr2 + 1) == '$') {
+          if (type == MTEX_DELIMITER_DOLLAR) {
+            ptr2++;
+            match = 1;
+          } else {
+            ptr2 += 2;
+            match = 1;
+          }
+        } else {
+          if (type == MTEX_DELIMITER_DOLLAR) {
+            ptr2++;
+            match = 1;
+          } else {
+            skip = 1;
+          }
+        }
+      } else {
+        if (type == MTEX_DELIMITER_DOLLAR) {
           ptr2++;
           match = 1;
-        }
-      else
-        {
-          ptr2 += 2;
-          match = 1;
-        }
-    }
-        else
-    {
-      if (type == MTEX_DELIMITER_DOLLAR)
-        {
-          ptr2++;
-          match = 1;
-        }
-      else
-        {
+        } else {
           skip = 1;
         }
-    }
       }
-    else
-      {
-        if (type == MTEX_DELIMITER_DOLLAR)
-    {
-      ptr2++;
-      match = 1;
+      break;
+
+    default:
+      break;
     }
-        else
-    {
-      skip = 1;
-    }
+    if (skip || match) { break; }
+
+    ++ptr2;
+  }
+  if (skip) {
+    if (type == MTEX_DELIMITER_DOLLAR) {
+      if (mtex2MML_write) {
+        (*mtex2MML_write) (ptr1, 1);
       }
-    break;
-
-  default:
-    break;
-  }
-      if (skip || match) break;
-
-      ++ptr2;
+      ptr1++;
+    } else {
+      if (mtex2MML_write) {
+        (*mtex2MML_write) (ptr1, 2);
+      }
+      ptr1 += 2;
     }
-  if (skip)
-    {
-      if (type == MTEX_DELIMITER_DOLLAR)
-  {
-    if (mtex2MML_write)
-      (*mtex2MML_write) (ptr1, 1);
-    ptr1++;
+    goto _until_math;
   }
-      else
-  {
-    if (mtex2MML_write)
-      (*mtex2MML_write) (ptr1, 2);
-    ptr1 += 2;
-  }
-      goto _until_math;
-    }
-  if (match)
-    {
-      mathml = mtex2MML_parse (ptr1, ptr2 - ptr1);
+  if (match) {
+    mathml = mtex2MML_parse (ptr1, ptr2 - ptr1);
 
-      if (mathml)
-  {
-    if (mtex2MML_write_mathml)
-      (*mtex2MML_write_mathml) (mathml);
-    mtex2MML_free_string (mathml);
-    mathml = 0;
-  }
-      else
-  {
-    ++result;
-    if (mtex2MML_write)
-      {
-        if (type == MTEX_DELIMITER_DOLLAR)
-    (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><merror><mtext>", 0);
-        else
-    (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><merror><mtext>", 0);
+    if (mathml) {
+      if (mtex2MML_write_mathml) {
+        (*mtex2MML_write_mathml) (mathml);
+      }
+      mtex2MML_free_string (mathml);
+      mathml = 0;
+    } else {
+      ++result;
+      if (mtex2MML_write) {
+        if (type == MTEX_DELIMITER_DOLLAR) {
+          (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><merror><mtext>", 0);
+        } else {
+          (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><merror><mtext>", 0);
+        }
 
         (*mtex2MML_write) (mtex2MML_last_error, 0);
         (*mtex2MML_write) ("</mtext></merror></math>", 0);
       }
+    }
+    ptr1 = ptr2;
+
+    goto _until_math;
   }
-      ptr1 = ptr2;
-
-      goto _until_math;
-    }
-  if (mtex2MML_write)
+  if (mtex2MML_write) {
     (*mtex2MML_write) (ptr1, ptr2 - ptr1);
+  }
 
- _finish:
-  if (mtex2MML_last_error)
-    {
-      mtex2MML_free_string (mtex2MML_last_error);
-      mtex2MML_last_error = 0;
-    }
+_finish:
+  if (mtex2MML_last_error) {
+    mtex2MML_free_string (mtex2MML_last_error);
+    mtex2MML_last_error = 0;
+  }
   mtex2MML_error = save_error_fn;
 
   return result;
