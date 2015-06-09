@@ -39,6 +39,7 @@ struct css_colors *colors = NULL;
 
  int global_label = 1;
  int line_counter = 1;
+ int delimiter_options = 0;
 
  static void mtex2MML_default_error (const char * msg)
  {
@@ -3422,12 +3423,17 @@ void envdata_dtor(void *_elt)
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
-void format_additions(const char *buffer)
+void format_additions(const char *buffer, options)
 {
   utarray_new(environment_data_stack, &envdata_icd);
 
   if (colors == NULL)
     mtex2MML_create_css_colors(&colors);
+
+  if (options)
+    delimiter_options = options;
+  else
+    delimiter_options = 0;
 
   encaseType *encase_pointer = (encaseType *)NONE;
   line_counter = 1;
@@ -3459,7 +3465,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length, const int opti
 
   int result;
 
-  format_additions(buffer);
+  format_additions(buffer, options);
   mtex2MML_setup (buffer, length);
   mtex2MML_restart ();
 
@@ -3510,7 +3516,7 @@ static void mtex2MML_keep_error (const char * msg)
 int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options)
 {
   global_label = 1;
-  format_additions(buffer);
+  format_additions(buffer, options);
 
   int result = 0;
   int type = 0;
@@ -3551,14 +3557,14 @@ _until_math:
   if (ptr2 + 1 < end) {
     if ((*ptr2 == '\\') && (*(ptr2+1) == '[')) {
       parsing = 1;
-      type = MTEX_DELIMITER_SQUARE;
+      type = MTEX2MML_DELIMITER_SQUARE;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && (*(ptr2+1) == '$')) {
       parsing = 1;
-      type = MTEX_DELIMITER_DOUBLE;
+      type = MTEX2MML_DELIMITER_DOUBLE;
       ptr2 += 2;
     } else {
-      type = MTEX_DELIMITER_DOLLAR;
+      type = MTEX2MML_DELIMITER_DOLLAR;
       parsing = 1;
       ptr2 += 2;
     }
@@ -3579,7 +3585,7 @@ _until_math:
         if (*(ptr2 + 1) == '[' && !parsing) {
           skip = 1;
         } else if (*(ptr2 + 1) == ']') {
-          if (type == MTEX_DELIMITER_SQUARE) {
+          if (type == MTEX2MML_DELIMITER_SQUARE) {
             ptr2 += 2;
             match = 1;
           } else if (parsing) {
@@ -3590,17 +3596,17 @@ _until_math:
       break;
 
     case '\n':
-      if (type == MTEX_DELIMITER_DOLLAR) {
+      if (type == MTEX2MML_DELIMITER_DOLLAR) {
         skip = 1;
       }
       break;
 
     case '$':
-      if (type == MTEX_DELIMITER_SQUARE) {
+      if (type == MTEX2MML_DELIMITER_SQUARE) {
         skip = 1;
       } else if (ptr2 + 1 < end) {
         if (*(ptr2 + 1) == '$') {
-          if (type == MTEX_DELIMITER_DOLLAR) {
+          if (type == MTEX2MML_DELIMITER_DOLLAR) {
             ptr2++;
             match = 1;
           } else {
@@ -3608,7 +3614,7 @@ _until_math:
             match = 1;
           }
         } else {
-          if (type == MTEX_DELIMITER_DOLLAR) {
+          if (type == MTEX2MML_DELIMITER_DOLLAR) {
             if (isspace(*(ptr2 - 1))) {
               skip = 1;
             }
@@ -3629,7 +3635,7 @@ _until_math:
           }
         }
       } else {
-        if (type == MTEX_DELIMITER_DOLLAR) {
+        if (type == MTEX2MML_DELIMITER_DOLLAR) {
           ptr2++;
           match = 1;
         } else {
@@ -3646,7 +3652,7 @@ _until_math:
     ++ptr2;
   }
   if (skip) {
-    if (type == MTEX_DELIMITER_DOLLAR) {
+    if (type == MTEX2MML_DELIMITER_DOLLAR) {
       if (mtex2MML_write && write) {
         (*mtex2MML_write) (ptr1, 1);
       }

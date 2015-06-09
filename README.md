@@ -48,17 +48,25 @@ Both a static and dynamic library are created as part of the `cmake` build proce
 
 The library exposes the following methods:
 
-* `char * mtex2MML_parse(const char * str, unsigned long strlen)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
+* `char * mtex2MML_parse(const char * str, unsigned long strlen, const int options)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
 
-* `char * mtex2MML_global_parse(const char * str, unsigned long strlen, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
+* `char * mtex2MML_global_parse(const char * str, unsigned long strlen, const int options, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
 
-* `int mtex2MML_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
+* `int mtex2MML_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
 
-* `int mtex2MML_text_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+* `int mtex2MML_text_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
-* `int mtex2MML_strict_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML tags are removed completely.
+* `int mtex2MML_strict_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML tags are removed completely.
 
-[The *tests/basic.c* suite](tests/basic.c) provides a demonstrate of how these methods can be used.
+The `options` argument determines which types of delimiters are to be used:
+
+* `0` is the default, using `$..$` for inline and `$$..$$` for display.
+* `1` uses single dollar signs: `$..$` for inline.
+* `2` uses double dollar signs: `$$..$$` for display.
+* `4` uses parenthesis: `\(..\)` for inline.
+* `8` uses brackets: `\[..\]` for brackets.
+
+[The *tests/basic.c*](tests/basic.c) and [The *tests/delimiters.c*](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
 
 ### As a command
 

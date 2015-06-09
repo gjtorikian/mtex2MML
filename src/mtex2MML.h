@@ -28,16 +28,18 @@ extern int mtex2MML_do_filter (const char * buffer, unsigned long length, const 
 
 /** Default delimiter types
  */
-#define MTEX2MML_OPT_DOLLARS      0
-#define MTEX2MML_OPT_PARENS       1
-#define MTEX2MML_OPT_BRACKETS     2
-#define MTEX2MML_OPT_ENVIRONMENTS 4
+#define MTEX2MML_OPT_DEFAULT          0
+#define MTEX2MML_OPT_DOLLAR           1
+#define MTEX2MML_OPT_DOUBLE           2
+#define MTEX2MML_OPT_PARENS           4
+#define MTEX2MML_OPT_BRACKETS         8
+#define MTEX2MML_OPT_ENVIRONMENTS     16
 
 /* Types of delimiters
  */
-#define MTEX_DELIMITER_DOLLAR     0
-#define MTEX_DELIMITER_DOUBLE     1
-#define MTEX_DELIMITER_SQUARE     2
+#define MTEX2MML_DELIMITER_DOLLAR     0
+#define MTEX2MML_DELIMITER_DOUBLE     1
+#define MTEX2MML_DELIMITER_SQUARE     2
 
 /* To change output methods:
  *
@@ -76,6 +78,7 @@ extern int    mtex2MML_rowposn;
 extern int    mtex2MML_displaymode;
 extern int    display_style;
 
+extern int    delimiter_options;
 extern int    global_label;
 extern int    line_counter;
 
