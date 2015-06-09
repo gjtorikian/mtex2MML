@@ -56,7 +56,7 @@ The library exposes the following methods:
 
 * `int mtex2MML_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
-* `int mtex2MML_strict_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+* `int mtex2MML_strict_html_filter(const char * str, unsigned long strlen)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML tags are removed completely.
 
 [The *tests/basic.c* suite](tests/basic.c) provides a demonstrate of how these methods can be used.
 
