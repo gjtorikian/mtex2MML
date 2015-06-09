@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "mtex2MML.h"
 #include "colors.h"
@@ -3608,8 +3609,19 @@ _until_html:
           }
         } else {
           if (type == MTEX_DELIMITER_DOLLAR) {
-            ptr2++;
-            match = 1;
+            if (isspace(*(ptr2 - 1))) {
+              skip = 1;
+            }
+            else if (isdigit(*(ptr2 + 1))) {
+              (*mtex2MML_write) (ptr1, ptr2 - ptr1 + 2);
+              skip = 1;
+              ptr2 += 2;
+              ptr1 = ptr2;
+            }
+            else {
+              ptr2++;
+              match = 1;
+            }
           } else {
             skip = 1;
           }
@@ -3657,14 +3669,8 @@ _until_html:
     } else {
       ++result;
       if (mtex2MML_write) {
-        if (type == MTEX_DELIMITER_DOLLAR) {
-          (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><merror><mtext>", 0);
-        } else {
-          (*mtex2MML_write) ("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><merror><mtext>", 0);
-        }
-
-        (*mtex2MML_write) (mtex2MML_last_error, 0);
-        (*mtex2MML_write) ("</mtext></merror></math>", 0);
+        // A problematic error? Just leave the text alone.
+        (*mtex2MML_write) (ptr1, ptr2 - ptr1);
       }
     }
     ptr1 = ptr2;
