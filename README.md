@@ -38,7 +38,9 @@ make
 
 ## Usage
 
-Inline equations are demarcated by `$...$`. Display equations are demarcated by `$$...$$` or `\[...\]`. You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not allowed.
+By default, inline equations are demarcated by `$...$`. Display equations are demarcated by `$$...$$`. You can change these to `\(..\)` and `\[..\]` respectively; see below for configuration.
+
+You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not allowed.
 
 ### As a library
 
@@ -80,7 +82,7 @@ Use `mtex2MML -h` to get some documentation on all the options.
 
 ## Error handling
 
-If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a status code. A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). An error message is also printed to STDERR.
+A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a status code. An error message is also printed to STDERR.
 
 [The *tests/maliciousness.c* suite](tests/maliciousness.c) has a demonstration on how to perform error handling.
 
@@ -93,7 +95,7 @@ cd build
 ctest -V
 ```
 
-mtex2MML has a test suite that matches the one found in [MathJax](https://github.com/mathjax/MathJax-test), with a few exceptions:
+mtex2MML has a test suite that mimics the one found in [MathJax](https://github.com/mathjax/MathJax-test), with a few exceptions:
 
 * Files marked as `.xtex` have features that are not implemented, but probably should be in the future.
 * Files marked as `.no_tex` have features that probably won't be implemented.
@@ -105,6 +107,7 @@ During the test run, the suite will list the percentage of features that still n
 To install the mtex2MML binary, you can run:
 
 ```
+cd build
 make install
 ```
 

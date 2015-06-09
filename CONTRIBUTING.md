@@ -2,10 +2,10 @@
 
 If you're interested in fixing a bug, there are two files you'll likely need to change:
 
-* *mtex2MML.l*, which contains the grammar rules for the TeX characters.
-* *mtex2MML.y*, which acts on the grammar states and converts the data into MathML.
+* *lexer.l*, which contains the grammar rules for the TeX characters.
+* *parser.y*, which acts on the grammar states and converts the data into MathML.
 
-If you submit a PR for something new, you must also add tests. You may need to update [SUPPORTED.md](SUPPORTED.md), too.
+If you submit a PR for something new, you should also add tests. You may need to update [SUPPORTED.md](SUPPORTED.md), too.
 
 ## Feature requests
 
