@@ -3545,7 +3545,7 @@ _until_math:
 
   if (ptr2 == end) { goto _finish; }
 
-_until_html:
+/*_until_html:*/
   ptr1 = ptr2;
 
   if (ptr2 + 1 < end) {
