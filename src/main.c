@@ -121,7 +121,7 @@ int main (int argc, char ** argv)
 
   char *s = utstring_body(mtex);
   int len = utstring_len(mtex);
-  char * mathml = mtex2MML_parse (s, len);
+  char * mathml = mtex2MML_parse(s, len, 0);
 
   if (mathml) {
     fputs (mathml, stdout);

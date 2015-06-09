@@ -3447,13 +3447,13 @@ void free_additions()
   }
 }
 
-char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start)
+char * mtex2MML_global_parse (const char * buffer, unsigned long length, const int options, const int global_start)
 {
   global_label = global_start;
-  return mtex2MML_parse(buffer, length);
+  return mtex2MML_parse(buffer, length, options);
 }
 
-char * mtex2MML_parse (const char * buffer, unsigned long length)
+char * mtex2MML_parse (const char * buffer, unsigned long length, const int options)
 {
   char * mathml = 0;
 

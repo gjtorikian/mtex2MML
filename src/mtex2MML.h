@@ -11,7 +11,7 @@ extern "C" {
 
 /* Step 1. Parse a buffer with mtex source; return value is mathml, or 0 on failure (e.g., parse error).
  */
-extern char * mtex2MML_parse (const char * buffer, unsigned long length);
+extern char * mtex2MML_parse (const char * buffer, unsigned long length, const int options);
 
 /* Step 2. Free the string from Step 1.
  */
@@ -28,13 +28,16 @@ extern int mtex2MML_do_filter (const char * buffer, unsigned long length, const 
 
 /** Default delimiter types
  */
-#define MTEX2MML_OPT_DEFAULT 0
+#define MTEX2MML_OPT_DOLLARS      0
+#define MTEX2MML_OPT_PARENS       1
+#define MTEX2MML_OPT_BRACKETS     2
+#define MTEX2MML_OPT_ENVIRONMENTS 4
 
 /* Types of delimiters
  */
-#define MTEX_DELIMITER_DOLLAR 0
-#define MTEX_DELIMITER_DOUBLE 1
-#define MTEX_DELIMITER_SQUARE 2
+#define MTEX_DELIMITER_DOLLAR     0
+#define MTEX_DELIMITER_DOUBLE     1
+#define MTEX_DELIMITER_SQUARE     2
 
 /* To change output methods:
  *
@@ -48,7 +51,7 @@ extern void (*mtex2MML_error) (const char * msg);                          /* de
 /* Other stuff:
  */
 
-extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start);
+extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, const int options, const int global_start);
 
 extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
