@@ -3543,7 +3543,7 @@ _until_math:
   while (ptr2 < end) {
     if (*ptr2 == '$') { break; }
     if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
-      if (*(ptr2+1) == '[') { break; }
+      if (*(ptr2+1) == '[' || *(ptr2+1) == '(') { break; }
     }
     ++ptr2;
   }
