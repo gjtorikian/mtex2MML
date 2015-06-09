@@ -3595,6 +3595,12 @@ _until_html:
       }
       break;
 
+    case '\n':
+      if (type == MTEX_DELIMITER_DOLLAR) {
+        skip = 1;
+      }
+      break;
+
     case '$':
       if (type == MTEX_DELIMITER_SQUARE) {
         skip = 1;
