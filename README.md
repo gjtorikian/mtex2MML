@@ -60,11 +60,11 @@ The library exposes the following methods:
 
 The `options` argument determines which types of delimiters are to be used:
 
-* `0` is the default, using `$..$` for inline and `$$..$$` for display.
-* `1` uses single dollar signs: `$..$` for inline.
-* `2` uses double dollar signs: `$$..$$` for display.
-* `4` uses parenthesis: `\(..\)` for inline.
-* `8` uses brackets: `\[..\]` for brackets.
+* `MTEX2MML_DELIMITER_DEFAULT` is the default, using `$..$` for inline and `$$..$$` for display.
+* `MTEX2MML_DELIMITER_DOLLAR` uses single dollar signs: `$..$` for inline.
+* `MTEX2MML_DELIMITER_DOUBLE` uses double dollar signs: `$$..$$` for display.
+* `MTEX2MML_DELIMITER_PARENS` uses parenthesis: `\(..\)` for inline.
+* `MTEX2MML_DELIMITER_BRACKETS` uses brackets: `\[..\]` for brackets.
 
 [The *tests/basic.c*](tests/basic.c) and [The *tests/delimiters.c*](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
 
