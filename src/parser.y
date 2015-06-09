@@ -3557,7 +3557,7 @@ _until_math:
   if (ptr2 + 1 < end) {
     if ((*ptr2 == '\\') && (*(ptr2+1) == '[')) {
       parsing = 1;
-      type = MTEX2MML_DELIMITER_SQUARE;
+      type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && (*(ptr2+1) == '$')) {
       parsing = 1;
@@ -3585,7 +3585,7 @@ _until_math:
         if (*(ptr2 + 1) == '[' && !parsing) {
           skip = 1;
         } else if (*(ptr2 + 1) == ']') {
-          if (type == MTEX2MML_DELIMITER_SQUARE) {
+          if (type == MTEX2MML_DELIMITER_BRACKETS) {
             ptr2 += 2;
             match = 1;
           } else if (parsing) {
@@ -3597,12 +3597,13 @@ _until_math:
 
     case '\n':
       if (type == MTEX2MML_DELIMITER_DOLLAR) {
+        printf("WUT");
         skip = 1;
       }
       break;
 
     case '$':
-      if (type == MTEX2MML_DELIMITER_SQUARE) {
+      if (type == MTEX2MML_DELIMITER_BRACKETS) {
         skip = 1;
       } else if (ptr2 + 1 < end) {
         if (*(ptr2 + 1) == '$') {
