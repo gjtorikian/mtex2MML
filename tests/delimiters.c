@@ -46,7 +46,7 @@ void test_delimiters__parens(void)
 {
   fixture_tex = "\\(\\pi\\)";
   fixture_mml = read_fixture_mml("delimiters/parens.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_OPT_PARENS);
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_PARENS);
 
   cl_assert_equal_s(fixture_mml, result);
 }
@@ -55,7 +55,7 @@ void test_delimiters__brackets(void)
 {
   fixture_tex = "\\[\\pi\\]";
   fixture_mml = read_fixture_mml("delimiters/brackets.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_OPT_BRACKETS);
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_BRACKETS);
 
   cl_assert_equal_s(fixture_mml, result);
 }
@@ -64,7 +64,7 @@ void test_delimiters__mixed(void)
 {
   fixture_tex = "\\[\\alpha\\] $$\\beta$$";
   fixture_mml = read_fixture_mml("delimiters/mixed.html");
-  mtex2MML_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_OPT_DOUBLE | MTEX2MML_OPT_PARENS | MTEX2MML_OPT_BRACKETS);
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOUBLE | MTEX2MML_DELIMITER_PARENS | MTEX2MML_DELIMITER_BRACKETS);
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
@@ -86,5 +86,4 @@ void test_delimiters__dollar_spacings(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, trim(result));
-  free(fixture_tex);
 }

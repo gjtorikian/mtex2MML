@@ -86,19 +86,19 @@ int main (int argc, char ** argv)
       continue;
     }
     if (strcmp(args, "--use-dollar") == 0) {
-      bDelimiters |= MTEX2MML_OPT_DOLLAR;
+      bDelimiters |= MTEX2MML_DELIMITER_DOLLAR;
       continue;
     }
     if (strcmp(args, "--use-double") == 0) {
-      bDelimiters |= MTEX2MML_OPT_DOUBLE;
+      bDelimiters |= MTEX2MML_DELIMITER_DOUBLE;
       continue;
     }
     if (strcmp(args, "--use-parens") == 0) {
-      bDelimiters |= MTEX2MML_OPT_PARENS;
+      bDelimiters |= MTEX2MML_DELIMITER_PARENS;
       continue;
     }
     if (strcmp(args, "--use-brackets") == 0) {
-      bDelimiters |= MTEX2MML_OPT_BRACKETS;
+      bDelimiters |= MTEX2MML_DELIMITER_BRACKETS;
       continue;
     }
   }

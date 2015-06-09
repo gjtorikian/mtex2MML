@@ -26,20 +26,14 @@ extern int    mtex2MML_strict_filter (const char * buffer, unsigned long length,
 
 extern int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options);
 
-/** Default delimiter types
+/** Types of delimiters
  */
-#define MTEX2MML_OPT_DEFAULT          0
-#define MTEX2MML_OPT_DOLLAR           1
-#define MTEX2MML_OPT_DOUBLE           2
-#define MTEX2MML_OPT_PARENS           4
-#define MTEX2MML_OPT_BRACKETS         8
-#define MTEX2MML_OPT_ENVIRONMENTS     16
-
-/* Types of delimiters
- */
-#define MTEX2MML_DELIMITER_DOLLAR     0
-#define MTEX2MML_DELIMITER_DOUBLE     1
-#define MTEX2MML_DELIMITER_SQUARE     2
+#define MTEX2MML_DELIMITER_DEFAULT          0
+#define MTEX2MML_DELIMITER_DOLLAR           1
+#define MTEX2MML_DELIMITER_DOUBLE           2
+#define MTEX2MML_DELIMITER_PARENS           4
+#define MTEX2MML_DELIMITER_BRACKETS         8
+#define MTEX2MML_DELIMITER_ENVIRONMENTS     16
 
 /* To change output methods:
  *
