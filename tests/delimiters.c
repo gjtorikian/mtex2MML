@@ -86,6 +86,7 @@ void test_delimiters__dollar_spacings(void)
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
 }
 
 void test_delimiters__escaping_with_dollars(void)
