@@ -80,3 +80,16 @@ void test_maliciousness__unknown_command_with_filter(void)
   cl_assert(status2 == 0);
   cl_assert(strlen(result) > 0);
 }
+
+void test_maliciousness__bad_options(void)
+{
+  // lazy way to continue with the free in cleanup
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
+
+  char *s1 = "$\\pi";
+  int status1 = mtex2MML_filter(s1, strlen(s1), 9000);
+  result = mtex2MML_output();
+  cl_assert(status1 == MTEX2MML_BAD_DELIMITER);
+  cl_assert(strlen(result) == 0);
+}

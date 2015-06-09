@@ -34,6 +34,7 @@ extern int mtex2MML_do_filter (const char * buffer, unsigned long length, const 
 #define MTEX2MML_DELIMITER_PARENS           4
 #define MTEX2MML_DELIMITER_BRACKETS         8
 #define MTEX2MML_DELIMITER_ENVIRONMENTS     16
+#define MTEX2MML_BAD_DELIMITER              -1024
 
 /* To change output methods:
  *
