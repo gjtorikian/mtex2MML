@@ -3423,17 +3423,6 @@ void envdata_dtor(void *_elt)
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
-int check_delimiter_options(const int options) {
-  if (options != MTEX2MML_DELIMITER_DEFAULT && ((options != MTEX2MML_DELIMITER_DOLLAR) || \
-                                  (options != MTEX2MML_DELIMITER_DOUBLE) || \
-                                  (options != MTEX2MML_DELIMITER_PARENS) || \
-                                  (options != MTEX2MML_DELIMITER_BRACKETS))) {
-    return 1;
-  }
-
-  return 0;
-}
-
 void format_additions(const char *buffer, const int options)
 {
   utarray_new(environment_data_stack, &envdata_icd);
@@ -3475,12 +3464,6 @@ char * mtex2MML_parse (const char * buffer, unsigned long length, const int opti
   char * mathml = 0;
 
   int result;
-
-  if (check_delimiter_options(options)) {
-    (*mtex2MML_error) ("Invalid options passed!");
-
-    return MTEX2MML_BAD_DELIMITER;
-  }
 
   format_additions(buffer, options);
 
@@ -3534,12 +3517,6 @@ static void mtex2MML_keep_error (const char * msg)
 int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options)
 {
   global_label = 1;
-
-  if (check_delimiter_options(options)) {
-    (*mtex2MML_error) ("Invalid options passed!");
-
-    return MTEX2MML_BAD_DELIMITER;
-  }
 
   format_additions(buffer, options);
 
