@@ -70,7 +70,7 @@ void test_delimiters__mixed(void)
   cl_assert_equal_s(fixture_mml, result);
 }
 
-void test_delimiters__dollar_spacings(void)
+void test_delimiters__dollar_spacings_with_text_filter(void)
 {
   fixture_tex = read_fixture_tex("delimiters/dollar_spacings_text_filter.txt");
   fixture_mml = read_fixture_mml("delimiters/dollar_spacings_text_filter.html");
@@ -79,7 +79,10 @@ void test_delimiters__dollar_spacings(void)
 
   cl_assert_equal_s(fixture_mml, trim(result));
   free(fixture_tex);
+}
 
+void test_delimiters__dollar_spacings_with_filter(void)
+{
   fixture_tex = read_fixture_tex("delimiters/dollar_spacings_filter.txt");
   fixture_mml = read_fixture_mml("delimiters/dollar_spacings_filter.html");
   mtex2MML_filter(fixture_tex, strlen(fixture_tex), 0);
@@ -87,34 +90,4 @@ void test_delimiters__dollar_spacings(void)
 
   cl_assert_equal_s(fixture_mml, trim(result));
   free(fixture_tex);
-}
-
-void test_delimiters__escaping_with_dollars(void)
-{
-  fixture_tex = read_fixture_tex("delimiters/escaping.txt");
-  fixture_mml = read_fixture_mml("delimiters/escaping_with_dollars.html");
-  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOUBLE | MTEX2MML_DELIMITER_DOLLAR);
-  result = mtex2MML_output();
-
-  cl_assert_equal_s(fixture_mml, trim(result));
-}
-
-void test_delimiters__escaping_with_parens(void)
-{
-  fixture_tex = read_fixture_tex("delimiters/escaping.txt");
-  fixture_mml = read_fixture_mml("delimiters/escaping_with_parens.html");
-  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_PARENS);
-  result = mtex2MML_output();
-
-  cl_assert_equal_s(fixture_mml, trim(result));
-}
-
-void test_delimiters__escaping_with_brackets(void)
-{
-  fixture_tex = read_fixture_tex("delimiters/escaping.txt");
-  fixture_mml = read_fixture_mml("delimiters/escaping_with_brackets.html");
-  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_BRACKETS);
-  result = mtex2MML_output();
-
-  cl_assert_equal_s(fixture_mml, trim(result));
 }
