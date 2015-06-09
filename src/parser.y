@@ -3423,7 +3423,7 @@ void envdata_dtor(void *_elt)
 
 UT_icd envdata_icd = {sizeof(envdata_t), NULL, envdata_copy, envdata_dtor};
 
-void format_additions(const char *buffer, options)
+void format_additions(const char *buffer, const int options)
 {
   utarray_new(environment_data_stack, &envdata_icd);
 
@@ -3601,7 +3601,6 @@ _until_math:
 
     case '\n':
       if (type == MTEX2MML_DELIMITER_DOLLAR) {
-        printf("WUT");
         skip = 1;
       }
       break;
