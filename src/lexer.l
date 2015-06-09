@@ -53,7 +53,7 @@ int display_style = 0;
  // a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx
 
 <INITIAL>"$$"  BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH;
-<INITIAL>"$"[\t\r\n ]? mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; if (yyleng==2) { return 0;}; BEGIN(MATH); mtex2MML_displaymode=0; return STARTMATH;
+<INITIAL>"$"[\t\r\n ]? mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; if (yyleng==2) { BEGIN(ENDMATH); return INITIAL;}; BEGIN(MATH); mtex2MML_displaymode=0; return STARTMATH;
 <INITIAL>"\\(" BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=0; return STARTMATH;
 <INITIAL>"\\[" BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH;
 <INITIAL>EOF    return 0;

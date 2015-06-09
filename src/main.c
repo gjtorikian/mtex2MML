@@ -109,11 +109,11 @@ int main (int argc, char ** argv)
     char *s = utstring_body(mtex);
     int len = utstring_len(mtex);
     if (bRawFilter) {
-      mtex2MML_filter (s, len);
+      mtex2MML_filter (s, len, 0);
     } else if (bForbidMarkup) {
-      mtex2MML_strict_html_filter (s, len);
+      mtex2MML_strict_filter (s, len, 0);
     } else {
-      mtex2MML_html_filter (s, len);
+      mtex2MML_text_filter (s, len, 0);
     }
     utstring_free(mtex);
     return 0;

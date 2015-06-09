@@ -8,4 +8,4 @@ $$
       {\huge x}
       {\Huge x}
       {\scriptsize x}
-$
+$$

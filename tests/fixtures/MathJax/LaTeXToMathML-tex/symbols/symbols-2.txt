@@ -28,4 +28,4 @@ $$
       \circleddash,
       \circledR,
       \circledS
-$
+$$

@@ -36,4 +36,4 @@ $$
   	  \propto,
  	    \vdash,
  	 	  \dashv
-$
+$$

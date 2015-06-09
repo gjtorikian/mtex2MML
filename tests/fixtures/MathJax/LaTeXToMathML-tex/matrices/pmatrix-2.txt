@@ -5,4 +5,4 @@ $$
       \vdots   \vdots   \ddots  \vdots  \\
       m_{n,1}  m_{n,2}  \cdots  m_{n,n}
       \end{pmatrix}
-$
+$$

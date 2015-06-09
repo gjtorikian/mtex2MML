@@ -59,27 +59,27 @@ void test_basic__filter(void)
 {
   fixture_tex = read_fixture_tex("basic/filter.txt");
   fixture_mml = read_fixture_mml("basic/filter.html");
-  mtex2MML_filter(fixture_tex, strlen(fixture_tex));
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex), 0);
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
 }
 
-void test_basic__html_filter(void)
+void test_basic__text_filter(void)
 {
-  fixture_tex = read_fixture_tex("basic/html_filter.txt");
-  fixture_mml = read_fixture_mml("basic/html_filter.html");
-  mtex2MML_html_filter(fixture_tex, strlen(fixture_tex));
+  fixture_tex = read_fixture_tex("basic/text_filter.txt");
+  fixture_mml = read_fixture_mml("basic/text_filter.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), 0);
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, trim(result));
 }
 
-void test_basic__strict_html_filter(void)
+void test_basic__strict_filter(void)
 {
-  fixture_tex = read_fixture_tex("basic/strict_html_filter.txt");
-  fixture_mml = read_fixture_mml("basic/strict_html_filter.html");
-  mtex2MML_strict_html_filter(fixture_tex, strlen(fixture_tex));
+  fixture_tex = read_fixture_tex("basic/strict_filter.txt");
+  fixture_mml = read_fixture_mml("basic/strict_filter.html");
+  mtex2MML_strict_filter(fixture_tex, strlen(fixture_tex), 0);
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, trim(result));

@@ -3480,22 +3480,20 @@ char * mtex2MML_parse (const char * buffer, unsigned long length)
   return mathml;
 }
 
-int mtex2MML_filter (const char * buffer, unsigned long length)
+int mtex2MML_filter (const char * buffer, unsigned long length, const int options)
 {
-  global_label = 1;
-  format_additions(buffer);
-  mtex2MML_setup (buffer, length);
-  mtex2MML_restart ();
-
-  int result = mtex2MML_yyparse (0);
-  free_additions();
-
-  return result;
+  return mtex2MML_do_filter (buffer, length, 0, 0, options);
 }
 
-#define MTEX_DELIMITER_DOLLAR 0
-#define MTEX_DELIMITER_DOUBLE 1
-#define MTEX_DELIMITER_SQUARE 2
+int mtex2MML_text_filter (const char * buffer, unsigned long length, const int options)
+{
+  return mtex2MML_do_filter (buffer, length, 0, 1, options);
+}
+
+int mtex2MML_strict_filter (const char * buffer, unsigned long length, const int options)
+{
+  return mtex2MML_do_filter (buffer, length, 1, 1, options);
+}
 
 static char * mtex2MML_last_error = 0;
 
@@ -3509,23 +3507,16 @@ static void mtex2MML_keep_error (const char * msg)
   mtex2MML_last_error = mtex2MML_copy_escaped (msg);
 }
 
-int mtex2MML_html_filter (const char * buffer, unsigned long length)
+int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options)
 {
-  return mtex2MML_do_html_filter (buffer, length, 0);
-}
+  global_label = 1;
+  format_additions(buffer);
 
-int mtex2MML_strict_html_filter (const char * buffer, unsigned long length)
-{
-  return mtex2MML_do_html_filter (buffer, length, 1);
-}
-
-int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup)
-{
   int result = 0;
-
   int type = 0;
   int skip = 0;
   int match = 0;
+  int parsing = 0;
 
   const char * ptr1 = buffer;
   const char * ptr2 = 0;
@@ -3548,7 +3539,7 @@ _until_math:
     }
     ++ptr2;
   }
-  if (mtex2MML_write && ptr2 > ptr1) {
+  if (mtex2MML_write && ptr2 > ptr1 && write) {
     (*mtex2MML_write) (ptr1, ptr2 - ptr1);
   }
 
@@ -3559,13 +3550,16 @@ _until_html:
 
   if (ptr2 + 1 < end) {
     if ((*ptr2 == '\\') && (*(ptr2+1) == '[')) {
+      parsing = 1;
       type = MTEX_DELIMITER_SQUARE;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && (*(ptr2+1) == '$')) {
+      parsing = 1;
       type = MTEX_DELIMITER_DOUBLE;
       ptr2 += 2;
     } else {
       type = MTEX_DELIMITER_DOLLAR;
+      parsing = 1;
       ptr2 += 2;
     }
   } else { goto _finish; }
@@ -3582,13 +3576,13 @@ _until_html:
 
     case '\\':
       if (ptr2 + 1 < end) {
-        if (*(ptr2 + 1) == '[') {
+        if (*(ptr2 + 1) == '[' && !parsing) {
           skip = 1;
         } else if (*(ptr2 + 1) == ']') {
           if (type == MTEX_DELIMITER_SQUARE) {
             ptr2 += 2;
             match = 1;
-          } else {
+          } else if (parsing) {
             skip = 1;
           }
         }
@@ -3619,7 +3613,8 @@ _until_html:
               skip = 1;
             }
             else if (isdigit(*(ptr2 + 1))) {
-              (*mtex2MML_write) (ptr1, ptr2 - ptr1 + 2);
+              if (write)
+                (*mtex2MML_write) (ptr1, ptr2 - ptr1 + 2);
               skip = 1;
               ptr2 += 2;
               ptr1 = ptr2;
@@ -3629,7 +3624,8 @@ _until_html:
               match = 1;
             }
           } else {
-            skip = 1;
+            if (*(ptr2 - 1) != '\\')
+              skip = 1;
           }
         }
       } else {
@@ -3651,12 +3647,12 @@ _until_html:
   }
   if (skip) {
     if (type == MTEX_DELIMITER_DOLLAR) {
-      if (mtex2MML_write) {
+      if (mtex2MML_write && write) {
         (*mtex2MML_write) (ptr1, 1);
       }
       ptr1++;
     } else {
-      if (mtex2MML_write) {
+      if (mtex2MML_write && write) {
         (*mtex2MML_write) (ptr1, 2);
       }
       ptr1 += 2;
@@ -3664,7 +3660,10 @@ _until_html:
     goto _until_math;
   }
   if (match) {
-    mathml = mtex2MML_parse (ptr1, ptr2 - ptr1);
+    mtex2MML_setup (ptr1, ptr2 - ptr1);
+    mtex2MML_restart ();
+
+    mtex2MML_yyparse (&mathml);
 
     if (mathml) {
       if (mtex2MML_write_mathml) {
@@ -3674,7 +3673,7 @@ _until_html:
       mathml = 0;
     } else {
       ++result;
-      if (mtex2MML_write) {
+      if (mtex2MML_write && write) {
         // A problematic error? Just leave the text alone.
         (*mtex2MML_write) (ptr1, ptr2 - ptr1);
       }
@@ -3694,5 +3693,6 @@ _finish:
   }
   mtex2MML_error = save_error_fn;
 
+  free_additions();
   return result;
 }

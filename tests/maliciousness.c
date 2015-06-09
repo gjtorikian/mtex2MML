@@ -68,14 +68,14 @@ void test_maliciousness__unknown_command_with_filter(void)
   fixture_mml = malloc(1);
 
   char *s1 = "$\\not__thisisnotreal$";
-  int status1 = mtex2MML_filter(s1, strlen(s1));
+  int status1 = mtex2MML_filter(s1, strlen(s1), 0);
   result = mtex2MML_output();
   cl_assert(status1 == 1);
   cl_assert(strlen(result) == 0);
   free(result);
 
   char *s2 = "$x$";
-  int status2 = mtex2MML_filter(s2, strlen(s2));
+  int status2 = mtex2MML_filter(s2, strlen(s2), 0);
   result = mtex2MML_output();
   cl_assert(status2 == 0);
   cl_assert(strlen(result) > 0);

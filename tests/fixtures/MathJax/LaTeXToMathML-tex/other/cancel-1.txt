@@ -3,4 +3,4 @@ $$
       \bcancel{x}
       \xcancel{x}
       \cancelto{0}{3}
-$
+$$

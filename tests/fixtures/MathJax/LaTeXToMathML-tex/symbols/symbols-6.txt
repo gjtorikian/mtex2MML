@@ -46,4 +46,4 @@ $$
       \veebar,
       \Vvdash,
       \yen
-$
+$$

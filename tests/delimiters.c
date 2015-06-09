@@ -62,9 +62,17 @@ void test_delimiters__brackets(void)
 
 void test_delimiters__dollar_spacings(void)
 {
-  fixture_tex = read_fixture_tex("delimiters/dollar_spacings.txt");
-  fixture_mml = read_fixture_mml("delimiters/dollar_spacings.html");
-  mtex2MML_html_filter(fixture_tex, strlen(fixture_tex));
+  // fixture_tex = read_fixture_tex("delimiters/dollar_spacings_text_filter.txt");
+  // fixture_mml = read_fixture_mml("delimiters/dollar_spacings_text_filter.html");
+  // mtex2MML_text_filter(fixture_tex, strlen(fixture_tex));
+  // result = mtex2MML_output();
+  //
+  // cl_assert_equal_s(fixture_mml, trim(result));
+  // free(fixture_tex);
+
+  fixture_tex = read_fixture_tex("delimiters/dollar_spacings_filter.txt");
+  fixture_mml = read_fixture_mml("delimiters/dollar_spacings_filter.html");
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex), 0);
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, trim(result));

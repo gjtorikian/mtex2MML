@@ -20,12 +20,21 @@ extern void   mtex2MML_free_string (char * str);
 
 /* Alternatively, to filter generic source and converting embedded equations, use:
  */
-extern int    mtex2MML_filter (const char * buffer, unsigned long length);
+extern int    mtex2MML_filter (const char * buffer, unsigned long length, const int options);
+extern int    mtex2MML_text_filter (const char * buffer, unsigned long length, const int options);
+extern int    mtex2MML_strict_filter (const char * buffer, unsigned long length, const int options);
 
-extern int    mtex2MML_html_filter (const char * buffer, unsigned long length);
-extern int    mtex2MML_strict_html_filter (const char * buffer, unsigned long length);
+extern int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options);
 
-extern int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup);
+/** Default delimiter types
+ */
+#define MTEX2MML_OPT_DEFAULT 0
+
+/* Types of delimiters
+ */
+#define MTEX_DELIMITER_DOLLAR 0
+#define MTEX_DELIMITER_DOUBLE 1
+#define MTEX_DELIMITER_SQUARE 2
 
 /* To change output methods:
  *
