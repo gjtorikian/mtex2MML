@@ -22,8 +22,8 @@ struct css_colors *colors = NULL;
 /* set max nesting. utterly arbitrary number determined from http://git.io/FlWHfw */
 #define YYMAXDEPTH 430
 
-// #define YYDEBUG 1
-// yydebug = 1;
+/*#define YYDEBUG 1
+yydebug = 1;*/
 
 #define YYERROR_VERBOSE 1
 
