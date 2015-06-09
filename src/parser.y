@@ -3555,17 +3555,21 @@ _until_math:
   ptr1 = ptr2;
 
   if (ptr2 + 1 < end) {
-    if ((*ptr2 == '\\') && (*(ptr2+1) == '[')) {
+    if ((*ptr2 == '\\') && (*(ptr2+1) == '[') && (delimiter_options & MTEX2MML_DELIMITER_BRACKETS)) {
       parsing = 1;
       type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
-    } else if ((*ptr2 == '$') && (*(ptr2+1) == '$')) {
+    } else if ((*ptr2 == '$') && (*(ptr2+1) == '$') && (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_BRACKETS))) {
       parsing = 1;
       type = MTEX2MML_DELIMITER_DOUBLE;
       ptr2 += 2;
-    } else {
-      type = MTEX2MML_DELIMITER_DOLLAR;
+    } else if ((*ptr2 == '\\') && (*(ptr2+1) == '(') && (delimiter_options & MTEX2MML_DELIMITER_PARENS)) {
       parsing = 1;
+      type = MTEX2MML_DELIMITER_PARENS;
+      ptr2 += 2;
+    } else {
+      parsing = 1;
+      type = MTEX2MML_DELIMITER_DOLLAR;
       ptr2 += 2;
     }
   } else { goto _finish; }

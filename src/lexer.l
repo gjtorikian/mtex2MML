@@ -53,9 +53,13 @@ int display_style = 0;
  // a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx
 
 <INITIAL>"$$" if (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOUBLE)) { BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH; }
+
 <INITIAL>"$"[\t\r\n ]? if (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOLLAR)) { mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; if (yyleng==2) { BEGIN(ENDMATH); return INITIAL;}; BEGIN(MATH);  mtex2MML_displaymode=0; return STARTMATH; }
+
 <INITIAL>"\\(" if (delimiter_options & MTEX2MML_DELIMITER_PARENS) {BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=0; return STARTMATH; }
+
 <INITIAL>"\\[" if (delimiter_options & MTEX2MML_DELIMITER_BRACKETS) { BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH; }
+
 <INITIAL>EOF    return 0;
 <INITIAL>"\n" {mtex2MML_lineno++; yylval=mtex2MML_copy_string(yytext); return CHAR;}
 <INITIAL>.     {yylval=mtex2MML_copy_string(yytext); return CHAR;}
