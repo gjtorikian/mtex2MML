@@ -3584,7 +3584,7 @@ _until_math:
 
     case '\\':
       if (ptr2 + 1 < end) {
-        if (*(ptr2 + 1) == '[' && MTEX2MML_DELIMITER_BRACKETS) {
+        if (*(ptr2 + 1) == '[' && type == MTEX2MML_DELIMITER_BRACKETS) {
           skip = 1;
         } else if (*(ptr2 + 1) == ']') {
           if (type == MTEX2MML_DELIMITER_BRACKETS) {
