@@ -3401,7 +3401,7 @@ colspan: COLSPAN ATTRLIST {
 
 %%
 
-// see http://git.io/vk8Sz
+/* see http://git.io/vk8Sz */
 void envdata_copy(void *_dst, const void *_src)
 {
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
@@ -3540,6 +3540,7 @@ int mtex2MML_do_filter (const char * buffer, unsigned long length, const int for
 _until_math:
   ptr2 = ptr1;
 
+  /* Search for the first math part */
   while (ptr2 < end) {
     if (*ptr2 == '$') { break; }
     if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
@@ -3686,7 +3687,7 @@ _until_math:
     } else {
       ++result;
       if (mtex2MML_write && write) {
-        // A problematic error? Just leave the text alone.
+        /* A problematic error? Just leave the text alone. */
         (*mtex2MML_write) (ptr1, ptr2 - ptr1);
       }
     }

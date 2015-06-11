@@ -13,7 +13,7 @@ struct css_colors {
   UT_hash_handle hh;         /* makes this structure hashable */
 };
 
-// Assemble a mapping of color names
+/* Assemble a mapping of color names */
 extern void mtex2MML_create_css_colors(struct css_colors **colors);
 
 #ifdef __cplusplus

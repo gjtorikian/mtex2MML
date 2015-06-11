@@ -46,8 +46,8 @@ int mtex2MML_determine_environment(const char *environment)
 
 int mtex2MML_identify_eqn_number(envType environment_type, char *line)
 {
-  // some environments have labelling for every row.
-  // supress it if it has a \notag or \nonumber
+  /* some environments have labelling for every row.
+     supress it if it has a \notag or \nonumber */
   if (environment_type == ENV_EQUATION || \
       environment_type == ENV_ALIGN || \
       environment_type == ENV_ALIGNAT ||
@@ -64,7 +64,7 @@ int mtex2MML_identify_eqn_number(envType environment_type, char *line)
 
 void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
 {
-  // if not an environment, don't bother going on
+  /* if not an environment, don't bother going on */
   if ((strstr(environment, BEGIN) == NULL && strstr(environment, END) == NULL) || strstr(environment, BEGIN_SVG)) {
     return;
   }
@@ -83,7 +83,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
 
-  // set up the array stack
+  /* set up the array stack */
   utarray_new(array_stack, &ut_str_icd);
   utarray_new(row_spacing_stack, &ut_str_icd);
   utarray_new(rowlines_stack, &ut_str_icd);
@@ -101,14 +101,14 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
         rowlines_stack_len = utarray_len(rowlines_stack);
         at_top = strstr(*prev_stack_item, BEGIN);
 
-        // we've reached the top, but there looks like there might be some data
+        /* we've reached the top, but there looks like there might be some data */
         if (at_top != NULL && strstr(*prev_stack_item, LINE_SEPARATOR) == NULL && \
             strstr(*prev_stack_item, CR_SEPARATOR) == NULL && \
             strstr(*prev_stack_item, NEWLINE_SEPARATOR) == NULL) {
           if (strstr(*prev_stack_item, HLINE) != NULL || strstr(*prev_stack_item, HDASHLINE) != NULL) {
             *encase = (encaseType*)TOPENCLOSE;
           }
-          // TODO: not super confident this is bulletproof
+          /* TODO: not super confident this is bulletproof */
           if (rowlines_stack_len == 0) {
             eqn = mtex2MML_identify_eqn_number(environment_type, *prev_stack_item);
             utarray_push_back(eqn_number_stack, &eqn);
@@ -116,10 +116,10 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
           break;
         }
 
-        // these environments are a bit...special. they still use
-        // the same line separators, so they tend to mess with "proper"
-        // labelled environments, because they exist within \begin{equation}
-        // if we find one, erase all the stored row info.
+        /* these environments are a bit...special. they still use
+           the same line separators, so they tend to mess with "proper"
+           labelled environments, because they exist within \begin{equation}
+           if we find one, erase all the stored row info. */
         if (strstr(*prev_stack_item, "\\eqalign") != NULL || \
             strstr(*prev_stack_item, "\\split") != NULL) {
           for (i = rowlines_stack_len; i > 1; i--) {
@@ -128,7 +128,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
           }
         }
 
-        // looking for a hline/hdashline match
+        /* looking for a hline/hdashline match */
         if (strstr(*prev_stack_item, HLINE) != NULL) {
           if (rowlines_stack_len > 0) {
             utarray_pop_back(rowlines_stack);
@@ -149,13 +149,13 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
         eqn = mtex2MML_identify_eqn_number(environment_type, *prev_stack_item);
         utarray_push_back(eqn_number_stack, &eqn);
 
-        // if there's a line break...
+        /* if there's a line break... */
         if (strstr(*prev_stack_item, LINE_SEPARATOR) != NULL || \
             strstr(*prev_stack_item, CR_SEPARATOR) != NULL || \
             strstr(*prev_stack_item, NEWLINE_SEPARATOR) != NULL) {
-          // ...with an emphasis match, add it...
+          /* ...with an emphasis match, add it... */
           if ( (tok = strstr(*prev_stack_item, EM_PATTERN_BEGIN)) != NULL) {
-            temp = tok + 2; // skip the first part ("\[")
+            temp = tok + 2; /* skip the first part ("\[") */
             if ( (tok = strstr(temp, EM_PATTERN_END)) != NULL) {
               em_offset = (int)(tok - temp);
               char *s = strndup(temp, em_offset);
@@ -163,7 +163,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
               free(s);
             }
           }
-          // ...otherwise, use the default emphasis
+          /* ...otherwise, use the default emphasis */
           else {
             if (environment_type == ENV_SMALLMATRIX) {
               em_str = "0.2em";
@@ -180,18 +180,18 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
           }
         }
 
-        // make sure to pop at the end here; it messes with some references in Travis/Ubuntu for some reason
+        /* make sure to pop at the end here; it messes with some references in Travis/Ubuntu for some reason */
         utarray_pop_back(array_stack);
 
-        // we've reached the top, so stop.
+        /* we've reached the top, so stop. */
         if (at_top != NULL) {
           break;
         }
       }
 
-      // some environments only have one label for the whole environment,
-      // rather than a label per row. in that case, jam a label
-      // in the middle.
+      /* some environments only have one label for the whole environment,
+         rather than a label per row. in that case, jam a label
+         in the middle. */
       if (environment_type == ENV_GATHER || environment_type == ENV_MULTLINE) {
         insertion_idx = ceil(utarray_len(eqn_number_stack) / 2);
         eqn = 1;
@@ -222,7 +222,7 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
   char *a, *attr_rowlines, *attr_rowspacing;
   envdata_t env_data;
 
-  // we cut the last char because we can always skip the first row
+  /* we cut the last char because we can always skip the first row */
   if (utarray_len(rowlines_stack) != 0) {
     utarray_pop_back(rowlines_stack);
   }
@@ -233,13 +233,13 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
 
   int line_count = utarray_len(rowlines_stack);
 
-  // empty rowlines should be reset
+  /* empty rowlines should be reset */
   if (line_count == 0) {
     a = "none";
     utarray_push_back(rowlines_stack, &a);
   }
 
-  // given the row_attribute values, construct an attribute list (separated by spaces)
+  /* given the row_attribute values, construct an attribute list (separated by spaces) */
   UT_string *l;
   utstring_new(l);
   char **o=NULL;
@@ -251,10 +251,10 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
 
   attr_rowlines = utstring_body(l);
   if (strlen(attr_rowlines) > 0) {
-    mtex2MML_remove_last_char(attr_rowlines); // remove the final space
+    mtex2MML_remove_last_char(attr_rowlines); /* remove the final space */
   }
 
-  // given the row_spacing values, construct an attribute list (separated by spaces)
+  /* given the row_spacing values, construct an attribute list (separated by spaces) */
   UT_string *s;
   utstring_new(s);
   char **p=NULL;
@@ -270,7 +270,7 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
 
   attr_rowspacing = utstring_body(s);
   if (strlen(attr_rowspacing) > 0) {
-    mtex2MML_remove_last_char(attr_rowspacing); // remove the final space
+    mtex2MML_remove_last_char(attr_rowspacing); /* remove the final space */
   } else {
     if (environment_type == ENV_SMALLMATRIX) {
       attr_rowspacing = "0.2em";
@@ -281,7 +281,7 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
     }
   }
 
-  // store pertinent metadata
+  /* store pertinent metadata */
   env_data.rowspacing = attr_rowspacing;
   env_data.rowlines = attr_rowlines;
   env_data.environment_type = environment_type;
@@ -303,7 +303,7 @@ char *mtex2MML_vertical_pipe_extract(char *string)
   utstring_new(columnlines);
   utstring_new(border);
 
-  // the first character (if it exists) determines the frame border
+  /* the first character (if it exists) determines the frame border */
   if (strncmp(dupe, "s", 1) == 0) {
     utstring_printf(columnlines, "%s", "frame=\"solid\" columnlines=\"");
     mtex2MML_remove_first_char(dupe);
@@ -324,8 +324,9 @@ char *mtex2MML_vertical_pipe_extract(char *string)
       previous_column = "d";
       utstring_printf(border, "%s ", "dashed");
     } else {
-      if (i >= 1) { // we must skip the first blank col
-        // only if there is no previous border should a border be considered, eg. "cc", not "c|c"
+      /* we must skip the first blank col only if there is no previous border
+         should a border be considered, eg. "cc", not "c|c" */
+      if (i >= 1) {
         if (strncmp(previous_column, "s", 1) != 0 && strncmp(previous_column, "d", 1) != 0) {
           utstring_printf(border, "%s ", "none");
         }
@@ -339,11 +340,11 @@ char *mtex2MML_vertical_pipe_extract(char *string)
 
   attr_border = utstring_body(border);
   if (strlen(attr_border) > 0) {
-    mtex2MML_remove_last_char(attr_border); // remove the final space
+    mtex2MML_remove_last_char(attr_border); /* remove the final space */
   }
   utstring_printf(columnlines, "%s", attr_border);
 
-  // an empty string here angers Lasem, so let's remember to add 'none'
+  /* an empty string here angers Lasem, so let's remember to add 'none' */
   if (utstring_len(border) == 0) {
     utstring_printf(columnlines, "%s", "none");
   }
@@ -377,7 +378,7 @@ char *mtex2MML_remove_excess_pipe_chars(char *string)
   utstring_free(columnalign);
 
   if (strlen(attr_columnalign) > 0) {
-    mtex2MML_remove_last_char(attr_columnalign); // remove the final space
+    mtex2MML_remove_last_char(attr_columnalign); /* remove the final space */
   }
 
   return attr_columnalign;
@@ -385,7 +386,7 @@ char *mtex2MML_remove_excess_pipe_chars(char *string)
 
 char *mtex2MML_combine_row_data(UT_array **environment_data_stack)
 {
-  // if no information was provided, give a standard sizing
+  /* if no information was provided, give a standard sizing */
   if (utarray_len(*environment_data_stack) == 0) {
     const char* s = "rowspacing=\"0.5ex\" rowlines=\"none\"";
     char* c = (char*)malloc(strlen(s) + 1);
@@ -401,7 +402,7 @@ char *mtex2MML_combine_row_data(UT_array **environment_data_stack)
   UT_string *row_attr_data;
   utstring_new(row_attr_data);
 
-  // combine the row spacing and row lines data
+  /* combine the row spacing and row lines data */
   utstring_printf(row_attr_data, "%s%s\" %s\"", "rowspacing=\"", row_spacing_data, row_lines_data);
 
   row_attr = strdup(utstring_body(row_attr_data));
@@ -414,7 +415,7 @@ char *mtex2MML_combine_row_data(UT_array **environment_data_stack)
 
 int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack)
 {
-  // if no information was provided, expect nothing
+  /* if no information was provided, expect nothing */
   if (utarray_len(*environment_data_stack) == 0) {
     return 0;
   }

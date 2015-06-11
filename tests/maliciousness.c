@@ -47,7 +47,7 @@ void test_maliciousness__excess_parsing(void)
 
 void test_maliciousness__unknown_command_with_parse(void)
 {
-  // lazy way to continue with the free in cleanup
+  /* lazy way to continue with the free in cleanup */
   fixture_tex = malloc(1);
   fixture_mml = malloc(1);
 
@@ -63,7 +63,7 @@ void test_maliciousness__unknown_command_with_parse(void)
 
 void test_maliciousness__unknown_command_with_filter(void)
 {
-  // lazy way to continue with the free in cleanup
+  /* lazy way to continue with the free in cleanup */
   fixture_tex = malloc(1);
   fixture_mml = malloc(1);
 
@@ -83,7 +83,7 @@ void test_maliciousness__unknown_command_with_filter(void)
 
 void test_maliciousness__bad_options(void)
 {
-  // lazy way to continue with the free in cleanup
+  /* lazy way to continue with the free in cleanup */
   fixture_tex = malloc(1);
   fixture_mml = malloc(1);
 

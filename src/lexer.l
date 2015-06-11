@@ -37,9 +37,9 @@ char * mtex2MML_str;
 
 int mtex2MML_rowposn = 0;
 
-// TODO: I'm not sure what the next option does. My addition
-// of `display_style` is to fix issue776. Probably worth merging
-// these in the future?
+/* TODO: I'm not sure what the next option does. My addition
+   of `display_style` is to fix issue776. Probably worth merging
+   these in the future? */
 int mtex2MML_displaymode = 0;
 int display_style = 0;
 
@@ -49,8 +49,8 @@ int display_style = 0;
    if (mtex2MML_rowposn==2) mtex2MML_rowposn=1;
 %}
 
- // "Basic heuristic is: opening $ can't be followed by whitespace, closing $ can't be followed by
- // a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx
+ /* "Basic heuristic is: opening $ can't be followed by whitespace, closing $ can't be followed by
+   a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx */
 
 <INITIAL>"$$" if (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOUBLE)) { BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH; }
 
