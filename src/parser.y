@@ -3524,7 +3524,6 @@ int mtex2MML_do_filter (const char * buffer, unsigned long length, const int for
   int type = 0;
   int skip = 0;
   int match = 0;
-  int parsing = 0;
 
   const char * ptr1 = buffer;
   const char * ptr2 = 0;
@@ -3559,21 +3558,17 @@ _until_math:
 
   if (ptr2 + 1 < end) {
     if ((*ptr2 == '\\') && (*(ptr2+1) == '[') && (delimiter_options & MTEX2MML_DELIMITER_BRACKETS)) {
-      parsing = 1;
       type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && (*(ptr2+1) == '$') && (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOUBLE))) {
-      parsing = 1;
       type = MTEX2MML_DELIMITER_DOUBLE;
       ptr2 += 2;
     } else if ((*ptr2 == '\\') && (*(ptr2+1) == '(') && (delimiter_options & MTEX2MML_DELIMITER_PARENS)) {
-      parsing = 1;
       type = MTEX2MML_DELIMITER_PARENS;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && !isspace(*(ptr2+1)) && (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOLLAR))) {
-      parsing = 1;
       type = MTEX2MML_DELIMITER_DOLLAR;
-      ptr2 += 2;
+      ptr2++;
     }
   } else { goto _finish; }
 
@@ -3589,15 +3584,17 @@ _until_math:
 
     case '\\':
       if (ptr2 + 1 < end) {
-        if (*(ptr2 + 1) == '[' && !parsing) {
+        if (*(ptr2 + 1) == '[' && MTEX2MML_DELIMITER_BRACKETS) {
           skip = 1;
         } else if (*(ptr2 + 1) == ']') {
           if (type == MTEX2MML_DELIMITER_BRACKETS) {
             ptr2 += 2;
             match = 1;
-          } else if (parsing) {
+          } else {
             skip = 1;
           }
+        } else  {
+          ptr2++;
         }
       }
       break;
