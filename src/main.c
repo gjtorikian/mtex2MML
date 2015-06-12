@@ -9,6 +9,7 @@ int main (int argc, char ** argv)
   int bRawFilter = 0;
   int bInline    = 0;
   int bDisplay   = 0;
+  int bDelimiters   = 0;
 
   int bStop = 0;
   int bForbidMarkup = 0;
@@ -40,11 +41,15 @@ int main (int argc, char ** argv)
              "\n"
              "mtex2MML Options:\n"
              "\n"
-             "  --raw-filter    filter input stream, converting equations as found to MathML [stops on error]\n"
-             "  --inline        converts a single TeX equation, without any $ symbols, to inline MathML\n"
-             "  --display       converts a single TeX equation, without any $ symbols, to display-mode MathML\n"
-             "  --forbid-markup forbid markup (more precisely, the '<' and '>' characters) in TeX equations\n"
-             "  --print-mtex    used in conjuction with --inline or --display: prints the TeX string\n"
+             "  --raw-filter              filter input stream, converting equations as found to MathML [stops on error]\n"
+             "  --inline                  converts a single TeX equation, without any $ symbols, to inline MathML\n"
+             "  --display                 converts a single TeX equation, without any $ symbols, to display-mode MathML\n"
+             "  --forbid-markup           forbid markup (more precisely, the '<' and '>' characters) in TeX equations\n"
+             "  --print-mtex              used in conjuction with --inline or --display: prints the TeX string\n"
+             "  --use-dollar              uses `$..$` for inline math\n"
+             "  --use-double              uses `$$..$$` for display math\n"
+             "  --use-parens              uses `\\(..\\)` for inline math\n"
+             "  --use-brackets            uses `\\[..\\]` for display math\n"
              "\n"
              "For more information, see https://github.com/gjtorikian/mtex2MML\n", stdout);
 
@@ -80,6 +85,22 @@ int main (int argc, char ** argv)
       bDisplay   = 0;
       continue;
     }
+    if (strcmp(args, "--use-dollar") == 0) {
+      bDelimiters |= MTEX2MML_DELIMITER_DOLLAR;
+      continue;
+    }
+    if (strcmp(args, "--use-double") == 0) {
+      bDelimiters |= MTEX2MML_DELIMITER_DOUBLE;
+      continue;
+    }
+    if (strcmp(args, "--use-parens") == 0) {
+      bDelimiters |= MTEX2MML_DELIMITER_PARENS;
+      continue;
+    }
+    if (strcmp(args, "--use-brackets") == 0) {
+      bDelimiters |= MTEX2MML_DELIMITER_BRACKETS;
+      continue;
+    }
   }
   if (bStop) { return 0; }
 
@@ -109,11 +130,11 @@ int main (int argc, char ** argv)
     char *s = utstring_body(mtex);
     int len = utstring_len(mtex);
     if (bRawFilter) {
-      mtex2MML_filter (s, len);
+      mtex2MML_filter (s, len, bDelimiters);
     } else if (bForbidMarkup) {
-      mtex2MML_strict_html_filter (s, len);
+      mtex2MML_strict_filter (s, len, bDelimiters);
     } else {
-      mtex2MML_html_filter (s, len);
+      mtex2MML_text_filter (s, len, bDelimiters);
     }
     utstring_free(mtex);
     return 0;
@@ -121,7 +142,7 @@ int main (int argc, char ** argv)
 
   char *s = utstring_body(mtex);
   int len = utstring_len(mtex);
-  char * mathml = mtex2MML_parse (s, len);
+  char * mathml = mtex2MML_parse(s, len, bDelimiters);
 
   if (mathml) {
     fputs (mathml, stdout);

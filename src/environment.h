@@ -60,23 +60,22 @@ extern int mtex2MML_identify_eqn_number(envType environment_type, char *line);
 
 extern void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
 
-// determines the column border arrangement from the array environment definition (c|cc|c...)
+/* determines the column border arrangement from the array environment definition (c|cc|c...) */
 extern char *mtex2MML_vertical_pipe_extract(char *string);
 
-// removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--
-// we need to remove the "s" and "d" characters
+/* removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--we need to remove the "s" and "d" characters */
 extern char *mtex2MML_remove_excess_pipe_chars(char *string);
 
-// return the proper rowlines information
+/* return the proper rowlines information */
 extern char *mtex2MML_combine_row_data(UT_array **environment_data_stack);
 
-// return the has_eqn_number value of the last row
+/* return the has_eqn_number value of the last row */
 extern int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack);
 
-// get the environment type of the top-most item
+/* get the environment type of the top-most item */
 extern envType mtex2MML_current_env_type(UT_array **environment_data_stack);
 
-// get the line count of the top-most item
+/* get the line count of the top-most item */
 extern int mtex2MML_current_env_line_count(UT_array **environment_data_stack);
 
 #ifdef __cplusplus

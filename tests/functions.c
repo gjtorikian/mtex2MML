@@ -31,7 +31,7 @@ void test_functions__max_limits(void)
 {
   fixture_tex = read_fixture_tex("functions/max_limits.txt");
   fixture_mml = read_fixture_mml("functions/max_limits.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
 
   cl_assert_equal_s(fixture_mml, result);
 }
@@ -40,7 +40,7 @@ void test_functions__min_limits(void)
 {
   fixture_tex = read_fixture_tex("functions/min_limits.txt");
   fixture_mml = read_fixture_mml("functions/min_limits.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex));
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
 
   cl_assert_equal_s(fixture_mml, result);
 }

@@ -1,0 +1,27 @@
+$\alpha$
+
+$ \beta$
+
+$ \gamma$
+
+$
+\delta$
+
+$\epsilon $
+
+$\zeta$1
+
+I thought the ticket was $20, but instead it was $25.
+
+$$\Alpha$$
+
+$$ \Beta$$
+
+$$ \Gamma$$
+
+$$
+\Delta$$
+
+$$\Epsilon $$
+
+$$\Zeta$$32

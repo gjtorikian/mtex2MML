@@ -13,7 +13,7 @@ float mtex2MML_extract_number_from_pxstring(char * str)
     return dbl;
   }
 
-  // must not be a float.
+  /* must not be a float */
   sscanf (str, "%d", &match);
   return (float) match;
 }

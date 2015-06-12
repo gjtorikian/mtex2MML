@@ -22,7 +22,7 @@ char *file2strl(
         return NULL;
     }
 
-    unsigned long file_len;
+    int file_len;
     if (-1 == (file_len = ftell(file)))
     {
         fprintf(stderr, "Unable to ftell() file %s\n", path);
@@ -55,10 +55,8 @@ char *file2strl(
 }
 
 char *file2str(
-    const char *path,
-    unsigned long *file_len_out
+    const char *path
 )
 {
     return file2strl(path,NULL);
 }
-

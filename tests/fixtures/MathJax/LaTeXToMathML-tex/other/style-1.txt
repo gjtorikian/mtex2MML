@@ -4,4 +4,4 @@ $$
       {\scriptscriptstyle x}
       {\scriptstyle x}
       {\oldstyle x}
-$
+$$

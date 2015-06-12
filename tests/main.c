@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
   /* Run the test suite */
   int ret = clar_test(argc, argv);
 
-  // cl_assert_equal_i(3, global_test_counter);
+  /* cl_assert_equal_i(3, global_test_counter); */
 
   return ret;
 }

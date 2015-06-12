@@ -11,7 +11,7 @@ extern "C" {
 
 /* Step 1. Parse a buffer with mtex source; return value is mathml, or 0 on failure (e.g., parse error).
  */
-extern char * mtex2MML_parse (const char * buffer, unsigned long length);
+extern char * mtex2MML_parse (const char * buffer, unsigned long length, const int options);
 
 /* Step 2. Free the string from Step 1.
  */
@@ -20,12 +20,20 @@ extern void   mtex2MML_free_string (char * str);
 
 /* Alternatively, to filter generic source and converting embedded equations, use:
  */
-extern int    mtex2MML_filter (const char * buffer, unsigned long length);
+extern int    mtex2MML_filter (const char * buffer, unsigned long length, const int options);
+extern int    mtex2MML_text_filter (const char * buffer, unsigned long length, const int options);
+extern int    mtex2MML_strict_filter (const char * buffer, unsigned long length, const int options);
 
-extern int    mtex2MML_html_filter (const char * buffer, unsigned long length);
-extern int    mtex2MML_strict_html_filter (const char * buffer, unsigned long length);
+extern int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options);
 
-extern int mtex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup);
+/** Types of delimiters
+ */
+#define MTEX2MML_DELIMITER_DEFAULT          0
+#define MTEX2MML_DELIMITER_DOLLAR           1
+#define MTEX2MML_DELIMITER_DOUBLE           2
+#define MTEX2MML_DELIMITER_PARENS           4
+#define MTEX2MML_DELIMITER_BRACKETS         8
+#define MTEX2MML_DELIMITER_ENVIRONMENTS     16
 
 /* To change output methods:
  *
@@ -39,7 +47,9 @@ extern void (*mtex2MML_error) (const char * msg);                          /* de
 /* Other stuff:
  */
 
-extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, int global_start);
+extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, const int options, const int global_start);
+
+extern int mtex2MML_delimiter_type();
 
 extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
@@ -64,6 +74,7 @@ extern int    mtex2MML_rowposn;
 extern int    mtex2MML_displaymode;
 extern int    display_style;
 
+extern int    delimiter_options;
 extern int    global_label;
 extern int    line_counter;
 

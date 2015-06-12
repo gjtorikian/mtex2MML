@@ -4,4 +4,4 @@ $$
       d  e  f \cr
       g  h  i
       \end{array}
-$
+$$

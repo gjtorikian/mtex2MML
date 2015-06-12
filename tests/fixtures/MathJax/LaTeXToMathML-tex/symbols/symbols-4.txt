@@ -36,4 +36,4 @@ $$
       \lvertneqq,
       \maltese,
       \mapsto
-$
+$$
