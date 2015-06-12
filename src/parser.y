@@ -3514,6 +3514,14 @@ static void mtex2MML_keep_error (const char * msg)
   mtex2MML_last_error = mtex2MML_copy_escaped (msg);
 }
 
+int mtex2MML_delimiter_type(const int type) {
+  if (delimiter_options == MTEX2MML_DELIMITER_DEFAULT) {
+    return type & (MTEX2MML_DELIMITER_DOLLAR | MTEX2MML_DELIMITER_DOUBLE);
+  } else {
+    return delimiter_options & type;
+  }
+}
+
 int mtex2MML_do_filter (const char * buffer, unsigned long length, const int forbid_markup, const int write, const int options)
 {
   global_label = 1;
@@ -3558,16 +3566,16 @@ _until_math:
   ptr1 = ptr2;
 
   if (ptr2 + 1 < end) {
-    if ((*ptr2 == '\\') && (*(ptr2+1) == '[') && (delimiter_options & MTEX2MML_DELIMITER_BRACKETS)) {
+    if ((*ptr2 == '\\') && (*(ptr2+1) == '[') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {
       type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
-    } else if ((*ptr2 == '$') && (*(ptr2+1) == '$') && (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOUBLE))) {
+    } else if ((*ptr2 == '$') && (*(ptr2+1) == '$') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE)) {
       type = MTEX2MML_DELIMITER_DOUBLE;
       ptr2 += 2;
-    } else if ((*ptr2 == '\\') && (*(ptr2+1) == '(') && (delimiter_options & MTEX2MML_DELIMITER_PARENS)) {
+    } else if ((*ptr2 == '\\') && (*(ptr2+1) == '(') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) {
       type = MTEX2MML_DELIMITER_PARENS;
       ptr2 += 2;
-    } else if ((*ptr2 == '$') && !isspace(*(ptr2+1)) && (!delimiter_options || (delimiter_options & MTEX2MML_DELIMITER_DOLLAR))) {
+    } else if ((*ptr2 == '$') && !isspace(*(ptr2+1)) && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) {
       type = MTEX2MML_DELIMITER_DOLLAR;
       ptr2++;
     }

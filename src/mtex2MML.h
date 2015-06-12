@@ -49,6 +49,8 @@ extern void (*mtex2MML_error) (const char * msg);                          /* de
 
 extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, const int options, const int global_start);
 
+extern int mtex2MML_delimiter_type();
+
 extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
 extern void   mtex2MML_restart ();
