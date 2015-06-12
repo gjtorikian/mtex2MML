@@ -58,7 +58,7 @@ int display_style = 0;
 
 <INITIAL>"\\(" if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) {BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=0; return STARTMATH; }
 
-<INITIAL>"\\[" if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) { BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH; }
+<INITIAL>"\\[" if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH; }
 
 <INITIAL>EOF    return 0;
 <INITIAL>"\n" {mtex2MML_lineno++; yylval=mtex2MML_copy_string(yytext); return CHAR;}
@@ -67,7 +67,7 @@ int display_style = 0;
 
 <MATH>{
 
-"$"{1,2} if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR) || mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE)) { mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0; mtex2MML_eqn_end=mtex2MML_eqn_src; yylval=mtex2MML_copy_escaped(mtex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
+"$"{1,2} if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR) || mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE)) { mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0; mtex2MML_eqn_end=mtex2MML_eqn_src; yylval=mtex2MML_copy_escaped(mtex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;} else {yylval=mtex2MML_copy_string("$"); return MI;}
 
 "\\)"    if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) {mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0; mtex2MML_eqn_end=mtex2MML_eqn_src; yylval=mtex2MML_copy_escaped(mtex2MML_eqn_src); BEGIN(INITIAL); return ENDMATH;}
 

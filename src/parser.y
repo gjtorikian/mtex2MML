@@ -3549,10 +3549,11 @@ _until_math:
 
   /* Search for the first math part */
   while (ptr2 < end) {
-    if (*ptr2 == '$') { break; }
+    if (*ptr2 == '$' && (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR) || mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE))) { break; }
     if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
-      if (*(ptr2+1) == '[' || *(ptr2+1) == '(') { break; }
-      if (*(ptr2+1) == '$') { ptr2++; }
+      if (*(ptr2+1) == '[' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {break;}
+      if (*(ptr2+1) == '(' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) { break; }
+      if (*(ptr2+1) == '$' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) { ptr2++; }
     }
     ++ptr2;
   }
@@ -3566,13 +3567,13 @@ _until_math:
   ptr1 = ptr2;
 
   if (ptr2 + 1 < end) {
-    if ((*ptr2 == '\\') && (*(ptr2+1) == '[') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {
+    if ((*ptr2 == '\\') && (*(ptr2+1) == '[' && *(ptr2 - 1) != '\\') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {
       type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && (*(ptr2+1) == '$') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE)) {
       type = MTEX2MML_DELIMITER_DOUBLE;
       ptr2 += 2;
-    } else if ((*ptr2 == '\\') && (*(ptr2+1) == '(') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) {
+    } else if ((*ptr2 == '\\') && (*(ptr2+1) == '(' && *(ptr2 - 1) != '\\') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) {
       type = MTEX2MML_DELIMITER_PARENS;
       ptr2 += 2;
     } else if ((*ptr2 == '$') && !isspace(*(ptr2+1)) && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) {
@@ -3615,8 +3616,8 @@ _until_math:
       break;
 
     case '$':
-      if (type == MTEX2MML_DELIMITER_BRACKETS) {
-        skip = 1;
+      if (type == MTEX2MML_DELIMITER_BRACKETS || type == MTEX2MML_DELIMITER_PARENS) {
+        // no op
       } else if (ptr2 + 1 < end) {
         if (*(ptr2 + 1) == '$') {
           if (type == MTEX2MML_DELIMITER_DOLLAR) {
