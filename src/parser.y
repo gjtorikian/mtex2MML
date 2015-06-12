@@ -73,6 +73,7 @@ yydebug = 1;*/
    }
  }
 
+ static void mtex2MML_default_write_mathml (const char * mathml)
  {
    if (mtex2MML_write) {
      (*mtex2MML_write) (mathml, 0);
