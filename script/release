@@ -1,34 +1,25 @@
 #!/usr/bin/env ruby
 
-require 'octokit'
-require 'pp'
-
 `git push origin`
 
-`make clean && make`
+`rm -rf build`
+`mkdir build`
+
+Dir.chdir 'build' do
+  `cmake ..`
+  `make`
+end
 
 MTEX2MML_HEADER = File.read(File.join('src', 'mtex2MML.h'))
 VERSION = MTEX2MML_HEADER.match(/MTEX2MML_VERSION\s*"(.+?)"/)[1]
 TAG_NAME = "v#{VERSION}"
-UPLOADED_FILES = {
-  'libmtex2MML.a' => 'application/x-archive',
-  'mtex2MML' => 'application/octet-stream',
-  'mtex2MML.h' => 'text/x-c'
-  }
 
 puts "Creating tag #{TAG_NAME}..."
 `git tag #{TAG_NAME}`
 
-puts "Creating release..."
+puts 'Creating release...'
 client = Octokit::Client.new(:access_token => ENV['MY_PERSONAL_TOKEN'])
 release_response = client.create_release 'gjtorikian/mtex2MML', TAG_NAME, \
                                         :name => VERSION
-release_url = release_response[:url]
 
-UPLOADED_FILES.each_pair do |file, mime|
-  puts "Uploading #{file}..."
-  client.upload_asset release_url, File.join('build', file), \
-                      :name => file, :content_type => mime
-end
-
-puts "Done!"
+puts 'Done!'
