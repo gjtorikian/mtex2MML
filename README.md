@@ -68,7 +68,7 @@ The `options` argument determines which types of delimiters are to be used:
 * `MTEX2MML_DELIMITER_PARENS` uses parenthesis: `\(..\)` for inline.
 * `MTEX2MML_DELIMITER_BRACKETS` uses brackets: `\[..\]` for brackets.
 
-[The *tests/basic.c*](tests/basic.c) and [The *tests/delimiters.c*](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
+[The *tests/basic.c*](tests/basic.c) and [the *tests/delimiters.c*](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
 
 ### As a command
 
@@ -78,7 +78,7 @@ Like any good Unix program, the mtex2MML binary operates on pipes. That is to sa
 echo '\sin y' | mtex2MML --inline > math.txt
 ```
 
-Use `mtex2MML -h` to get some documentation on all the options.
+Use `mtex2MML -h` to get documentation on the options.
 
 ## Error handling
 
