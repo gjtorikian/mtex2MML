@@ -82,7 +82,7 @@ Use `mtex2MML -h` to get some documentation on all the options.
 
 ## Error handling
 
-A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a status code. An error message is also printed to STDERR.
+A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a non-zero status code. An error message is also printed to STDERR.
 
 [The *tests/maliciousness.c* suite](tests/maliciousness.c) has a demonstration on how to perform error handling.
 
