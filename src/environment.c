@@ -78,7 +78,8 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
         *temp = "", **prev_stack_item,
          *a, *em_str;
 
-  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0, insertion_idx = 0;
+  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0;
+  unsigned int insertion_idx = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
