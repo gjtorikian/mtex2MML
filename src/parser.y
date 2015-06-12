@@ -3551,7 +3551,7 @@ _until_math:
   while (ptr2 < end) {
     if (*ptr2 == '$' && (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR) || mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE))) { break; }
     if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
-      if (*(ptr2+1) == '[' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {break;}
+      if (*(ptr2+1) == '[' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) { break; }
       if (*(ptr2+1) == '(' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) { break; }
       if (*(ptr2+1) == '$' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) { ptr2++; }
     }
@@ -3603,14 +3603,24 @@ _until_math:
           } else {
             skip = 1;
           }
-        } else  {
+        } else if (*(ptr2 + 1) == '(' && type == MTEX2MML_DELIMITER_PARENS) {
+          skip = 1;
+        } else if (*(ptr2 + 1) == ')') {
+          if (type == MTEX2MML_DELIMITER_PARENS) {
+            ptr2 += 2;
+            match = 1;
+          } else {
+            skip = 1;
+          }
+        } else {
           ptr2++;
         }
       }
       break;
 
     case '\n':
-      if (type == MTEX2MML_DELIMITER_DOLLAR) {
+      /* we hit a newline in an unclosed inline equation -- skip this string */
+      if (type == MTEX2MML_DELIMITER_DOLLAR || type == MTEX2MML_DELIMITER_PARENS) {
         skip = 1;
       }
       break;
