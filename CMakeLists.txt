@@ -81,7 +81,13 @@ add_flex_bison_dependency(MTEX2MMLSCANNER MTEX2MMLPARSER)
 
 # Collect sourcefiles, exclude main.c from libraries
 file(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
-file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+
+if(MSVC)
+  file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/**/*.c)
+else()
+  file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+endif()
+
 list(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
 
 set(PROGRAM "mtex2MML")
