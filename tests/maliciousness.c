@@ -31,7 +31,7 @@ void test_maliciousness__parsing(void)
 {
   fixture_tex = read_fixture_tex("maliciousness/just_enough_parsing.txt");
   fixture_mml = read_fixture_mml("maliciousness/just_enough_parsing.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), 0);
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
 
   cl_assert_equal_s(fixture_mml, result);
 }
@@ -40,7 +40,7 @@ void test_maliciousness__excess_parsing(void)
 {
   fixture_tex = read_fixture_tex("maliciousness/excess_parsing.txt");
   fixture_mml =  read_fixture_mml("maliciousness/just_enough_parsing.html");
-  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), 0);
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
 
   cl_assert(result == NULL);
 }

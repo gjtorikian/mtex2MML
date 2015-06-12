@@ -10,7 +10,7 @@ template = string.Template("""void test_mathjax__$sanitized_name(void)
 {
   fixture_tex = read_fixture_tex("MathJax/LaTeXToMathML-tex/$name.txt");
   fixture_mml = read_fixture_mml("MathJax/LaTeXToMathML-out/$name.html");
-  mtex2MML_filter(fixture_tex, strlen(fixture_tex), 0);
+  mtex2MML_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
   result = mtex2MML_output();
 
   cl_assert_equal_s(fixture_mml, result);
