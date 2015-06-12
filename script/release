@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'octokit'
+
 `git push origin`
 
 `rm -rf build`
