@@ -78,8 +78,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
         *temp = "", **prev_stack_item,
          *a, *em_str;
 
-  int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0;
-  unsigned int insertion_idx = 0;
+  unsigned int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0, insertion_idx = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -232,7 +231,7 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
     utarray_erase(eqn_number_stack, 0, 1);
   }
 
-  int line_count = utarray_len(rowlines_stack);
+  unsigned int line_count = utarray_len(rowlines_stack);
 
   /* empty rowlines should be reset */
   if (line_count == 0) {
@@ -299,7 +298,7 @@ char *mtex2MML_vertical_pipe_extract(char *string)
   char *dupe = strdup(string);
   UT_string *columnlines, *border;
   char *previous_column = "", *attr_columnlines, *attr_border;
-  int i = 0;
+  unsigned int i = 0;
 
   utstring_new(columnlines);
   utstring_new(border);
