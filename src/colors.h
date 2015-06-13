@@ -14,7 +14,7 @@ struct css_colors {
 };
 
 /* Assemble a mapping of color names */
-extern void mtex2MML_create_css_colors(struct css_colors **colors);
+void mtex2MML_create_css_colors(struct css_colors **colors);
 
 #ifdef __cplusplus
 }

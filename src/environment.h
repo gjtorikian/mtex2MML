@@ -52,31 +52,31 @@ The env_replacements function will push every line onto a stack. When an \end
 is detected, it starts popping off the stack until it reaches the corresponding
 \begin. It then modifies that stack with attribute strings, an arrangement of
 the symbols encountered while popping lines off. */
-extern void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment);
+void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment);
 
-extern int mtex2MML_determine_environment(const char *environment);
+int mtex2MML_determine_environment(const char *environment);
 
-extern int mtex2MML_identify_eqn_number(envType environment_type, char *line);
+int mtex2MML_identify_eqn_number(envType environment_type, char *line);
 
-extern void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
+void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *rowlines_stack, envType environment_type, UT_array *has_eqn_number, UT_array *row_spacing_stack);
 
 /* determines the column border arrangement from the array environment definition (c|cc|c...) */
-extern char *mtex2MML_vertical_pipe_extract(char *string);
+char *mtex2MML_vertical_pipe_extract(char *string);
 
 /* removes placeholder pipe characters from columnalign (for example, c|c:c becomes "center s center d center")--we need to remove the "s" and "d" characters */
-extern char *mtex2MML_remove_excess_pipe_chars(char *string);
+char *mtex2MML_remove_excess_pipe_chars(char *string);
 
 /* return the proper rowlines information */
-extern char *mtex2MML_combine_row_data(UT_array **environment_data_stack);
+char *mtex2MML_combine_row_data(UT_array **environment_data_stack);
 
 /* return the has_eqn_number value of the last row */
-extern int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack);
+int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack);
 
 /* get the environment type of the top-most item */
-extern envType mtex2MML_current_env_type(UT_array **environment_data_stack);
+envType mtex2MML_current_env_type(UT_array **environment_data_stack);
 
 /* get the line count of the top-most item */
-extern int mtex2MML_current_env_line_count(UT_array **environment_data_stack);
+int mtex2MML_current_env_line_count(UT_array **environment_data_stack);
 
 #ifdef __cplusplus
 }
