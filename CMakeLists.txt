@@ -203,6 +203,7 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/maliciousness.c"
     "${CLAR_PATH}/mathjax.c"
     "${CLAR_PATH}/numbered_equations.c"
+    "${CLAR_PATH}/performance.c"
   )
 
   add_custom_target(MATHJAX ALL
