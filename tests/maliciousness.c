@@ -93,3 +93,15 @@ void test_maliciousness__bad_options(void)
   cl_assert(status == 0);
   cl_assert(strlen(result) == 0);
 }
+
+void test_maliciousness__imbalanced_dollars(void)
+{
+  /* lazy way to continue with the free in cleanup */
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
+
+  char *s1 = "x$$";
+  result = mtex2MML_parse(s1, strlen(s1), 0);
+
+  cl_assert(result == NULL);
+}

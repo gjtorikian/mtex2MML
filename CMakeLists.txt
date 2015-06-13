@@ -16,7 +16,7 @@
 #
 project(mtex2MML)
 enable_language(C)
-cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 cmake_policy(SET CMP0015 NEW)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/astyle.cmake")
@@ -150,6 +150,16 @@ else()
     OUTPUT_NAME "mtex2MML"
     VERSION ${MTEX2MML_VERSION_STRING}
   )
+  # -fPIC, basically
+  if (UNIX AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX))
+    if ("${CMAKE_VERSION}" VERSION_LESS "2.8.9")
+      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+    else()
+      set_target_properties(${STATICLIBRARY} PROPERTIES
+        POSITION_INDEPENDENT_CODE TRUE
+      )
+    endif()
+  endif()
 endif(MSVC)
 
 set_property(TARGET ${LIBRARY}
