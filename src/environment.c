@@ -158,6 +158,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
           if ( (tok = strstr(*prev_stack_item, EM_PATTERN_BEGIN)) != NULL) {
             temp = tok + 2; /* skip the first part ("\[") */
             if ( (tok = strstr(temp, EM_PATTERN_END)) != NULL) {
+              mtex2MML_remove_last_char(temp);
               char *s = strdup(temp);
               utarray_push_back(row_spacing_stack, &s);
               free(s);
