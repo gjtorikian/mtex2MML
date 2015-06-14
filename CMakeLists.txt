@@ -206,11 +206,6 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/performance.c"
   )
 
-  add_custom_target(MATHJAX ALL
-    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
-    WORKING_DIRECTORY ${CLAR_PATH}
-  )
-
   add_custom_command(
     OUTPUT ${CLAR_PATH}/clar.suite
     COMMAND ${PYTHON_EXECUTABLE} generate.py
@@ -230,6 +225,12 @@ if (BUILD_CLAR)
   if(UNIX AND NOT APPLE AND NOT CYGWIN)
     target_link_libraries(mtex2MML_clar ${M_LIB})
   endif()
+
+  add_custom_command(TARGET mtex2MML_clar
+    POST_BUILD
+    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
+    WORKING_DIRECTORY ${CLAR_PATH}
+  )
 
   add_test(mtex2MML_clar mtex2MML_clar -v)
 
