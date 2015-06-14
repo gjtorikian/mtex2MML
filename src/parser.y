@@ -51,7 +51,7 @@ yydebug = 1;*/
 
  void (*mtex2MML_error) (const char * msg) = mtex2MML_default_error;
 
- static void yyerror (char **ret_str, char * s)
+ static void yyerror (char **ret_str, const char * s)
  {
    char * msg = mtex2MML_copy3 (s, " at token ", yytext);
    if (mtex2MML_error) {
