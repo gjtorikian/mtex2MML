@@ -1,4 +1,5 @@
-#include "../deps/strdup/strdup.h"
+#include "../../deps/strdup/strdup.h"
+#include "../deps/mkdtemp/mkdtemp.h"
 
 static char _clar_path[4096];
 
