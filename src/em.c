@@ -29,14 +29,16 @@ char *mtex2MML_extract_string_from_pxstring(char * str)
 
 char *mtex2MML_dbl2em(char *str)
 {
+  float dbl;
+  char *em_str;
   UT_string *em;
   utstring_new(em);
 
-  float dbl = mtex2MML_extract_number_from_pxstring(str);
+  dbl = mtex2MML_extract_number_from_pxstring(str);
   dbl *= 0.056;
 
   utstring_printf(em, "%.3fem", dbl);
-  char * em_str = strdup(utstring_body(em));
+  em_str = strdup(utstring_body(em));
 
   utstring_free(em);
 
@@ -45,12 +47,14 @@ char *mtex2MML_dbl2em(char *str)
 
 char *mtex2MML_double_pixel(float f, char *pixel)
 {
+  float dbl;
+  char *em_str;
   UT_string *em;
   utstring_new(em);
 
-  float dbl = f * 2;
+  dbl = f * 2;
   utstring_printf(em, "%.3f%s", dbl, pixel);
-  char * em_str = strdup(utstring_body(em));
+  em_str = strdup(utstring_body(em));
 
   utstring_free(em);
 
@@ -59,6 +63,7 @@ char *mtex2MML_double_pixel(float f, char *pixel)
 
 char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern)
 {
+  char *skew_mathml_str;
   UT_string *skew_mathml;
   utstring_new(skew_mathml);
 
@@ -67,7 +72,7 @@ char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern)
   utstring_printf(skew_mathml, "%s%s%s", pattern, "</mo></mover></mrow><mspace width=\"-", em_skew);
   utstring_printf(skew_mathml, "%s", "\" /></mrow><mrow></mrow></mrow>");
 
-  char *skew_mathml_str = strdup(utstring_body(skew_mathml));
+  skew_mathml_str = strdup(utstring_body(skew_mathml));
 
   utstring_free(skew_mathml);
 
@@ -76,14 +81,16 @@ char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern)
 
 char *mtex2MML_root_pos_to_em(char * str)
 {
+  float dbl;
+  char *em_str;
   UT_string *em;
   utstring_new(em);
 
-  float dbl = mtex2MML_extract_number_from_pxstring(str);
+  dbl = mtex2MML_extract_number_from_pxstring(str);
   dbl /= 15;
 
   utstring_printf(em, "%.3fem", dbl);
-  char * em_str = strdup(utstring_body(em));
+  em_str = strdup(utstring_body(em));
 
   utstring_free(em);
 
