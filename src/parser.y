@@ -12,6 +12,7 @@
 #include "environment.h"
 #include "string_extras.h"
 
+#include "../deps/strdup/strdup.h"
 #include "../deps/uthash/uthash.h"
 
 struct css_colors *colors = NULL;

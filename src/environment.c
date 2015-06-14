@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "../deps/strdup/strdup.h"
 #include "environment.h"
 #include "string_extras.h"
 
@@ -78,7 +79,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
         *temp = "", **prev_stack_item,
          *a, *em_str;
 
-  unsigned int rowlines_stack_len = 0, em_offset = 0, eqn = 0, i = 0, insertion_idx = 0;
+  unsigned int rowlines_stack_len = 0, eqn = 0, i = 0, insertion_idx = 0;
 
   char *dupe_environment = strdup(environment);
   char *line = strtok(dupe_environment, "\n");
@@ -157,8 +158,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
           if ( (tok = strstr(*prev_stack_item, EM_PATTERN_BEGIN)) != NULL) {
             temp = tok + 2; /* skip the first part ("\[") */
             if ( (tok = strstr(temp, EM_PATTERN_END)) != NULL) {
-              em_offset = (int)(tok - temp);
-              char *s = strndup(temp, em_offset);
+              char *s = strdup(temp);
               utarray_push_back(row_spacing_stack, &s);
               free(s);
             }
