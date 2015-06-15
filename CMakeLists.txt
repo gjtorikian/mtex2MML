@@ -126,7 +126,7 @@ if(MSVC)
   endif()
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4127 /wd4244 /wd4267 /wd4706 /wd4800 /D_CRT_SECURE_NO_WARNINGS")
 elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic-errors -fextended-identifiers ")
 endif()
 
 set_target_properties(${LIBRARY} PROPERTIES
@@ -203,11 +203,7 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/maliciousness.c"
     "${CLAR_PATH}/mathjax.c"
     "${CLAR_PATH}/numbered_equations.c"
-  )
-
-  add_custom_target(MATHJAX ALL
-    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
-    WORKING_DIRECTORY ${CLAR_PATH}
+    "${CLAR_PATH}/performance.c"
   )
 
   add_custom_command(
@@ -229,6 +225,12 @@ if (BUILD_CLAR)
   if(UNIX AND NOT APPLE AND NOT CYGWIN)
     target_link_libraries(mtex2MML_clar ${M_LIB})
   endif()
+
+  add_custom_command(TARGET mtex2MML_clar
+    POST_BUILD
+    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
+    WORKING_DIRECTORY ${CLAR_PATH}
+  )
 
   add_test(mtex2MML_clar mtex2MML_clar -v)
 

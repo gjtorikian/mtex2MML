@@ -15,6 +15,8 @@
 #define YY_NEVER_INTERACTIVE 1
 #define YY_INPUT(buffer,result,max_size) result = s_mtex2MML_read (buffer, max_size)
 
+extern int fileno(FILE *); /* avoids gcc warning */
+
 static int s_mtex2MML_read (char * buffer, int max_size);
 
 #define yylval mtex2MML_yylval

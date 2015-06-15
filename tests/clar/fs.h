@@ -1,3 +1,5 @@
+#include "../../deps/strdup/strdup.h"
+
 #ifdef _WIN32
 
 #define RM_RETRY_COUNT	5
@@ -105,7 +107,7 @@ fs_rm_wait(WCHAR *_wpath)
 			ERROR_PATH_NOT_FOUND == last_error)
 			return 0;
 
-		Sleep(RM_RETRY_DELAY * retries * retries);	
+		Sleep(RM_RETRY_DELAY * retries * retries);
 	}
 	while (retries++ <= RM_RETRY_COUNT);
 
