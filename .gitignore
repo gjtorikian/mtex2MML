@@ -20,3 +20,14 @@ tests/testrunner.dSYM/
 file.test
 
 build/
+
+*.vcxproj
+*.vcxproj.filters
+*.opensdf
+*.sln
+*.suo
+
+CMakeFiles
+CMakeCache.txt
+Release
+Win32

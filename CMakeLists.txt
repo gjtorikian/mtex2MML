@@ -81,7 +81,13 @@ add_flex_bison_dependency(MTEX2MMLSCANNER MTEX2MMLPARSER)
 
 # Collect sourcefiles, exclude main.c from libraries
 file(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/*.h)
-file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+
+if(MSVC)
+  file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/**/*.c)
+else()
+  file(GLOB SRC_MTEX2MML ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+endif()
+
 list(REMOVE_ITEM SRC_MTEX2MML "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
 
 set(PROGRAM "mtex2MML")
@@ -125,6 +131,8 @@ if(MSVC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
   endif()
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4127 /wd4244 /wd4267 /wd4706 /wd4800 /D_CRT_SECURE_NO_WARNINGS")
+
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/win32-shims)
 elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic-errors -fextended-identifiers ")
 endif()
