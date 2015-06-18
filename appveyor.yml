@@ -25,4 +25,4 @@ build_script:
     cmake . -Bbuild
     msbuild /p:Configuration=Release build/mtex2MML.sln
 test_script:
-- ps: ctest -V .
+- ps: build\Release\mtex2MML_clar.exe
