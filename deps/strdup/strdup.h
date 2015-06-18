@@ -23,4 +23,6 @@ char *
 strdup(const char *str);
 
 #endif /* HAVE_STRDUP */
+#else
+#define strdup _strdup
 #endif
