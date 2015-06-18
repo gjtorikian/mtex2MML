@@ -1957,7 +1957,7 @@ mfrac: FRAC closedTerm closedTerm {
   mtex2MML_free_string($3);
 }
 | GENFRAC MROWOPEN LEFTDELIM MROWCLOSE MROWOPEN RIGHTDELIM MROWCLOSE MROWOPEN PXSTRING MROWCLOSE compoundTermList compoundTermList compoundTermList {
-  char *s1, *s2, *s3, *s4;
+  char *s1 = NULL, *s2 = NULL, *s3 = NULL, *s4 = NULL;
   int style = 0;
   sscanf ($11,"%d", &style);
 
