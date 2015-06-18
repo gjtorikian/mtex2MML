@@ -12,6 +12,7 @@
 #include "environment.h"
 #include "string_extras.h"
 
+#include "../deps/strdup/strdup.h"
 #include "../deps/uthash/uthash.h"
 
 struct css_colors *colors = NULL;
@@ -50,7 +51,7 @@ yydebug = 1;*/
 
  void (*mtex2MML_error) (const char * msg) = mtex2MML_default_error;
 
- static void yyerror (char **ret_str, char * s)
+ static void yyerror (char **ret_str, const char * s)
  {
    char * msg = mtex2MML_copy3 (s, " at token ", yytext);
    if (mtex2MML_error) {
@@ -61,7 +62,7 @@ yydebug = 1;*/
 
  /* Note: If length is 0, then buffer is treated like a string; otherwise only length bytes are written.
   */
- /* GJT: I do not know what this function did. It is unused and causing warning output on compile.
+
  static void mtex2MML_default_write (const char * buffer, unsigned long length)
  {
    if (buffer) {
@@ -72,16 +73,13 @@ yydebug = 1;*/
      }
    }
  }
- */
 
- /* I do not know what this function did. It is unused and causing warning output on compile.
  static void mtex2MML_default_write_mathml (const char * mathml)
  {
    if (mtex2MML_write) {
      (*mtex2MML_write) (mathml, 0);
    }
  }
- */
 
  #ifdef mtex2MML_CAPTURE
  static char * mtex2MML_output_string = "" ;

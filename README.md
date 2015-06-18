@@ -42,6 +42,15 @@ By default, inline equations are demarcated by `$...$`. Display equations are de
 
 You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not allowed.
 
+### Heuristics
+
+Since `$` signs appear quite often in plaintext, a basic heuristic is applied to calculate whether `$` should be interpreted as math or not:
+
+> Basic heuristic is: opening $ can't be followed by whitespace, closing $ can't be followed by
+   a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx */
+
+Of course, if you type `\$`, no math is applied as the `$` is considered skipped.
+
 ### As a library
 
 Both a static and dynamic library are created as part of the `cmake` build process. Include one of them during the compilation of your program.

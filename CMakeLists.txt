@@ -16,7 +16,7 @@
 #
 project(mtex2MML)
 enable_language(C)
-cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 cmake_policy(SET CMP0015 NEW)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/astyle.cmake")
@@ -134,7 +134,7 @@ if(MSVC)
 
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/win32-shims)
 elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic-errors -fextended-identifiers ")
 endif()
 
 set_target_properties(${LIBRARY} PROPERTIES
@@ -158,6 +158,16 @@ else()
     OUTPUT_NAME "mtex2MML"
     VERSION ${MTEX2MML_VERSION_STRING}
   )
+  # -fPIC, basically
+  if (UNIX AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX))
+    if ("${CMAKE_VERSION}" VERSION_LESS "2.8.9")
+      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+    else()
+      set_target_properties(${STATICLIBRARY} PROPERTIES
+        POSITION_INDEPENDENT_CODE TRUE
+      )
+    endif()
+  endif()
 endif(MSVC)
 
 set_property(TARGET ${LIBRARY}
@@ -201,11 +211,7 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/maliciousness.c"
     "${CLAR_PATH}/mathjax.c"
     "${CLAR_PATH}/numbered_equations.c"
-  )
-
-  add_custom_target(MATHJAX ALL
-    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
-    WORKING_DIRECTORY ${CLAR_PATH}
+    "${CLAR_PATH}/performance.c"
   )
 
   add_custom_command(
@@ -227,6 +233,12 @@ if (BUILD_CLAR)
   if(UNIX AND NOT APPLE AND NOT CYGWIN)
     target_link_libraries(mtex2MML_clar ${M_LIB})
   endif()
+
+  add_custom_command(TARGET mtex2MML_clar
+    POST_BUILD
+    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
+    WORKING_DIRECTORY ${CLAR_PATH}
+  )
 
   add_test(mtex2MML_clar mtex2MML_clar -v)
 
