@@ -23,11 +23,15 @@ The most obvious gap in this library is the inability to define new commands (vi
 ## Building
 
 To build mtex2MML, you need:
-* [CMake](http://www.cmake.org/download/) (at least version 2.8.9)
+
+* [CMake](http://www.cmake.org/download/) (at least version 2.8.7)
 * [Bison](https://www.gnu.org/software/bison/)
 * [Flex](http://flex.sourceforge.net/)
+* [Python3](https://www.python.org/) (just for the tests)
 
-To fetch dependencies and run the library, call:
+### OS X and Ubuntu
+
+To fetch dependencies, build, and run the library, call:
 
 ```
 script/bootstrap
@@ -35,6 +39,16 @@ cd build
 cmake ..
 make
 ```
+
+### Windows
+
+With [Chocolatey](https://chocolatey.org/), you can run:
+
+```
+choco install cmake winflexbison python3
+```
+
+Then, with Powershell, simply run `build.ps1`.
 
 ## Usage
 
