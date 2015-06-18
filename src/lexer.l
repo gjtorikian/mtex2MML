@@ -124,7 +124,7 @@ int display_style = 0;
 
 
 "&amp;" |
-"&"         {mtex2MML_rowposn=2; if(environment_type == ENV_ALIGNAT || environment_type == ENV_ALIGNATSTAR) return COLSEPSPACE; return COLSEP;}
+"&"         {mtex2MML_rowposn=2; return COLSEP;}
 
 "\\&"           {yylval=mtex2MML_copy_string("&amp;"); return MI;}
 

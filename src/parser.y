@@ -42,8 +42,6 @@ yydebug = 1;*/
  int line_counter = 1;
  int delimiter_options = 0;
 
- int inject_empty_mi = 0;
-
  static void mtex2MML_default_error (const char * msg)
  {
    if (msg) {
@@ -3305,12 +3303,6 @@ simpleTableRow: tableCell {
   $$ = mtex2MML_copy3($1, " ", $3);
   mtex2MML_free_string($1);
   mtex2MML_free_string($3);
-}
-| simpleTableRow COLSEPSPACE tableCell {
-  inject_empty_mi = 1;
-  $$ = mtex2MML_copy3($1, " ", $3);
-  mtex2MML_free_string($1);
-  mtex2MML_free_string($3);
 };
 
 optsTableRow: ROWOPTS MROWOPEN rowopts MROWCLOSE simpleTableRow {
@@ -3345,12 +3337,12 @@ tableCell:   {
 }
 | compoundTermList {
   if (mtex2MML_current_env_type(&environment_data_stack) != ENV_MULTLINE && mtex2MML_current_env_type(&environment_data_stack) != ENV_MULTLINESTAR) {
-    if (inject_empty_mi) {
+    if (mtex2MML_current_env_type(&environment_data_stack) == ENV_ALIGNAT || mtex2MML_current_env_type(&environment_data_stack) == ENV_ALIGNATSTAR) {
       $$ = mtex2MML_copy3("<mtd><mi></mi>", $1, "</mtd>");
-      inject_empty_mi = 0;
     }
-    else
+    else {
       $$ = mtex2MML_copy3("<mtd>", $1, "</mtd>");
+    }
   }
   else {
     int total_lines = mtex2MML_current_env_line_count(&environment_data_stack);
