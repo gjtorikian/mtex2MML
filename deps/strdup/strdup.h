@@ -6,6 +6,7 @@
 // MIT licensed
 //
 
+#ifndef _WIN32
 #ifndef HAVE_STRDUP
 #define HAVE_STRDUP
 
@@ -22,3 +23,6 @@ char *
 strdup(const char *str);
 
 #endif /* HAVE_STRDUP */
+#else
+#define strdup _strdup
+#endif

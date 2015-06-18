@@ -280,7 +280,11 @@ yydebug = 1;*/
  char * mtex2MML_global_label()
  {
    char * n = (char *) malloc(256);
+   #ifdef _WIN32
+   _snprintf(n, 256, "%d", global_label);
+   #else
    snprintf(n, 256, "%d", global_label);
+   #endif
    global_label++;
    char *prefix = mtex2MML_copy3("<mtd><mtext>(", n, ")</mtext></mtd>");
    mtex2MML_free_string(n);
@@ -1953,7 +1957,7 @@ mfrac: FRAC closedTerm closedTerm {
   mtex2MML_free_string($3);
 }
 | GENFRAC MROWOPEN LEFTDELIM MROWCLOSE MROWOPEN RIGHTDELIM MROWCLOSE MROWOPEN PXSTRING MROWCLOSE compoundTermList compoundTermList compoundTermList {
-  char *s1, *s2, *s3, *s4;
+  char *s1 = NULL, *s2 = NULL, *s3 = NULL, *s4 = NULL;
   int style = 0;
   sscanf ($11,"%d", &style);
 

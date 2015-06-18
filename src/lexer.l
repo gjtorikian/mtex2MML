@@ -86,7 +86,7 @@ int display_style = 0;
 "\\hline" |
 "\\hdashline"      { /* Ignore */ ;}
 
-.?%.+$               { /* Ignore */ ;}
+[^\\]?%.+$               { /* Ignore */ ;}
 
 "{"            {mtex2MML_rowposn = 2; if(mtex2MML_inoptarg[mtex2MML_optarg_ind] != 0) mtex2MML_inoptarg[mtex2MML_optarg_ind]++; return MROWOPEN;}
 "}"            {if(mtex2MML_inoptarg[mtex2MML_optarg_ind] != 0) mtex2MML_inoptarg[mtex2MML_optarg_ind]--; return MROWCLOSE;}
