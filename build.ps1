@@ -1,2 +1,2 @@
-& cmake .
-& msbuild /p:Configuration=Release mtex2MML.sln
+& cmake . -Bbuild
+& msbuild /p:Configuration=Release build/mtex2MML.sln
