@@ -159,10 +159,6 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
             temp = tok + 2; /* skip the first part ("\[") */
             if ( (tok = strstr(temp, EM_PATTERN_END)) != NULL) {
               mtex2MML_remove_last_char(temp);
-              /* TODO: why do I need to remove a second time on Windows? */
-              #ifdef _WIN32
-              mtex2MML_remove_last_char(temp);
-              #endif
               char *s = strdup(temp);
               utarray_push_back(row_spacing_stack, &s);
               free(s);
