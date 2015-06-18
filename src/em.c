@@ -36,7 +36,7 @@ char *mtex2MML_dbl2em(char *str)
   utstring_new(em);
 
   dbl = mtex2MML_extract_number_from_pxstring(str);
-  dbl *= 0.056;
+  dbl *= 0.056f;
 
   utstring_printf(em, "%.3fem", dbl);
   em_str = strdup(utstring_body(em));
