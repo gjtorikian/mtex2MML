@@ -280,7 +280,11 @@ yydebug = 1;*/
  char * mtex2MML_global_label()
  {
    char * n = (char *) malloc(256);
+   #ifdef _WIN32
+   _snprintf(n, 256, "%d", global_label);
+   #else
    snprintf(n, 256, "%d", global_label);
+   #endif
    global_label++;
    char *prefix = mtex2MML_copy3("<mtd><mtext>(", n, ")</mtext></mtd>");
    mtex2MML_free_string(n);
