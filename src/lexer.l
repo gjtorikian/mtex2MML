@@ -39,6 +39,8 @@ char * mtex2MML_str;
 
 int mtex2MML_rowposn = 0;
 
+envType environment_type;
+
 /* TODO: I'm not sure what the next option does. My addition
    of `display_style` is to fix issue776. Probably worth merging
    these in the future? */
@@ -122,7 +124,7 @@ int display_style = 0;
 
 
 "&amp;" |
-"&"         {mtex2MML_rowposn=2; return COLSEP;}
+"&"         {mtex2MML_rowposn=2; if(environment_type == ENV_ALIGNAT || environment_type == ENV_ALIGNATSTAR) return COLSEPSPACE; return COLSEP;}
 
 "\\&"           {yylval=mtex2MML_copy_string("&amp;"); return MI;}
 
@@ -1135,7 +1137,7 @@ int display_style = 0;
 "\\mathcal"     {BEGIN(CALLIGRAPHIC); return CAL;}
 
 "\\begin"        {mtex2MML_env_start = 1; BEGIN(MATHENV); return BEGINENV;}
-"\\end"          {BEGIN(MATHENV); return ENDENV;}
+"\\end"          {environment_type = OTHER;BEGIN(MATHENV); return ENDENV;}
 
 "\\notag" |
 "\\nonumber"     { /* ignore, but address in .y */}
@@ -1303,8 +1305,8 @@ int display_style = 0;
 "\{aligned\}" {BEGIN(MATH); return ALIGNED;}
 "\{align\}" {BEGIN(MATH); return ALIGNENV;}
 "\{align*\}" {BEGIN(MATH); return ALIGNENV_STAR;}
-"\{alignat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
-"\{alignat*\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT_STAR;}
+"\{alignat\}" {environment_type = ENV_ALIGNAT; if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
+"\{alignat*\}" {environment_type = ENV_ALIGNATSTAR; if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT_STAR;}
 "\{alignedat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
 "\{eqnarray*\}" {BEGIN(MATH); return EQNARRAY_STAR;}
 "\{eqnarray\}" {BEGIN(MATH); return EQNARRAY;}
