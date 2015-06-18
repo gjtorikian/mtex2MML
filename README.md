@@ -1,8 +1,8 @@
 # mtex2MML
 
-[![Build Status](https://travis-ci.org/gjtorikian/mtex2MML.svg?branch=master)](https://travis-ci.org/gjtorikian/mtex2MML)
+[![Build Status](https://travis-ci.org/gjtorikian/mtex2MML.svg?branch=master)](https://travis-ci.org/gjtorikian/mtex2MML) [![Build status](https://ci.appveyor.com/api/projects/status/0ynwxikxqp5rseu3?svg=true)](https://ci.appveyor.com/project/gjtorikian/mtex2mml)
 
-This is a Bison grammar to convert TeX math into MathML. It can be used as a standalone program or as a static library. It is written in standard C99.
+This is a Bison grammar to convert TeX math into MathML. It can be used as a standalone program or as a static library. It is written in standard C99. It's been tested on OS X, Ubuntu, and Windows.
 
 The goal of this project is to implement as much of AMS-TeX math as possible.
 
@@ -19,36 +19,6 @@ However, you can consider MathML as an intermediate format onto greater things, 
 Please refer to [SUPPORTED.md](SUPPORTED.md) for more information on what this lib can do. Right now it has a ~93% compatibility with everything MathJax can do.
 
 The most obvious gap in this library is the inability to define new commands (via `\mathop`, `\def`, `\mathchoice`, etc.). Everything else in standard TeX math should be fine.
-
-## Building
-
-To build mtex2MML, you need:
-
-* [CMake](http://www.cmake.org/download/) (at least version 2.8.7)
-* [Bison](https://www.gnu.org/software/bison/)
-* [Flex](http://flex.sourceforge.net/)
-* [Python3](https://www.python.org/) (just for the tests)
-
-### OS X and Ubuntu
-
-To fetch dependencies, build, and run the library, call:
-
-```
-script/bootstrap
-cd build
-cmake ..
-make
-```
-
-### Windows
-
-With [Chocolatey](https://chocolatey.org/), you can run:
-
-```
-choco install cmake winflexbison python3
-```
-
-Then, with Powershell, simply run `build.ps1`.
 
 ## Usage
 
@@ -108,6 +78,36 @@ Use `mtex2MML -h` to get documentation on the options.
 A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a non-zero status code. An error message is also printed to STDERR.
 
 [The *tests/maliciousness.c* suite](tests/maliciousness.c) has a demonstration on how to perform error handling.
+
+## Building
+
+To build mtex2MML, you need:
+
+* [CMake](http://www.cmake.org/download/) (at least version 2.8.7)
+* [Bison](https://www.gnu.org/software/bison/)
+* [Flex](http://flex.sourceforge.net/)
+* [Python3](https://www.python.org/) (just for the tests)
+
+### OS X and Ubuntu
+
+To fetch dependencies, build, and run the library, call:
+
+```
+script/bootstrap
+cd build
+cmake ..
+make
+```
+
+### Windows
+
+With [Chocolatey](https://chocolatey.org/), you can run:
+
+```
+choco install cmake winflexbison python3
+```
+
+Then, with Powershell, simply run `build.ps1`.
 
 ## Testing
 
