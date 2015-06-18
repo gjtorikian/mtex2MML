@@ -1,5 +1,10 @@
 version: '{build}'
+branches:
+  only:
+  - master
 clone_depth: 10
+matrix:
+  fast_finish: true
 environment:
   PYTHON: "C:\\Python34-x64"
   PYTHON_VERSION: "3.4.3"
@@ -15,4 +20,6 @@ build_script:
     cmake . -Bbuild
     msbuild /p:Configuration=Release build/mtex2MML.sln
 test_script:
-- ps: build\Release\mtex2MML_clar.exe
+- ps: |
+    cd build
+    ctest -V
