@@ -1,7 +1,14 @@
 version: '{build}'
 clone_depth: 10
 environment:
+  PYTHON: "C:\\Python34-x64"
+  PYTHON_VERSION: "3.4.3"
+  PYTHON_ARCH: "64"
   matrix:
+  - GENERATOR: "Visual Studio 13"
+    ARCH: 32
+  - GENERATOR: "Visual Studio 13"
+    ARCH: 64
   - GENERATOR: "Visual Studio 11"
     ARCH: 32
   - GENERATOR: "Visual Studio 11 Win64"
@@ -15,12 +22,7 @@ environment:
 build_script:
 - ps: |
     mkdir build
-    cd build
-    if ($env:GENERATOR -ne "MSYS Makefiles") {
-      cmake -D ENABLE_TRACE=ON -D BUILD_CLAR=ON -D MSVC_CRTDBG=ON .. -G"$env:GENERATOR"
-      cmake --build . --config Debug
-    }
-- cmd: |
-    if "%GENERATOR%"=="MSYS Makefiles" (C:\MinGW\msys\1.0\bin\sh --login /c/projects/libgit2/script/appveyor-mingw.sh)
+    cmake . -Bbuild
+    msbuild /p:Configuration=Release build/mtex2MML.sln
 test_script:
 - ps: ctest -V .
