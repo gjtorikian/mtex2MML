@@ -1727,7 +1727,10 @@ frakletters: frakletter {
 };
 
 frakletter: FRAKCHAR {
-  $$ = mtex2MML_copy3("&", $1, "fr;");
+  if (strcmp($1, " ") == 0)
+    $$ = mtex2MML_copy_string(" ");
+  else
+    $$ = mtex2MML_copy3("&", $1, "fr;");
   mtex2MML_free_string($1);
 };
 
@@ -1751,7 +1754,10 @@ calletters: calletter {
 };
 
 calletter: CALCHAR {
-  $$ = mtex2MML_copy3("&", $1, "scr;");
+  if (strcmp($1, " ") == 0)
+    $$ = mtex2MML_copy_string(" ");
+  else
+    $$ = mtex2MML_copy3("&", $1, "scr;");
   mtex2MML_free_string($1);
 };
 
