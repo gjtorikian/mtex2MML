@@ -771,6 +771,7 @@ closedTerm: array
 | colorbox
 | color
 | hspace
+| newline
 | buildrel
 | texover
 | texoverwithdelims
@@ -3343,6 +3344,10 @@ arowopt: colalign {
   $$ = mtex2MML_copy_string($1);
   mtex2MML_free_string($1);
 };
+
+newline: NEWLINE {
+  $$ = mtex2MML_copy_string("<mspace linebreak=\"newline\" />");
+}
 
 tableCell:   {
   $$ = mtex2MML_copy_string("<mtd></mtd>");

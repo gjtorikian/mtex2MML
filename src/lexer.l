@@ -134,7 +134,7 @@ int display_style = 0;
 "\\\\"[\n\r\t ]*\[[0-9\.]+(em|ex|px|in|cm|mm|mu|pt|pc|%)\] |
 "\\newline"[\n\r\t ]* |
 "\\cr"[\n\r\t ]*      |
-"\\\\"[\n\r\t ]*          { mtex2MML_rowposn=2; return ROWSEP; }
+"\\\\"[\n\r\t ]*          { mtex2MML_rowposn=2; if (mtex2MML_current_env_type(mtex2MML_get_environment_data_stack()) == OTHER) return NEWLINE; return ROWSEP;}
 
 [0-9\.,]+(em|ex|px|in|cm|mm|mu|pt|pc|%) {char * normalized_px = mtex2MML_str_replace(yytext, ",", "."); yylval=mtex2MML_copy_string(normalized_px); mtex2MML_free_string(normalized_px); return PXSTRING; }
 
@@ -1137,7 +1137,7 @@ int display_style = 0;
 "\\mathcal"     {BEGIN(CALLIGRAPHIC); return CAL;}
 
 "\\begin"        {mtex2MML_env_start = 1; BEGIN(MATHENV); return BEGINENV;}
-"\\end"          {environment_type = OTHER;BEGIN(MATHENV); return ENDENV;}
+"\\end"          {environment_type = OTHER; BEGIN(MATHENV); return ENDENV;}
 
 "\\notag" |
 "\\nonumber"     { /* ignore, but address in .y */}
