@@ -22,8 +22,12 @@ const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
 
 int mtex2MML_determine_environment(const char *environment)
 {
-  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
-    return ENV_SMALLMATRIX;
+  if (strstr(environment, "\\end{alignat") != NULL) {
+    return ENV_ALIGNAT;
+  } else if (strstr(environment, "\\end{aligned}") != NULL) {
+    return ENV_ALIGNED;
+  } else if (strstr(environment, "\\end{alignedat}") != NULL) {
+    return ENV_ALIGNEDAT;
   } else if (strstr(environment, "\\end{array}") != NULL) {
     return ENV_ARRAY;
   } else if (strstr(environment, "\\end{bmatrix}") != NULL) {
@@ -46,18 +50,14 @@ int mtex2MML_determine_environment(const char *environment)
     return ENV_MULTLINE;
   } else if (strstr(environment, "\\end{multline*}") != NULL) {
     return ENV_MULTLINESTAR;
-  } else if (strstr(environment, "\\end{alignat") != NULL) {
-    return ENV_ALIGNAT;
-  } else if (strstr(environment, "\\end{aligned}") != NULL) {
-    return ENV_ALIGNED;
-  } else if (strstr(environment, "\\end{alignedat}") != NULL) {
-    return ENV_ALIGNEDAT;
   } else if (strstr(environment, "\\end{equation}") != NULL) {
     return ENV_EQUATION;
   } else if (strstr(environment, "\\end{align}") != NULL) {
     return ENV_ALIGN;
   } else if (strstr(environment, "\\end{align*}") != NULL) {
     return ENV_ALIGNSTAR;
+  } else if (strstr(environment, "\\end{smallmatrix}") != NULL) {
+    return ENV_SMALLMATRIX;
   } else if (strstr(environment, "\\end{split}") != NULL) {
     return ENV_SPLIT;
   } else if (strstr(environment, "\\end{subarray}") != NULL) {
@@ -97,10 +97,8 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
 {
   /* TODO: these next detections are gross, but substack and cases are rather special */
   if (strstr(environment, BEGIN_SUBSTACK) != NULL) {
-    int *e = 0;
     UT_array *eqn_number_stack;
     utarray_new(eqn_number_stack, &ut_int_icd);
-    utarray_push_back(eqn_number_stack, &e);
     envdata_t env_data;
     env_data.rowspacing = "";
     env_data.rowlines = "";
@@ -114,10 +112,8 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
     return;
   }
   if (strstr(environment, BEGIN_CASES) != NULL) {
-    int *e = 0;
     UT_array *eqn_number_stack;
     utarray_new(eqn_number_stack, &ut_int_icd);
-    utarray_push_back(eqn_number_stack, &e);
     envdata_t env_data;
     env_data.rowspacing = "";
     env_data.rowlines = "";
