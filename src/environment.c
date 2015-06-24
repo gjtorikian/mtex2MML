@@ -22,7 +22,11 @@ const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
 
 int mtex2MML_determine_environment(const char *environment)
 {
-  if (strstr(environment, "\\end{alignat") != NULL) {
+  if (strstr(environment, "\\end{align}") != NULL) {
+    return ENV_ALIGN;
+  } else if (strstr(environment, "\\end{align*}") != NULL) {
+    return ENV_ALIGNSTAR;
+  } else if (strstr(environment, "\\end{alignat") != NULL) {
     return ENV_ALIGNAT;
   } else if (strstr(environment, "\\end{aligned}") != NULL) {
     return ENV_ALIGNED;
@@ -36,26 +40,24 @@ int mtex2MML_determine_environment(const char *environment)
     return ENV_BBMATRIX;
   } else if (strstr(environment, "\\end{cases}") != NULL) {
     return ENV_CASES;
+  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
+    return ENV_EQNARRAY;
+  } else if (strstr(environment, "\\end{equation}") != NULL) {
+    return ENV_EQUATION;
   } else if (strstr(environment, "\\end{gather}") != NULL) {
     return ENV_GATHER;
   } else if (strstr(environment, "\\end{gather*}") != NULL) {
     return ENV_GATHERSTAR;
   } else if (strstr(environment, "\\end{gathered}") != NULL) {
     return ENV_GATHERED;
-  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
-    return ENV_EQNARRAY;
   } else if (strstr(environment, "\\end{matrix}") != NULL) {
     return ENV_MATRIX;
   } else if (strstr(environment, "\\end{multline}") != NULL) {
     return ENV_MULTLINE;
   } else if (strstr(environment, "\\end{multline*}") != NULL) {
     return ENV_MULTLINESTAR;
-  } else if (strstr(environment, "\\end{equation}") != NULL) {
-    return ENV_EQUATION;
-  } else if (strstr(environment, "\\end{align}") != NULL) {
-    return ENV_ALIGN;
-  } else if (strstr(environment, "\\end{align*}") != NULL) {
-    return ENV_ALIGNSTAR;
+  } else if (strstr(environment, "\\end{pmatrix}") != NULL) {
+    return ENV_PMATRIX;
   } else if (strstr(environment, "\\end{smallmatrix}") != NULL) {
     return ENV_SMALLMATRIX;
   } else if (strstr(environment, "\\end{split}") != NULL) {
@@ -64,8 +66,6 @@ int mtex2MML_determine_environment(const char *environment)
     return ENV_SUBARRAY;
   } else if (strstr(environment, "\\substack") != NULL) {
     return ENV_SUBSTACK;
-  } else if (strstr(environment, "\\end{pmatrix}") != NULL) {
-    return ENV_PMATRIX;
   } else if (strstr(environment, "\\end{vmatrix}") != NULL) {
     return ENV_VMATRIX;
   } else if (strstr(environment, "\\end{Vmatrix}") != NULL) {
