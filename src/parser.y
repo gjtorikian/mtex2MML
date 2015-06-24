@@ -3506,6 +3506,11 @@ char * mtex2MML_parse (const char * buffer, unsigned long length, const int opti
   return mathml;
 }
 
+UT_array ** mtex2MML_get_environment_data_stack()
+{
+  return &environment_data_stack;
+}
+
 int mtex2MML_filter (const char * buffer, unsigned long length, const int options)
 {
   return mtex2MML_do_filter (buffer, length, 0, 0, options);

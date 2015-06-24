@@ -9,6 +9,8 @@ extern "C" {
 
 #define mtex2MML_CAPTURE 1
 
+#include "environment.h"
+
 /* Step 1. Parse a buffer with mtex source; return value is mathml, or 0 on failure (e.g., parse error).
  */
 extern char * mtex2MML_parse (const char * buffer, unsigned long length, const int options);
@@ -65,6 +67,7 @@ extern char * mtex2MML_copy_string_extra (const char * str, unsigned extra);
 extern char * mtex2MML_copy2 (const char * first, const char * second);
 extern char * mtex2MML_copy3 (const char * first, const char * second, const char * third);
 extern char * mtex2MML_copy_escaped (const char * str);
+extern  UT_array ** mtex2MML_get_environment_data_stack();
 
 extern char * mtex2MML_empty_string;
 
