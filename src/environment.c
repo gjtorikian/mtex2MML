@@ -10,6 +10,8 @@
 static const char *BEGIN = "\\begin";
 static const char *END = "\\end";
 static const char *BEGIN_SVG = "begin{svg}";
+static const char *BEGIN_SUBSTACK = "\\substack";
+static const char *BEGIN_CASES = "\\cases";
 
 const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
             *LINE_SEPARATOR = "\\\\",
@@ -93,6 +95,40 @@ int mtex2MML_identify_eqn_number(envType environment_type, char *line)
 
 void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
 {
+  /* TODO: these next detections are gross, but substack and cases are rather special */
+  if (strstr(environment, BEGIN_SUBSTACK) != NULL) {
+    int *e = 0;
+    UT_array *eqn_number_stack;
+    utarray_new(eqn_number_stack, &ut_int_icd);
+    utarray_push_back(eqn_number_stack, &e);
+    envdata_t env_data;
+    env_data.rowspacing = "";
+    env_data.rowlines = "";
+    env_data.environment_type = ENV_SUBSTACK;
+    env_data.eqn_numbers = eqn_number_stack;
+    env_data.line_count = 0;
+
+    utarray_push_back(*environment_data_stack, &env_data);
+    utarray_free(eqn_number_stack);
+
+    return;
+  }
+  if (strstr(environment, BEGIN_CASES) != NULL) {
+    int *e = 0;
+    UT_array *eqn_number_stack;
+    utarray_new(eqn_number_stack, &ut_int_icd);
+    utarray_push_back(eqn_number_stack, &e);
+    envdata_t env_data;
+    env_data.rowspacing = "";
+    env_data.rowlines = "";
+    env_data.environment_type = ENV_CASES;
+    env_data.eqn_numbers = eqn_number_stack;
+    env_data.line_count = 0;
+
+    utarray_push_back(*environment_data_stack, &env_data);
+    utarray_free(eqn_number_stack);
+    return;
+  }
   /* if not an environment, don't bother going on */
   if ((strstr(environment, BEGIN) == NULL && strstr(environment, END) == NULL) || strstr(environment, BEGIN_SVG)) {
     return;
