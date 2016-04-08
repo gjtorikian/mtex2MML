@@ -10,6 +10,8 @@
 static const char *BEGIN = "\\begin";
 static const char *END = "\\end";
 static const char *BEGIN_SVG = "begin{svg}";
+static const char *BEGIN_SUBSTACK = "\\substack";
+static const char *BEGIN_CASES = "\\cases";
 
 const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
             *LINE_SEPARATOR = "\\\\",
@@ -20,26 +22,54 @@ const char *HLINE = "\\hline", *HDASHLINE = "\\hdashline",
 
 int mtex2MML_determine_environment(const char *environment)
 {
-  if (strstr(environment, "\\end{smallmatrix}") != NULL) {
-    return ENV_SMALLMATRIX;
-  } else if (strstr(environment, "\\end{gather}") != NULL) {
-    return ENV_GATHER;
-  } else if (strstr(environment, "\\end{gathered}") != NULL) {
-    return ENV_GATHERED;
-  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
-    return ENV_EQNARRAY;
-  } else if (strstr(environment, "\\end{multline}") != NULL) {
-    return ENV_MULTLINE;
-  } else if (strstr(environment, "\\end{multline*}") != NULL) {
-    return ENV_MULTLINESTAR;
+  if (strstr(environment, "\\end{align}") != NULL) {
+    return ENV_ALIGN;
+  } else if (strstr(environment, "\\end{align*}") != NULL) {
+    return ENV_ALIGNSTAR;
   } else if (strstr(environment, "\\end{alignat") != NULL) {
     return ENV_ALIGNAT;
   } else if (strstr(environment, "\\end{aligned}") != NULL) {
     return ENV_ALIGNED;
+  } else if (strstr(environment, "\\end{alignedat}") != NULL) {
+    return ENV_ALIGNEDAT;
+  } else if (strstr(environment, "\\end{array}") != NULL) {
+    return ENV_ARRAY;
+  } else if (strstr(environment, "\\end{bmatrix}") != NULL) {
+    return ENV_BMATRIX;
+  } else if (strstr(environment, "\\end{Bmatrix}") != NULL) {
+    return ENV_BBMATRIX;
+  } else if (strstr(environment, "\\end{cases}") != NULL) {
+    return ENV_CASES;
+  } else if (strstr(environment, "\\end{eqnarray") != NULL) {
+    return ENV_EQNARRAY;
   } else if (strstr(environment, "\\end{equation}") != NULL) {
     return ENV_EQUATION;
-  } else if (strstr(environment, "\\end{align}") != NULL) {
-    return ENV_ALIGN;
+  } else if (strstr(environment, "\\end{gather}") != NULL) {
+    return ENV_GATHER;
+  } else if (strstr(environment, "\\end{gather*}") != NULL) {
+    return ENV_GATHERSTAR;
+  } else if (strstr(environment, "\\end{gathered}") != NULL) {
+    return ENV_GATHERED;
+  } else if (strstr(environment, "\\end{matrix}") != NULL) {
+    return ENV_MATRIX;
+  } else if (strstr(environment, "\\end{multline}") != NULL) {
+    return ENV_MULTLINE;
+  } else if (strstr(environment, "\\end{multline*}") != NULL) {
+    return ENV_MULTLINESTAR;
+  } else if (strstr(environment, "\\end{pmatrix}") != NULL) {
+    return ENV_PMATRIX;
+  } else if (strstr(environment, "\\end{smallmatrix}") != NULL) {
+    return ENV_SMALLMATRIX;
+  } else if (strstr(environment, "\\end{split}") != NULL) {
+    return ENV_SPLIT;
+  } else if (strstr(environment, "\\end{subarray}") != NULL) {
+    return ENV_SUBARRAY;
+  } else if (strstr(environment, "\\substack") != NULL) {
+    return ENV_SUBSTACK;
+  } else if (strstr(environment, "\\end{vmatrix}") != NULL) {
+    return ENV_VMATRIX;
+  } else if (strstr(environment, "\\end{Vmatrix}") != NULL) {
+    return ENV_VVMATRIX;
   }
 
   return OTHER;
@@ -65,6 +95,36 @@ int mtex2MML_identify_eqn_number(envType environment_type, char *line)
 
 void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
 {
+  /* TODO: these next detections are gross, but substack and cases are rather special */
+  if (strstr(environment, BEGIN_SUBSTACK) != NULL) {
+    UT_array *eqn_number_stack;
+    utarray_new(eqn_number_stack, &ut_int_icd);
+    envdata_t env_data;
+    env_data.rowspacing = "";
+    env_data.rowlines = "";
+    env_data.environment_type = ENV_SUBSTACK;
+    env_data.eqn_numbers = eqn_number_stack;
+    env_data.line_count = 0;
+
+    utarray_push_back(*environment_data_stack, &env_data);
+    utarray_free(eqn_number_stack);
+
+    return;
+  }
+  if (strstr(environment, BEGIN_CASES) != NULL) {
+    UT_array *eqn_number_stack;
+    utarray_new(eqn_number_stack, &ut_int_icd);
+    envdata_t env_data;
+    env_data.rowspacing = "";
+    env_data.rowlines = "";
+    env_data.environment_type = ENV_CASES;
+    env_data.eqn_numbers = eqn_number_stack;
+    env_data.line_count = 0;
+
+    utarray_push_back(*environment_data_stack, &env_data);
+    utarray_free(eqn_number_stack);
+    return;
+  }
   /* if not an environment, don't bother going on */
   if ((strstr(environment, BEGIN) == NULL && strstr(environment, END) == NULL) || strstr(environment, BEGIN_SVG)) {
     return;
@@ -435,7 +495,7 @@ int mtex2MML_fetch_eqn_number(UT_array **environment_data_stack)
 envType mtex2MML_current_env_type(UT_array **environment_data_stack)
 {
   if (utarray_len(*environment_data_stack) == 0) {
-    return -1;
+    return OTHER;
   }
 
   envdata_t *row_data_elem = (envdata_t*) utarray_front(*environment_data_stack);

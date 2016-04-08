@@ -84,3 +84,13 @@ void test_basic__strict_filter(void)
 
   cl_assert_equal_s(fixture_mml, trim(result));
 }
+
+void test_basic__text_rendering(void)
+{
+  fixture_tex = read_fixture_tex("basic/text_rendering.txt");
+  fixture_mml = read_fixture_mml("basic/text_rendering.html");
+  mtex2MML_strict_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+}

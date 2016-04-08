@@ -1,0 +1,23 @@
+$$
+\mathrm{first\ line} \\
+\mathrm{second\ line} \\
+\mathrm{third\ line}
+$$
+
+$$
+\mathscr{first\ line} \\
+\mathscr{second\ line} \\
+\mathscr{third\ line}
+$$
+
+$$
+\mathfrak{first\ line} \\
+\mathfrak{second\ line} \\
+\mathfrak{third\ line}
+$$
+
+$$
+\mathcal{first\ line} \\
+\mathcal{second\ line} \\
+\mathcal{third\ line}
+$$
