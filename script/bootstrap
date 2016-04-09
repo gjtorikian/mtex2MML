@@ -5,7 +5,7 @@ set -e
 echo "==> Installing required libraries…"
 
 if [ "$(uname)" == "Darwin" ]; then
-  for pkg in flex bison cmake; do
+  for pkg in flex bison cmake valgrind; do
     if brew list -1 | grep -q "^${pkg}\$"; then
         echo "Package '$pkg' is installed"
     else
