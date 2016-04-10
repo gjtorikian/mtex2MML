@@ -26,7 +26,19 @@ void test_symbols__cleanup(void)
 
 void test_symbols__textgreater(void)
 {
-  fixture_tex = read_fixture_tex("symbols/textgreater.html");
+  fixture_tex = read_fixture_tex("symbols/textgreater.txt");
+  fixture_mml = read_fixture_mml("symbols/textgreater.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_symbols__textless(void)
+{
+  fixture_tex = read_fixture_tex("symbols/textless.txt");
+  fixture_mml = read_fixture_mml("symbols/textless.html");
   mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
   result = mtex2MML_output();
 
