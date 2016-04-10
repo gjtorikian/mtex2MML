@@ -206,6 +206,7 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/mathjax.c"
     "${CLAR_PATH}/numbered_equations.c"
     "${CLAR_PATH}/performance.c"
+    "${CLAR_PATH}/symbols.c"
   )
 
   add_custom_command(
