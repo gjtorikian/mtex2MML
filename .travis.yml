@@ -20,6 +20,11 @@ addons:
       - flex
       - valgrind
 
+cache:
+  - apt: true
+  - directories:
+    - /Library/Caches/Homebrew
+
 before_install:
   - script/bootstrap
 
