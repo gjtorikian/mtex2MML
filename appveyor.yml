@@ -13,8 +13,10 @@ environment:
   PYTHON_VERSION: "3.4.3"
   PYTHON_ARCH: "64"
   matrix:
-    - MSVC_VERSION: 10
-    - MSVC_VERSION: 12
+    - GENERATOR: "Visual Studio 13"
+      ARCH: 32
+    - GENERATOR: "Visual Studio 13"
+      ARCH: 64
 install:
   # Install flex/bison
   - if not exist "%WINFLEXBISON_ARCHIVE%" appveyor DownloadFile "http://downloads.sourceforge.net/project/winflexbison/%WINFLEXBISON_ARCHIVE%"
