@@ -20,7 +20,7 @@ puts "Creating tag #{TAG_NAME}..."
 `git tag #{TAG_NAME}`
 
 puts 'Creating release...'
-client = Octokit::Client.new(:access_token => ENV['MY_PERSONAL_TOKEN'])
+client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
 release_response = client.create_release 'gjtorikian/mtex2MML', TAG_NAME, \
                                         :name => VERSION
 
