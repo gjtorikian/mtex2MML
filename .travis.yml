@@ -1,5 +1,7 @@
 language: c
 
+sudo: false
+
 os:
   - linux
   - osx
@@ -7,6 +9,16 @@ os:
 compiler:
   - gcc
   - clang
+
+addons:
+  apt:
+    sources:
+      - kalakris-cmake
+    packages:
+      - cmake
+      - bison
+      - flex
+      - valgrind
 
 before_install:
   - script/bootstrap
