@@ -45,3 +45,25 @@ void test_symbols__textless(void)
   cl_assert_equal_s(fixture_mml, trim(result));
   free(fixture_tex);
 }
+
+void test_symbols__gt(void)
+{
+  fixture_tex = read_fixture_tex("symbols/gt.txt");
+  fixture_mml = read_fixture_mml("symbols/gt.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_symbols__lt(void)
+{
+  fixture_tex = read_fixture_tex("symbols/lt.txt");
+  fixture_mml = read_fixture_mml("symbols/lt.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}

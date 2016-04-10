@@ -751,8 +751,10 @@ int display_style = 0;
 "\\bigtriangledown" |
 "\\nprec"  {yylval=mtex2MML_copy2(yytext, ";"); if (yylval != mtex2MML_empty_string) yylval[0]='&'; return MOL;}
 
-"\\textgreater" {yylval=mtex2MML_copy_string("&gt;"); return MOL;}
-"\\textless" {yylval=mtex2MML_copy_string("&lt;"); return MOL;}
+"\\textgreater" |
+" > "               {yylval=mtex2MML_copy_string("&gt;"); return MOL;}
+"\\textless"    |
+" < "               {yylval=mtex2MML_copy_string("&lt;"); return MOL;}
 "\\land"  {yylval=mtex2MML_copy_string("&and;"); return MOL;}
 "\\lor"   {yylval=mtex2MML_copy_string("&or;"); return MOL;}
 "\\surd"  {yylval=mtex2MML_copy_string("&radic;"); return MOL;}
