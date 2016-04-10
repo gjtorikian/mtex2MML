@@ -813,6 +813,8 @@ _
 \text
 \textbf
 \textit
+\textgreater
+\textless
 \textrm
 \textsf
 \textsize
