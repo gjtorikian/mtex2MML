@@ -14,7 +14,12 @@ if [ "$(uname)" == "Darwin" ]; then
     fi
   done
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  sudo apt-get -qq -y install flex bison cmake valgrind
+  if [ ${TRAVIS_OS_NAME:-'linux'} = 'linux' ]
+  then
+    echo "Packages already installed."
+  else
+    sudo apt-get -qq -y install flex bison cmake valgrind
+  fi
 fi
 
 mkdir -p build
