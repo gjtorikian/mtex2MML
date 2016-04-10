@@ -3,9 +3,12 @@ branches:
   only:
   - master
 clone_depth: 10
+cache:
+- win_flex_bison-2.4.5.zip
 matrix:
   fast_finish: true
 environment:
+  WINFLEXBISON_ARCHIVE: win_flex_bison-2.4.5.zip
   PYTHON: "C:\\Python34-x64"
   PYTHON_VERSION: "3.4.3"
   PYTHON_ARCH: "64"
@@ -14,6 +17,13 @@ environment:
     ARCH: 32
   - GENERATOR: "Visual Studio 13"
     ARCH: 64
+install:
+# Install flex/bison
+- if not exist "%WINFLEXBISON_ARCHIVE%" appveyor DownloadFile "http://downloads.sourceforge.net/project/winflexbison/%WINFLEXBISON_ARCHIVE%"
+- 7z x -y -owinflexbison\ "%WINFLEXBISON_ARCHIVE%" > nul
+- set Path=%CD%\winflexbison;%Path%
+- win_flex --version
+- win_bison --version
 build_script:
 - ps: |
     mkdir build
