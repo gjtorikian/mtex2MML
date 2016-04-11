@@ -6,18 +6,41 @@ cmake ..
 make
 ctest -V
 
-echo '\sin y'     | ./mtex2MML --inline
-echo '\sin y'     | ./mtex2MML --display
-echo '\sin y'     | ./mtex2MML --inline --print-mtex
-echo '\sin y'     | ./mtex2MML --display --print-mtex
-echo '$\sin y$'   | ./mtex2MML
-echo '$$\sin y$$' | ./mtex2MML
-echo '\(\sin y\)' | ./mtex2MML
-echo '\[\sin y\]' | ./mtex2MML
-echo '$\sin y$'   | ./mtex2MML --use-dollar
-echo '$$\sin y$$' | ./mtex2MML --use-double
-echo '\(\sin y\)' | ./mtex2MML --use-parens
-echo '\[\sin y\]' | ./mtex2MML --use-brackets
+echo 'inline'
+echo '\sin y'     | ./mtex2MML --inline || exit 1
+
+echo 'display'
+echo '\sin y'     | ./mtex2MML --display || exit 1
+
+echo 'inline print-mtex'
+echo '\sin y'     | ./mtex2MML --inline --print-mtex || exit 1
+
+echo 'display print-mtex'
+echo '\sin y'     | ./mtex2MML --display --print-mtex || exit 1
+
+echo 'dollar'
+echo '$\sin y$'   | ./mtex2MML || exit 1
+
+echo 'double dollar'
+echo '$$\sin y$$' | ./mtex2MML || exit 1
+
+echo 'parens'
+echo '\(\sin y\)' | ./mtex2MML || exit 1
+
+echo 'brackets'
+echo '\[\sin y\]' | ./mtex2MML || exit 1
+
+echo 'dollar use-dollar'
+echo '$\sin y$'   | ./mtex2MML --use-dollar || exit 1
+
+echo 'double dollar use-double'
+echo '$$\sin y$$' | ./mtex2MML --use-double || exit 1
+
+echo 'parens use-parens'
+echo '\(\sin y\)' | ./mtex2MML --use-parens || exit 1
+
+echo 'brackets use-brackets'
+echo '\[\sin y\]' | ./mtex2MML --use-brackets || exit 1
 
 if [ -n "$CI" ]
 then
