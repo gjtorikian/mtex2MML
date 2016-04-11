@@ -126,6 +126,10 @@ if(MSVC)
   endif()
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4127 /wd4244 /wd4267 /wd4706 /wd4800 /D_CRT_SECURE_NO_WARNINGS")
 
+  if(DEFINED ENV{APPVEYOR})
+    set(CMAKE_GENERATOR_PLATFORM "Visual Studio 12 2013")
+  endif()
+
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/win32-shims)
 elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic-errors -fextended-identifiers ")
@@ -206,6 +210,7 @@ if (BUILD_CLAR)
     "${CLAR_PATH}/mathjax.c"
     "${CLAR_PATH}/numbered_equations.c"
     "${CLAR_PATH}/performance.c"
+    "${CLAR_PATH}/symbols.c"
   )
 
   add_custom_command(
