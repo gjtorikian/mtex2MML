@@ -5,6 +5,20 @@ cd build
 cmake ..
 make
 ctest -V
+
+echo '\sin y'     | ./mtex2MML --inline
+echo '\sin y'     | ./mtex2MML --display
+echo '\sin y'     | ./mtex2MML --inline --print-mtex
+echo '\sin y'     | ./mtex2MML --display --print-mtex
+echo '$\sin y$'   | ./mtex2MML
+echo '$$\sin y$$' | ./mtex2MML
+echo '\(\sin y\)' | ./mtex2MML
+echo '\[\sin y\]' | ./mtex2MML
+echo '$\sin y$'   | ./mtex2MML --use-dollar
+echo '$$\sin y$$' | ./mtex2MML --use-double
+echo '\(\sin y\)' | ./mtex2MML --use-parens
+echo '\[\sin y\]' | ./mtex2MML --use-brackets
+
 if [ -n "$CI" ]
 then
   make memcheck
