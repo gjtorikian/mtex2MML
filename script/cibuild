@@ -8,15 +8,19 @@ ctest -V
 
 echo 'inline'
 echo '\sin y'     | ./mtex2MML --inline || exit 1
+echo ''
 
 echo 'display'
 echo '\sin y'     | ./mtex2MML --display || exit 1
+echo ''
 
 echo 'inline print-mtex'
 echo '\sin y'     | ./mtex2MML --inline --print-mtex || exit 1
+echo ''
 
 echo 'display print-mtex'
 echo '\sin y'     | ./mtex2MML --display --print-mtex || exit 1
+echo ''
 
 echo 'dollar'
 echo '$\sin y$'   | ./mtex2MML || exit 1
