@@ -31,7 +31,7 @@ You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not 
 Since `$` signs appear quite often in plaintext, a basic heuristic is applied to calculate whether `$` should be interpreted as math or not:
 
 > Basic heuristic is: opening $ can't be followed by whitespace, closing $ can't be followed by
-   a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx */
+  a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx
 
 Of course, if you type `\$`, no math is applied as the `$` is considered skipped.
 
