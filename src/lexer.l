@@ -13,7 +13,11 @@
 #include "string_extras.h"
 
 #define YY_NEVER_INTERACTIVE 1
-#define YY_INPUT(buffer,result,max_size) result = s_mtex2MML_read (buffer, max_size)
+#define YY_INPUT(buffer,result,max_size) result = s_mtex2MML_read (buffer, max_size);
+
+#if defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__ || defined __DragonFly__
+#undef fileno
+#endif
 
 extern int fileno(FILE *); /* avoids gcc warning */
 
