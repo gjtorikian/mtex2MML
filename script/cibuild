@@ -7,44 +7,46 @@ make
 ctest -V
 
 echo 'inline'
-echo '\sin y'     | ./mtex2MML --inline || exit 1
+echo '\sin y'     | ./mtex2MML --inline | grep "display='inline'" || exit 1
 echo ''
 
 echo 'display'
-echo '\sin y'     | ./mtex2MML --display || exit 1
+echo '\sin y'     | ./mtex2MML --display | grep "display='block'" || exit 1
 echo ''
 
 echo 'inline print-mtex'
-echo '\sin y'     | ./mtex2MML --inline --print-mtex || exit 1
+echo '\sin y'     | ./mtex2MML --inline --print-mtex | grep '$\\sin y\$'|| exit 1
 echo ''
 
 echo 'display print-mtex'
-echo '\sin y'     | ./mtex2MML --display --print-mtex || exit 1
+echo '\sin y'     | ./mtex2MML --display --print-mtex | grep '$$\\sin y\$\$' || exit 1
 echo ''
 
 echo 'dollar'
-echo '$\sin y$'   | ./mtex2MML || exit 1
+echo '$\sin y$'   | ./mtex2MML | grep "display='inline'" || exit 1
 
 echo 'double dollar'
-echo '$$\sin y$$' | ./mtex2MML || exit 1
+echo '$$\sin y$$' | ./mtex2MML | grep "display='block'" || exit 1
 
 echo 'parens'
-echo '\(\sin y\)' | ./mtex2MML || exit 1
+echo '\(\sin y\)' | ./mtex2MML | grep "display='inline'" || exit 1
 
 echo 'brackets'
-echo '\[\sin y\]' | ./mtex2MML || exit 1
+echo '\[\sin y\]' | ./mtex2MML | grep "display='block'" || exit 1
 
 echo 'dollar use-dollar'
-echo '$\sin y$'   | ./mtex2MML --use-dollar || exit 1
+echo '$\sin y$'   | ./mtex2MML --use-dollar | grep "display='inline'" || exit 1
 
 echo 'double dollar use-double'
-echo '$$\sin y$$' | ./mtex2MML --use-double || exit 1
+echo '$$\sin y$$' | ./mtex2MML --use-double | grep "display='block'" || exit 1
 
 echo 'parens use-parens'
-echo '\(\sin y\)' | ./mtex2MML --use-parens || exit 1
+echo '\(\sin y\)' | ./mtex2MML --use-parens | grep "display='inline'" || exit 1
 
 echo 'brackets use-brackets'
-echo '\[\sin y\]' | ./mtex2MML --use-brackets || exit 1
+echo '\[\sin y\]' | ./mtex2MML --use-brackets | grep "display='block'" || exit 1
+
+echo 'DONE with command check'
 
 if [ -n "$CI" ]
 then
