@@ -7,6 +7,7 @@
 //
 
 #ifndef _WIN32
+#ifndef IS_TRAVISCI
 #ifndef HAVE_STRDUP
 #define HAVE_STRDUP
 
@@ -25,4 +26,5 @@ strdup(const char *str);
 #endif /* HAVE_STRDUP */
 #else
 #define strdup _strdup
+#endif
 #endif
