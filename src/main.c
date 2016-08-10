@@ -6,7 +6,6 @@
 int main (int argc, char ** argv)
 {
   int bPrintMtex = 0;
-  int bRawFilter = 0;
   int bInline    = 0;
   int bDisplay   = 0;
   int bDelimiters   = 0;
@@ -41,11 +40,10 @@ int main (int argc, char ** argv)
              "\n"
              "mtex2MML Options:\n"
              "\n"
-             "  --raw-filter              filter input stream, converting equations as found to MathML [stops on error]\n"
              "  --inline                  converts a single TeX equation, without any $ symbols, to inline MathML\n"
-             "  --display                 converts a single TeX equation, without any $ symbols, to display-mode MathML\n"
+             "  --display                 converts a single TeX equation, without any $$ symbols, to display-mode MathML\n"
              "  --forbid-markup           forbid markup (more precisely, the '<' and '>' characters) in TeX equations\n"
-             "  --print-mtex              used in conjuction with --inline or --display: prints the TeX string\n"
+             "  --print-mtex              prints the TeX-formatted string\n"
              "  --use-dollar              uses `$..$` for inline math\n"
              "  --use-double              uses `$$..$$` for display math\n"
              "  --use-parens              uses `\\(..\\)` for inline math\n"
@@ -58,31 +56,20 @@ int main (int argc, char ** argv)
     }
     if (strcmp(args, "--print-mtex") == 0) {
       bPrintMtex = 1;
-      bRawFilter = 0;
       continue;
     }
     if (strcmp(args, "--forbid-markup") == 0) {
-      bRawFilter = 0;
       bForbidMarkup = 1;
       continue;
     }
     if (strcmp(args, "--inline") == 0) {
-      bRawFilter = 0;
       bInline    = 1;
       bDisplay   = 0;
       continue;
     }
     if (strcmp(args, "--display") == 0) {
-      bRawFilter = 0;
       bInline    = 0;
       bDisplay   = 1;
-      continue;
-    }
-    if (strcmp(args, "--raw-filter") == 0) {
-      bRawFilter = 1;
-      bPrintMtex = 0;
-      bInline    = 0;
-      bDisplay   = 0;
       continue;
     }
     if (strcmp(args, "--use-dollar") == 0) {
@@ -113,7 +100,28 @@ int main (int argc, char ** argv)
 
 #define BUFSIZE 1024
   char buffer[BUFSIZE];
-  while (fgets (buffer, BUFSIZE, stdin)) { utstring_printf(mtex, "%s", buffer); }
+  int buffer_len;
+
+  fgets (buffer, BUFSIZE, stdin);
+  buffer_len = strlen(buffer);
+
+  if (bPrintMtex == 1 && buffer[buffer_len - 1] == '\n') {
+    buffer[buffer_len - 1] = '\0';
+  }
+
+  if (buffer_len > 1) {
+    if (buffer[0] == '$' && buffer[1] == '$') {
+      bDelimiters |= MTEX2MML_DELIMITER_DOUBLE;
+    } else if (buffer[0] == '\\' && buffer[1] == '(') {
+      bDelimiters |= MTEX2MML_DELIMITER_PARENS;
+    } else if (buffer[0] == '\\' && buffer[1] == '[') {
+      bDelimiters |= MTEX2MML_DELIMITER_BRACKETS;
+    }
+  } else if (buffer_len > 0 && buffer[0] == '$') {
+    bDelimiters |= MTEX2MML_DELIMITER_DOLLAR;
+  }
+
+  utstring_printf(mtex, "%s", buffer);
 
   if (bInline) { utstring_printf(mtex, "$" ); }
   if (bDisplay) {utstring_printf(mtex, "$$" ); }
@@ -121,38 +129,50 @@ int main (int argc, char ** argv)
   if (bPrintMtex) {
     char *s = utstring_body(mtex);
     fputs (s, stdout);
-    fputs ("\n", stdout);
+
     utstring_free(mtex);
     fflush (stdout);
-  }
 
-  if (!bInline && !bDisplay) {
+    return 0;
+  } else if (!bInline && !bDisplay) {
     char *s = utstring_body(mtex);
     int len = utstring_len(mtex);
-    if (bRawFilter) {
-      mtex2MML_filter (s, len, bDelimiters);
-    } else if (bForbidMarkup) {
+    static char *result;
+
+    if (bForbidMarkup) {
       mtex2MML_strict_filter (s, len, bDelimiters);
     } else {
       mtex2MML_text_filter (s, len, bDelimiters);
     }
+
+    result = mtex2MML_output();
+
+    if (strlen(result) == 0) {
+      fputs ("mtex2MML: mtex parser failed to generate MathML from mtex!\n", stderr);
+      return -1;
+    }
+
+    fputs (result, stdout);
+
     utstring_free(mtex);
+    free(result);
+    fflush (stdout);
+
     return 0;
-  }
-
-  char *s = utstring_body(mtex);
-  int len = utstring_len(mtex);
-  char * mathml = mtex2MML_parse(s, len, bDelimiters);
-
-  if (mathml) {
-    fputs (mathml, stdout);
-    fputs ("\n", stdout);
-
-    mtex2MML_free_string (mathml);
-    mathml = 0;
   } else {
-    fputs ("mtex2MML: mtex parser failed to generate MathML from mtex!\n", stderr);
+    char *s = utstring_body(mtex);
+    int len = utstring_len(mtex);
+    char * mathml = mtex2MML_parse(s, len, bDelimiters);
+
+    if (mathml) {
+      fputs (mathml, stdout);
+
+      mtex2MML_free_string (mathml);
+      mathml = 0;
+      return 0;
+    } else {
+      fputs ("mtex2MML: mtex parser failed to generate MathML from mtex!\n", stderr);
+      return -1;
+    }
   }
-  utstring_free(mtex);
-  return 0;
 }
