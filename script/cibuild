@@ -47,7 +47,7 @@ echo 'brackets use-brackets'
 echo '\[\sin y\]' | ./mtex2MML --use-brackets | grep "display='block'" || exit 1
 
 echo 'env use-env'
-echo '\begin{align}3x + 9y &=  -12\end{align}' | ./mtex2MML --use-env | grep "display='block'" || exit 1
+echo '\\begin{align}3x + 9y &=  -12\\end{align}' | ./mtex2MML --use-env | grep "display='block'" || exit 1
 
 echo 'DONE with command check'
 
