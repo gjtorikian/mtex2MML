@@ -3680,7 +3680,7 @@ _until_math:
 
     case '\n':
       /* we hit a newline in an unclosed inline equation -- skip this string */
-      if (type == MTEX2MML_DELIMITER_DOLLAR || type == MTEX2MML_DELIMITER_PARENS || type == MTEX2MML_DELIMITER_ENVIRONMENTS) {
+      if (type == MTEX2MML_DELIMITER_DOLLAR || type == MTEX2MML_DELIMITER_PARENS) {
         skip = 1;
       }
       break;
