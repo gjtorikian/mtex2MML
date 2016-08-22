@@ -71,7 +71,7 @@ int display_style = 0;
 
 <INITIAL>"\\[" if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {BEGIN(MATH); mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=1; return STARTDMATH; }
 
-<INITIAL>"\\begin" if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {BEGIN(MATHENV); parsing_environment = OPEN_PARSE; mtex2MML_env_start = 1; mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=0; mtex2MML_env_start = 1; return BEGINENV; }
+<INITIAL>"\\begin" if (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {BEGIN(MATHENV); parsing_environment = OPEN_PARSE; mtex2MML_env_start = 1; mtex2MML_inoptarg[0] = 0; mtex2MML_rowposn=2; mtex2MML_displaymode=0; return BEGINENV; }
 
 <INITIAL>EOF    return 0;
 <INITIAL>"\n" {mtex2MML_lineno++; yylval=mtex2MML_copy_string(yytext); return CHAR;}
