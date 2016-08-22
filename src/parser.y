@@ -3594,15 +3594,15 @@ _until_math:
   /* Search for the first math part */
   while (ptr2 < end) {
     if (*ptr2 == '$' && (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR) || mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE))) { break; }
-    if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
-      if (*(ptr2+1) == '[' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) { break; }
-      if (*(ptr2+1) == '(' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) { break; }
-      if (*(ptr2+1) == '$' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) { ptr2++; }
-    }
     if ((*ptr2 == '\\') && (ptr2 + 5 < end) && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
       if (*(ptr2+1) == 'b' && *(ptr2+2) == 'e' && *(ptr2+3) == 'g' && *(ptr2+4) == 'i' && *(ptr2+5) == 'n') {
         break;
       }
+    }
+    if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
+      if (*(ptr2+1) == '[' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) { break; }
+      if (*(ptr2+1) == '(' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) { break; }
+      if (*(ptr2+1) == '$' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) { ptr2++; }
     }
     ++ptr2;
   }
@@ -3615,7 +3615,11 @@ _until_math:
   /*_until_html:*/
   ptr1 = ptr2;
 
-  if (ptr2 + 1 < end) {
+  if (ptr2 + 5 < end && (*ptr2 == '\\') && *(ptr2 - 1) != '\\' && (*(ptr2+1) == 'b') && (*(ptr2+2) == 'e') && (*(ptr2+3) == 'g') && (*(ptr2+4) == 'i') && (*(ptr2+5) == 'n') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
+    type = MTEX2MML_DELIMITER_ENVIRONMENTS;
+    ptr2 += 6;
+  }
+  else if (ptr2 + 1 < end) {
     if ((*ptr2 == '\\') && (*(ptr2+1) == '[' && *(ptr2 - 1) != '\\') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {
       type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
@@ -3628,9 +3632,6 @@ _until_math:
     } else if ((*ptr2 == '$') && !isspace(*(ptr2+1)) && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR)) {
       type = MTEX2MML_DELIMITER_DOLLAR;
       ptr2++;
-    } else if (ptr2 + 5 < end && (*ptr2 == '\\') && *(ptr2 - 1) != '\\' && (*(ptr2+1) == 'b') && (*(ptr2+2) == 'e') && (*(ptr2+3) == 'g' && (*(ptr2+4) == 'i') && (*(ptr2+5) == 'n')) && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
-      type = MTEX2MML_DELIMITER_ENVIRONMENTS;
-      ptr2 += 6;
     }
   } else { goto _finish; }
 
@@ -3667,9 +3668,10 @@ _until_math:
         }
         else if (ptr2 + 3 < end && type == MTEX2MML_DELIMITER_ENVIRONMENTS) {
           if (*(ptr2 + 1) == 'e' && *(ptr2 + 2) == 'n' && *(ptr2 + 3) == 'd') {
+            ptr2 += 3;
             // {env} can be many things, so consider it closed when we find the first } after \end
             while (ptr2 < end && *ptr2 != '}') { ptr2++; }
-            ptr2++;
+            ptr2++; // include final }
             match = 1;
           }
         } else {
