@@ -1304,34 +1304,34 @@ int display_style = 0;
 }
 
 <MATHENV>{
-"\{equation\}" { BEGIN(MATH); return EQUATION;}
-"\{equation*\}" { BEGIN(MATH); return EQUATION_STAR;}
-"\{matrix\}" {BEGIN(MATH); return MATRIX;}
-"\{pmatrix\}" {BEGIN(MATH); return PMATRIX;}
-"\{bmatrix\}" {BEGIN(MATH); return BMATRIX;}
-"\{Bmatrix\}" {BEGIN(MATH); return BBMATRIX;}
-"\{vmatrix\}" {BEGIN(MATH); return VMATRIX;}
-"\{Vmatrix\}" {BEGIN(MATH); return VVMATRIX;}
-"\{smallmatrix\}" {BEGIN(MATH); return SMALLMATRIX;}
-"\{cases\}" {BEGIN(MATH); return CASES;}
+"\{equation\}" { if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return EQUATION;}
+"\{equation*\}" { if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return EQUATION_STAR;}
+"\{matrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return MATRIX;}
+"\{pmatrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return PMATRIX;}
+"\{bmatrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return BMATRIX;}
+"\{Bmatrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return BBMATRIX;}
+"\{vmatrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return VMATRIX;}
+"\{Vmatrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return VVMATRIX;}
+"\{smallmatrix\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); }; return SMALLMATRIX;}
+"\{cases\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return CASES;}
 "\{aligned\}[" {BEGIN(ENVOPTIONS); return ALIGNED;}
-"\{aligned\}" {BEGIN(MATH); return ALIGNED;}
+"\{aligned\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNED;}
 "\{align\}" { if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNENV;}
-"\{align*\}" {BEGIN(MATH); return ALIGNENV_STAR;}
-"\{alignat\}" {environment_type = ENV_ALIGNAT; if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT;}
-"\{alignat*\}" {environment_type = ENV_ALIGNATSTAR; if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNAT_STAR;}
-"\{alignedat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else BEGIN(MATH); return ALIGNEDAT;}
-"\{eqnarray*\}" {BEGIN(MATH); return EQNARRAY_STAR;}
-"\{eqnarray\}" {BEGIN(MATH); return EQNARRAY;}
-"\{gather\}" {BEGIN(MATH); return GATHER;}
-"\{gather*\}" {BEGIN(MATH); return GATHER_STAR;}
+"\{align*\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNENV_STAR;}
+"\{alignat\}" {environment_type = ENV_ALIGNAT; if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNAT;}
+"\{alignat*\}" {environment_type = ENV_ALIGNATSTAR; if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNAT_STAR;}
+"\{alignedat\}" {if (mtex2MML_env_start == 1) BEGIN(ALIGNATOPTS); else if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNEDAT;}
+"\{eqnarray*\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return EQNARRAY_STAR;}
+"\{eqnarray\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return EQNARRAY;}
+"\{gather\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return GATHER;}
+"\{gather*\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return GATHER_STAR;}
 "\{gathered\}[" {BEGIN(ENVOPTIONS); return GATHERED;}
-"\{gathered\}" {BEGIN(MATH); return GATHERED;}
-"\{multline*\}" {BEGIN(MATH); return MULTLINE_STAR;}
-"\{multline\}" {BEGIN(MATH); return MULTLINE;}
-"\{split\}" {BEGIN(MATH); return ALIGNED;}
-"\{array\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
-"\{subarray\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return SUBARRAY;}
+"\{gathered\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return GATHERED;}
+"\{multline*\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return MULTLINE_STAR;}
+"\{multline\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return MULTLINE;}
+"\{split\}" {if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ALIGNED;}
+"\{array\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return ARRAY;}
+"\{subarray\}" {if (mtex2MML_env_start == 1) BEGIN(ARRAYOPTIONS); else if (parsing_environment == CLOSE_PARSE) { mtex2MML_reset_parsing_environment(); } else { BEGIN(MATH); } return SUBARRAY;}
 "\{svg\}" {mtex2MML_env_start = 0; BEGIN(SVGENV); return SVG;}
 }
 
