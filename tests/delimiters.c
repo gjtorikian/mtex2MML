@@ -144,3 +144,23 @@ void test_delimiters__filter_environment_align(void)
   cl_assert_equal_s(fixture_mml, trim(result));
   free(fixture_tex);
 }
+
+void test_delimiters__parse_environment_basic_array(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/basic_array.txt");
+  fixture_mml = read_fixture_mml("delimiters/basic_array.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+}
+
+// void test_delimiters__filter_environment_multiline_array(void)
+// {
+//   fixture_tex = read_fixture_tex("delimiters/multiline_array.txt");
+//   fixture_mml = read_fixture_mml("delimiters/multiline_array.html");
+//   mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+//   result = mtex2MML_output();
+//
+//   cl_assert_equal_s(fixture_mml, trim(result));
+//   free(fixture_tex);
+// }
