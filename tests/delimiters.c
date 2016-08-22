@@ -204,3 +204,14 @@ void test_delimiters__filter_environment_alignat_1a_spacing(void)
   cl_assert_equal_s(fixture_mml, trim(result));
   free(fixture_tex);
 }
+
+void test_delimiters__filter_mixed_environment(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/mixed_env.txt");
+  fixture_mml = read_fixture_mml("delimiters/mixed_env.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOUBLE | MTEX2MML_DELIMITER_ENVIRONMENTS);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
