@@ -15,10 +15,6 @@ void test_delimiters__initialize(void)
 
 void test_delimiters__cleanup(void)
 {
-  if (fixture_tex != NULL) {
-    free(fixture_tex);
-  }
-
   if (fixture_mml != NULL) {
     free(fixture_mml);
   }
