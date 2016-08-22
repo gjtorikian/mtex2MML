@@ -1527,7 +1527,7 @@ void mtex2MML_reset_parsing_environment()
   parsing_environment = NO_PARSE;
   mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0;
   mtex2MML_eqn_end=mtex2MML_eqn_src;
-  yylval=mtex2MML_copy_escaped(mtex2MML_eqn_src);
+
   BEGIN(INITIAL);
 }
 
