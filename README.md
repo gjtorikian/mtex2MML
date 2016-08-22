@@ -30,8 +30,7 @@ You cannot nest equations; for example, `$$...\text{foo $...$ bar}...$$` is not 
 
 Since `$` signs appear quite often in plaintext, a basic heuristic is applied to calculate whether `$` should be interpreted as math or not:
 
-> Basic heuristic is: opening $ can't be followed by whitespace, closing $ can't be followed by
-  a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx
+> Basic heuristic is: opening $ can't be followed by whitespace, closing $ can't be followed by a digit or preceded by whitespace." -- @jgm, http://bit.ly/1HVtemx
 
 Of course, if you type `\$`, no math is applied as the `$` is considered skipped.
 
@@ -59,7 +58,8 @@ The `options` argument determines which types of delimiters are to be used:
 * `MTEX2MML_DELIMITER_DOLLAR` uses single dollar signs: `$..$` for inline.
 * `MTEX2MML_DELIMITER_DOUBLE` uses double dollar signs: `$$..$$` for display.
 * `MTEX2MML_DELIMITER_PARENS` uses parenthesis: `\(..\)` for inline.
-* `MTEX2MML_DELIMITER_BRACKETS` uses brackets: `\[..\]` for brackets.
+* `MTEX2MML_DELIMITER_BRACKETS` uses brackets: `\[..\]` for display.
+* `MTEX2MML_DELIMITER_ENVIRONMENTS` supports`\\begin..\\end` for environments.
 
 [The *tests/basic.c*](tests/basic.c) and [the *tests/delimiters.c*](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
 
