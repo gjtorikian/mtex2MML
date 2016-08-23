@@ -124,3 +124,98 @@ void test_delimiters__escaping_with_parens(void)
   cl_assert_equal_s(fixture_mml, trim(result));
   free(fixture_tex);
 }
+
+void test_delimiters__parse_environment_align(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/align.txt");
+  fixture_mml = read_fixture_mml("delimiters/align.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__filter_environment_align(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/align.txt");
+  fixture_mml = read_fixture_mml("delimiters/align.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__parse_environment_basic_array(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/basic_array.txt");
+  fixture_mml = read_fixture_mml("delimiters/basic_array.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__filter_environment_basic_array(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/basic_array.txt");
+  fixture_mml = read_fixture_mml("delimiters/basic_array.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__parse_environment_aligned_ex_spacing(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/aligned_ex_spacing.txt");
+  fixture_mml = read_fixture_mml("delimiters/aligned_ex_spacing.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__filter_environment_aligned_ex_spacing(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/aligned_ex_spacing.txt");
+  fixture_mml = read_fixture_mml("delimiters/aligned_ex_spacing.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__parse_environment_alignat_1a_spacing(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/alignat-1a.txt");
+  fixture_mml = read_fixture_mml("delimiters/alignat-1a.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__filter_environment_alignat_1a_spacing(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/alignat-1a.txt");
+  fixture_mml = read_fixture_mml("delimiters/alignat-1a.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_ENVIRONMENTS);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}
+
+void test_delimiters__filter_mixed_environment(void)
+{
+  fixture_tex = read_fixture_tex("delimiters/mixed_env.txt");
+  fixture_mml = read_fixture_mml("delimiters/mixed_env.html");
+  mtex2MML_text_filter(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOUBLE | MTEX2MML_DELIMITER_ENVIRONMENTS);
+  result = mtex2MML_output();
+
+  cl_assert_equal_s(fixture_mml, trim(result));
+  free(fixture_tex);
+}

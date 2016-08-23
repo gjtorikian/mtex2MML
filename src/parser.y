@@ -364,6 +364,21 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
     mtex2MML_free_string(s);
   }
 }
+| mathenv {
+  char ** r = (char **) ret_str;
+  char * p = mtex2MML_copy3("<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'><semantics><mrow>", $1, "</mrow><annotation encoding='application/x-tex'>");
+  char * s = mtex2MML_copy2(p, "</annotation></semantics></math>");
+  mtex2MML_free_string(p);
+  mtex2MML_free_string($1);
+  if (r) {
+    (*r) = (s == mtex2MML_empty_string) ? 0 : s;
+  }
+  else {
+    if (mtex2MML_write_mathml)
+      (*mtex2MML_write_mathml) (s);
+    mtex2MML_free_string(s);
+  }
+}
 /* plugs away some memory leaks when errors occur */
 | compoundTermList error { mtex2MML_free_string($1); mtex2MML_free_string($2);  YYABORT; }
 | compoundTerm error { mtex2MML_free_string($1); mtex2MML_free_string($2); YYABORT; }
@@ -3579,6 +3594,11 @@ _until_math:
   /* Search for the first math part */
   while (ptr2 < end) {
     if (*ptr2 == '$' && (mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOLLAR) || mtex2MML_delimiter_type(MTEX2MML_DELIMITER_DOUBLE))) { break; }
+    if ((*ptr2 == '\\') && (ptr2 + 5 < end) && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
+      if (*(ptr2+1) == 'b' && *(ptr2+2) == 'e' && *(ptr2+3) == 'g' && *(ptr2+4) == 'i' && *(ptr2+5) == 'n') {
+        break;
+      }
+    }
     if ((*ptr2 == '\\') && (ptr2 + 1 < end)) {
       if (*(ptr2+1) == '[' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) { break; }
       if (*(ptr2+1) == '(' && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_PARENS)) { break; }
@@ -3595,7 +3615,11 @@ _until_math:
   /*_until_html:*/
   ptr1 = ptr2;
 
-  if (ptr2 + 1 < end) {
+  if (ptr2 + 5 < end && (*ptr2 == '\\') && (*(ptr2+1) == 'b') && (*(ptr2+2) == 'e') && (*(ptr2+3) == 'g') && (*(ptr2+4) == 'i') && (*(ptr2+5) == 'n') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
+    type = MTEX2MML_DELIMITER_ENVIRONMENTS;
+    ptr2 += 6;
+  }
+  else if (ptr2 + 1 < end) {
     if ((*ptr2 == '\\') && (*(ptr2+1) == '[' && *(ptr2 - 1) != '\\') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_BRACKETS)) {
       type = MTEX2MML_DELIMITER_BRACKETS;
       ptr2 += 2;
@@ -3641,6 +3665,15 @@ _until_math:
           } else {
             skip = 1;
           }
+        }
+        else if (ptr2 + 3 < end && type == MTEX2MML_DELIMITER_ENVIRONMENTS) {
+          if (*(ptr2 + 1) == 'e' && *(ptr2 + 2) == 'n' && *(ptr2 + 3) == 'd') {
+            ptr2 += 3;
+            // {env} can be many things, so consider it closed when we find the first } after \end
+            while (ptr2 < end && *ptr2 != '}') { ptr2++; }
+            ptr2++; // include final }
+            match = 1;
+          }
         } else {
           ptr2++;
         }
@@ -3655,7 +3688,7 @@ _until_math:
       break;
 
     case '$':
-      if (type == MTEX2MML_DELIMITER_BRACKETS || type == MTEX2MML_DELIMITER_PARENS) {
+      if (type == MTEX2MML_DELIMITER_BRACKETS || type == MTEX2MML_DELIMITER_PARENS || type == MTEX2MML_DELIMITER_ENVIRONMENTS) {
         // no op
       } else if (ptr2 + 1 < end) {
         if (*(ptr2 + 1) == '$') {

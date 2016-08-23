@@ -1,0 +1,3 @@
+\begin{array}{cc}
+Bad & Good
+\end{array}

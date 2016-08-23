@@ -48,6 +48,7 @@ int main (int argc, char ** argv)
              "  --use-double              uses `$$..$$` for display math\n"
              "  --use-parens              uses `\\(..\\)` for inline math\n"
              "  --use-brackets            uses `\\[..\\]` for display math\n"
+             "  --use-env                 uses `\\begin..\\end` for env math\n"
              "\n"
              "For more information, see https://github.com/gjtorikian/mtex2MML\n", stdout);
 
@@ -88,6 +89,10 @@ int main (int argc, char ** argv)
       bDelimiters |= MTEX2MML_DELIMITER_BRACKETS;
       continue;
     }
+    if (strcmp(args, "--use-env") == 0) {
+      bDelimiters |= MTEX2MML_DELIMITER_ENVIRONMENTS;
+      continue;
+    }
   }
   if (bStop) { return 0; }
 
@@ -116,6 +121,10 @@ int main (int argc, char ** argv)
       bDelimiters |= MTEX2MML_DELIMITER_PARENS;
     } else if (buffer[0] == '\\' && buffer[1] == '[') {
       bDelimiters |= MTEX2MML_DELIMITER_BRACKETS;
+    } else if (buffer_len > 6) {
+      if (buffer[0] == '\\' && buffer[1] == 'b' && buffer[2] == 'e' && buffer[3] == 'g' && buffer[4] == 'i' && buffer[5] == 'n') {
+        bDelimiters |= MTEX2MML_DELIMITER_ENVIRONMENTS;
+      }
     }
   } else if (buffer_len > 0 && buffer[0] == '$') {
     bDelimiters |= MTEX2MML_DELIMITER_DOLLAR;
