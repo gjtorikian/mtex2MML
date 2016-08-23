@@ -3615,7 +3615,7 @@ _until_math:
   /*_until_html:*/
   ptr1 = ptr2;
 
-  if (ptr2 + 5 < end && (*ptr2 == '\\') && *(ptr2 - 1) != '\\' && (*(ptr2+1) == 'b') && (*(ptr2+2) == 'e') && (*(ptr2+3) == 'g') && (*(ptr2+4) == 'i') && (*(ptr2+5) == 'n') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
+  if (ptr2 + 5 < end && (*ptr2 == '\\') && (*(ptr2+1) == 'b') && (*(ptr2+2) == 'e') && (*(ptr2+3) == 'g') && (*(ptr2+4) == 'i') && (*(ptr2+5) == 'n') && mtex2MML_delimiter_type(MTEX2MML_DELIMITER_ENVIRONMENTS)) {
     type = MTEX2MML_DELIMITER_ENVIRONMENTS;
     ptr2 += 6;
   }
