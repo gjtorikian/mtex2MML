@@ -1,7 +1,7 @@
 #ifndef MTEX2MML_H
 #define MTEX2MML_H
 
-#define MTEX2MML_VERSION "1.2.3"
+#define MTEX2MML_VERSION "1.3.0"
 
 #ifdef __cplusplus
 extern "C" {
