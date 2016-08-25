@@ -72,3 +72,21 @@ void test_numbered_equations__multiple_notag_nonumber(void)
 
   cl_assert_equal_s(fixture_mml, result);
 }
+
+void test_numbered_equations__skip_label(void)
+{
+  fixture_tex = read_fixture_tex("numbered_equations/skip_label.txt");
+  fixture_mml = read_fixture_mml("numbered_equations/skip_label.html");
+  result = mtex2MML_global_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT, 1);
+
+  cl_assert_equal_s(fixture_mml, result);
+}
+
+void test_numbered_equations__skip_tag(void)
+{
+  fixture_tex = read_fixture_tex("numbered_equations/skip_tag.txt");
+  fixture_mml = read_fixture_mml("numbered_equations/skip_tag.html");
+  result = mtex2MML_global_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT, 1);
+
+  cl_assert_equal_s(fixture_mml, result);
+}
