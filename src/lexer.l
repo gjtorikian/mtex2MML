@@ -1052,6 +1052,9 @@ int display_style = 0;
 "\\color"        {BEGIN(ATTRIBUTELIST); return COLOR;}
 "\\bgcolor"        {BEGIN(ATTRIBUTELIST); return BGCOLOR;}
 
+"\\label"         {BEGIN(ATTRIBUTELIST); return LABEL;}
+"\\tag"          {BEGIN(ATTRIBUTELIST); return TAG;}
+
 "\\bbox"         {BEGIN(BRACKETLIST); return BBOX;}
 
 "\\displaystyle"  {mtex2MML_displaymode=1; mtex2MML_rowposn=2; display_style = 1; return DISPLAY;}
@@ -1265,7 +1268,7 @@ int display_style = 0;
 .              {return UNKNOWNCHAR;}
 }
 
-<ATTRIBUTELIST>"{"[ \t\n\r #a-zA-Z0-9.\-]*"}"  {BEGIN(MATH); yylval=mtex2MML_copy_string(yytext); if (yylval != mtex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return ATTRLIST;}
+<ATTRIBUTELIST>"{"[ \t\n\r #a-zA-Z0-9.:\-]*"}"  {BEGIN(MATH); yylval=mtex2MML_copy_string(yytext); if (yylval != mtex2MML_empty_string) { yylval[0]='"'; yylval[yyleng-1]='"'; } return ATTRLIST;}
 
 <BRACKETLIST>{
 "\["  {return ST;}
