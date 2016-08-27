@@ -2259,7 +2259,7 @@ munderline: UNDERLINE closedTerm {
 };
 
 moverbrace: OVERBRACE closedTerm {
-  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&x23DE;</mo></mover>");
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&#x23DE;</mo></mover>");
   mtex2MML_free_string($2);
 };
 
