@@ -2218,12 +2218,13 @@ underrightarrow: UNDERRIGHTARROW closedTerm {
   mtex2MML_free_string($2);
 };
 
+/* TODO: can't seem to get Lasem to render the entity name; hardcode hex code */
 munderbrace: UNDERBRACE closedTerm {
-  $$ = mtex2MML_copy3("<munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  $$ = mtex2MML_copy3("<munder>", $2, "<mo>&#x23DF;</mo></munder>");
   mtex2MML_free_string($2);
 }
 | UNDERBRACE closedTerm SUB closedTerm {
-  char * s1 = mtex2MML_copy3("<munder><munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  char * s1 = mtex2MML_copy3("<munder><munder>", $2, "<mo>&#x23DF;</mo></munder>");
   $$ = mtex2MML_copy3(s1, $4, "</munder>");
 
   mtex2MML_free_string(s1);
@@ -2231,7 +2232,7 @@ munderbrace: UNDERBRACE closedTerm {
   mtex2MML_free_string($4);
 }
 | UNDERBRACE closedTerm LIMITS SUB closedTerm {
-  char * s1 = mtex2MML_copy3("<munder><munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  char * s1 = mtex2MML_copy3("<munder><munder>", $2, "<mo>&#x23DF;</mo></munder>");
   $$ = mtex2MML_copy3(s1, $5, "</munder>");
 
   mtex2MML_free_string(s1);
@@ -2239,7 +2240,7 @@ munderbrace: UNDERBRACE closedTerm {
   mtex2MML_free_string($5);
 }
 | UNDERBRACE closedTerm NOLIMITS SUB closedTerm {
-  char * s1 = mtex2MML_copy3("<msub><munder>", $2, "<mo>&UnderBrace;</mo></munder>");
+  char * s1 = mtex2MML_copy3("<msub><munder>", $2, "<mo>&#x23DF;</mo></munder>");
   $$ = mtex2MML_copy3(s1, $5, "</msub>");
 
   mtex2MML_free_string(s1);
@@ -2258,7 +2259,7 @@ munderline: UNDERLINE closedTerm {
 };
 
 moverbrace: OVERBRACE closedTerm {
-  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&OverBrace;</mo></mover>");
+  $$ = mtex2MML_copy3("<mover>", $2, "<mo>&x23DE;</mo></mover>");
   mtex2MML_free_string($2);
 };
 
