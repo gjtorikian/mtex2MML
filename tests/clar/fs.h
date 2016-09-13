@@ -1,4 +1,4 @@
-#include "../../deps/strdup/strdup.h"
+#include "../../src/string_dup.h"
 
 #ifdef _WIN32
 
@@ -290,7 +290,7 @@ fs_copy(const char *_source, const char *dest)
 	char *source;
 	size_t source_len;
 
-	source = strdup(_source);
+	source = string_dup(_source);
 	source_len = strlen(source);
 
 	if (source[source_len - 1] == '/')

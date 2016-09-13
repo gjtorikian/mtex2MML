@@ -1,21 +1,18 @@
-
 //
-// strdup.c
+// string_dup.c
 //
 // Copyright (c) 2014 Stephen Mathieson
 // MIT licensed
 //
 
-#ifndef _WIN32
-#ifndef IS_TRAVISCI
-#ifndef HAVE_STRDUP
+#ifndef HAVE_STRINGDUP
 
 #include <stdlib.h>
 #include <string.h>
-#include "strdup.h"
+#include "string_dup.h"
 
 char *
-strdup(const char *str) {
+string_dup(const char *str) {
   if (!str) return NULL;
   int len = strlen(str) + 1;
   char *buf = malloc(len);
@@ -23,6 +20,4 @@ strdup(const char *str) {
   return buf;
 }
 
-#endif /* HAVE_STRDUP */
-#endif
-#endif
+#endif /* HAVE_STRINGDUP */

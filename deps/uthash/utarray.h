@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stddef.h>  /* size_t */
 #include <string.h>  /* memset, etc */
 #include <stdlib.h>  /* exit */
-#include "../strdup/strdup.h"
+#include "../../src/string_dup.h"
 
 #ifndef oom
 #define oom() exit(-1)
@@ -225,7 +225,7 @@ typedef struct {
 /* last we pre-define a few icd for common utarrays of ints and strings */
 static void utarray_str_cpy(void *dst, const void *src) {
   char **_src = (char**)src, **_dst = (char**)dst;
-  *_dst = (*_src == NULL) ? NULL : strdup(*_src);
+  *_dst = (*_src == NULL) ? NULL : string_dup(*_src);
 }
 static void utarray_str_dtor(void *elt) {
   char **eltc = (char**)elt;

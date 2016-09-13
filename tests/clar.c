@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include <wchar.h>
 
-#include "../deps/strdup/strdup.h"
+#include "../src/string_dup.h"
 
 /* required for sandboxing */
 #include <sys/types.h>
@@ -494,7 +494,7 @@ void clar__fail(
 	error->error_msg = error_msg;
 
 	if (description != NULL)
-		error->description = strdup(description);
+		error->description = string_dup(description);
 
 	_clar.total_errors++;
 	_clar.test_status = CL_TEST_FAILURE;

@@ -12,7 +12,7 @@
 #include "environment.h"
 #include "string_extras.h"
 
-#include "../deps/strdup/strdup.h"
+#include "string_dup.h"
 #include "../deps/uthash/uthash.h"
 
 struct css_colors *colors = NULL;
@@ -3459,8 +3459,8 @@ colspan: COLSPAN ATTRLIST {
 void envdata_copy(void *_dst, const void *_src)
 {
   envdata_t *dst = (envdata_t*)_dst, *src = (envdata_t*)_src;
-  dst->rowspacing = src->rowspacing ? strdup(src->rowspacing) : NULL;
-  dst->rowlines = src->rowlines ? strdup(src->rowlines) : NULL;
+  dst->rowspacing = src->rowspacing ? string_dup(src->rowspacing) : NULL;
+  dst->rowlines = src->rowlines ? string_dup(src->rowlines) : NULL;
   dst->environment_type = src->environment_type;
   utarray_new(dst->eqn_numbers, &ut_int_icd);
   utarray_concat(dst->eqn_numbers, src->eqn_numbers);

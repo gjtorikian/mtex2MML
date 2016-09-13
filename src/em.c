@@ -1,7 +1,7 @@
 #include "em.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../deps/strdup/strdup.h"
+#include "string_dup.h"
 #include "../deps/uthash/utstring.h"
 
 float mtex2MML_extract_number_from_pxstring(char * str)
@@ -39,7 +39,7 @@ char *mtex2MML_dbl2em(char *str)
   dbl *= 0.056f;
 
   utstring_printf(em, "%.3fem", dbl);
-  em_str = strdup(utstring_body(em));
+  em_str = string_dup(utstring_body(em));
 
   utstring_free(em);
 
@@ -55,7 +55,7 @@ char *mtex2MML_double_pixel(float f, char *pixel)
 
   dbl = f * 2;
   utstring_printf(em, "%.3f%s", dbl, pixel);
-  em_str = strdup(utstring_body(em));
+  em_str = string_dup(utstring_body(em));
 
   utstring_free(em);
 
@@ -73,7 +73,7 @@ char *mtex2MML_implement_skew(char *base_str, char *em_skew, char *pattern)
   utstring_printf(skew_mathml, "%s%s%s", pattern, "</mo></mover></mrow><mspace width=\"-", em_skew);
   utstring_printf(skew_mathml, "%s", "\" /></mrow><mrow></mrow></mrow>");
 
-  skew_mathml_str = strdup(utstring_body(skew_mathml));
+  skew_mathml_str = string_dup(utstring_body(skew_mathml));
 
   utstring_free(skew_mathml);
 
@@ -91,7 +91,7 @@ char *mtex2MML_root_pos_to_em(char * str)
   dbl /= 15;
 
   utstring_printf(em, "%.3fem", dbl);
-  em_str = strdup(utstring_body(em));
+  em_str = string_dup(utstring_body(em));
 
   utstring_free(em);
 
