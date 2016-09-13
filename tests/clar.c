@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include <wchar.h>
 
-#include "../deps/strdup/strdup.h"
+#include "string_dup.h"
 
 /* required for sandboxing */
 #include <sys/types.h>

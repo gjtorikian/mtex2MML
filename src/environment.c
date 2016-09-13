@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "../deps/strdup/strdup.h"
+#include "string_dup.h"
 #include "environment.h"
 #include "string_extras.h"
 

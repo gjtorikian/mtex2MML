@@ -1,15 +1,12 @@
-
 //
-// strdup.h
+// string_dup.h
 //
 // Copyright (c) 2014 Stephen Mathieson
 // MIT licensed
 //
 
-#ifndef _WIN32
-#ifndef IS_TRAVISCI
-#ifndef HAVE_STRDUP
-#define HAVE_STRDUP
+#ifndef HAVE_STRINGDUP
+#define HAVE_STRINGDUP
 
 /**
  * Drop-in replacement for strdup(3) from libc.
@@ -21,10 +18,6 @@
  */
 
 char *
-strdup(const char *str);
+string_dup(const char *str);
 
-#endif /* HAVE_STRDUP */
-#else
-#define strdup _strdup
-#endif
-#endif
+#endif /* HAVE_STRINGDUP */

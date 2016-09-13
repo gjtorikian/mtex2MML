@@ -1,4 +1,4 @@
-#include "../../deps/strdup/strdup.h"
+#include "../../src/string_dup.h"
 
 #ifdef _WIN32
 

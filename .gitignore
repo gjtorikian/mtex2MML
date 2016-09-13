@@ -3,6 +3,8 @@
 
 lib/ # need this for mathematical
 
+deps/strdup
+
 src/lex.yy.c
 src/y.output
 src/y.tab.c

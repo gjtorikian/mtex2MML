@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "string_extras.h"
-#include "../deps/strdup/strdup.h"
+#include "string_dup.h"
 
 void mtex2MML_remove_last_char(char* str)
 {

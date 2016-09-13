@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stddef.h>  /* size_t */
 #include <string.h>  /* memset, etc */
 #include <stdlib.h>  /* exit */
-#include "../strdup/strdup.h"
+#include "../../src/string_dup.h"
 
 #ifndef oom
 #define oom() exit(-1)

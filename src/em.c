@@ -1,7 +1,7 @@
 #include "em.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../deps/strdup/strdup.h"
+#include "string_dup.h"
 #include "../deps/uthash/utstring.h"
 
 float mtex2MML_extract_number_from_pxstring(char * str)
