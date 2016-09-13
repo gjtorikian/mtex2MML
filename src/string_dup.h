@@ -9,7 +9,7 @@
 #define HAVE_STRINGDUP
 
 /**
- * Drop-in replacement for strdup(3) from libc.
+ * Drop-in replacement for string_dup(3) from libc.
  *
  * Creates a copy of `str`.  Free when done.
  *

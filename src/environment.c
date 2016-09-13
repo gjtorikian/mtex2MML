@@ -141,7 +141,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
 
   unsigned int rowlines_stack_len = 0, eqn = 0, i = 0, insertion_idx = 0;
 
-  char *dupe_environment = strdup(environment);
+  char *dupe_environment = string_dup(environment);
   char *line = strtok(dupe_environment, "\n");
 
   /* set up the array stack */
@@ -219,7 +219,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
             temp = tok + 2; /* skip the first part ("\[") */
             if ( (tok = strstr(temp, EM_PATTERN_END)) != NULL) {
               mtex2MML_remove_last_char(temp);
-              char *s = strdup(temp);
+              char *s = string_dup(temp);
               utarray_push_back(row_spacing_stack, &s);
               free(s);
             }
@@ -356,7 +356,7 @@ void mtex2MML_perform_replacement(UT_array **environment_data_stack, UT_array *r
 
 char *mtex2MML_vertical_pipe_extract(char *string)
 {
-  char *dupe = strdup(string);
+  char *dupe = string_dup(string);
   UT_string *columnlines, *border;
   char *previous_column = "", *attr_columnlines, *attr_border;
   unsigned int i = 0;
@@ -410,7 +410,7 @@ char *mtex2MML_vertical_pipe_extract(char *string)
     utstring_printf(columnlines, "%s", "none");
   }
 
-  attr_columnlines = strdup(utstring_body(columnlines));
+  attr_columnlines = string_dup(utstring_body(columnlines));
   free(dupe);
   utstring_free(border);
   utstring_free(columnlines);
@@ -423,7 +423,7 @@ char *mtex2MML_remove_excess_pipe_chars(char *string)
   UT_string *columnalign;
   utstring_new(columnalign);
 
-  char *dupe = strdup(string);
+  char *dupe = string_dup(string);
   char *token = strtok(dupe, " ");
   char *attr_columnalign;
 
@@ -434,7 +434,7 @@ char *mtex2MML_remove_excess_pipe_chars(char *string)
     token = strtok(NULL, " ");
   }
 
-  attr_columnalign = strdup(utstring_body(columnalign));
+  attr_columnalign = string_dup(utstring_body(columnalign));
   free(dupe);
   utstring_free(columnalign);
 
@@ -466,7 +466,7 @@ char *mtex2MML_combine_row_data(UT_array **environment_data_stack)
   /* combine the row spacing and row lines data */
   utstring_printf(row_attr_data, "%s%s\" %s\"", "rowspacing=\"", row_spacing_data, row_lines_data);
 
-  row_attr = strdup(utstring_body(row_attr_data));
+  row_attr = string_dup(utstring_body(row_attr_data));
   utarray_erase(*environment_data_stack, 0, 1);
 
   utstring_free(row_attr_data);

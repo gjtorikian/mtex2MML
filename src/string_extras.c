@@ -22,7 +22,7 @@ char * mtex2MML_str_replace (char *string, const char *substr, const char *repla
   char *newstr = NULL;
   char *oldstr = NULL;
 
-  newstr = strdup(string);
+  newstr = string_dup(string);
 
   while ( ( tok = strstr( newstr, substr ) ) ) {
 

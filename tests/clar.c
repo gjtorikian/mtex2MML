@@ -40,7 +40,7 @@
 #		define access(path, mode) _access(path, mode)
 #	endif
 #	ifndef strdup
-#		define strdup(str) _strdup(str)
+#		define string_dup(str) _string_dup(str)
 #	endif
 #	ifndef strcasecmp
 #		define strcasecmp(a,b) _stricmp(a,b)
@@ -494,7 +494,7 @@ void clar__fail(
 	error->error_msg = error_msg;
 
 	if (description != NULL)
-		error->description = strdup(description);
+		error->description = string_dup(description);
 
 	_clar.total_errors++;
 	_clar.test_status = CL_TEST_FAILURE;
