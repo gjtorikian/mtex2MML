@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include <wchar.h>
 
-#include "string_dup.h"
+#include "../src/string_dup.h"
 
 /* required for sandboxing */
 #include <sys/types.h>
@@ -40,7 +40,7 @@
 #		define access(path, mode) _access(path, mode)
 #	endif
 #	ifndef strdup
-#		define string_dup(str) _string_dup(str)
+#		define strdup(str) _strdup(str)
 #	endif
 #	ifndef strcasecmp
 #		define strcasecmp(a,b) _stricmp(a,b)
