@@ -7,4 +7,4 @@ Name: libmtex2MML
 Description: A Bison grammar to convert TeX math into MathML.
 Version: @PROJECT_VERSION@
 Libs: -L${libdir} -lmtex2MML
-Cflags: -I${includedir}
+Cflags: -I${includedir}/mtex2MML
