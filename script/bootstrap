@@ -6,18 +6,31 @@ echo "==> Installing required libraries…"
 
 if [ "$(uname)" == "Darwin" ]; then
   for pkg in flex bison cmake valgrind; do
-    if brew list -1 | grep -q "^${pkg}\$"; then
+    if hash port 2>/dev/null; then
+      if port installed $pkg | grep active | awk '{print $1};'; then
         echo "Package '$pkg' is installed"
-    else
+      else
         echo "Package '$pkg' is not installed"
-        brew install $pkg
+        port install $pkg
+      fi
+    else 
+      if brew list -1 | grep -q "^${pkg}\$"; then
+          echo "Package '$pkg' is installed"
+      else
+          echo "Package '$pkg' is not installed"
+          brew install $pkg
+      fi
     fi
   done
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  if [ -z "$TRAVIS" ]; then
-    sudo apt-get -qq -y install flex bison cmake valgrind
+  if [ -f "/etc/arch-release" ]; then
+    sudo pacman --needed -S flex bison cmake valgrind
   else
-    echo "Packages already installed on Travis CI."
+    if [ -z "$TRAVIS" ]; then
+      sudo apt-get -qq -y install flex bison cmake valgrind
+    else
+      echo "Packages already installed on Travis CI."
+    fi
   fi
 fi
 
