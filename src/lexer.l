@@ -231,6 +231,7 @@ int display_style = 0;
 "?"   |
 "#"   |
 "`"   |
+"@"   |
 "*"        {yylval=mtex2MML_copy_string(yytext); return MOL;}
 
 "\\prime"  {yylval=mtex2MML_copy_string("&prime;"); return MOLL;}
@@ -530,7 +531,8 @@ int display_style = 0;
 "\\bigcap" |
 "\\Intersection"       {yylval=mtex2MML_copy_string("&Intersection;"); return MOB;}
 
-"\\in"           {yylval=mtex2MML_copy_string("&Element;"); return MOL;}
+"\\in"           {yylval=mtex2MML_copy_string("&#x2208;"); return MOL;}
+"\\ni"           {yylval=mtex2MML_copy_string("&#x220b;"); return MOL;}
 
  /* For some reason, Firefox does not put in the right spacing around some of these operators
   * unless we ask for it, explicitly.
@@ -761,9 +763,11 @@ int display_style = 0;
 "\\nprec"  {yylval=mtex2MML_copy2(yytext, ";"); if (yylval != mtex2MML_empty_string) yylval[0]='&'; return MOL;}
 
 "\\textgreater" |
-" > "               {yylval=mtex2MML_copy_string("&gt;"); return MOL;}
+">"               {yylval=mtex2MML_copy_string("&gt;"); return MOL;}
 "\\textless"    |
-" < "               {yylval=mtex2MML_copy_string("&lt;"); return MOL;}
+"<"               {yylval=mtex2MML_copy_string("&lt;"); return MOL;}
+"≤" {yylval=mtex2MML_copy_string("&#8804;"); return MOL;}
+"≥" {yylval=mtex2MML_copy_string("&#8805;"); return MOL;}
 "\\land"  {yylval=mtex2MML_copy_string("&and;"); return MOL;}
 "\\lor"   {yylval=mtex2MML_copy_string("&or;"); return MOL;}
 "\\surd"  {yylval=mtex2MML_copy_string("&radic;"); return MOL;}

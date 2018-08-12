@@ -1069,6 +1069,25 @@ mo: mob
   mtex2MML_free_string($4);
   mtex2MML_free_string($6);
 }
+| MOB LIMITS SUP closedTerm SUB closedTerm {
+  if (mtex2MML_displaymode == 1) {
+    char * s1 = mtex2MML_copy3("<munderover>", $1, " ");
+    char * s2 = mtex2MML_copy3($4, " ", $6);
+    $$ = mtex2MML_copy3(s1, s2, "</munderover>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string(s2);
+  }
+  else {
+    char * s1 = mtex2MML_copy3("<msubsup>", $1, " ");
+    char * s2 = mtex2MML_copy3($4, " ", $6);
+    $$ = mtex2MML_copy3(s1, s2, "</msubsup>");
+    mtex2MML_free_string(s1);
+    mtex2MML_free_string(s2);
+  }
+  mtex2MML_free_string($1);
+  mtex2MML_free_string($4);
+  mtex2MML_free_string($6);
+}
 | RIGHTDELIM {
   $$ = mtex2MML_copy3("<mo stretchy=\"false\">", $1, "</mo>");
   mtex2MML_free_string($1);
