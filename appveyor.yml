@@ -27,5 +27,6 @@ install:
     $env:CMAKE_GENERATOR = "Visual Studio 15 2017"
 build_script:
 - cmake -G "%CMAKE_GENERATOR%" -A "%CMAKE_ARCH%" .
+- msbuild /p:Configuration=Release mtex2MML.sln
 test_script:
 - ctest -V .
