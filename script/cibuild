@@ -51,7 +51,8 @@ echo '\\begin{align}3x + 9y &=  -12\\end{align}' | ./mtex2MML --use-env | grep "
 
 echo 'DONE with command check'
 
-if [ -n "$CI" ]
-then
-  make memcheck
+if [ -n "$CI" ]; then
+  if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    make memcheck
+  fi
 fi
