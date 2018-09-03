@@ -14,9 +14,9 @@ environment:
   PYTHON_ARCH: "64"
 
   matrix:
-    - GENERATOR: "Visual Studio 13"
+    - CMAKE_GENERATOR: "Visual Studio 15 2017"
       ARCH: 32
-    - GENERATOR: "Visual Studio 13"
+    - CMAKE_GENERATOR: "Visual Studio 15 2017"
       ARCH: 64
 install:
 - ps: |
@@ -27,7 +27,7 @@ install:
 build_script:
 - ps: |
     mkdir build
-    cmake . -Bbuild -G "Visual Studio 12 2013"
+    cmake . -Bbuild -G "%CMAKE_GENERATOR%"
 test_script:
 - ps: |
     cd build
