@@ -88,7 +88,7 @@ To build mtex2MML, you need:
 * [Flex](http://flex.sourceforge.net/)
 * [Python3](https://www.python.org/) (just for the tests)
 
-### OS X and Ubuntu
+### OS X (brew or macports), Ubuntu and Arch Linux
 
 To fetch dependencies, build, and run the library, call:
 
