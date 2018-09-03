@@ -24,11 +24,9 @@ install:
       & choco install winflexbison3
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
     }
+before_build:
+- cmake -G "%CMAKE_GENERATOR%" .
 build_script:
-- ps: |
-    mkdir build
-    cmake . -Bbuild -G "%CMAKE_GENERATOR%"
+- cmake --build .
 test_script:
-- ps: |
-    cd build
-    ctest -V
+- ctest -V .
