@@ -13,12 +13,14 @@ if [ "$(uname)" == "Darwin" ]; then
         echo "Package '$pkg' is not installed"
         port install $pkg
       fi
-    else 
+    else
       if brew list -1 | grep -q "^${pkg}\$"; then
           echo "Package '$pkg' is installed"
       else
           echo "Package '$pkg' is not installed"
-          brew install $pkg
+          if [ "$pkg" != "valgrind" ]; then
+            brew install $pkg
+          fi
       fi
     fi
   done
