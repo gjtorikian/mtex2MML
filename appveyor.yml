@@ -27,9 +27,9 @@ install:
 build_script:
 - ps: |
     mkdir build
-    mkdir C:/projects/mtex2mml/lib
-    mkdir C:/projects/mtex2mml/include
-    cmake -LAH -Bbuild -DBIN_INSTALL_DIR=C:/projects/mtex2mml/bin -DLIB_INSTALL_DIR=C:/projects/mtex2mml/lib -DINCLUDE_INSTALL_DIR=C:/projects/mtex2mml/include -G "Visual Studio 12 2013" .
+    mkdir lib
+    mkdir include
+    cmake -LAH -Bbuild -G "Visual Studio 12 2013" .
     msbuild /p:Configuration=Release build/mtex2MML.sln
 test_script:
 - ps: |
