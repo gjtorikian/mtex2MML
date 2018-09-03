@@ -13,10 +13,6 @@ environment:
   PYTHON_VERSION: "3.4.3"
   PYTHON_ARCH: "64"
 
-  BIN_INSTALL_DIR: C:\Install\bin
-  LIB_INSTALL_DIR: C:\Install\lib
-  INCLUDE_INSTALL_DIR: C:\Install\include
-
   matrix:
     - GENERATOR: "Visual Studio 13"
       ARCH: 32
@@ -31,7 +27,7 @@ install:
 build_script:
 - ps: |
     mkdir build
-    cmake -LAH . -Bbuild -G "Visual Studio 12 2013"
+    cmake -LAH . -Bbuild -DBIN_INSTALL_DIR=bin -DLIB_INSTALL_DIR=lib -DINCLUDE_INSTALL_DIR=include/mtex2MML -G "Visual Studio 12 2013"
     msbuild /p:Configuration=Release build/mtex2MML.sln
 test_script:
 - ps: |
