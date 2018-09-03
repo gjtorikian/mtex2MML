@@ -4,11 +4,11 @@ branches:
   - master
 clone_depth: 10
 cache:
-  - win_flex_bison-latest.zip
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 matrix:
   fast_finish: true
 environment:
-  WINFLEXBISON_ARCHIVE: win_flex_bison-latest.zip
   PYTHON: "C:\\Python34-x64"
   PYTHON_VERSION: "3.4.3"
   PYTHON_ARCH: "64"
@@ -18,12 +18,11 @@ environment:
     - GENERATOR: "Visual Studio 13"
       ARCH: 64
 install:
-  # Install flex/bison
-  - if not exist %WINFLEXBISON_ARCHIVE% appveyor DownloadFile "https://sourceforge.net/projects/winflexbison/files/%WINFLEXBISON_ARCHIVE%"
-  - 7z x -y %WINFLEXBISON_ARCHIVE%
-  - set Path=%CD%\winflexbison;%Path%
-  - win_flex --version
-  - win_bison --version
+- ps: |
+    if (-not (Test-Path "C:\ProgramData\chocolatey\lib\winflexbison3")) {
+      & choco install winflexbison3
+      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
+    }
 build_script:
 - ps: |
     mkdir build
