@@ -104,7 +104,7 @@ make
 With [Chocolatey](https://chocolatey.org/), you can run:
 
 ```
-choco install cmake winflexbison python3
+choco install cmake winflexbison3 python3
 ```
 
 Then, with Powershell, simply run `build.ps1`.
