@@ -6,27 +6,26 @@ clone_depth: 10
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-matrix:
-  fast_finish: true
+image:
+- Visual Studio 2017
+build:
+  parallel: true
+platform:
+- x64
+- x86
 environment:
   PYTHON: "C:\\Python34-x64"
   PYTHON_VERSION: "3.4.3"
   PYTHON_ARCH: "64"
-
-  matrix:
-    - CMAKE_GENERATOR: "Visual Studio 13"
-      ARCH: 32
-    - CMAKE_GENERATOR: "Visual Studio 13"
-      ARCH: 64
 install:
 - ps: |
     if (-not (Test-Path "C:\ProgramData\chocolatey\lib\winflexbison3")) {
       & choco install winflexbison3
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
     }
-before_build:
-- cmake -G "%CMAKE_GENERATOR%" .
+    if ($env:PLATFORM -eq "x64") { $env:CMAKE_ARCH = "x64" }
+    $env:CMAKE_GENERATOR = "Visual Studio 15 2017"
 build_script:
-- cmake --build .
+- cmake -G "%CMAKE_GENERATOR%" -A "%CMAKE_ARCH%" .
 test_script:
 - ctest -V .
