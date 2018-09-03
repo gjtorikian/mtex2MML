@@ -14,9 +14,9 @@ environment:
   PYTHON_ARCH: "64"
 
   matrix:
-    - CMAKE_GENERATOR: "Visual Studio 15 2017"
+    - CMAKE_GENERATOR: "Visual Studio 13"
       ARCH: 32
-    - CMAKE_GENERATOR: "Visual Studio 15 2017"
+    - CMAKE_GENERATOR: "Visual Studio 13"
       ARCH: 64
 install:
 - ps: |
