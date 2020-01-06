@@ -18,6 +18,7 @@ project(mtex2MML)
 enable_language(C)
 cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 cmake_policy(SET CMP0015 NEW)
+set(CMAKE_MACOSX_RPATH 1)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/astyle.cmake")
 
@@ -78,6 +79,20 @@ add_flex_bison_dependency(MTEX2MMLSCANNER MTEX2MMLPARSER)
 #   Define targets
 #
 #
+
+# Special MacOS Catalina changes
+if(CMAKE_HOST_APPLE AND APPLE)
+  if(NOT CMAKE_XCRUN)
+    find_program(CMAKE_XCRUN NAMES xcrun)
+  endif()
+  if(CMAKE_XCRUN)
+    execute_process(COMMAND ${CMAKE_XCRUN} --show-sdk-path
+      OUTPUT_VARIABLE SDK_PATH
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    set(CMAKE_SYSROOT ${SDK_PATH})
+    message(STATUS "Found SDK")
+  endif()
+endif()
 
 # Collect sourcefiles, exclude main.c from libraries
 file(GLOB SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h deps/uthash/*.h)
