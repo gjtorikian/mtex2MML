@@ -1,0 +1,9 @@
+$$
+
+\bbox[2.1pt]{x+y}
+
+\bbox[3pt]{x+y}
+
+\bbox[4.pt]{x+y}
+
+$$

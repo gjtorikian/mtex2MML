@@ -22,9 +22,12 @@ float mtex2MML_extract_number_from_pxstring(char * str)
 char *mtex2MML_extract_string_from_pxstring(char * str)
 {
   char *pixel;
-  float dbl;
+  int len = strlen(str);
   pixel = malloc(3*sizeof(char));
-  sscanf (str, "%f%s", &dbl, pixel);
+  pixel[0] = str[len-2];
+  pixel[1] = str[len-1];
+  pixel[2] = '\0';
+
   return pixel;
 }
 

@@ -94,3 +94,12 @@ void test_basic__text_rendering(void)
 
   cl_assert_equal_s(fixture_mml, trim(result));
 }
+
+void test_basic__decimals(void)
+{
+  fixture_tex = read_fixture_tex("basic/decimals.txt");
+  fixture_mml = read_fixture_mml("basic/decimals.html");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DEFAULT);
+
+  cl_assert_equal_s(fixture_mml, result);
+}

@@ -60,6 +60,7 @@ yydebug = 1;
      (*mtex2MML_error) (msg);
    }
    mtex2MML_free_string (msg);
+   mtex2MML_flush();
  }
 
  /* Note: If length is 0, then buffer is treated like a string; otherwise only length bytes are written.
@@ -3543,10 +3544,13 @@ char * mtex2MML_parse (const char * buffer, unsigned long length, const int opti
   /* See Bison documentation/maliciousness test: http://bit.ly/1IbpOja
      1 if parse error, 2 if memory exhuastion, etc. */
   if (result > 0) {
+    fprintf(stderr, "ERROR STATUS: %d\n", result);
     if (mathml) {
       mtex2MML_free_string (mathml);
       mathml = 0;
     }
+    mtex2MML_flush();
+    mtex2MML_restart();
     return NULL;
   }
 

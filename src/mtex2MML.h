@@ -55,6 +55,7 @@ extern int mtex2MML_delimiter_type();
 
 extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
+extern void   mtex2MML_flush();
 extern void   mtex2MML_restart ();
 extern void   mtex2MML_reset_parsing_environment ();
 

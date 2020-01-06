@@ -105,3 +105,39 @@ void test_maliciousness__imbalanced_dollars(void)
 
   cl_assert(result == NULL);
 }
+
+void test_maliciousness__decimals_double_comma(void)
+{
+  /* lazy way to continue with the free in cleanup */
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
+
+  fixture_tex = read_fixture_tex("maliciousness/decimals_double_comma.txt");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
+
+  cl_assert(result == NULL);
+}
+
+void test_maliciousness__decimals_double_dots(void)
+{
+  /* lazy way to continue with the free in cleanup */
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
+
+  fixture_tex = read_fixture_tex("maliciousness/decimals_double_dots.txt");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
+
+  cl_assert(result == NULL);
+}
+
+void test_maliciousness__decimals_excess_dots(void)
+{
+  /* lazy way to continue with the free in cleanup */
+  fixture_tex = malloc(1);
+  fixture_mml = malloc(1);
+
+  fixture_tex = read_fixture_tex("maliciousness/decimals_excess_dots.txt");
+  result = mtex2MML_parse(fixture_tex, strlen(fixture_tex), MTEX2MML_DELIMITER_DOLLAR);
+
+  cl_assert(result == NULL);
+}
