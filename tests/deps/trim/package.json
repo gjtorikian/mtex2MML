@@ -1,6 +1,6 @@
 {
   "name": "trim",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "repo": "nami-doc/trim.c",
   "license": "MIT",
   "src": ["trim.c", "trim.h"]
