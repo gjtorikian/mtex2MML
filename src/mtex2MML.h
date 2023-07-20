@@ -51,24 +51,24 @@ extern void (*mtex2MML_error) (const char * msg);                          /* de
 
 extern char * mtex2MML_global_parse (const char * buffer, unsigned long length, const int options, const int global_start);
 
-extern int mtex2MML_delimiter_type();
+extern int mtex2MML_delimiter_type(const int type);
 
 extern void   mtex2MML_setup (const char * buffer, unsigned long length);
 
-extern void   mtex2MML_restart ();
-extern void   mtex2MML_reset_parsing_environment ();
+extern void   mtex2MML_restart (void);
+extern void   mtex2MML_reset_parsing_environment (void);
 
-extern int mtex2MML_do_capture_eqn();
-extern int mtex2MML_capture_eqn_src();
+extern int mtex2MML_do_capture_eqn(void);
+extern int mtex2MML_capture_eqn_src(void);
 
-extern char * mtex2MML_output ();
+extern char * mtex2MML_output (void);
 
 extern char * mtex2MML_copy_string (const char * str);
 extern char * mtex2MML_copy_string_extra (const char * str, unsigned extra);
 extern char * mtex2MML_copy2 (const char * first, const char * second);
 extern char * mtex2MML_copy3 (const char * first, const char * second, const char * third);
 extern char * mtex2MML_copy_escaped (const char * str);
-extern  UT_array ** mtex2MML_get_environment_data_stack();
+extern  UT_array ** mtex2MML_get_environment_data_stack(void);
 
 extern char * mtex2MML_empty_string;
 

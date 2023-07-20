@@ -36,7 +36,7 @@ yydebug = 1;
 
  encaseType encase = NONE;
 
- extern int yylex ();
+ extern int yylex (void);
 
  extern char * yytext;
 
@@ -86,7 +86,7 @@ yydebug = 1;
  #ifdef mtex2MML_CAPTURE
  static char * mtex2MML_output_string = "" ;
 
- char * mtex2MML_output ()
+ char * mtex2MML_output (void)
  {
    char * copy = (char *) malloc((mtex2MML_output_string ? strlen(mtex2MML_output_string) : 0) + 1);
    if (copy) {
@@ -279,7 +279,7 @@ yydebug = 1;
  }
 
  /* Returns a string representation of the global_label, and increments the label */
- char * mtex2MML_global_label()
+ char * mtex2MML_global_label(void)
  {
    char * n = (char *) malloc(256);
    #ifdef _WIN32
@@ -3507,7 +3507,7 @@ void format_additions(const char *buffer, const int options)
   encase = (encaseType) encase_pointer;
 }
 
-void free_additions()
+void free_additions(void)
 {
   utarray_free(environment_data_stack);
 
@@ -3553,7 +3553,7 @@ char * mtex2MML_parse (const char * buffer, unsigned long length, const int opti
   return mathml;
 }
 
-UT_array ** mtex2MML_get_environment_data_stack()
+UT_array ** mtex2MML_get_environment_data_stack(void)
 {
   return &environment_data_stack;
 }

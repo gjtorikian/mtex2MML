@@ -1523,12 +1523,12 @@ int display_style = 0;
 
 %%
 
-void mtex2MML_restart ()
+void mtex2MML_restart (void)
 {
   BEGIN(INITIAL);
 }
 
-void mtex2MML_reset_parsing_environment()
+void mtex2MML_reset_parsing_environment(void)
 {
   parsing_environment = NO_PARSE;
   mtex2MML_eqn_src[mtex2MML_eqn_end-mtex2MML_eqn_src-yyleng]=0;
@@ -1548,7 +1548,7 @@ void mtex2MML_setup (const char * buffer, unsigned long length)
   s_mtex2MML_length = length;
 }
 
-int mtex2MML_capture_eqn_src()
+int mtex2MML_capture_eqn_src(void)
 {
   if (YY_START != INITIAL && YY_START != SVGENV)
     return mtex2MML_do_capture_eqn();
@@ -1556,7 +1556,7 @@ int mtex2MML_capture_eqn_src()
   return -1;
 }
 
-int mtex2MML_do_capture_eqn()
+int mtex2MML_do_capture_eqn(void)
 {
   if (mtex2MML_eqn_bufsize - (mtex2MML_eqn_end-mtex2MML_eqn_src+yyleng) > 1)
   {
