@@ -93,6 +93,10 @@ int mtex2MML_identify_eqn_number(envType environment_type, char *line)
   }
 }
 
+static int div_ceil(int a, int b) {
+   return (a/b) + !!(a%b);
+}
+
 void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **encase, const char *environment)
 {
   /* TODO: these next detections are gross, but substack and cases are rather special */
@@ -254,7 +258,7 @@ void mtex2MML_env_replacements(UT_array **environment_data_stack, encaseType **e
          rather than a label per row. in that case, jam a label
          in the middle. */
       if (environment_type == ENV_GATHER || environment_type == ENV_MULTLINE) {
-        insertion_idx = ceil(utarray_len(eqn_number_stack) / 2);
+        insertion_idx = div_ceil(utarray_len(eqn_number_stack), 2);
         eqn = 1;
         utarray_insert(eqn_number_stack, &eqn, insertion_idx);
         utarray_pop_back(eqn_number_stack);
