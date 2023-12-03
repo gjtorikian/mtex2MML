@@ -42,26 +42,26 @@ Both a static and dynamic library are created as part of the `cmake` build proce
 
 The library exposes the following methods:
 
-* `char * mtex2MML_parse(const char * str, unsigned long strlen, const int options)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
+- `char * mtex2MML_parse(const char * str, unsigned long strlen, const int options)`: Converts a single TeX equation in `str` to MathML. Returns just the MathML equation, as a string.
 
-* `char * mtex2MML_global_parse(const char * str, unsigned long strlen, const int options, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
+- `char * mtex2MML_global_parse(const char * str, unsigned long strlen, const int options, int global_start)`: The same as `mtex2MML_parse`, but allows you to provide a starting integer for equation numbering. Returns just the MathML equation, as a string.
 
-* `int mtex2MML_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
+- `int mtex2MML_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this returns a single string containing just the converted math elements. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`.
 
-* `int mtex2MML_text_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
+- `int mtex2MML_text_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML within a math equation are normalized (eg. `<` becomes `&lt;`).
 
-* `int mtex2MML_strict_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML tags are removed completely.
+- `int mtex2MML_strict_filter(const char * str, unsigned long strlen, const int options)`: Given a string with a mix of TeX math and non-math elements, this converts all the math and leaves the rest of the string unmodified. Equations are automatically numbered. Returns a `status` indicating success (`0`) or failure. You must access the resulting string with `mtex2MML_output`. HTML tags are removed completely.
 
 The `options` argument determines which types of delimiters are to be used:
 
-* `MTEX2MML_DELIMITER_DEFAULT` is the default, using `$..$` for inline and `$$..$$` for display.
-* `MTEX2MML_DELIMITER_DOLLAR` uses single dollar signs: `$..$` for inline.
-* `MTEX2MML_DELIMITER_DOUBLE` uses double dollar signs: `$$..$$` for display.
-* `MTEX2MML_DELIMITER_PARENS` uses parenthesis: `\(..\)` for inline.
-* `MTEX2MML_DELIMITER_BRACKETS` uses brackets: `\[..\]` for display.
-* `MTEX2MML_DELIMITER_ENVIRONMENTS` supports bare `\\begin..\\end` environments.
+- `MTEX2MML_DELIMITER_DEFAULT` is the default, using `$..$` for inline and `$$..$$` for display.
+- `MTEX2MML_DELIMITER_DOLLAR` uses single dollar signs: `$..$` for inline.
+- `MTEX2MML_DELIMITER_DOUBLE` uses double dollar signs: `$$..$$` for display.
+- `MTEX2MML_DELIMITER_PARENS` uses parenthesis: `\(..\)` for inline.
+- `MTEX2MML_DELIMITER_BRACKETS` uses brackets: `\[..\]` for display.
+- `MTEX2MML_DELIMITER_ENVIRONMENTS` supports bare `\\begin..\\end` environments.
 
-[The *tests/basic.c*](tests/basic.c) and [the *tests/delimiters.c*](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
+[The _tests/basic.c_](tests/basic.c) and [the _tests/delimiters.c_](tests/delimiters.c) suites provides a demonstrate of how these methods can be used.
 
 ### As a command
 
@@ -77,16 +77,16 @@ Use `mtex2MML -h` to get documentation on the options.
 
 A `0` status indicates a success, while anything else indicates a failure, [as per the Bison documentation](http://www.gnu.org/software/bison/manual/html_node/Parser-Function.html). If a token cannot be parsed, or if the tokenization is nested too deep, the library will bail with a non-zero status code. An error message is also printed to STDERR.
 
-[The *tests/maliciousness.c* suite](tests/maliciousness.c) has a demonstration on how to perform error handling.
+[The _tests/maliciousness.c_ suite](tests/maliciousness.c) has a demonstration on how to perform error handling.
 
 ## Building
 
 To build mtex2MML, you need:
 
-* [CMake](http://www.cmake.org/download/) (at least version 2.8.7)
-* [Bison](https://www.gnu.org/software/bison/)
-* [Flex](http://flex.sourceforge.net/)
-* [Python3](https://www.python.org/) (just for the tests)
+- [CMake](http://www.cmake.org/download/) (at least version 2.8.7)
+- [Bison](https://www.gnu.org/software/bison/)
+- [Flex](http://flex.sourceforge.net/)
+- [Python3](https://www.python.org/) (just for the tests)
 
 ### OS X (brew or macports), Ubuntu and Arch Linux
 
@@ -120,8 +120,8 @@ ctest -V
 
 mtex2MML has a test suite that mimics the one found in [MathJax](https://github.com/mathjax/MathJax-test), with a few exceptions:
 
-* Files marked as `.xtex` have features that are not implemented, but probably should be in the future.
-* Files marked as `.no_tex` have features that probably won't be implemented.
+- Files marked as `.xtex` have features that are not implemented, but probably should be in the future.
+- Files marked as `.no_tex` have features that probably won't be implemented.
 
 During the test run, the suite will list the percentage of features that still need coverage.
 
