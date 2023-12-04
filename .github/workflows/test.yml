@@ -30,6 +30,5 @@ jobs:
         name: Install Windows dependencies
         run: choco install winflexbison
 
-      - if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-        name: Run tests
+      - name: Run tests
         run: script/cibuild
