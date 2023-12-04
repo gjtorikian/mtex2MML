@@ -20,8 +20,9 @@
     "src/uthash.h",
     "src/utlist.h",
     "src/utringbuffer.h",
+    "src/utstack.h",
     "src/utstring.h"
   ],
 
-  "version": "2.0.1"
+  "version": "2.3.0"
 }

@@ -14,9 +14,9 @@
 #   General project setup
 #
 #
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 project(mtex2MML)
 enable_language(C)
-cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 cmake_policy(SET CMP0015 NEW)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/astyle.cmake")
@@ -194,7 +194,7 @@ endif(MSVC)
 if (BUILD_CLAR)
   include (CTest)
   enable_testing()
-  find_package(PythonInterp REQUIRED)
+  find_package(Python REQUIRED)
 
   set(CLAR_FIXTURES "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/")
   set(CLAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/tests")
@@ -202,7 +202,7 @@ if (BUILD_CLAR)
 	add_definitions(-DCLAR_TMPDIR=\"libmtex2MML_tests\")
 
   include_directories(${CLAR_PATH})
-  file(GLOB_RECURSE SRC_TEST ${CLAR_PATH}/*/*.c ${CLAR_PATH}/*/*.h)
+  file(GLOB_RECURSE SRC_TEST ${CLAR_PATH}/*/*.c ${CLAR_PATH}/*/*.h, ${CLAR_PATH}/*/*.py)
   set(SRC_CLAR "${CLAR_PATH}/main.c" "${CLAR_PATH}/clar.c"
     "${CLAR_PATH}/array.c"
     "${CLAR_PATH}/basic.c"
@@ -220,7 +220,7 @@ if (BUILD_CLAR)
 
   add_custom_command(
     OUTPUT ${CLAR_PATH}/clar.suite
-    COMMAND ${PYTHON_EXECUTABLE} generate.py
+    COMMAND ${Python_EXECUTABLE} generate.py
     DEPENDS ${SRC_TEST}
     WORKING_DIRECTORY ${CLAR_PATH}
   )
@@ -240,7 +240,7 @@ if (BUILD_CLAR)
 
   add_custom_command(TARGET mtex2MML_clar
     POST_BUILD
-    COMMAND ${PYTHON_EXECUTABLE} mathjax_generate.py
+    COMMAND ${Python_EXECUTABLE} mathjax_generate.py
     WORKING_DIRECTORY ${CLAR_PATH}
   )
 
